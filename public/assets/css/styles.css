@@ -3881,6 +3881,7 @@ input[type=button].btn-block {
 }
 .nav-link:hover, .nav-link:focus {
   text-decoration: none;
+  cursor: pointer;
 }
 .nav-link.disabled {
   color: #6c757d;
@@ -9988,14 +9989,15 @@ p {
 .page-section {
   padding: 6rem 0;
 }
+
 .page-section h2.section-heading {
   font-size: 2.5rem;
-  margin-top: 0;
   margin-bottom: 1rem;
 }
 .page-section h3.section-subheading {
   font-size: 1rem;
   font-weight: 400;
+  margin-top: 30px;
   font-style: italic;
   font-family: "Droid Serif", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   margin-bottom: 4rem;
@@ -10067,7 +10069,7 @@ img::-moz-selection {
   text-transform: uppercase;
 }
 #mainNav .navbar-brand img {
-  height: 1.5rem;
+  height: 3rem;
 }
 #mainNav .navbar-nav .nav-item .nav-link {
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -10119,7 +10121,7 @@ header.masthead {
   padding-bottom: 6rem;
   text-align: center;
   color: #fff;
-  background-image: url("../img/header-bg.jpg");
+
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
@@ -10486,4 +10488,187 @@ section#contact form#contactForm :-ms-input-placeholder {
 .timeline-inverted .timeline-image a{
   text-decoration: none;
   color: #dc3545;
+}
+.myHr {
+  border: 5px solid #EDCD1F;
+  width: 15rem;
+  margin-bottom: 40px;
+}
+.my_3_1 {
+  text-align: left;
+}
+.btn-apply-now {
+  background-color: #1E2D3B;
+  color: #EDCD1F;
+  padding: 10px 50px;
+  margin-top: 30px;
+  font-weight: bold;
+}
+.applyDriver{
+  margin-top: 50px !important;
+}
+.myDiv {
+  margin-top: 15px;
+}
+.myDiv > p {
+  color: white;
+}
+.myDiv > h6 {
+  color: #EDCD1F;
+}
+.myContactButton {
+  background-color: #1E2D3B;
+  color: #EDCD1F;
+}
+.myContactButton:hover {
+  color: #1E2D3B;
+  background-color: #EDCD1F;
+}
+#team {
+  background-color: #1E2D3B;
+}
+.color-white {
+  color: white;
+}
+.carousel h3 {
+  bottom: 200px !important;
+}
+.carousel-caption {
+  bottom: 200px !important;
+}
+
+/* From Css SignUp */
+#signup p, div {
+  font-family: Lato;
+}
+  
+#signup .wrapper {
+  height: 103vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../img/trucks/4.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#signup .form-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  border-radius: 6px;
+  box-shadow: 0px 8px 36px #222;
+  background-color: white;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+#signup .form-wrapper > h2 {
+  display: flex;
+  justify-content: center;
+  font-family: "Segoe UI", "Ubuntu", "Roboto", "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 2em;
+  font-weight: lighter;
+  margin-top: 0.25em;
+  color: #222;
+}
+
+#signup form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}  
+
+#signup label {
+  margin-bottom: 0.5em;
+  color: #444;
+  font-weight: bold;
+}
+
+#signup input {
+  padding: 10px 10px;
+  border-radius: 15px;
+  outline: none;
+  border: 1px solid #d6d1d5;
+}
+
+#signup input::placeholder {
+  font-size: 1.2em;
+  font-weight: lighter;
+  color: #bbb;
+}
+
+#signup .mybtn {
+  min-width: 100%;
+  cursor: pointer;
+  margin-right: 0.25em;
+  margin-top: 0.5em;
+  padding:  0.938em;
+  border: none;
+  border-radius: 4px;
+  background-color: rgb(22, 165, 58);
+  color: #fefefe;
+  border-radius: 15px;
+}
+#signup .mybtn:hover {
+  background-color: rgb(6, 73, 11);
+  color: #fefefe;
+}
+.submitparagraph {
+  margin-top: 20px;
+  min-width: 100%;
+  text-align: center;
+}
+.myLink {
+  padding-left: 10px;
+  color: black;
+  text-decoration: underline;
+}
+.myLink:hover{
+  padding-left: 10px;
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+}
+ 
+#signup 
+.user_name,
+.email,
+.password {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 100%;
+  text-align: left;
+}
+ 
+#signup .submit {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mySideBar {
+  padding: 0px;
+}
+.form-section {
+  padding: 5rem 0;
+}
+.form-header-h2{
+  margin-top: 20px;
+}
+
+.formStyle {
+  text-align: left !important;
+}
+.mytextField {
+  padding: 10px !important;
+}
+
+
+@media (max-width: 576px) {
+  .mytextField {
+    padding-top: 10px !important;
+  }
 }
