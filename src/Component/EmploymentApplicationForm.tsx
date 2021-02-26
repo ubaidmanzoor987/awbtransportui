@@ -306,24 +306,26 @@ class EmploymentApplication extends Component<EmploymentApplicationProps, Employ
                                             onChange={(e)=>this.handleChange(e)}
                                             className = "col-md-3 mytextField"
                                         />
-                                         <Select
-                                            value={this.state.state}
-                                            variant="filled"
-                                            name = "state"
-                                            labelId="demo-controlled-open-select-label"
-                                            id="demo-controlled-open-select"
-                                            open={this.state.open}
-                                            onClose={()=>this.setState({...this.state, open: false})}
-                                            onOpen={()=>this.setState({...this.state, open: true})}
-                                            onChange={(e)=>this.handleChange(e)}
-                                            className = "col-md-3 mytextField"
-                                        >
+                                        <div style={{flexDirection:"column"}} className = "col-md-3 mytextField">
+                                             <InputLabel id="demo-controlled-open-select-label">Age</InputLabel>
+                                             <Select
+                                                value={this.state.state}
+                                                variant="filled"
+                                                name = "state"
+                                                labelId="demo-controlled-open-select-label"
+                                                id="demo-controlled-open-select"
+                                                open={this.state.open}
+                                                onClose={()=>this.setState({...this.state, open: false})}
+                                                onOpen={()=>this.setState({...this.state, open: true})}
+                                                onChange={(e)=>this.handleChange(e)}
+                                            >
                                             <MenuItem value='' disabled>State</MenuItem>
                                             {states.map(state=>(
-                                                
                                                 <MenuItem value={state.value} key={state.value} >{state.value}</MenuItem>
                                             ))}   
                                         </Select>
+                                        </div>
+                                         
                                     </div>                                    
                                 </form>
                             </div>
