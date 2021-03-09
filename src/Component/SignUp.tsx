@@ -95,7 +95,7 @@ class SignUp extends Component<RouteComponentProps<SignUpProps, any, unknown>, S
                 else if (value.length < 8) {
                     errors.c_password = 'Password must be eight characters long'
                 }
-                else if (value.length>8 && this.state.password !='' && this.state.password!=this.state.c_password) {
+                else if (value.length>8 && this.state.password !='' && this.state.password!=value) {
                     console.log(this.state.password, value);
                     errors.c_password = 'Password Not Match'
                 }

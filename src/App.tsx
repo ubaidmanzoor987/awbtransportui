@@ -1,54 +1,52 @@
-import React, { useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-import {user_data as User} from "./Component/User";
-import SignUp from './Component/SignUp';
-import LogIn from './Component/SignIn';
-import EmploymentApplication from './Component/EmploymentApplicationForm';
+import { user_data as User } from "./Component/User";
+import SignUp from "./Component/SignUp";
+import LogIn from "./Component/SignIn";
+import EmploymentApplication from "./Component/EmploymentApplicationForm";
 
-import './App.css';
-import MainPage from './Component/MainPage';
-import Career from './Component/CareerOpportunities';
-import Logout from './Component/logout';
-
+import "./App.css";
+import MainPage from "./Component/MainPage";
+import Career from "./Component/CareerOpportunities";
+import Logout from "./Component/logout";
+import LayoutWithResposiveNavBar from "./Component/LayoutWithResposiveNavBar";
 
 function App() {
   const [user_data, setuserData] = useState({});
-  const setUserData = (data: any) =>{
+  const setUserData = (data: any) => {
     setuserData(data);
   };
 
   return (
-    <User.Provider value={{data: user_data, setUserData}} >
-    <div className="App">
-       <Router>
+    <User.Provider value={{ data: user_data, setUserData }}>
+      <div className="App">
+        <Router>
           <Switch>
             <Route exact path="/">
               <MainPage />
             </Route>
-            <Route path="/career">
+            <Route exact path="/career">
               <Career />
-           </Route>
-           <Route path="/register">
+            </Route>
+            <Route exact path="/register">
               <SignUp />
-           </Route>
-           <Route path="/login">
+            </Route>
+            <Route exact path="/login">
               <LogIn />
-           </Route>
-           <Route path="/logout">
+            </Route>
+            <Route exact path="/logout">
               <Logout />
-           </Route>
-           <Route path="/AwbTransportEmploymentApplication">
+            </Route>
+            <Route exact path="/tempNewComponent">
+              <LayoutWithResposiveNavBar />
+            </Route>
+            <Route exact path="/AwbTransportEmploymentApplication">
               <EmploymentApplication />
-           </Route>
+            </Route>
           </Switch>
-       </Router>
-    </div> 
+        </Router>
+      </div>
     </User.Provider>
   );
 }
