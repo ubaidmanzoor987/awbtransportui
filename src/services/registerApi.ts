@@ -1,10 +1,11 @@
 import {SignUpState} from "../Component/SignUp";
 import {Result} from "../interfaces/registerinterface";
+import {baseUrl} from "../shared/baseUrl";
 
 export async function register(data: SignUpState ) {
     let res;
     try {
-            res = await fetch("http://127.0.0.1:5000/api/register", {
+            res = await fetch(baseUrl+"/api/register", {
             method:'PUT',
             body:JSON.stringify(data),
             headers:{
