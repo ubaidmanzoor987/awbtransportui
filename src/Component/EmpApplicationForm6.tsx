@@ -1,11 +1,19 @@
 import { Button, Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import { Accordion, Col, Container, Row } from "react-bootstrap";
-import styleClasses from "../Object/styleClasses";
+import styleClasses from "../Common/styleClasses";
 import drug_and_alcohol_policy_snapshot_1 from "../assets/images/drug and alcohol policy snapshot 1.jpg";
 
-export default function EmpApplicationForm6() {
+type Props = { data?: any; handler?: any };
+
+export default function EmpApplicationForm6(props: Props) {
   const classes = styleClasses.useStyles();
+
+  const onSubmit = (data: any) => {
+    props.handler[0]();
+    console.log(data);
+  };
+
   return (
     <div>
       <Container style={{ backgroundColor: "#fafafa" }}>

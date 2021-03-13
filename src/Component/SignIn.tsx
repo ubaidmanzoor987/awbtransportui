@@ -61,14 +61,8 @@ class Login extends React.Component<LoginProps, LoginState> {
     let validity = true;
     let errors = this.state.errors;
 
-    Object.values(this.state.errors).forEach(
-      (val) => val.length > 0 && (validity = false)
-    );
-    if (
-      validity == true &&
-      this.state.user_name != "" &&
-      this.state.password != ""
-    ) {
+    Object.values(this.state.errors).forEach((val) => val.length > 0 && (validity = false));
+    if (validity == true && this.state.user_name != "" && this.state.password != "") {
       const res = (await signin({
         user_name: this.state.user_name,
         password: this.state.password,
@@ -113,25 +107,13 @@ class Login extends React.Component<LoginProps, LoginState> {
                 <form onSubmit={this.handleSubmit} noValidate>
                   <div className="user_name">
                     <label htmlFor="fullName">User Name</label>
-                    <input
-                      type="text"
-                      name="user_name"
-                      onChange={this.handleChange}
-                    />
-                    {errors.user_name == "" && (
-                      <span style={{ color: "red" }}>{errors.user_name}</span>
-                    )}
+                    <input type="text" name="user_name" onChange={this.handleChange} />
+                    {errors.user_name == "" && <span style={{ color: "red" }}>{errors.user_name}</span>}
                   </div>
                   <div className="password">
                     <label htmlFor="password">Password</label>
-                    <input
-                      type="password"
-                      name="password"
-                      onChange={this.handleChange}
-                    />
-                    {errors.password.length > 0 && (
-                      <span style={{ color: "red" }}>{errors.password}</span>
-                    )}
+                    <input type="password" name="password" onChange={this.handleChange} />
+                    {errors.password.length > 0 && <span style={{ color: "red" }}>{errors.password}</span>}
                   </div>
                   <div className="submit">
                     <button className="mybtn">Sign In</button>

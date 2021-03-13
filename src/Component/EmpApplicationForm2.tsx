@@ -50,9 +50,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function EmpApplicationForm2() {
-  const { register, handleSubmit, errors } = useForm();
+type Props = { data?: any; handler?: any };
 
+const debug: boolean = true;
+
+function EmpApplicationForm2(props: Props) {
   const gender = [{ value: "Male" }, { value: "Female" }, { value: "Other" }];
 
   const veteranStatus = [
@@ -62,10 +64,28 @@ function EmpApplicationForm2() {
     { value: "Other" },
   ];
 
+  let def;
+  if (debug === true) {
+    def = {
+      gender: props.data.gender === undefined ? gender[0].value : props.data.gender,
+      veteranStatus: props.data.veteranStatus === undefined ? veteranStatus[0].value : props.data.veteranStatus,
+      // first_name: props.data.first_name == undefined ? "" : props.data.first_name,
+    };
+  } else {
+    def = {
+      gender: props.data.gender === undefined ? gender[0].value : props.data.gender,
+      veteranStatus: props.data.veteranStatus === undefined ? veteranStatus[0].value : props.data.veteranStatus,
+    };
+  }
+
   const classes = useStyles();
+  console.log("-------------------------------------------------------------");
+  console.log(def);
+  console.log("-------------------------------------------------------------");
 
   const onSubmit = (data: any) => {
     console.log(data);
+    props.handler[0]();
   };
 
   const RequireError: string = "Required *";
@@ -73,7 +93,7 @@ function EmpApplicationForm2() {
   return (
     <React.Fragment>
       <Container style={{ backgroundColor: "#fafafa" }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit}>
           <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.paper}>
@@ -110,10 +130,7 @@ function EmpApplicationForm2() {
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
                         label="Gender"
-                        error={errors.gender == undefined ? false : true}
-                        inputRef={register({
-                          required: { value: true, message: RequireError },
-                        })}
+                        defaultValue={def.gender}
                       >
                         {gender.map(function (object: any, i: number) {
                           return (
@@ -123,7 +140,7 @@ function EmpApplicationForm2() {
                           );
                         })}
                       </Select>
-                      <FormHelperText>{errors.gender && errors.gender?.message}</FormHelperText>
+                      {/* <FormHelperText>{errors.gender && errors.gender?.message}</FormHelperText> */}
                     </FormControl>
                   </Grid>
                   <Grid item xs={6}>
@@ -133,11 +150,8 @@ function EmpApplicationForm2() {
                         name="veteranStatus"
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
+                        defaultValue={def.veteranStatus}
                         label="Veteran Status"
-                        error={errors.veteranStatus == undefined ? false : true}
-                        inputRef={register({
-                          required: { value: true, message: RequireError },
-                        })}
                       >
                         <MenuItem value="">None</MenuItem>
                         {veteranStatus.map(function (object: any, i: number) {
@@ -148,7 +162,7 @@ function EmpApplicationForm2() {
                           );
                         })}
                       </Select>
-                      <FormHelperText>{errors.veteranStatus && errors.veteranStatus?.message}</FormHelperText>
+                      {/* <FormHelperText>{errors.veteranStatus && errors.veteranStatus?.message}</FormHelperText> */}
                     </FormControl>
                   </Grid>
                 </Grid>
@@ -160,13 +174,26 @@ function EmpApplicationForm2() {
             <Grid item xs={1}></Grid>
 
             {/* BUTTON Start */}
-            <Grid item xs={4}></Grid>
+            <Grid item xs={2}></Grid>
             <Grid item xs={4}>
-              <Button type="submit" className="col-12" variant="contained" color="primary">
-                Save This
+              <Button
+                type="button"
+                className="col-12"
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  props.handler[1]();
+                }}
+              >
+                Back
               </Button>
             </Grid>
-            <Grid item xs={4}></Grid>
+            <Grid item xs={4}>
+              <Button type="submit" className="col-12" variant="contained" color="primary">
+                Save This & Next
+              </Button>
+            </Grid>
+            <Grid item xs={2}></Grid>
             {/* BUTTON End */}
           </Grid>
         </form>

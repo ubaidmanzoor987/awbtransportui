@@ -1,10 +1,18 @@
 import { Button, Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import { Accordion, Col, Container, Row } from "react-bootstrap";
-import styleClasses from "../Object/styleClasses";
+import styleClasses from "../Common/styleClasses";
 
-export default function EmpApplicationForm5() {
+type Props = { data?: any; handler?: any };
+
+export default function EmpApplicationForm5(props: Props) {
   const classes = styleClasses.useStyles();
+
+  const onSubmit = (data: any) => {
+    props.handler[0]();
+    console.log(data);
+  };
+
   return (
     <div>
       <Container style={{ backgroundColor: "#fafafa" }}>
