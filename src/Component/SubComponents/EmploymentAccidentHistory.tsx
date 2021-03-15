@@ -51,7 +51,10 @@ export default function EmploymentAccidentHistory(props: Props) {
   const Forms = props.useForm;
   const { register, handleSubmit, errors, defaultValues } = Forms;
 
-  const [employmentAccidentHistoryState, employmentAccidentHistoryStateHandler] = useState(props.employmentAccidentHistoryList);
+  const [
+    employmentAccidentHistoryState,
+    employmentAccidentHistoryStateHandler,
+  ] = useState(props.employmentAccidentHistoryList);
   //   const [errorsList, errorListHandler] = useState();
   useEffect(() => {
     employmentAccidentHistoryStateHandler(props.employmentAccidentHistoryList);
@@ -63,86 +66,113 @@ export default function EmploymentAccidentHistory(props: Props) {
 
   const addAddress = (event: any) => {
     event.preventDefault();
-    employmentAccidentHistoryStateHandler([...employmentAccidentHistoryState, employmentAccidentHistoryDummyElement]);
+    employmentAccidentHistoryStateHandler([
+      ...employmentAccidentHistoryState,
+      employmentAccidentHistoryDummyElement,
+    ]);
   };
 
   return (
     <React.Fragment>
-      <Grid container direction="row" justify="space-between" alignItems="center">
-        {employmentAccidentHistoryState.map((employmentAccidentHistoryItem: EmploymentAccidentHistoryInfo, index: number) => {
-          console.log("----------------------ERRORS----------------------");
-          console.log(errors);
-          console.log(errors[props.idPrefix]);
-          console.log(errors[props.idPrefix]?.employmentAccidentHistorystatus);
-          console.log("----------------------ERRORS----------------------");
-          return (
-            <Accordion elevation={3}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-                <Typography className={classes.heading}>Accident Record for past three (3) years: 1</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid container direction="row" justify="space-around" alignItems="baseline" spacing={3}>
-                  <Grid item xs={6}>
-                    <TextField
-                      variant="outlined"
-                      name="dateOfAccident"
-                      helperText="Date of Accident"
-                      type="date"
-                      size="small"
-                      className="col-12"
-                    ></TextField>
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
+        {employmentAccidentHistoryState.map(
+          (
+            employmentAccidentHistoryItem: EmploymentAccidentHistoryInfo,
+            index: number
+          ) => {
+            console.log("----------------------ERRORS----------------------");
+            console.log(errors);
+            console.log(errors[props.idPrefix]);
+            console.log(
+              errors[props.idPrefix]?.employmentAccidentHistorystatus
+            );
+            console.log("----------------------ERRORS----------------------");
+            return (
+              <Accordion elevation={3}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography className={classes.heading}>
+                    Accident Record for past three (3) years: 1
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="space-around"
+                    alignItems="baseline"
+                    spacing={3}
+                  >
+                    <Grid item xs={6}>
+                      <TextField
+                        variant="outlined"
+                        name="dateOfAccident"
+                        helperText="Date of Accident"
+                        type="date"
+                        size="small"
+                        className="col-12"
+                      ></TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        variant="outlined"
+                        label="Num of Fatalities"
+                        name="numberofFatalities"
+                        size="small"
+                        type="number"
+                        className="col-12"
+                      ></TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        label="Num of Injured People"
+                        name="numberofPeopleleInjured"
+                        size="small"
+                        className="col-12"
+                        type="number"
+                      ></TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        id="outlined-multiline-static"
+                        size="small"
+                        label="Nature of Accidents"
+                        name="NatureOfAccidents"
+                        multiline
+                        rows={4}
+                        defaultValue=""
+                        variant="outlined"
+                        className="col-12"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        id="outlined-multiline-static"
+                        label="Location of Accident"
+                        name="LocationOfAccidents"
+                        size="small"
+                        multiline
+                        rows={4}
+                        defaultValue=""
+                        variant="outlined"
+                        className="col-12"
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      variant="outlined"
-                      label="Num of Fatalities"
-                      name="numberofFatalities"
-                      size="small"
-                      type="number"
-                      className="col-12"
-                    ></TextField>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
-                      label="Num of Injured People"
-                      name="numberofPeopleleInjured"
-                      size="small"
-                      className="col-12"
-                      type="number"
-                    ></TextField>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="outlined-multiline-static"
-                      size="small"
-                      label="Nature of Accidents"
-                      name="NumberOfAccidents"
-                      multiline
-                      rows={4}
-                      defaultValue=""
-                      variant="outlined"
-                      className="col-12"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="outlined-multiline-static"
-                      label="Location of Accident"
-                      name="LocationOfAccidents"
-                      size="small"
-                      multiline
-                      rows={4}
-                      defaultValue=""
-                      variant="outlined"
-                      className="col-12"
-                    />
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
-          );
-        })}
+                </AccordionDetails>
+              </Accordion>
+            );
+          }
+        )}
         <Grid item xs={12} style={{ padding: "20px 10px" }}>
           <Button
             size="small"
@@ -150,7 +180,10 @@ export default function EmploymentAccidentHistory(props: Props) {
             variant="contained"
             color="primary"
             onClick={(e) => {
-              employmentAccidentHistoryStateHandler([...employmentAccidentHistoryState, employmentAccidentHistoryDummyElement]);
+              employmentAccidentHistoryStateHandler([
+                ...employmentAccidentHistoryState,
+                employmentAccidentHistoryDummyElement,
+              ]);
               console.log(employmentAccidentHistoryState);
             }}
           >

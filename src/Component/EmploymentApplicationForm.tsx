@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import { TextField, InputLabel, MenuItem, Select, Button } from "@material-ui/core";
+import {
+  TextField,
+  InputLabel,
+  MenuItem,
+  Select,
+  Button,
+} from "@material-ui/core";
 import { withStyles, Theme } from "@material-ui/core/styles";
 import { user_data } from "./User";
 import SideBar from "./SideBar";
@@ -72,13 +78,14 @@ let addr1 = {
 
 let debug = true;
 
-class EmploymentApplication extends Component<EmploymentApplicationProps, EmploymentApplicationStates> {
+class EmploymentApplication extends Component<
+  EmploymentApplicationProps,
+  EmploymentApplicationStates
+> {
   constructor(props: any) {
     super(props);
     this.state = {
-      // form1: true,
-      // form2: false,
-      formCounter: 3,
+      formCounter: 2,
     };
     this.gotoNextForm = this.gotoNextForm.bind(this);
     this.gotoPreviousForm = this.gotoPreviousForm.bind(this);
@@ -99,8 +106,12 @@ class EmploymentApplication extends Component<EmploymentApplicationProps, Employ
     if (debug === true) {
       this.context.data.addresses = [addr1];
       this.context.data.employmentHistory = [employmentHistoryDummyElement];
-      this.context.data.employmentExperienceHistory = [drivingExperienceDummyElement];
-      this.context.data.employmentAccidentsHistory = [employmentAccidentHistoryDummyElement];
+      this.context.data.employmentExperienceHistory = [
+        drivingExperienceDummyElement,
+      ];
+      this.context.data.employmentAccidentsHistory = [
+        employmentAccidentHistoryDummyElement,
+      ];
     } else {
     }
     if (this.context.data.user_name) {
@@ -129,12 +140,18 @@ class EmploymentApplication extends Component<EmploymentApplicationProps, Employ
         <NavbarCareer addLogout={true} />
         <div className="container-fluid">
           <div className="row">
-            <div className="col mySideBar" style={{ flexGrow: 0, paddingLeft: "0px", paddingRight: "0px" }}>
+            <div
+              className="col mySideBar"
+              style={{ flexGrow: 0, paddingLeft: "0px", paddingRight: "0px" }}
+            >
               <SideBar activeEmployment={false} />
             </div>
             <div className="col-9" style={{ paddingTop: "100px" }}>
               {this.state.formCounter === 1 ? (
-                <EmpApplicationForm1 data={this.context.data} handler={this.gotoNextForm}></EmpApplicationForm1>
+                <EmpApplicationForm1
+                  data={this.context.data}
+                  handler={this.gotoNextForm}
+                ></EmpApplicationForm1>
               ) : (
                 ""
               )}

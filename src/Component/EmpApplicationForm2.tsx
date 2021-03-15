@@ -19,6 +19,8 @@ import React, { Component } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { ControlCameraOutlined } from "@material-ui/icons";
+import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,6 +59,10 @@ const debug: boolean = true;
 function EmpApplicationForm2(props: Props) {
   const gender = [{ value: "Male" }, { value: "Female" }, { value: "Other" }];
 
+  const Forms = useForm();
+
+  const { register, handleSubmit, errors, control } = Forms;
+
   const veteranStatus = [
     { value: "No Military Experience" },
     { value: "Veteran (VA Eligible)" },
@@ -67,14 +73,22 @@ function EmpApplicationForm2(props: Props) {
   let def;
   if (debug === true) {
     def = {
-      gender: props.data.gender === undefined ? gender[0].value : props.data.gender,
-      veteranStatus: props.data.veteranStatus === undefined ? veteranStatus[0].value : props.data.veteranStatus,
+      gender:
+        props.data.gender === undefined ? gender[0].value : props.data.gender,
+      veteranStatus:
+        props.data.veteranStatus === undefined
+          ? veteranStatus[0].value
+          : props.data.veteranStatus,
       // first_name: props.data.first_name == undefined ? "" : props.data.first_name,
     };
   } else {
     def = {
-      gender: props.data.gender === undefined ? gender[0].value : props.data.gender,
-      veteranStatus: props.data.veteranStatus === undefined ? veteranStatus[0].value : props.data.veteranStatus,
+      gender:
+        props.data.gender === undefined ? gender[0].value : props.data.gender,
+      veteranStatus:
+        props.data.veteranStatus === undefined
+          ? veteranStatus[0].value
+          : props.data.veteranStatus,
     };
   }
 
@@ -93,8 +107,14 @@ function EmpApplicationForm2(props: Props) {
   return (
     <React.Fragment>
       <Container style={{ backgroundColor: "#fafafa" }}>
-        <form onSubmit={onSubmit}>
-          <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="baseline"
+            spacing={3}
+          >
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
@@ -102,68 +122,81 @@ function EmpApplicationForm2(props: Props) {
             </Grid>
             <Grid item xs={1}></Grid>
             <Grid item xs={10}>
-              <Paper elevation={3} className={classes.paper} style={{ padding: "30px 15px" }}>
-                <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
-                  <Grid item xs={12} className={classes.heading} style={{ textAlign: "center", marginTop: "10px" }}>
+              <Paper
+                elevation={3}
+                className={classes.paper}
+                style={{ padding: "30px 15px" }}
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="baseline"
+                  spacing={3}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    className={classes.heading}
+                    style={{ textAlign: "center", marginTop: "10px" }}
+                  >
                     <b>EEO Information</b>
                   </Grid>
                   <Grid item xs={12}>
                     <Paper elevation={3} className={classes.paper}>
                       <Typography align="justify">
-                        We provide equal opportunity to all qualified individuals regardless of race, color, religion, age, sex,
-                        national origin, veteran status or disability.
+                        We provide equal opportunity to all qualified
+                        individuals regardless of race, color, religion, age,
+                        sex, national origin, veteran status or disability.
                       </Typography>
                     </Paper>
                     <Paper elevation={3} className={classes.paper}>
                       <Typography align="justify">
-                        <b>Providing this information is voluntary.</b> We ask for this information to maintain records. Any
-                        information you voluntarily provide is confidential and will not be considered in making any employment
+                        <b>Providing this information is voluntary.</b> We ask
+                        for this information to maintain records. Any
+                        information you voluntarily provide is confidential and
+                        will not be considered in making any employment
                         decision. If you choose no.
                       </Typography>
                     </Paper>
                   </Grid>
                   <Grid item xs={6}>
-                    <FormControl variant="outlined" size="small" className="col-10">
-                      <InputLabel id="demo-simple-select-outlined-label">Gender</InputLabel>
-                      <Select
-                        name="gender"
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        label="Gender"
-                        defaultValue={def.gender}
-                      >
-                        {gender.map(function (object: any, i: number) {
-                          return (
-                            <MenuItem value={object.value} key={i}>
-                              {object.value}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                      {/* <FormHelperText>{errors.gender && errors.gender?.message}</FormHelperText> */}
-                    </FormControl>
+                    <ReactHookFormSelect
+                      nameVal="gender"
+                      label="Gender"
+                      control={control}
+                      variant="outlined"
+                      size="small"
+                      className="col-10"
+                    >
+                      <MenuItem value="">None</MenuItem>
+                      {gender.map(function (object: any, i: number) {
+                        return (
+                          <MenuItem value={object.value} key={i}>
+                            {object.value}
+                          </MenuItem>
+                        );
+                      })}
+                    </ReactHookFormSelect>
                   </Grid>
                   <Grid item xs={6}>
-                    <FormControl variant="outlined" size="small" className="col-10">
-                      <InputLabel id="demo-simple-select-outlined-label">Veteran Status</InputLabel>
-                      <Select
-                        name="veteranStatus"
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        defaultValue={def.veteranStatus}
-                        label="Veteran Status"
-                      >
-                        <MenuItem value="">None</MenuItem>
-                        {veteranStatus.map(function (object: any, i: number) {
-                          return (
-                            <MenuItem value={object.value} key={i}>
-                              {object.value}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                      {/* <FormHelperText>{errors.veteranStatus && errors.veteranStatus?.message}</FormHelperText> */}
-                    </FormControl>
+                    <ReactHookFormSelect
+                      nameVal="veteranStatus"
+                      label="Veteran Status"
+                      control={control}
+                      variant="outlined"
+                      size="small"
+                      className="col-10"
+                    >
+                      <MenuItem value="">None</MenuItem>
+                      {veteranStatus.map(function (object: any, i: number) {
+                        return (
+                          <MenuItem value={object.value} key={i}>
+                            {object.value}
+                          </MenuItem>
+                        );
+                      })}
+                    </ReactHookFormSelect>
                   </Grid>
                 </Grid>
                 <Grid item xs={12} style={{ marginTop: "25px" }}>
@@ -189,7 +222,12 @@ function EmpApplicationForm2(props: Props) {
               </Button>
             </Grid>
             <Grid item xs={4}>
-              <Button type="submit" className="col-12" variant="contained" color="primary">
+              <Button
+                type="submit"
+                className="col-12"
+                variant="contained"
+                color="primary"
+              >
                 Save This & Next
               </Button>
             </Grid>

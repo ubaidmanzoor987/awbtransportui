@@ -7,8 +7,8 @@ type Props = { data?: any; handler?: any };
 
 export default function EmpApplicationForm4(props: Props) {
   const onSubmit = (data: any) => {
-    props.handler[0]();
     console.log(data);
+    props.handler[0]();
   };
 
   const classes = styleClasses.useStyles();
@@ -223,13 +223,26 @@ export default function EmpApplicationForm4(props: Props) {
             </Grid>
             <Grid item xs={1}></Grid>
             {/* BUTTON Start */}
-            <Grid item xs={4}></Grid>
+            <Grid item xs={2}></Grid>
             <Grid item xs={4}>
-              <Button type="submit" className="col-12" variant="contained" color="primary">
-                Save This
+              <Button
+                type="button"
+                className="col-12"
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  props.handler[1]();
+                }}
+              >
+                Back
               </Button>
             </Grid>
-            <Grid item xs={4}></Grid>
+            <Grid item xs={4}>
+              <Button type="submit" className="col-12" variant="contained" color="primary">
+                Save This & Next
+              </Button>
+            </Grid>
+            <Grid item xs={2}></Grid>
             {/* BUTTON End */}
           </Grid>
         </form>

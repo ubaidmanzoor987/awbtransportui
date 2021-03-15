@@ -52,25 +52,25 @@ export default function DriverLicense(props: Props) {
   const Forms = props.useForm;
   const { register, handleSubmit, errors, defaultValues } = Forms;
 
-  const [driverLicenseState, driverLicenseStateHandler] = useState(props.driverLicenseList);
+  const [driverLicensesState, driverLicensesStateHandler] = useState(props.driverLicenseList);
   //   const [errorsList, errorListHandler] = useState();
   useEffect(() => {
-    driverLicenseStateHandler(props.driverLicenseList);
+    driverLicensesStateHandler(props.driverLicenseList);
   }, [props.driverLicenseList]);
 
   useEffect(() => {
-    props.setdriverLicenseList(driverLicenseState);
-  }, [driverLicenseState]);
+    props.setdriverLicenseList(driverLicensesState);
+  }, [driverLicensesState]);
 
   const addAddress = (event: any) => {
     event.preventDefault();
-    driverLicenseStateHandler([...driverLicenseState, driverLicenseDummyElement]);
+    driverLicensesStateHandler([...driverLicensesState, driverLicenseDummyElement]);
   };
 
   return (
     <React.Fragment>
       <Grid container direction="row" justify="space-between" alignItems="center">
-        {driverLicenseState.map((driverLicenseItem: tDriverLicenseInfo, index: number) => {
+        {driverLicensesState.map((driverLicenseItem: tDriverLicenseInfo, index: number) => {
           console.log("----------------------ERRORS----------------------");
           console.log(errors);
           console.log(errors[props.idPrefix]);
@@ -151,8 +151,8 @@ export default function DriverLicense(props: Props) {
             variant="contained"
             color="primary"
             onClick={(e) => {
-              driverLicenseStateHandler([...driverLicenseState, driverLicenseDummyElement]);
-              console.log(driverLicenseState);
+              driverLicensesStateHandler([...driverLicensesState, driverLicenseDummyElement]);
+              console.log(driverLicensesState);
             }}
           >
             Another Employment Accident History

@@ -25,9 +25,20 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from "@material-ui/pickers";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 import { styleClasses } from "../../Common/styleClasses";
-import { Address, Addresses, Form1, reqBits, states, AddressErrorsList } from "../../Common/CommonVariables";
+import {
+  Address,
+  Addresses,
+  Form1,
+  reqBits,
+  states,
+  AddressErrorsList,
+} from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from ".././SubComponents/RadioQuestions";
 
@@ -77,7 +88,12 @@ export default function AddressesComponent(props: Props) {
 
   return (
     <React.Fragment>
-      <Grid container direction="row" justify="space-between" alignItems="center">
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
         {addressesState.map((address: Address, index: number) => {
           return (
             // lastYearAddress: string;
@@ -89,10 +105,18 @@ export default function AddressesComponent(props: Props) {
 
             <Accordion key={index}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.text}>Address {index + 1}</Typography>
+                <Typography className={classes.text}>
+                  Address {index + 1}
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="baseline"
+                  spacing={3}
+                >
                   <Grid item xs={12}>
                     <TextField
                       className="col-12"
@@ -104,7 +128,10 @@ export default function AddressesComponent(props: Props) {
                       required={reqBits.lastYearAddress === true}
                       value={addressesState[index].lastYearAddress}
                       onChange={(e) => {
-                        const addrNew = { ...addressesState[index], lastYearAddress: e.target.value };
+                        const addrNew = {
+                          ...addressesState[index],
+                          lastYearAddress: e.target.value,
+                        };
                         const addressesStateNew = [...addressesState];
                         addressesStateNew.splice(index, 1, addrNew);
                         addressesStateHandler(addressesStateNew);
@@ -120,14 +147,19 @@ export default function AddressesComponent(props: Props) {
                       label={
                         "City " +
                         (() => {
-                          return reqBits.lastYearAddressCity === true ? "*" : "";
+                          return reqBits.lastYearAddressCity === true
+                            ? "*"
+                            : "";
                         })()
                       }
                       required={reqBits.lastYearAddressCity === true}
                       className="col-12"
                       value={addressesState[index].lastYearAddressCity}
                       onChange={(e) => {
-                        const addrNew = { ...addressesState[index], lastYearAddressCity: e.target.value };
+                        const addrNew = {
+                          ...addressesState[index],
+                          lastYearAddressCity: e.target.value,
+                        };
                         const addressesStateNew = [...addressesState];
                         addressesStateNew.splice(index, 1, addrNew);
                         addressesStateHandler(addressesStateNew);
@@ -141,17 +173,26 @@ export default function AddressesComponent(props: Props) {
                       className="col-12"
                       required={reqBits.lastYearAddressState === true}
                     >
-                      <InputLabel id={"demo-simple-select-outlined-label" + index}>State</InputLabel>
+                      <InputLabel
+                        id={"demo-simple-select-outlined-label" + index}
+                      >
+                        State
+                      </InputLabel>
                       <Select
                         name={props.stateId}
                         labelId={"demo-simple-select-outlined-label" + index}
                         id="demo-simple-select-outlined"
                         label={"State "}
-                        defaultValue={addressesState[index].lastYearAddressState}
+                        defaultValue={
+                          addressesState[index].lastYearAddressState
+                        }
                         value={addressesState[index].lastYearAddressState}
                         onChange={(e) => {
                           console.log(e.target);
-                          const addrNew = { ...addressesState[index], lastYearAddressState: e.target.value as string };
+                          const addrNew = {
+                            ...addressesState[index],
+                            lastYearAddressState: e.target.value as string,
+                          };
                           const addressesStateNew = [...addressesState];
                           addressesStateNew.splice(index, 1, addrNew);
                           addressesStateHandler(addressesStateNew);
@@ -180,14 +221,19 @@ export default function AddressesComponent(props: Props) {
                       label={
                         "Zip Code " +
                         (() => {
-                          return reqBits.lastYearAddressZipCode == true ? "*" : "";
+                          return reqBits.lastYearAddressZipCode == true
+                            ? "*"
+                            : "";
                         })()
                       }
                       required={reqBits.lastYearAddressZipCode == true}
                       className="col-12"
                       value={addressesState[index].lastYearAddressZipCode}
                       onChange={(e) => {
-                        const addrNew = { ...addressesState[index], lastYearAddressZipCode: e.target.value };
+                        const addrNew = {
+                          ...addressesState[index],
+                          lastYearAddressZipCode: e.target.value,
+                        };
                         const addressesStateNew = [...addressesState];
                         addressesStateNew.splice(index, 1, addrNew);
                         addressesStateHandler(addressesStateNew);
@@ -205,7 +251,10 @@ export default function AddressesComponent(props: Props) {
                       required={reqBits.lastYearAddressfrom == true}
                       value={addressesState[index].lastYearAddressfrom}
                       onChange={(e) => {
-                        const addrNew = { ...addressesState[index], lastYearAddressfrom: e.target.value };
+                        const addrNew = {
+                          ...addressesState[index],
+                          lastYearAddressfrom: e.target.value,
+                        };
                         const addressesStateNew = [...addressesState];
                         addressesStateNew.splice(index, 1, addrNew);
                         addressesStateHandler(addressesStateNew);
@@ -223,7 +272,10 @@ export default function AddressesComponent(props: Props) {
                       required={reqBits.lastYearAddressTo == true}
                       value={addressesState[index].lastYearAddressTo}
                       onChange={(e) => {
-                        const addrNew = { ...addressesState[index], lastYearAddressTo: e.target.value };
+                        const addrNew = {
+                          ...addressesState[index],
+                          lastYearAddressTo: e.target.value,
+                        };
                         const addressesStateNew = [...addressesState];
                         addressesStateNew.splice(index, 1, addrNew);
                         addressesStateHandler(addressesStateNew);
