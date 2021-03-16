@@ -172,7 +172,7 @@ function EmpApplicationForm1(props: Props) {
   const onSubmit = (data: any) => {
     data.addresses = UpdateAddressesList;
     //TODO Change to Boolean
-    // data.lastThreeYearResidenceCheck = true;
+    data.lastThreeYearResidenceCheck = true;
     data.user_name = props.data.user_name;
     // data = { user_name: props.data.user_name, data };
     console.log(data);
@@ -802,18 +802,18 @@ function EmpApplicationForm1(props: Props) {
                       <FormControl component="fieldset">
                         <RadioGroup row>
                           <FormControlLabel
-                            value="Yes"
+                            value={true}
                             control={
                               <Radio
                                 name="eligibletoWorkInUnitedState"
                                 checked={
                                   manualStates.eligibletoWorkInUnitedState ==
-                                  "Yes"
+                                  true
                                 }
                                 onClick={(e) => {
                                   setManualStates({
                                     ...manualStates,
-                                    eligibletoWorkInUnitedState: "Yes",
+                                    eligibletoWorkInUnitedState: true,
                                   });
                                 }}
 
@@ -823,18 +823,18 @@ function EmpApplicationForm1(props: Props) {
                             label="Yes"
                           />
                           <FormControlLabel
-                            value="No"
+                            value={false}
                             control={
                               <Radio
                                 checked={
                                   manualStates.eligibletoWorkInUnitedState ==
-                                  "No"
+                                  false
                                 }
                                 name="eligibletoWorkInUnitedState"
                                 onClick={(e) => {
                                   setManualStates({
                                     ...manualStates,
-                                    eligibletoWorkInUnitedState: "No",
+                                    eligibletoWorkInUnitedState: false,
                                   });
                                 }}
                                 // inputRef={register({ required: { value: reqBits., message: RequireError } })}
@@ -859,17 +859,17 @@ function EmpApplicationForm1(props: Props) {
                       <FormControl component="fieldset">
                         <RadioGroup row name="willingForDrugTest">
                           <FormControlLabel
-                            value="Yes"
+                            value={true}
                             control={
                               <Radio
                                 name="willingForDrugTest"
                                 checked={
-                                  manualStates.willingForDrugTest == "Yes"
+                                  manualStates.willingForDrugTest == true
                                 }
                                 onClick={(e) => {
                                   setManualStates({
                                     ...manualStates,
-                                    willingForDrugTest: "Yes",
+                                    willingForDrugTest: true,
                                   });
                                 }}
 
@@ -879,17 +879,17 @@ function EmpApplicationForm1(props: Props) {
                             label="Yes"
                           />
                           <FormControlLabel
-                            value="No"
+                            value={false}
                             control={
                               <Radio
                                 name="willingForDrugTest"
                                 checked={
-                                  manualStates.willingForDrugTest == "No"
+                                  manualStates.willingForDrugTest == false
                                 }
                                 onClick={(e) => {
                                   setManualStates({
                                     ...manualStates,
-                                    willingForDrugTest: "No",
+                                    willingForDrugTest: false,
                                   });
                                 }}
 
