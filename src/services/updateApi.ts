@@ -5,7 +5,7 @@ import { baseUrl } from "../shared/baseUrl";
 export async function update(data: any) {
   let res;
   try {
-    res = await fetch(baseUrl + "/api/login", {
+    res = await fetch(baseUrl + "/api/update_record", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

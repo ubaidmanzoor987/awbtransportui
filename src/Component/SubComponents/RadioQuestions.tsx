@@ -19,6 +19,7 @@ type Props = {
   id: string;
   question: string;
   optionList: string[];
+  optionValue: boolean[] | string[];
   defaultSelected?: string;
   useForm: any;
   xsSize?:
@@ -44,7 +45,7 @@ export default function RadioQuestions(props: Props) {
   const classes = useStyles();
   const Forms = props.useForm;
   const { register, handleSubmit, errors } = Forms;
-
+  //TODO
   return (
     <>
       <Grid
@@ -79,23 +80,18 @@ export default function RadioQuestions(props: Props) {
               {props.optionList.map((optionItem, index) => {
                 return (
                   <FormControlLabel
-                    value={optionItem}
+                    value={props.optionValue[index]}
                     control={
-                      // index === props.optionList.length - 1 ? (
                       <Radio
                         name={props.id}
-                        //useForms Handling Start
+                        value={props.optionValue[index]}
                         inputRef={register({
                           required: {
                             value: props.isReq,
                             message: RequireError,
                           },
                         })}
-                        //useForms Handling End
                       />
-                      // ) : (
-                      //   <Radio name={props.id} />
-                      // )
                     }
                     label={optionItem}
                   />

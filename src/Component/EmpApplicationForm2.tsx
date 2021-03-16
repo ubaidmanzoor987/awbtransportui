@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { ControlCameraOutlined } from "@material-ui/icons";
 import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
+import { debug } from "../Common/CommonVariables";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,15 +55,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type Props = { data?: any; handler?: any };
 
-const debug: boolean = true;
-
 function EmpApplicationForm2(props: Props) {
   const gender = [{ value: "Male" }, { value: "Female" }, { value: "Other" }];
-
-  const Forms = useForm();
-
-  const { register, handleSubmit, errors, control } = Forms;
-
   const veteranStatus = [
     { value: "No Military Experience" },
     { value: "Veteran (VA Eligible)" },
@@ -70,32 +64,16 @@ function EmpApplicationForm2(props: Props) {
     { value: "Other" },
   ];
 
-  let def;
   if (debug === true) {
-    def = {
-      gender:
-        props.data.gender === undefined ? gender[0].value : props.data.gender,
-      veteranStatus:
-        props.data.veteranStatus === undefined
-          ? veteranStatus[0].value
-          : props.data.veteranStatus,
-      // first_name: props.data.first_name == undefined ? "" : props.data.first_name,
-    };
-  } else {
-    def = {
-      gender:
-        props.data.gender === undefined ? gender[0].value : props.data.gender,
-      veteranStatus:
-        props.data.veteranStatus === undefined
-          ? veteranStatus[0].value
-          : props.data.veteranStatus,
-    };
+    props.data.gender = gender[1].value;
+    props.data.veteranStatus = veteranStatus[1].value;
   }
 
+  const Forms = useForm();
+
+  const { register, handleSubmit, errors, control } = Forms;
+
   const classes = useStyles();
-  console.log("-------------------------------------------------------------");
-  console.log(def);
-  console.log("-------------------------------------------------------------");
 
   const onSubmit = (data: any) => {
     console.log(data);
@@ -165,6 +143,7 @@ function EmpApplicationForm2(props: Props) {
                       nameVal="gender"
                       label="Gender"
                       control={control}
+                      defaultValue={props?.data?.gender}
                       variant="outlined"
                       size="small"
                       className="col-10"
@@ -183,6 +162,7 @@ function EmpApplicationForm2(props: Props) {
                     <ReactHookFormSelect
                       nameVal="veteranStatus"
                       label="Veteran Status"
+                      defaultValue={props?.data?.veteranStatus}
                       control={control}
                       variant="outlined"
                       size="small"

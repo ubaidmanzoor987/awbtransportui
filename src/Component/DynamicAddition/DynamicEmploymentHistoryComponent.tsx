@@ -233,19 +233,11 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                 </Grid>
                 {/* <Grid item xs={1}></Grid> */}
 
-                {/* <RadioQuestions
-                  id={`${props.idPrefix}[${index}].employmentHistorysubjecttotheFMCSRs`}
-                  question="Were you subject to the FMCSRs while employed here?"
-                  optionList={["Yes", "No"]}
-                  useForm={Forms}
-                  isReq={true}
-                  // defaultSelected="Yes"
-                /> */}
-
                 <RadioQuestions
                   id={`${props.idPrefix}[${index}].employmentHistorysubjecttotheFMCSRs`}
                   question="Were you subject to the FMCSRs while employed here?"
                   optionList={["Yes", "No"]}
+                  optionValue={[true, false]}
                   useForm={props.useForm}
                   xsSize={11}
                   isReq={reqBits.employmentHistorysubjecttotheFMCSRs}
@@ -253,6 +245,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
 
                 <RadioQuestions
                   id={`${props.idPrefix}[${index}].employmentHistorydrugandalcoholTesting`}
+                  optionValue={[true, false]}
                   question="Was your job designated as a safety-sensitive function in
                   any DOT- regulated mode subject to the drug and alcohol
                   testing requirements of 49 CFR Part 40?"

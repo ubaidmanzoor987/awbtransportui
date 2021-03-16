@@ -85,7 +85,7 @@ class EmploymentApplication extends Component<
   constructor(props: any) {
     super(props);
     this.state = {
-      formCounter: 2,
+      formCounter: 1,
     };
     this.gotoNextForm = this.gotoNextForm.bind(this);
     this.gotoPreviousForm = this.gotoPreviousForm.bind(this);
@@ -102,7 +102,8 @@ class EmploymentApplication extends Component<
   }
   componentDidMount() {
     // let data = { ...this.context.data, addresses: [addr1] };
-    // console.log("context", this.context);
+    console.log("context", this.context);
+    // this.context.data = this.context.data.data;
     if (debug === true) {
       this.context.data.addresses = [addr1];
       this.context.data.employmentHistory = [employmentHistoryDummyElement];
@@ -135,6 +136,7 @@ class EmploymentApplication extends Component<
     if (!this.context.data.user_name) {
       return <Redirect to="/login" />;
     }
+
     return (
       <>
         <NavbarCareer addLogout={true} />

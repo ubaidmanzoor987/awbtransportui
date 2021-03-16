@@ -31,6 +31,9 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { styleClasses } from "../Common/styleClasses";
+import AttachmentIcon from "@material-ui/icons/Attachment";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
+import DeleteIcon from "@material-ui/icons/Delete";
 import {
   states,
   Form1,
@@ -38,9 +41,14 @@ import {
   reqBits,
   debug,
 } from "../Common/CommonVariables";
+
+import { fileUploadApi } from "../services/fileUploadApi";
+
 import { update } from "../services/updateApi";
 import RadioQuestions from "./SubComponents/RadioQuestions";
 import AddressesComponent from "./SubComponents/AddressesComponent";
+import classNames from "classnames";
+import { DynamicFileUpload } from "./DynamicAddition/DynamicFileUpload";
 type Props = { data?: any; handler?: any };
 const startTimeVal = [
   { value: "Immediately" },
@@ -64,160 +72,115 @@ let addr = {
 let UpdateAddressesList: Addresses;
 
 function EmpApplicationForm1(props: Props) {
-  let def;
-  if (debug == true) {
-    def = {
-      first_name:
-        props.data.first_name == undefined ? "def" : props.data.first_name,
-      last_name:
-        props.data.last_name == undefined ? "def" : props.data.last_name,
-      phone_number:
-        props.data.phone_number == undefined
-          ? "000-000-0000 x0000"
-          : "###-###-#### x####",
-      email: props.data.email == undefined ? "def" : props.data.email,
-      dateofBirth:
-        props.data.dateofBirth == undefined
-          ? "2018-01-01"
-          : props.data.dateOfBirth,
-      socialSecurity:
-        props.data.socialSecurity == undefined
-          ? "def"
-          : props.data.socialSecurity,
-      address: props.data.address == undefined ? "def" : props.data.address,
-      city: props.data.city == undefined ? "def" : props.data.city,
-      state: props.data.state == undefined ? states[0].value : props.data.state,
-      zipCode: props.data.zipCode == undefined ? "def" : props.data.zipCode,
-      // addresses: props.data.addresses == undefined ? undefined : props.data.addresses,
-      addresses: props.data.addresses == undefined ? [addr] : [addr],
-      fromDate:
-        props.data.fromDate == undefined ? "2018-01-01" : props.data.fromDate,
-      toDate: props.data.toDate == undefined ? "2018-01-01" : props.data.toDate,
-      startTime:
-        props.data.startTime == undefined
-          ? startTimeVal[0].value
-          : props.data.startTime,
-      hearAbout:
-        props.data.hearAbout == undefined ? "def" : props.data.hearAbout,
-      eligibletoWorkInUnitedState:
-        props.data.eligibletoWorkInUnitedState == undefined
-          ? "Yes"
-          : props.data.eligibletoWorkInUnitedState,
-      willingForDrugTest:
-        props.data.willingForDrugTest == undefined
-          ? "Yes"
-          : props.data.willingForDrugTest,
-      classAExperienceLevel:
-        props.data.classAExperienceLevel == undefined
-          ? classAExperienceLevelVal[0].value
-          : props.data.classAExperienceLevel,
-      resume1: props.data.resume1 == undefined ? undefined : props.data.resume1,
-      resume2: props.data.resume2 == undefined ? undefined : props.data.resume2,
-    };
-  } else {
-    def = {
-      first_name:
-        props.data.first_name == undefined ? "" : props.data.first_name,
-      last_name: props.data.last_name == undefined ? "" : props.data.last_name,
-      phone_number:
-        props.data.phone_number == undefined ? "" : props.data.phone_number,
-      email: props.data.email == undefined ? "" : "",
-      dateofBirth:
-        props.data.dateofBirth == undefined ? "" : props.data.dateOfBirth,
-      socialSecurity:
-        props.data.socialSecurity == undefined ? "" : props.data.socialSecurity,
-      address: props.data.address == undefined ? "" : props.data.address,
-      city: props.data.city == undefined ? "" : props.data.city,
-      state: props.data.state == undefined ? "" : props.data.state,
-      zipCode: props.data.zipCode == undefined ? "" : props.data.zipCode,
-      // addresses: props.data.addresses == undefined ? undefined : props.data.addresses,
-      addresses: props.data.addresses == undefined ? [] : [addr],
-      fromDate: props.data.fromDate == undefined ? "" : props.data.fromDate,
-      toDate: props.data.toDate == undefined ? "" : props.data.toDate,
-      startTime: props.data.startTime == undefined ? "" : props.data.startTime,
-      hearAbout: props.data.hearAbout == undefined ? "" : props.data.hearAbout,
-      eligibletoWorkInUnitedState:
-        props.data.eligibletoWorkInUnitedState == undefined
-          ? "Yes"
-          : props.data.eligibletoWorkInUnitedState,
-      willingForDrugTest:
-        props.data.willingForDrugTest == undefined
-          ? "Yes"
-          : props.data.willingForDrugTest,
-      classAExperienceLevel:
-        props.data.classAExperienceLevel == undefined
-          ? ""
-          : props.data.classAExperienceLevel,
-      resume1: props.data.resume1 == undefined ? undefined : props.data.resume1,
-      resume2: props.data.resume2 == undefined ? undefined : props.data.resume2,
-    };
-  }
-
-  const [manualStates, setManualStates] = useState({
-    startTime: def.startTime,
-    state: def.state,
-    classAExperienceLevel: def.classAExperienceLevel,
-    eligibletoWorkInUnitedState: def.eligibletoWorkInUnitedState,
-    willingForDrugTest: def.willingForDrugTest,
-    resume1: def.resume1,
-    resume2: def.resume2,
-  });
+  const [manualStates, setManualStates] = useState(props.data);
 
   const handleFileUpload = (event: any) => {
     console.log("------------FILE UPLOAD----------");
     console.log(event.target.files[0].name);
-    console.log(typeof event.target.files[0]);
-    if (manualStates.resume1 == undefined || manualStates.resume1 == null) {
-      setManualStates({ ...manualStates, resume1: event.target.files[0] });
-      console.log("manualStates.resume1");
-      console.log(manualStates.resume1);
-    } else {
-      setManualStates({ ...manualStates, resume2: event.target.files[0] });
-      console.log("manualStates.resume2");
-      console.log(manualStates.resume2);
-    }
+    console.log(event.target.files[0]);
+    const formData = new FormData();
+
+    // if (manualStates.resume1 == undefined || manualStates.resume1 == null) {
+    setManualStates({ ...manualStates, resume1: event.target.files[0] });
+    formData.append("file", event.target.files[0], event.target.files[0].name);
+    formData.append("user_name", props.data.user_name);
+    // axios.post("api/fileUploadApi", formData);
+    fileUploadApi(formData);
+    // } else {
+    //   setManualStates({ ...manualStates, resume2: event.target.files[0] });
+    // fileUploadApi();
+    // }
   };
 
-  // console.log("------------defaults----------");
-  // console.log(def);
+  if (debug === true) {
+    props.data.first_name = "Default";
+    props.data.last_name = "Default";
+    props.data.phone_number = "111-111-1111 x1111";
+    props.data.email = "Default@email.com";
+    props.data.dateofBirth = "2018-01-01";
+    props.data.socialSecurity = "012345678";
+    props.data.address = "Default";
+    props.data.city = "Default";
+    props.data.state = states[1].value;
+    props.data.zipCode = "0123456";
+    props.data.lastThreeYearResidenceCheck = false;
+    props.data.addresses = [
+      {
+        lastYearAddress: "Default",
+        lastYearAddressCity: "Default",
+        lastYearAddressState: states[1].value,
+        lastYearAddressZipCode: "0123456",
+        lastYearAddressfrom: "2018-01-01",
+        lastYearAddressTo: "2018-01-01",
+      },
+      {
+        lastYearAddress: "Default",
+        lastYearAddressCity: "Default",
+        lastYearAddressState: states[1].value,
+        lastYearAddressZipCode: "0123456",
+        lastYearAddressfrom: "2018-01-01",
+        lastYearAddressTo: "2018-01-01",
+      },
+      {
+        lastYearAddress: "Default",
+        lastYearAddressCity: "Default",
+        lastYearAddressState: states[1].value,
+        lastYearAddressZipCode: "0123456",
+        lastYearAddressfrom: "2018-01-01",
+        lastYearAddressTo: "2018-01-01",
+      },
+    ];
+    props.data.startTime = startTimeVal[1].value;
+    props.data.hearAbout = "Default";
+    props.data.eligibletoWorkInUnitedState = false;
+    props.data.classAExperienceLevel = classAExperienceLevelVal[1].value;
+    props.data.willingForDrugTest = false;
+  }
+
+  let preLoadedValues = {
+    first_name: props.data.first_name,
+    last_name: props.data.last_name,
+    phone_number: props.data.phone_number,
+    email: props.data.email,
+    dateofBirth: props.data.dateofBirth,
+    socialSecurity: props.data.socialSecurity,
+    address: props.data.address,
+    city: props.data.city,
+    state: props.data.state,
+    zipCode: props.data.zipCode,
+    lastThreeYearResidenceCheck: props.data.lastThreeYearResidenceCheck,
+    addresses: props.data.addresses,
+    lastYearAddress: props.data.lastYearAddress,
+    lastYearAddressCity: props.data.lastYearAddressCity,
+    lastYearAddressState: props.data.lastYearAddressState,
+    lastYearAddressZipCode: props.data.lastYearAddressZipCode,
+    lastYearAddressfrom: props.data.lastYearAddressfrom,
+    lastYearAddressTo: props.data.lastYearAddressTo,
+    startTime: props.data.startTime,
+    hearAbout: props.data.hearAbout,
+    eligibletoWorkInUnitedState: props.data.eligibletoWorkInUnitedState,
+    classAExperienceLevel: props.data.classAExperienceLevel,
+    willingForDrugTest: props.data.willingForDrugTest,
+  };
 
   const Forms = useForm({
-    defaultValues: def,
+    defaultValues: props.data,
   });
-
-  let form1: Form1 = {
-    first_name: def.first_name,
-    last_name: def.last_name,
-    phone_number: def.phone_number,
-    email: def.email,
-    dateofBirth: def.dateofBirth,
-    socialSecurity: def.socialSecurity,
-    address: def.address,
-    city: def.city,
-    state: def.state,
-    zipCode: def.zipCode,
-    addresses: def.addresses,
-    fromDate: def.fromDate,
-    toDate: def.toDate,
-    startTime: def.startTime,
-    hearAbout: def.hearAbout,
-    eligibletoWorkInUnitedState: def.eligibletoWorkInUnitedState,
-    willingForDrugTest: def.willingForDrugTest,
-    classAExperienceLevel: def.classAExperienceLevel,
-  };
 
   const { register, handleSubmit, errors } = Forms;
 
   const onSubmit = (data: any) => {
-    props.handler();
     data.addresses = UpdateAddressesList;
+    //TODO Change to Boolean
+    // data.lastThreeYearResidenceCheck = true;
+    data.user_name = props.data.user_name;
+    // data = { user_name: props.data.user_name, data };
     console.log(data);
     update(data);
+    props.handler();
   };
 
   const updateAddressList = (updatedAddresses: any) => {
-    console.log("------------Updated Addresses------------");
-    //  console.log(updatedAddresses);
     UpdateAddressesList = updatedAddresses;
   };
 
@@ -225,9 +188,6 @@ function EmpApplicationForm1(props: Props) {
 
   const RequireError: string = "Required *";
   const WrongPatternError: string = "Wrong Pattern";
-
-  // console.log("EMPFORM1-------------------------------------------");
-  // console.log(props.data.addresses);
 
   return (
     <React.Fragment>
@@ -269,7 +229,7 @@ function EmpApplicationForm1(props: Props) {
                       variant="outlined"
                       size="small"
                       type="text"
-                      className="col-8"
+                      className={classNames("col-8")}
                       label="First Name"
                       error={errors.first_name == undefined ? false : true}
                       helperText={
@@ -325,11 +285,9 @@ function EmpApplicationForm1(props: Props) {
                       type="text"
                       size="small"
                       label="Email"
-                      className="col-8"
+                      className={classNames("col-8", { "is-invalid": true })}
                       error={errors.email == undefined ? false : true}
-                      helperText={
-                        errors.email && errors.email?.message + " Error"
-                      }
+                      helperText={errors.email && errors.email?.message}
                       inputRef={register({
                         required: {
                           value: reqBits.email,
@@ -434,13 +392,13 @@ function EmpApplicationForm1(props: Props) {
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
                         label="State"
+                        defaultValue={props.data?.state}
                         onChange={(e) => {
                           setManualStates({
                             ...manualStates,
                             state: e.target.value,
                           });
                         }}
-                        defaultValue={def.state}
                       >
                         <MenuItem value="">
                           <em>None</em>
@@ -500,9 +458,10 @@ function EmpApplicationForm1(props: Props) {
                     id="lastThreeYearResidenceCheck"
                     question="Have You Lived At This Residence For The Past 3 Years?"
                     optionList={["Yes", "No"]}
+                    optionValue={[true, false]}
                     useForm={Forms}
-                    isReq={true}
-                    // defaultSelected="Yes"
+                    isReq={reqBits.lastThreeYearResidenceCheck}
+                    defaultSelected={props.data.lastThreeYearResidenceCheck}
                   />
 
                   <Grid item xs={1}></Grid>
@@ -544,7 +503,7 @@ function EmpApplicationForm1(props: Props) {
                   <Grid item xs={10}>
                     {/* {(props.data.addresses = addr)} */}
                     <AddressesComponent
-                      idPrefix="address"
+                      idPrefix=""
                       addressId="lastYearAddress"
                       cityId="lastYearAddressCity"
                       stateId="lastYearAddressState"
@@ -569,6 +528,80 @@ function EmpApplicationForm1(props: Props) {
             <Grid item xs={10}>
               <Paper elevation={3} className={classes.paper}>
                 {/* <Button onClick={()=>{console.log(manualStates.resume1);}}>check file uploaded</Button> */}
+
+                {/* <DynamicFileUpload
+                  idPrefix="fileUpload"
+                  // prevFileUploaded={props.fileUpload}
+                  useForm={Forms}
+                  setNewFileToUpload={handleFileUpload}
+                ></DynamicFileUpload> */}
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-around"
+                  alignItems="center"
+                  spacing={3}
+                >
+                  <Grid item xs={1}></Grid>
+                  <Grid item xs={10}>
+                    {manualStates.resume1 && (
+                      <div className="mb-3">
+                        <Paper elevation={3} className={classes.paper}>
+                          <Grid
+                            container
+                            direction="row"
+                            justify="space-around"
+                            alignItems="center"
+                            spacing={3}
+                          >
+                            <Grid item xs={2}>
+                              <InsertDriveFileIcon />
+                            </Grid>
+                            <Grid item xs={8} className="text-left">
+                              {manualStates.resume1?.name}
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Button>
+                                <DeleteIcon />
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Paper>
+                      </div>
+                    )}
+                    {manualStates.resume2 && (
+                      <div className="mb-3">
+                        <Paper elevation={3} className={classes.paper}>
+                          <Grid
+                            container
+                            direction="row"
+                            justify="space-around"
+                            alignItems="center"
+                            spacing={3}
+                          >
+                            <Grid item xs={2}>
+                              <InsertDriveFileIcon />
+                            </Grid>
+                            <Grid item xs={8} className="text-left">
+                              {manualStates.resume2?.name}
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Button>
+                                <DeleteIcon
+                                // onClick={((n) => {
+                                //   setManualStates(...manualStates);
+                                // })(1)}
+                                />
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Paper>
+                      </div>
+                    )}
+                  </Grid>
+                  <Grid item xs={1}></Grid>
+                </Grid>
+
                 <input
                   accept=".pdf,.jpg,.jpge,.doc,.docx"
                   className={classes.input}
@@ -645,8 +678,8 @@ function EmpApplicationForm1(props: Props) {
                           name="startTime"
                           labelId="demo-simple-select-outlined-label"
                           id="demo-simple-select-outlined"
+                          defaultValue={preLoadedValues.startTime}
                           label="Join with in"
-                          defaultValue={def.startTime}
                           onChange={(e) => {
                             setManualStates({
                               ...manualStates,
@@ -701,7 +734,7 @@ function EmpApplicationForm1(props: Props) {
                           labelId="classExperienceLbl"
                           id="classExp"
                           label="Experience Level"
-                          defaultValue={manualStates.classAExperienceLevel}
+                          defaultValue={preLoadedValues.classAExperienceLevel}
                           onChange={(e) => {
                             setManualStates({
                               ...manualStates,
@@ -766,10 +799,7 @@ function EmpApplicationForm1(props: Props) {
                       </Typography>
                     </Grid>
                     <Grid item xs={3} style={{ textAlign: "right" }}>
-                      <FormControl
-                        component="fieldset"
-                        defaultValue={def.eligibletoWorkInUnitedState}
-                      >
+                      <FormControl component="fieldset">
                         <RadioGroup row>
                           <FormControlLabel
                             value="Yes"
@@ -826,10 +856,7 @@ function EmpApplicationForm1(props: Props) {
                       </Typography>
                     </Grid>
                     <Grid item xs={3} style={{ textAlign: "right" }}>
-                      <FormControl
-                        component="fieldset"
-                        defaultValue={def.willingForDrugTest}
-                      >
+                      <FormControl component="fieldset">
                         <RadioGroup row name="willingForDrugTest">
                           <FormControlLabel
                             value="Yes"

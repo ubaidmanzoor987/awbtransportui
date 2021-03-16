@@ -10938,7 +10938,7 @@ div {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url("../img/trucks/4.jpg");
+  background-image: url("../img/trucks/4.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -11040,6 +11040,7 @@ div {
 
 .mySideBar {
   padding: 0px;
+  padding-top: 10%;
 }
 .form-section {
   padding: 5rem 0 0 0;

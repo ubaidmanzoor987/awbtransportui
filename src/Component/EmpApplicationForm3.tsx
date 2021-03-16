@@ -46,7 +46,7 @@ import {
   tDriverLicenseInfo,
   reqBits,
 } from "../Common/CommonVariables";
-import { Addresses } from "../Common/CommonVariables";
+import { Addresses, form3DefaultValue } from "../Common/CommonVariables";
 import RadioQuestions from "./SubComponents/RadioQuestions";
 import AddressesComponent from "./SubComponents/AddressesComponent";
 import EmploymentHistory from "./SubComponents/EmploymentHistory";
@@ -61,6 +61,7 @@ import { DynamicEmploymentHistoryComponent } from "./DynamicAddition/DynamicEmpl
 import { DynamicDrivingExperienceComponent } from "./DynamicAddition/DynamicDrivingExperienceComponent";
 import { DynamicEmploymentAccidentHistoryComponent } from "./DynamicAddition/DynamicEmploymentAccidentHistoryComponent";
 import { DynamicTrafficConvictions } from "./DynamicAddition/DynamicTrafficConvictions";
+import { update } from "../services/updateApi";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -122,10 +123,8 @@ let DriverLicenseList: tDriverLicenses;
 
 type Props = { data?: any; handler?: any };
 
-let def: any;
-
 function EmpApplicationForm3(props: Props) {
-  const Forms = useForm();
+  const Forms = useForm({ defaultValues: form3DefaultValue });
   const { register, handleSubmit, errors, control } = Forms;
 
   const classes = useStyles();
@@ -134,6 +133,8 @@ function EmpApplicationForm3(props: Props) {
     // data.addresses = UpdateAddressesList;
     // data.employmentHistories = UdpatedEmploymentHistoryList;
     console.log(data);
+    data.user_name = props.data.user_name;
+    update(data);
     props.handler[0]();
   };
 
@@ -406,6 +407,12 @@ function EmpApplicationForm3(props: Props) {
                             <Grid item xs={12}>
                               <RadioQuestions
                                 id="applicationApplyAsPosition"
+                                optionValue={[
+                                  "contractor",
+                                  "driver",
+                                  "contractor_driver",
+                                  "other",
+                                ]}
                                 question="Position applying for:"
                                 optionList={[
                                   "Contractor",
@@ -734,8 +741,9 @@ function EmpApplicationForm3(props: Props) {
                       <RadioQuestions
                         id="everWorkedForCompany"
                         question="Have you worked for this company before?"
+                        optionValue={[true, false]}
                         optionList={["Yes", "No"]}
-                        defaultSelected="No"
+                        defaultSelected={props.data.everWorkedForCompany}
                         useForm={Forms}
                         isReq={reqBits.everWorkedForCompany}
                       ></RadioQuestions>
@@ -755,6 +763,20 @@ function EmpApplicationForm3(props: Props) {
                       <RadioQuestions
                         id="applicantSchoolGrade"
                         question="Please circle the highest School grade completed"
+                        optionValue={[
+                          "1",
+                          "2",
+                          "3",
+                          "4",
+                          "5",
+                          "6",
+                          "7",
+                          "8",
+                          "9",
+                          "10",
+                          "11",
+                          "12",
+                        ]}
                         optionList={[
                           "1",
                           "2",
@@ -769,7 +791,7 @@ function EmpApplicationForm3(props: Props) {
                           "11",
                           "12",
                         ]}
-                        defaultSelected="12"
+                        defaultSelected={props.data.applicantSchoolGrade}
                         isReq={reqBits.applicantSchoolGrade}
                         useForm={Forms}
                       ></RadioQuestions>
@@ -777,8 +799,9 @@ function EmpApplicationForm3(props: Props) {
                       <RadioQuestions
                         id="applicantCollegeGrade"
                         question="Please circle the highest Collage grade completed"
+                        optionValue={["1", "2", "3", "4"]}
                         optionList={["1", "2", "3", "4"]}
-                        defaultSelected="4"
+                        defaultSelected={props.data.applicantCollegeGrade}
                         isReq={reqBits.applicantCollegeGrade}
                         useForm={Forms}
                       ></RadioQuestions>
@@ -786,8 +809,9 @@ function EmpApplicationForm3(props: Props) {
                       <RadioQuestions
                         id="applicantPostGraduateGrade"
                         question="Please circle the highest Post Graduate grade completed"
+                        optionValue={["1", "2", "3", "4"]}
                         optionList={["1", "2", "3", "4"]}
-                        defaultSelected="4"
+                        defaultSelected={props.data.applicantPostGraduateGrade}
                         isReq={reqBits.applicantPostGraduateGrade}
                         useForm={Forms}
                       ></RadioQuestions>
@@ -876,7 +900,7 @@ function EmpApplicationForm3(props: Props) {
                   })}
                   multiline
                   rows={4}
-                  defaultValue=""
+                  defaultValue={props.data.lastFiveYearStatesOperate}
                   variant="outlined"
                   className="col-10"
                 />
@@ -891,7 +915,7 @@ function EmpApplicationForm3(props: Props) {
                   })}
                   name="Listspecialcourses"
                   rows={4}
-                  defaultValue=""
+                  defaultValue={props.data.Listspecialcourses}
                   variant="outlined"
                   className="col-10"
                 />
@@ -906,7 +930,7 @@ function EmpApplicationForm3(props: Props) {
                     required: reqBits.ListanySafeDrivingAwards,
                   })}
                   name="ListanySafeDrivingAwards"
-                  defaultValue=""
+                  defaultValue={props.data.ListanySafeDrivingAwards}
                   variant="outlined"
                   className="col-10"
                 />
