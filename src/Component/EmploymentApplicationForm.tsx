@@ -85,7 +85,7 @@ class EmploymentApplication extends Component<
   constructor(props: any) {
     super(props);
     this.state = {
-      formCounter: 1,
+      formCounter: 3,
     };
     this.gotoNextForm = this.gotoNextForm.bind(this);
     this.gotoPreviousForm = this.gotoPreviousForm.bind(this);
@@ -146,7 +146,7 @@ class EmploymentApplication extends Component<
               className="col mySideBar"
               style={{ flexGrow: 0, paddingLeft: "0px", paddingRight: "0px" }}
             >
-              <SideBar activeEmployment={false} />
+              {/* <SideBar activeEmployment={false} /> */}
             </div>
             <div className="col-9" style={{ paddingTop: "100px" }}>
               {this.state.formCounter === 1 ? (

@@ -8,6 +8,7 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import React from "react";
+import { Controller } from "react-hook-form";
 import {
   reqBits,
   reqBitsKeys,
@@ -44,8 +45,9 @@ type Props = {
 export default function RadioQuestions(props: Props) {
   const classes = useStyles();
   const Forms = props.useForm;
-  const { register, handleSubmit, errors } = Forms;
-  //TODO
+  const { register, handleSubmit, errors, control } = Forms;
+  const bools = props.optionValue;
+
   return (
     <>
       <Grid
@@ -71,33 +73,26 @@ export default function RadioQuestions(props: Props) {
             component="fieldset"
             error={errors[props.id] === undefined ? false : true}
           >
-            <RadioGroup
-              row
-              defaultValue={
-                props.defaultSelected === undefined ? "" : props.defaultSelected
-              }
-            >
-              {props.optionList.map((optionItem, index) => {
-                return (
-                  <FormControlLabel
-                    value={props.optionValue[index]}
-                    control={
-                      <Radio
-                        name={props.id}
-                        value={props.optionValue[index]}
-                        inputRef={register({
-                          required: {
-                            value: props.isReq,
-                            message: RequireError,
-                          },
-                        })}
+            <Controller
+              rules={{ required: true }}
+              control={control}
+              name={props.id}
+              defaultValue={props.defaultSelected + ""}
+              as={
+                <RadioGroup row>
+                  {props.optionList.map((optionItem, index) => {
+                    return (
+                      <FormControlLabel
+                        key={index}
+                        value={props.optionValue[index] + ""}
+                        control={<Radio />}
+                        label={optionItem}
                       />
-                    }
-                    label={optionItem}
-                  />
-                );
-              })}
-            </RadioGroup>
+                    );
+                  })}
+                </RadioGroup>
+              }
+            />
             <FormHelperText>
               {errors[props.id] && errors[props.id].message}
             </FormHelperText>

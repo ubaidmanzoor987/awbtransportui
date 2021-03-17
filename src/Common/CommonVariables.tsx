@@ -84,7 +84,7 @@ export type EmploymentHistoryInfo = {
 
 export let employmentHistoryDummyElement: EmploymentHistoryInfo = {
   employmentHistoryfrom: "2018-01-01",
-  employmentHistoryTo: "Default",
+  employmentHistoryTo: "2018-01-01",
   employmentHistorystatus: "Default",
   employmentHistoryposition: "Default",
   employmentHistoryaddress: "Default",
@@ -122,14 +122,14 @@ export type tTrafficConvictionInfo = {
   dateOfViolation: string;
   LocationOfViolation: string;
   ViolationCharge: string;
-  ViolationPenalty: string;
+  ViolationPenalty: number;
 };
 
 export let trafficConvictionDummyElement: tTrafficConvictionInfo = {
-  dateOfViolation: "Default",
+  dateOfViolation: "2018-01-01",
   LocationOfViolation: "Default",
   ViolationCharge: "Default",
-  ViolationPenalty: "Default",
+  ViolationPenalty: 10,
 };
 
 export type tTrafficConvictions = tTrafficConvictionInfo[];
@@ -139,19 +139,28 @@ export type EmploymentAccidentHistoryInfo = {
   dateOfAccident: string;
   NatureOfAccidents: string;
   LocationOfAccidents: string;
-  numberofFatalities: string;
-  numberofPeopleleInjured: string;
+  numberofFatalities: number;
+  numberofPeopleleInjured: number;
 };
 
 export let employmentAccidentHistoryDummyElement: EmploymentAccidentHistoryInfo = {
-  dateOfAccident: "Default",
+  dateOfAccident: "2018-01-01",
   NatureOfAccidents: "Default",
   LocationOfAccidents: "Default",
-  numberofFatalities: "Default",
-  numberofPeopleleInjured: "Default",
+  numberofFatalities: 21,
+  numberofPeopleleInjured: 123,
 };
 
 export type EmploymentAccidentHistories = EmploymentAccidentHistoryInfo[];
+
+export type tViolation = {
+  dateOfViolation: string;
+  LocationOfViolation: string;
+  ViolationCharge: string;
+  ViolationPenalty: string;
+};
+
+export type tVoilations = tViolation[];
 
 export type tDrivingExperience = {
   experienceclassofEquipment: string;
@@ -522,7 +531,7 @@ export let debug = true;
 export let addr = {
   lastYearAddress: "Default",
   lastYearAddressCity: "Default",
-  lastYearAddressState: "Default",
+  lastYearAddressState: "Alaska",
   lastYearAddressZipCode: "Default",
   lastYearAddressfrom: "2018-01-01",
   lastYearAddressTo: "2018-01-01",
@@ -545,43 +554,44 @@ export const form3DefaultValue = {
   companyCity: "Default",
   companyState: "Default",
   companyPostCode: "Default",
-  applicationApplyDate: "Default",
-  applicationApplyAsPosition: "Default",
+  applicationApplyDate: "2018-10-10",
+  applicationApplyAsPosition: "Contractor",
   applicantfirstName: "Default",
   applicantLastName: "Default",
-  applicantPhoneNumber: "Default",
+  applicantPhoneNumber: "111-111-1111 x1111",
   emergencyContactfirstName: "Default",
   emergencyContactlastName: "Default",
-  emergencyContactNumber: "Default",
-  age: "Default",
-  applicantdateofbirth: "Default",
-  physicalExamExpirationDate: "Default",
-  applicantAddresses: [{ addr }, { addr }],
+  emergencyContactNumber: "111-111-1111 x1111",
+  age: 10,
+  applicantdateofbirth: "2018-10-10",
+  physicalExamExpirationDate: "2018-10-10",
+  applicantAddresses: [addr, addr],
   everWorkedForCompany: "Yes",
-  applicantSchoolGrade: "Yes",
-  applicantCollegeGrade: "Yes",
-  applicantPostGraduateGrade: "Default",
+  applicantSchoolGrade: "3",
+  applicantCollegeGrade: "2",
+  applicantPostGraduateGrade: "4",
   employmentHistory: [
-    { employmentHistoryDummyElement },
-    { employmentHistoryDummyElement },
+    employmentHistoryDummyElement,
+    employmentHistoryDummyElement,
   ],
   employmentExperienceHistory: [
-    { drivingExperienceDummyElement },
-    { drivingExperienceDummyElement },
+    drivingExperienceDummyElement,
+    drivingExperienceDummyElement,
   ],
   lastFiveYearStatesOperate: "Default",
   Listspecialcourses: "Default",
   ListanySafeDrivingAwards: "Default",
   employmentAccidentsHistory: [
-    { employmentAccidentHistoryDummyElement },
-    { employmentAccidentHistoryDummyElement },
+    employmentAccidentHistoryDummyElement,
+    employmentAccidentHistoryDummyElement,
   ],
+  violations: [trafficConvictionDummyElement],
   dateOfAccident: "Default",
   NatureOfAccidents: "Default",
   LocationOfAccidents: "Default",
   numberofFatalities: "Default",
   numberofPeopleleInjured: "Default",
-  dateOfViolation: "Default",
+  dateOfViolation: "2018-10-10",
   LocationOfViolation: "Default",
   ViolationCharge: "Default",
   ViolationPenalty: "Default",
@@ -589,7 +599,7 @@ export const form3DefaultValue = {
   licenceNumber: "Default",
   licenceType: "Default",
   licenceEndoresment: "Default",
-  licenceExpirationDate: "Default",
+  licenceExpirationDate: "2018-10-10",
   deniedLicences: "Default",
   permitLicences: "Default",
   reasonforUnableToPerformActions: "Default",
@@ -599,9 +609,9 @@ export const form3DefaultValue = {
   referencelastName: "Default",
   referenceCompany: "Default",
   referenceTitle: "Default",
-  referencePhoneNumber: "Default",
+  referencePhoneNumber: "111-111-1111 x1111",
   referenceAddress: "Default",
   signature: "Default",
-  dateOfApplication: "Default",
+  dateOfApplication: "2018-10-10",
   remarks: "Default",
 };

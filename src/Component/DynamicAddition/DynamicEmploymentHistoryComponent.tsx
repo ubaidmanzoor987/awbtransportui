@@ -116,16 +116,12 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
               >
                 <Grid item xs={6}>
                   <TextField
-                    // name={`${props.addressId}[${dindex}].lastYearAddress`}
-                    // inputRef={register({
-                    // required: reqBits.lastYearAddress,
-                    // required: false,
-                    // })}
                     name={`${props.idPrefix}[${index}].employmentHistoryfrom`}
                     variant="outlined"
                     size="small"
                     type="date"
                     className="col-12"
+                    defaultValue={item.employmentHistoryfrom}
                     //useForms Handling Start
                     inputRef={register({
                       required: {
@@ -142,6 +138,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     name={`${props.idPrefix}[${index}].employmentHistoryTo`}
                     variant="outlined"
                     size="small"
+                    defaultValue={item.employmentHistoryTo}
                     type="date"
                     className="col-12"
                     inputRef={register({
@@ -160,6 +157,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     variant="outlined"
                     size="small"
                     type="text"
+                    defaultValue={item.employmentHistorystatus}
                     label="Present or Last Employer "
                     className="col-12"
                     //useForms Handling Start
@@ -177,6 +175,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                   <TextField
                     className="col-12"
                     name={`${props.idPrefix}[${index}].employmentHistoryposition`}
+                    defaultValue={item.employmentHistoryposition}
                     variant="outlined"
                     size="small"
                     type="text"
@@ -198,6 +197,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     variant="outlined"
                     size="small"
                     type="text"
+                    defaultValue={item.employmentHistorycompanyPhone}
                     label="Company Phone"
                     className="col-12"
                     //useForms Handling Start
@@ -217,6 +217,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     name={`${props.idPrefix}[${index}].employmentHistoryreasonForLeaving`}
                     variant="outlined"
                     size="small"
+                    defaultValue={item.employmentHistoryreasonForLeaving}
                     type="text"
                     label="Reason for leaving"
                     //useForms Handling Start
@@ -237,15 +238,16 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                   id={`${props.idPrefix}[${index}].employmentHistorysubjecttotheFMCSRs`}
                   question="Were you subject to the FMCSRs while employed here?"
                   optionList={["Yes", "No"]}
-                  optionValue={[true, false]}
+                  optionValue={["Yes", "No"]}
                   useForm={props.useForm}
                   xsSize={11}
+                  defaultSelected={"Yes"}
                   isReq={reqBits.employmentHistorysubjecttotheFMCSRs}
                 ></RadioQuestions>
 
                 <RadioQuestions
                   id={`${props.idPrefix}[${index}].employmentHistorydrugandalcoholTesting`}
-                  optionValue={[true, false]}
+                  optionValue={["Yes", "No"]}
                   question="Was your job designated as a safety-sensitive function in
                   any DOT- regulated mode subject to the drug and alcohol
                   testing requirements of 49 CFR Part 40?"

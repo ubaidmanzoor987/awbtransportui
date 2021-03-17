@@ -95,7 +95,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion>
+          <Accordion key={index}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -122,6 +122,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                     })}
                     variant="outlined"
                     size="small"
+                    defaultValue={item.experienceclassofEquipment}
                     type="text"
                     label="Class of Equipment"
                     className="col-12"
@@ -135,6 +136,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                     })}
                     variant="outlined"
                     size="small"
+                    defaultValue={item.experiencenumberOfMiles}
                     type="number"
                     label="Approximate Number of Miles"
                     className="col-12"
@@ -146,6 +148,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                     inputRef={register({
                       required: reqBits.experienceFromDate,
                     })}
+                    defaultValue={item.experienceFromDate}
                     variant="outlined"
                     size="small"
                     type="date"
@@ -160,6 +163,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                       required: reqBits.experienceToDate,
                     })}
                     variant="outlined"
+                    defaultValue={item.experienceToDate}
                     size="small"
                     type="date"
                     helperText="To Date"

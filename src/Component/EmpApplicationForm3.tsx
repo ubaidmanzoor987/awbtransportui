@@ -62,6 +62,7 @@ import { DynamicDrivingExperienceComponent } from "./DynamicAddition/DynamicDriv
 import { DynamicEmploymentAccidentHistoryComponent } from "./DynamicAddition/DynamicEmploymentAccidentHistoryComponent";
 import { DynamicTrafficConvictions } from "./DynamicAddition/DynamicTrafficConvictions";
 import { update } from "../services/updateApi";
+import { PinDropRounded } from "@material-ui/icons";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -127,11 +128,19 @@ function EmpApplicationForm3(props: Props) {
   const Forms = useForm({ defaultValues: form3DefaultValue });
   const { register, handleSubmit, errors, control } = Forms;
 
+  if (debug === true) {
+    // props.data = form3DefaultValue;
+  }
+
   const classes = useStyles();
 
   const onSubmit = (data: any) => {
-    // data.addresses = UpdateAddressesList;
+    // data.employmentAccidentsHistory = EmploymentAccidentHistoryList;
+    // data.violations = TrafficConvictionsList;
+    // data.employmentExperienceHistory = UpdateDrivingExperienceList;
     // data.employmentHistories = UdpatedEmploymentHistoryList;
+    // data.employmentHistory.map();
+    // data.employmentHistorysubjecttotheFMCSRs = data.employmentHistorysubjecttotheFMCSRs == ""
     console.log(data);
     data.user_name = props.data.user_name;
     update(data);
@@ -297,6 +306,7 @@ function EmpApplicationForm3(props: Props) {
                           size="small"
                           control={control}
                           className="col-10"
+                          defaultValue="Alaska"
                         >
                           <MenuItem value="">
                             <em>None</em>
@@ -397,6 +407,9 @@ function EmpApplicationForm3(props: Props) {
                                 inputRef={register({
                                   required: reqBits.applicationApplyDate,
                                 })}
+                                defaultValue={
+                                  form3DefaultValue.applicationApplyDate
+                                }
                                 helperText={
                                   errors.applicationApplyDate &&
                                   errors.applicationApplyDate?.type.toUpperCase() +
@@ -420,6 +433,9 @@ function EmpApplicationForm3(props: Props) {
                                   "Contractor's Driver",
                                   "Other",
                                 ]}
+                                defaultSelected={
+                                  form3DefaultValue.applicationApplyAsPosition
+                                }
                                 useForm={Forms}
                                 isReq={false}
                                 xsSize={11}
@@ -625,7 +641,7 @@ function EmpApplicationForm3(props: Props) {
                                 name="applicantdateofbirth"
                                 variant="outlined"
                                 size="small"
-                                type="text"
+                                type="date"
                                 className="col-12"
                                 error={
                                   errors.applicantdateofbirth == undefined
@@ -648,7 +664,7 @@ function EmpApplicationForm3(props: Props) {
                                 name="physicalExamExpirationDate"
                                 variant="outlined"
                                 size="small"
-                                type="text"
+                                type="date"
                                 className="col-12"
                                 error={
                                   errors.physicalExamExpirationDate == undefined
@@ -699,7 +715,7 @@ function EmpApplicationForm3(props: Props) {
                         <DynamicAddressComponent
                           idPrefix="applicantAddresses"
                           setAddresses={updateAddressList}
-                          addressesList={props.data.addresses}
+                          addressesList={form3DefaultValue.applicantAddresses}
                           addressId="applicantAddresses"
                           cityId=""
                           stateId=""
@@ -741,9 +757,9 @@ function EmpApplicationForm3(props: Props) {
                       <RadioQuestions
                         id="everWorkedForCompany"
                         question="Have you worked for this company before?"
-                        optionValue={[true, false]}
+                        optionValue={["Yes", "No"]}
                         optionList={["Yes", "No"]}
-                        defaultSelected={props.data.everWorkedForCompany}
+                        defaultSelected={form3DefaultValue.everWorkedForCompany}
                         useForm={Forms}
                         isReq={reqBits.everWorkedForCompany}
                       ></RadioQuestions>
@@ -791,7 +807,7 @@ function EmpApplicationForm3(props: Props) {
                           "11",
                           "12",
                         ]}
-                        defaultSelected={props.data.applicantSchoolGrade}
+                        defaultSelected={form3DefaultValue.applicantSchoolGrade}
                         isReq={reqBits.applicantSchoolGrade}
                         useForm={Forms}
                       ></RadioQuestions>
@@ -801,7 +817,9 @@ function EmpApplicationForm3(props: Props) {
                         question="Please circle the highest Collage grade completed"
                         optionValue={["1", "2", "3", "4"]}
                         optionList={["1", "2", "3", "4"]}
-                        defaultSelected={props.data.applicantCollegeGrade}
+                        defaultSelected={
+                          form3DefaultValue.applicantCollegeGrade
+                        }
                         isReq={reqBits.applicantCollegeGrade}
                         useForm={Forms}
                       ></RadioQuestions>
@@ -811,7 +829,9 @@ function EmpApplicationForm3(props: Props) {
                         question="Please circle the highest Post Graduate grade completed"
                         optionValue={["1", "2", "3", "4"]}
                         optionList={["1", "2", "3", "4"]}
-                        defaultSelected={props.data.applicantPostGraduateGrade}
+                        defaultSelected={
+                          form3DefaultValue.applicantPostGraduateGrade
+                        }
                         isReq={reqBits.applicantPostGraduateGrade}
                         useForm={Forms}
                       ></RadioQuestions>
@@ -845,7 +865,9 @@ function EmpApplicationForm3(props: Props) {
                     <DynamicEmploymentHistoryComponent
                       idPrefix="employmentHistory"
                       useForm={Forms}
-                      employmentHistoryList={props.data.employmentHistory}
+                      employmentHistoryList={
+                        form3DefaultValue.employmentHistory
+                      }
                       setEmploymentHistoryList={updateEmploymentHistoryList}
                     ></DynamicEmploymentHistoryComponent>
                   </Grid>
@@ -875,7 +897,7 @@ function EmpApplicationForm3(props: Props) {
                     <DynamicDrivingExperienceComponent
                       idPrefix="employmentExperienceHistory"
                       drivingExperienceList={
-                        props.data.employmentExperienceHistory
+                        form3DefaultValue.employmentExperienceHistory
                       }
                       useForm={Forms}
                       setDrivingExperienceList={updateDrivingExperienceList}
@@ -900,7 +922,7 @@ function EmpApplicationForm3(props: Props) {
                   })}
                   multiline
                   rows={4}
-                  defaultValue={props.data.lastFiveYearStatesOperate}
+                  defaultValue={form3DefaultValue.lastFiveYearStatesOperate}
                   variant="outlined"
                   className="col-10"
                 />
@@ -915,7 +937,7 @@ function EmpApplicationForm3(props: Props) {
                   })}
                   name="Listspecialcourses"
                   rows={4}
-                  defaultValue={props.data.Listspecialcourses}
+                  defaultValue={form3DefaultValue.Listspecialcourses}
                   variant="outlined"
                   className="col-10"
                 />
@@ -930,7 +952,7 @@ function EmpApplicationForm3(props: Props) {
                     required: reqBits.ListanySafeDrivingAwards,
                   })}
                   name="ListanySafeDrivingAwards"
-                  defaultValue={props.data.ListanySafeDrivingAwards}
+                  defaultValue={form3DefaultValue.ListanySafeDrivingAwards}
                   variant="outlined"
                   className="col-10"
                 />
@@ -952,7 +974,7 @@ function EmpApplicationForm3(props: Props) {
                     <DynamicEmploymentAccidentHistoryComponent
                       idPrefix="employmentAccidentsHistory"
                       employmentAccidentHistoryList={
-                        props.data.employmentAccidentsHistory
+                        form3DefaultValue.employmentAccidentsHistory
                       }
                       useForm={Forms}
                       setEmploymentAccidentHistoryList={
@@ -988,31 +1010,6 @@ function EmpApplicationForm3(props: Props) {
                 </div>
               </Paper>
             </Grid>
-
-            {/* <Grid item xs={10}>
-              <Paper
-                style={{ margin: "10px 0px" }}
-                elevation={3}
-                className={(classes.heading, classes.paperProminantStyle)}
-              >
-                <Typography className={classes.heading}>
-                  Driver’s License (list each driver’s license held in the past
-                  three(3) years:
-                </Typography>
-                <div className="row">
-                  <div className="col-1"></div>
-                  <div className="col-10 mt-2">
-                    <DriverLicense
-                      idPrefix="licences"
-                      driverLicenseList={[driverLicenseDummyElement]}
-                      useForm={Forms}
-                      setdriverLicenseList={updateDriverLicenseList}
-                    ></DriverLicense>
-                  </div>
-                  <div className="col-1"></div>
-                </div>
-              </Paper>
-            </Grid> */}
 
             <Grid item xs={4}>
               <Button

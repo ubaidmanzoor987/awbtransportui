@@ -60,10 +60,10 @@ const RequireError: string = "Required *";
 const WrongPatternError: string = "Wrong Pattern";
 
 let addr = {
-  lastYearAddress: "",
-  lastYearAddressCity: "",
-  lastYearAddressState: "",
-  lastYearAddressZipCode: "",
+  lastYearAddress: "Default",
+  lastYearAddressCity: "Default",
+  lastYearAddressState: "Alaska",
+  lastYearAddressZipCode: "Default",
   lastYearAddressfrom: "1990-01-01",
   lastYearAddressTo: "1990-01-01",
 };
@@ -122,6 +122,7 @@ export function DynamicAddressComponent(props: Props) {
                     inputRef={register({
                       required: reqBits.lastYearAddress,
                     })}
+                    defaultValue={item.lastYearAddress}
                   ></TextField>
                 </Grid>
                 <Grid item xs={4}>
@@ -132,6 +133,7 @@ export function DynamicAddressComponent(props: Props) {
                     })}
                     variant="outlined"
                     size="small"
+                    defaultValue={item.lastYearAddressCity}
                     type="text"
                   ></TextField>
                 </Grid>
@@ -141,6 +143,7 @@ export function DynamicAddressComponent(props: Props) {
                     nameVal={`${props.addressId}[${index}].lastYearAddressState`}
                     variant="outlined"
                     size="small"
+                    defaultValue={item.lastYearAddressState}
                     label="State"
                     control={control}
                   >
@@ -164,6 +167,7 @@ export function DynamicAddressComponent(props: Props) {
                     })}
                     variant="outlined"
                     size="small"
+                    defaultValue={item.lastYearAddressZipCode}
                     type="text"
                     label={
                       "Zip Code " +
@@ -182,6 +186,7 @@ export function DynamicAddressComponent(props: Props) {
                     })}
                     variant="outlined"
                     type="date"
+                    defaultValue={item.lastYearAddressfrom}
                     size="small"
                     className="col-12"
                     helperText={"From Date Require *"}
@@ -198,6 +203,7 @@ export function DynamicAddressComponent(props: Props) {
                     })}
                     variant="outlined"
                     type="date"
+                    defaultValue={item.lastYearAddressTo}
                     size="small"
                     className="col-12"
                     helperText={"To Date Require *"}
@@ -219,7 +225,7 @@ export function DynamicAddressComponent(props: Props) {
                   variant="contained"
                   color="default"
                   id={"id" + index}
-                  onClick={() => remove(index)}
+                  onClick={(e) => remove(index)}
                 >
                   Delete This
                 </Button>
@@ -233,11 +239,7 @@ export function DynamicAddressComponent(props: Props) {
             className="col-3"
             variant="contained"
             color="primary"
-            onClick={() =>
-              append({
-                addr,
-              })
-            }
+            onClick={() => append(addr)}
           >
             Another Address
           </Button>

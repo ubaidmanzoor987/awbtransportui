@@ -121,6 +121,7 @@ export function DynamicTrafficConvictions(props: Props) {
                     inputRef={register({
                       required: reqBits.dateOfViolation,
                     })}
+                    defaultValue={item.dateOfViolation}
                     size="small"
                     helperText="Date Of Violation"
                     type="date"
@@ -134,6 +135,7 @@ export function DynamicTrafficConvictions(props: Props) {
                     inputRef={register({
                       required: reqBits.ViolationPenalty,
                     })}
+                    defaultValue={item.ViolationPenalty}
                     size="small"
                     label="Penalty"
                     type="number"
@@ -151,8 +153,8 @@ export function DynamicTrafficConvictions(props: Props) {
                       required: reqBits.LocationOfViolation,
                     })}
                     size="small"
+                    defaultValue={item.LocationOfViolation}
                     rows={4}
-                    defaultValue=""
                     variant="outlined"
                     className="col-12"
                   />
@@ -167,8 +169,8 @@ export function DynamicTrafficConvictions(props: Props) {
                       required: reqBits.ViolationCharge,
                     })}
                     size="small"
+                    defaultValue={item.ViolationCharge}
                     rows={4}
-                    defaultValue=""
                     variant="outlined"
                     className="col-12"
                   />

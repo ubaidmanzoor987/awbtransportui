@@ -121,6 +121,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                       required: reqBits.dateOfAccident,
                     })}
                     name={`${props.idPrefix}[${index}].dateOfAccident`}
+                    defaultValue={item.dateOfAccident}
                     helperText="Date of Accident"
                     type="date"
                     size="small"
@@ -130,6 +131,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                 <Grid item xs={6}>
                   <TextField
                     variant="outlined"
+                    defaultValue={item.numberofFatalities}
                     label="Num of Fatalities"
                     inputRef={register({
                       required: reqBits.numberofFatalities,
@@ -143,6 +145,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
+                    defaultValue={item.numberofPeopleleInjured}
                     label="Num of Injured People"
                     inputRef={register({
                       required: reqBits.numberofPeopleleInjured,
@@ -157,6 +160,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                   <TextField
                     id="outlined-multiline-static"
                     size="small"
+                    defaultValue={item.NatureOfAccidents}
                     label="Nature of Accidents"
                     inputRef={register({
                       required: reqBits.NatureOfAccidents,
@@ -164,7 +168,6 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                     name={`${props.idPrefix}[${index}].NatureOfAccidents`}
                     multiline
                     rows={4}
-                    defaultValue=""
                     variant="outlined"
                     className="col-12"
                   />
@@ -172,6 +175,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                 <Grid item xs={12}>
                   <TextField
                     id="outlined-multiline-static"
+                    defaultValue={item.LocationOfAccidents}
                     label="Location of Accident"
                     inputRef={register({
                       required: reqBits.LocationOfAccidents,
@@ -180,7 +184,6 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                     size="small"
                     multiline
                     rows={4}
-                    defaultValue=""
                     variant="outlined"
                     className="col-12"
                   />

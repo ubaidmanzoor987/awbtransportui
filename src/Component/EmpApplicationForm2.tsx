@@ -22,6 +22,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { ControlCameraOutlined } from "@material-ui/icons";
 import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
 import { debug } from "../Common/CommonVariables";
+import { update } from "../services/updateApi";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -77,6 +78,8 @@ function EmpApplicationForm2(props: Props) {
 
   const onSubmit = (data: any) => {
     console.log(data);
+    data.user_name = props.data.user_name;
+    update(data);
     props.handler[0]();
   };
 

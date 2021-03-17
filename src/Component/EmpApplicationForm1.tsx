@@ -172,7 +172,14 @@ function EmpApplicationForm1(props: Props) {
   const onSubmit = (data: any) => {
     data.addresses = UpdateAddressesList;
     //TODO Change to Boolean
-    data.lastThreeYearResidenceCheck = true;
+    data.lastThreeYearResidenceCheck =
+      data.lastThreeYearResidenceCheck == "true";
+
+    data.eligibletoWorkInUnitedState =
+      data.eligibletoWorkInUnitedState == "true";
+
+    data.willingForDrugTest = data.willingForDrugTest == "true";
+
     data.user_name = props.data.user_name;
     // data = { user_name: props.data.user_name, data };
     console.log(data);
@@ -458,7 +465,7 @@ function EmpApplicationForm1(props: Props) {
                     id="lastThreeYearResidenceCheck"
                     question="Have You Lived At This Residence For The Past 3 Years?"
                     optionList={["Yes", "No"]}
-                    optionValue={[true, false]}
+                    optionValue={["Yes", "No"]}
                     useForm={Forms}
                     isReq={reqBits.lastThreeYearResidenceCheck}
                     defaultSelected={props.data.lastThreeYearResidenceCheck}
@@ -789,118 +796,33 @@ function EmpApplicationForm1(props: Props) {
                         inputRef={register}
                       ></TextField>
                     </Grid>
-                    <Grid
-                      item
-                      xs={9}
-                      className={(classes.paper, classes.addressPaper)}
-                    >
-                      <Typography className={classes.text}>
-                        Are You Eligible To Work In The United States?
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3} style={{ textAlign: "right" }}>
-                      <FormControl component="fieldset">
-                        <RadioGroup row>
-                          <FormControlLabel
-                            value={true}
-                            control={
-                              <Radio
-                                name="eligibletoWorkInUnitedState"
-                                checked={
-                                  manualStates.eligibletoWorkInUnitedState ==
-                                  true
-                                }
-                                onClick={(e) => {
-                                  setManualStates({
-                                    ...manualStates,
-                                    eligibletoWorkInUnitedState: true,
-                                  });
-                                }}
 
-                                // inputRef={register({ required: { value: reqBits., message: RequireError } })}
-                              />
-                            }
-                            label="Yes"
-                          />
-                          <FormControlLabel
-                            value={false}
-                            control={
-                              <Radio
-                                checked={
-                                  manualStates.eligibletoWorkInUnitedState ==
-                                  false
-                                }
-                                name="eligibletoWorkInUnitedState"
-                                onClick={(e) => {
-                                  setManualStates({
-                                    ...manualStates,
-                                    eligibletoWorkInUnitedState: false,
-                                  });
-                                }}
-                                // inputRef={register({ required: { value: reqBits., message: RequireError } })}
-                              />
-                            }
-                            label="No"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </Grid>
-                    <Grid
-                      item
-                      xs={9}
-                      className={(classes.paper, classes.addressPaper)}
-                    >
-                      <Typography className={classes.text}>
-                        Are you willing to undertake a drug test as part of this
-                        hiring process?
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3} style={{ textAlign: "right" }}>
-                      <FormControl component="fieldset">
-                        <RadioGroup row name="willingForDrugTest">
-                          <FormControlLabel
-                            value={true}
-                            control={
-                              <Radio
-                                name="willingForDrugTest"
-                                checked={
-                                  manualStates.willingForDrugTest == true
-                                }
-                                onClick={(e) => {
-                                  setManualStates({
-                                    ...manualStates,
-                                    willingForDrugTest: true,
-                                  });
-                                }}
+                    <div style={{ paddingLeft: "13px" }}>
+                      <RadioQuestions
+                        id="eligibletoWorkInUnitedState"
+                        question="Are You Eligible To Work In The United States?"
+                        optionList={["Yes", "No"]}
+                        optionValue={["Yes", "No"]}
+                        xsSize={12}
+                        useForm={Forms}
+                        isReq={reqBits.eligibletoWorkInUnitedState}
+                        defaultSelected={props.data.eligibletoWorkInUnitedState}
+                      />
+                    </div>
 
-                                // inputRef={register({ required: { value: reqBits., message: RequireError } })}
-                              />
-                            }
-                            label="Yes"
-                          />
-                          <FormControlLabel
-                            value={false}
-                            control={
-                              <Radio
-                                name="willingForDrugTest"
-                                checked={
-                                  manualStates.willingForDrugTest == false
-                                }
-                                onClick={(e) => {
-                                  setManualStates({
-                                    ...manualStates,
-                                    willingForDrugTest: false,
-                                  });
-                                }}
-
-                                // inputRef={register({ required: { value: reqBits., message: RequireError } })}
-                              />
-                            }
-                            label="No"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </Grid>
+                    <div style={{ paddingLeft: "13px" }}>
+                      <RadioQuestions
+                        id="willingForDrugTest"
+                        question="Are you willing to undertake a drug test as part of this
+                      hiring process?"
+                        xsSize={12}
+                        optionList={["Yes", "No"]}
+                        optionValue={["Yes", "No"]}
+                        useForm={Forms}
+                        isReq={reqBits.willingForDrugTest}
+                        defaultSelected={props.data.willingForDrugTest}
+                      />
+                    </div>
                   </Grid>
                 </AccordionDetails>
               </Accordion>
