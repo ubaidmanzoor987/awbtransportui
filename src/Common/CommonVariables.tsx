@@ -107,15 +107,38 @@ export type tDriverLicenseInfo = {
 };
 
 export let driverLicenseDummyElement: tDriverLicenseInfo = {
-  stateOfLicence: "Default",
-  licenceNumber: "Default",
-  licenceType: "Default",
-  licenceEndoresment: "Default",
-  licenceExpirationDate: "Default",
+  stateOfLicence: "",
+  licenceNumber: "",
+  licenceType: "",
+  licenceEndoresment: "",
+  licenceExpirationDate: "",
 };
 
 export type tDriverLicenses = tDriverLicenseInfo[];
 //-----------DriverLicense-----------
+
+//-----------References-----------
+
+export type tReferenceInfo = {
+  referencefirstName: string;
+  referencelastName: string;
+  referenceCompany: string;
+  referenceTitle: string;
+  referencePhoneNumber: string;
+  referenceAddress: string;
+};
+
+export let ReferenceDummyElement: tReferenceInfo = {
+  referencefirstName: "",
+  referencelastName: "",
+  referenceCompany: "",
+  referenceTitle: "",
+  referencePhoneNumber: "",
+  referenceAddress: "",
+};
+
+export type tReferences = tReferenceInfo[];
+//-----------References-----------
 
 //-----------TrafficConvictions-----------
 export type tTrafficConvictionInfo = {
@@ -294,6 +317,49 @@ export let reqBits = {
   signature: false,
   dateOfApplication: true,
   remarks: false,
+  //FORM6
+
+  alcoholTestExecutionDate: true,
+  alcoholTestEmployeeFirstName: true,
+  alcoholTestEmployeeLastName: false,
+  alcoholTestEmployeeSignature: false,
+  alcoholTestSecurityNumber: true,
+
+  //FORM7
+  employeePrintedName: false,
+  employeeSSNNumber: false,
+  employeeSignature: false,
+  employeeDate: false,
+
+  newEmployeerName: false,
+  newEmployeerAddress: false,
+  newEmployeerCity: false,
+  newEmployeerState: false,
+  newEmployeerpostalCode: false,
+  newEmployeerphone: false,
+  newEmployeerFax: false,
+  newEmployeedesignatedEmployeeReprsentative: false,
+
+  prevEmployeerName: false,
+  prevEmployeerAddress: false,
+  prevEmployeerCity: false,
+  prevEmployeerState: false,
+  prevEmployeerpostalCode: false,
+  prevEmployeerphone: false,
+  prevEmployeerFax: false,
+  prevEmployeedesignatedEmployeeReprsentative: false,
+
+  employeeAlcoholTestRateHigher: false,
+  employeeverifiedDrugTest: false,
+  employeerefuseTest: false,
+  employeeotherViolations: false,
+  prevEmployeeReportDrug: false,
+  answeredYes: false,
+
+  nameOfPersonProvidingInformation: false,
+  nameOfPersonProvidingInformationTitle: false,
+  nameOfPersonProvidingInformationPhone: false,
+  nameOfPersonProvidingInformationDate: false,
 };
 
 export let reqBitsKeys = {
@@ -527,7 +593,7 @@ export type AddressErrorsList = [
 // ];
 
 export const WrongPatternError: string = "Wrong Pattern";
-export let debug = true;
+export let debug = false;
 export let addr = {
   lastYearAddress: "Default",
   lastYearAddressCity: "Default",

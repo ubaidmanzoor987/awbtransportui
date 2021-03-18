@@ -283,7 +283,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
         <Grid item xs={12} style={{ padding: "20px 10px" }}>
           <Button
             size="small"
-            className="col-3"
+            className="col-5"
             variant="contained"
             color="primary"
             onClick={() =>
@@ -292,7 +292,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
               })
             }
           >
-            Another Address
+            Another Employment History
           </Button>
         </Grid>
       </Grid>

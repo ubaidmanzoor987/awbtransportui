@@ -49,7 +49,7 @@ import RadioQuestions from "./SubComponents/RadioQuestions";
 import AddressesComponent from "./SubComponents/AddressesComponent";
 import classNames from "classnames";
 import { DynamicFileUpload } from "./DynamicAddition/DynamicFileUpload";
-type Props = { data?: any; handler?: any };
+type Props = { data?: any; handler?: any; setData: any };
 const startTimeVal = [
   { value: "Immediately" },
   { value: "Within 2 Weeks" },
@@ -80,62 +80,73 @@ function EmpApplicationForm1(props: Props) {
     console.log(event.target.files[0]);
     const formData = new FormData();
 
-    // if (manualStates.resume1 == undefined || manualStates.resume1 == null) {
-    setManualStates({ ...manualStates, resume1: event.target.files[0] });
-    formData.append("file", event.target.files[0], event.target.files[0].name);
-    formData.append("user_name", props.data.user_name);
-    // axios.post("api/fileUploadApi", formData);
-    fileUploadApi(formData);
-    // } else {
-    //   setManualStates({ ...manualStates, resume2: event.target.files[0] });
-    // fileUploadApi();
-    // }
+    if (manualStates.resume1 == undefined || manualStates.resume1 == null) {
+      setManualStates({ ...manualStates, resume1: event.target.files[0] });
+      formData.append(
+        "file",
+        event.target.files[0],
+        event.target.files[0].name
+      );
+      formData.append("user_name", props.data.user_name);
+      // axios.post("api/fileUploadApi", formData);
+      fileUploadApi(formData);
+    } else {
+      setManualStates({ ...manualStates, resume2: event.target.files[0] });
+      formData.append(
+        "file",
+        event.target.files[0],
+        event.target.files[0].name
+      );
+      formData.append("user_name", props.data.user_name);
+
+      fileUploadApi(formData);
+    }
   };
 
-  if (debug === true) {
-    props.data.first_name = "Default";
-    props.data.last_name = "Default";
-    props.data.phone_number = "111-111-1111 x1111";
-    props.data.email = "Default@email.com";
-    props.data.dateofBirth = "2018-01-01";
-    props.data.socialSecurity = "012345678";
-    props.data.address = "Default";
-    props.data.city = "Default";
-    props.data.state = states[1].value;
-    props.data.zipCode = "0123456";
-    props.data.lastThreeYearResidenceCheck = false;
-    props.data.addresses = [
-      {
-        lastYearAddress: "Default",
-        lastYearAddressCity: "Default",
-        lastYearAddressState: states[1].value,
-        lastYearAddressZipCode: "0123456",
-        lastYearAddressfrom: "2018-01-01",
-        lastYearAddressTo: "2018-01-01",
-      },
-      {
-        lastYearAddress: "Default",
-        lastYearAddressCity: "Default",
-        lastYearAddressState: states[1].value,
-        lastYearAddressZipCode: "0123456",
-        lastYearAddressfrom: "2018-01-01",
-        lastYearAddressTo: "2018-01-01",
-      },
-      {
-        lastYearAddress: "Default",
-        lastYearAddressCity: "Default",
-        lastYearAddressState: states[1].value,
-        lastYearAddressZipCode: "0123456",
-        lastYearAddressfrom: "2018-01-01",
-        lastYearAddressTo: "2018-01-01",
-      },
-    ];
-    props.data.startTime = startTimeVal[1].value;
-    props.data.hearAbout = "Default";
-    props.data.eligibletoWorkInUnitedState = false;
-    props.data.classAExperienceLevel = classAExperienceLevelVal[1].value;
-    props.data.willingForDrugTest = false;
-  }
+  // if (debug === true) {
+  //   props.data.first_name = "Default";
+  //   props.data.last_name = "Default";
+  //   props.data.phone_number = "111-111-1111 x1111";
+  //   props.data.email = "Default@email.com";
+  //   props.data.dateofBirth = "2018-01-01";
+  //   props.data.socialSecurity = "012345678";
+  //   props.data.address = "Default";
+  //   props.data.city = "Default";
+  //   props.data.state = states[1].value;
+  //   props.data.zipCode = "0123456";
+  //   props.data.lastThreeYearResidenceCheck = "false";
+  //   props.data.addresses = [
+  //     {
+  //       lastYearAddress: "Default",
+  //       lastYearAddressCity: "Default",
+  //       lastYearAddressState: states[1].value,
+  //       lastYearAddressZipCode: "0123456",
+  //       lastYearAddressfrom: "2018-01-01",
+  //       lastYearAddressTo: "2018-01-01",
+  //     },
+  //     {
+  //       lastYearAddress: "Default",
+  //       lastYearAddressCity: "Default",
+  //       lastYearAddressState: states[1].value,
+  //       lastYearAddressZipCode: "0123456",
+  //       lastYearAddressfrom: "2018-01-01",
+  //       lastYearAddressTo: "2018-01-01",
+  //     },
+  //     {
+  //       lastYearAddress: "Default",
+  //       lastYearAddressCity: "Default",
+  //       lastYearAddressState: states[1].value,
+  //       lastYearAddressZipCode: "0123456",
+  //       lastYearAddressfrom: "2018-01-01",
+  //       lastYearAddressTo: "2018-01-01",
+  //     },
+  //   ];
+  //   props.data.startTime = startTimeVal[1].value;
+  //   props.data.hearAbout = "Default";
+  //   props.data.eligibletoWorkInUnitedState = false;
+  //   props.data.classAExperienceLevel = classAExperienceLevelVal[1].value;
+  //   props.data.willingForDrugTest = false;
+  // }
 
   let preLoadedValues = {
     first_name: props.data.first_name,
@@ -169,21 +180,12 @@ function EmpApplicationForm1(props: Props) {
 
   const { register, handleSubmit, errors } = Forms;
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     data.addresses = UpdateAddressesList;
-    //TODO Change to Boolean
-    data.lastThreeYearResidenceCheck =
-      data.lastThreeYearResidenceCheck == "true";
-
-    data.eligibletoWorkInUnitedState =
-      data.eligibletoWorkInUnitedState == "true";
-
-    data.willingForDrugTest = data.willingForDrugTest == "true";
-
     data.user_name = props.data.user_name;
-    // data = { user_name: props.data.user_name, data };
     console.log(data);
-    update(data);
+    const resdata = await update(data);
+    props.setData(resdata.data.data);
     props.handler();
   };
 
@@ -569,7 +571,14 @@ function EmpApplicationForm1(props: Props) {
                             </Grid>
                             <Grid item xs={2}>
                               <Button>
-                                <DeleteIcon />
+                                <DeleteIcon
+                                  onClick={() => {
+                                    setManualStates({
+                                      ...manualStates,
+                                      resume1: null,
+                                    });
+                                  }}
+                                />
                               </Button>
                             </Grid>
                           </Grid>
@@ -595,9 +604,12 @@ function EmpApplicationForm1(props: Props) {
                             <Grid item xs={2}>
                               <Button>
                                 <DeleteIcon
-                                // onClick={((n) => {
-                                //   setManualStates(...manualStates);
-                                // })(1)}
+                                  onClick={() => {
+                                    setManualStates({
+                                      ...manualStates,
+                                      resume2: null,
+                                    });
+                                  }}
                                 />
                               </Button>
                             </Grid>

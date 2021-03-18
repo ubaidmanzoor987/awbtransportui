@@ -1,2 +1,2 @@
-// export const baseUrl = "https://awbtransport.herokuapp.com";
+// export const baseUrl = "http://awbtransport.com";
 export const baseUrl = "http://localhost:5000";

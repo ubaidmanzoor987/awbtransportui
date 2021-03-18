@@ -1,6 +1,7 @@
 import { LoginState } from "../Component/SignIn";
 import { Result } from "../interfaces/registerinterface";
 import { baseUrl } from "../shared/baseUrl";
+import {processResult} from './commonresult'
 
 export async function update(data: any) {
   let res;
@@ -13,6 +14,7 @@ export async function update(data: any) {
       },
     });
     const resultData = (await res.json()) as Result;
+    processResult(resultData);
     return resultData;
   } catch (ex) {
     console.log("exception", ex);

@@ -3,6 +3,7 @@ import React from "react";
 import { Accordion, Col, Container, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import styleClasses from "../Common/styleClasses";
+import { update } from "../services/updateApi";
 
 type Props = { data?: any; handler?: any };
 
@@ -11,7 +12,10 @@ export default function EmpApplicationForm5(props: Props) {
   const Forms = useForm();
   const { register, handleSubmit, errors, control } = Forms;
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
+    data.user_name = props.data.user_name;
+    // const resdata = await update(data);
+    // console.log(resdata);
     console.log(data);
     props.handler[0]();
   };
@@ -42,7 +46,9 @@ export default function EmpApplicationForm5(props: Props) {
                   alignItems="baseline"
                   spacing={3}
                 >
-                  <Grid item xs={12}><input type="hidden" value="true" id="form5" name="form5" /></Grid>
+                  <Grid item xs={12}>
+                    <input type="hidden" value="true" id="form5" name="form5" />
+                  </Grid>
                   <Grid item xs={12}>
                     <Typography align="justify" variant="subtitle2">
                       <b>DRUG PROHIBITIONS</b>

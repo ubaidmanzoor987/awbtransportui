@@ -1,5 +1,9 @@
 import React from "react";
-import { Address } from "../../Common/CommonVariables";
+import {
+  Address,
+  EmploymentAccidentHistories,
+  driverLicenseDummyElement,
+} from "../../Common/CommonVariables";
 import {
   Button,
   Divider,
@@ -37,8 +41,11 @@ import {
   Form1,
   reqBits,
   states,
+  tDriverLicenses,
   AddressErrorsList,
-  tTrafficConvictions,
+  tReferences,
+  ReferenceDummyElement,
+  tReferenceInfo,
 } from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
@@ -46,22 +53,15 @@ import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
 
 type Props = {
   idPrefix: string;
-  trafficConvictionsList: tTrafficConvictions;
+  referenceList: tReferences;
   useForm: any;
-  settrafficConvictionsList: any;
+  setReferenceList: any;
 };
 
 const RequireError: string = "Required *";
 const WrongPatternError: string = "Wrong Pattern";
 
-let dummy = {
-  dateOfViolation: "Default",
-  LocationOfViolation: "Default",
-  ViolationCharge: "Default",
-  ViolationPenalty: "Default",
-};
-
-export function DynamicTrafficConvictions(props: Props) {
+export function DynamicReferences(props: Props) {
   const classes = styleClasses.useStyles();
   const {
     register,
@@ -92,18 +92,14 @@ export function DynamicTrafficConvictions(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion elevation={3} key={index}>
+          <Accordion elevation={3}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
               <Typography className={classes.smallHeading}>
-                Traffic Convictions and Forfeitures for the last three (3) years
-                : 1
-                <Typography className={classes.caption}>
-                  (other than parking violations)
-                </Typography>
+                References
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -112,64 +108,68 @@ export function DynamicTrafficConvictions(props: Props) {
                 direction="row"
                 justify="space-around"
                 alignItems="baseline"
-                spacing={1}
+                spacing={3}
               >
                 <Grid item xs={6}>
                   <TextField
-                    variant="outlined"
-                    name={`${props.idPrefix}[${index}].dateOfViolation`}
+                    name={`${props.idPrefix}[${index}].referencefirstName`}
                     inputRef={register({
-                      required: reqBits.dateOfViolation,
+                      required: {
+                        value: reqBits.referencefirstName,
+                        message: RequireError,
+                      },
                     })}
-                    defaultValue={item.dateOfViolation}
+                    variant="outlined"
+                    label="First Name"
                     size="small"
-                    helperText="Date Of Violation"
-                    type="date"
+                    type="text"
                     className="col-12"
                   ></TextField>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    variant="outlined"
-                    name={`${props.idPrefix}[${index}].ViolationPenalty`}
+                    name={`${props.idPrefix}[${index}].referencelastName`}
                     inputRef={register({
-                      required: reqBits.ViolationPenalty,
+                      required: {
+                        value: reqBits.referencelastName,
+                        message: RequireError,
+                      },
                     })}
-                    defaultValue={item.ViolationPenalty}
+                    variant="outlined"
+                    label="Last Name"
                     size="small"
-                    label="Penalty"
-                    type="number"
+                    type="text"
                     className="col-12"
                   ></TextField>
                 </Grid>
-
                 <Grid item xs={12}>
                   <TextField
-                    id="outlined-multiline-static"
-                    label="Location"
-                    multiline
-                    name={`${props.idPrefix}[${index}].LocationOfViolation`}
+                    name={`${props.idPrefix}[${index}].referenceCompany`}
                     inputRef={register({
-                      required: reqBits.LocationOfViolation,
+                      required: {
+                        value: reqBits.referenceCompany,
+                        message: RequireError,
+                      },
                     })}
-                    size="small"
-                    defaultValue={item.LocationOfViolation}
-                    rows={4}
                     variant="outlined"
-                    className="col-12"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="outlined-multiline-static"
-                    label="Charge"
-                    multiline
-                    name={`${props.idPrefix}[${index}].ViolationCharge`}
-                    inputRef={register({
-                      required: reqBits.ViolationCharge,
-                    })}
+                    label="Company"
                     size="small"
-                    defaultValue={item.ViolationCharge}
+                    className="col-12"
+                    type="text"
+                  ></TextField>
+                </Grid>
+                <Grid item xs={8}>
+                  <TextField
+                    name={`${props.idPrefix}[${index}].referenceTitle`}
+                    inputRef={register({
+                      required: {
+                        value: reqBits.referenceTitle,
+                        message: RequireError,
+                      },
+                    })}
+                    id="outlined-multiline-static"
+                    size="small"
+                    label="Title"
                     rows={4}
                     variant="outlined"
                     className="col-12"
@@ -206,14 +206,15 @@ export function DynamicTrafficConvictions(props: Props) {
             color="primary"
             onClick={() =>
               append({
-                dummy,
+                driverLicenseDummyElement,
               })
             }
           >
-            Another Traffic Conviction
+            Another Reference
           </Button>
         </Grid>
       </Grid>
     </React.Fragment>
   );
 }
+//TODO

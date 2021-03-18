@@ -76,10 +76,11 @@ function EmpApplicationForm2(props: Props) {
 
   const classes = useStyles();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
     data.user_name = props.data.user_name;
-    update(data);
+    const resdata = await update(data);
+    console.log(resdata);
     props.handler[0]();
   };
 

@@ -2,6 +2,7 @@ import React from "react";
 import {
   Address,
   EmploymentAccidentHistories,
+  driverLicenseDummyElement,
 } from "../../Common/CommonVariables";
 import {
   Button,
@@ -40,6 +41,7 @@ import {
   Form1,
   reqBits,
   states,
+  tDriverLicenses,
   AddressErrorsList,
 } from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
@@ -48,22 +50,13 @@ import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
 
 type Props = {
   idPrefix: string;
-  employmentAccidentHistoryList: EmploymentAccidentHistories;
+  dirverLicenseList: tDriverLicenses;
   useForm: any;
-  setEmploymentAccidentHistoryList: any;
+  setdirverLicenseList: any;
 };
 
 const RequireError: string = "Required *";
 const WrongPatternError: string = "Wrong Pattern";
-
-let addr = {
-  lastYearAddress: "",
-  lastYearAddressCity: "",
-  lastYearAddressState: "",
-  lastYearAddressZipCode: "",
-  lastYearAddressfrom: "1990-01-01",
-  lastYearAddressTo: "1990-01-01",
-};
 
 export function DynamicDriverLicense(props: Props) {
   const classes = styleClasses.useStyles();
@@ -124,12 +117,16 @@ export function DynamicDriverLicense(props: Props) {
                       State
                     </InputLabel>
                     <Select
-                      name="state"
+                      // {`${props.idPrefix}[${index}].lastYearAddressTo`}
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
                       label="State"
+                      name={`${props.idPrefix}[${index}].licenceExpirationDate`}
                       inputRef={register({
-                        required: { value: true, message: RequireError },
+                        required: {
+                          value: reqBits.licenceExpirationDate,
+                          message: RequireError,
+                        },
                       })}
                     >
                       <MenuItem value="">
@@ -147,6 +144,13 @@ export function DynamicDriverLicense(props: Props) {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    name={`${props.idPrefix}[${index}].licenceNumber`}
+                    inputRef={register({
+                      required: {
+                        value: reqBits.licenceNumber,
+                        message: RequireError,
+                      },
+                    })}
                     variant="outlined"
                     label="License"
                     size="small"
@@ -156,6 +160,13 @@ export function DynamicDriverLicense(props: Props) {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    name={`${props.idPrefix}[${index}].licenceType`}
+                    inputRef={register({
+                      required: {
+                        value: reqBits.licenceType,
+                        message: RequireError,
+                      },
+                    })}
                     variant="outlined"
                     label="Type"
                     size="small"
@@ -165,6 +176,13 @@ export function DynamicDriverLicense(props: Props) {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    name={`${props.idPrefix}[${index}].licenceEndoresment`}
+                    inputRef={register({
+                      required: {
+                        value: reqBits.licenceEndoresment,
+                        message: RequireError,
+                      },
+                    })}
                     id="outlined-multiline-static"
                     size="small"
                     label="Endorsement"
@@ -176,6 +194,13 @@ export function DynamicDriverLicense(props: Props) {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    name={`${props.idPrefix}[${index}].licenceExpirationDate`}
+                    inputRef={register({
+                      required: {
+                        value: reqBits.licenceExpirationDate,
+                        message: RequireError,
+                      },
+                    })}
                     id="outlined-multiline-static"
                     helperText="Expiration Date"
                     size="small"
@@ -217,11 +242,11 @@ export function DynamicDriverLicense(props: Props) {
             color="primary"
             onClick={() =>
               append({
-                addr,
+                driverLicenseDummyElement,
               })
             }
           >
-            Another Accident History
+            Another Driver License
           </Button>
         </Grid>
       </Grid>

@@ -1,30 +1,17 @@
 import {
-  Accordion,
-  AccordionActions,
-  AccordionDetails,
-  AccordionSummary,
   Button,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
   Grid,
-  InputLabel,
   MenuItem,
   Paper,
-  Radio,
-  RadioGroup,
-  Select,
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { Component } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import React from "react";
+import { Container } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
+import SignatureCanvas from "react-signature-canvas";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import DrivingExperience from "./SubComponents/DrivingExperience";
+
 import {
   addr,
   debug,
@@ -46,7 +33,7 @@ import {
   tDriverLicenseInfo,
   reqBits,
 } from "../Common/CommonVariables";
-import { Addresses, form3DefaultValue } from "../Common/CommonVariables";
+import { Addresses, tReferences } from "../Common/CommonVariables";
 import RadioQuestions from "./SubComponents/RadioQuestions";
 import AddressesComponent from "./SubComponents/AddressesComponent";
 import EmploymentHistory from "./SubComponents/EmploymentHistory";
@@ -61,8 +48,11 @@ import { DynamicEmploymentHistoryComponent } from "./DynamicAddition/DynamicEmpl
 import { DynamicDrivingExperienceComponent } from "./DynamicAddition/DynamicDrivingExperienceComponent";
 import { DynamicEmploymentAccidentHistoryComponent } from "./DynamicAddition/DynamicEmploymentAccidentHistoryComponent";
 import { DynamicTrafficConvictions } from "./DynamicAddition/DynamicTrafficConvictions";
+import { DynamicDriverLicense } from "./DynamicAddition/DynamicDriverLicense";
 import { update } from "../services/updateApi";
 import { PinDropRounded } from "@material-ui/icons";
+import { DynamicReferences } from "./DynamicAddition/DynamicReferences";
+import { useRef } from "react";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -121,30 +111,58 @@ let UpdateDrivingExperienceList: tDrivingExperiences;
 let EmploymentAccidentHistoryList: EmploymentAccidentHistories;
 let TrafficConvictionsList: tTrafficConvictions;
 let DriverLicenseList: tDriverLicenses;
+let ReferencesList: tReferences;
 
 type Props = { data?: any; handler?: any };
 
 function EmpApplicationForm3(props: Props) {
-  const Forms = useForm({ defaultValues: form3DefaultValue });
+  const Forms = useForm({ defaultValues: props.data });
   const { register, handleSubmit, errors, control } = Forms;
 
+  const sigPad = useRef<any>();
+  let base64SignatureImage = "";
+
+  const clearSigPad = () => {
+    if (sigPad && sigPad.current) {
+      sigPad.current?.clear();
+      base64SignatureImage = "";
+    }
+  };
+
+  const saveImage = () => {
+    if (sigPad.current && !sigPad.current.isEmpty()) {
+      base64SignatureImage = sigPad.current
+        ?.getTrimmedCanvas()
+        .toDataURL("image/png");
+    }
+  };
+
   if (debug === true) {
-    // props.data = form3DefaultValue;
+    // props.data = props.data;
   }
 
   const classes = useStyles();
 
-  const onSubmit = (data: any) => {
-    // data.employmentAccidentsHistory = EmploymentAccidentHistoryList;
-    // data.violations = TrafficConvictionsList;
-    // data.employmentExperienceHistory = UpdateDrivingExperienceList;
-    // data.employmentHistories = UdpatedEmploymentHistoryList;
-    // data.employmentHistory.map();
-    // data.employmentHistorysubjecttotheFMCSRs = data.employmentHistorysubjecttotheFMCSRs == ""
+  const onSubmit = async (data: any) => {
+    if (sigPad.current && sigPad.current.isEmpty()) return;
+    {
+      base64SignatureImage = sigPad.current
+        .getTrimmedCanvas()
+        .toDataURL("image/png");
+    }
+    data.signature = base64SignatureImage;
+
     console.log(data);
     data.user_name = props.data.user_name;
-    update(data);
+    const resdata = await update(data);
+    console.log(resdata);
     props.handler[0]();
+  };
+
+  const updateReferencesList = (updateReferences: any) => {
+    console.log("------------Update Driver License List------------");
+    ReferencesList = updateReferences;
+    console.log(ReferencesList);
   };
 
   const updateDriverLicenseList = (updateDriverLicense: any) => {
@@ -306,7 +324,7 @@ function EmpApplicationForm3(props: Props) {
                           size="small"
                           control={control}
                           className="col-10"
-                          defaultValue="Alaska"
+                          defaultValue={props.data.companyState}
                         >
                           <MenuItem value="">
                             <em>None</em>
@@ -407,9 +425,7 @@ function EmpApplicationForm3(props: Props) {
                                 inputRef={register({
                                   required: reqBits.applicationApplyDate,
                                 })}
-                                defaultValue={
-                                  form3DefaultValue.applicationApplyDate
-                                }
+                                defaultValue={props.data.applicationApplyDate}
                                 helperText={
                                   errors.applicationApplyDate &&
                                   errors.applicationApplyDate?.type.toUpperCase() +
@@ -434,7 +450,7 @@ function EmpApplicationForm3(props: Props) {
                                   "Other",
                                 ]}
                                 defaultSelected={
-                                  form3DefaultValue.applicationApplyAsPosition
+                                  props.data.applicationApplyAsPosition
                                 }
                                 useForm={Forms}
                                 isReq={false}
@@ -671,17 +687,17 @@ function EmpApplicationForm3(props: Props) {
                                     ? false
                                     : true
                                 }
-                                label="Phyical Exam Exp Date"
+                                helperText="Phyical Exam Exp Date"
                                 inputRef={register({
                                   required: reqBits.physicalExamExpirationDate,
                                 })}
-                                helperText={
-                                  errors.physicalExamExpirationDate == undefined
-                                    ? ""
-                                    : "Exp Date " +
-                                      errors.physicalExamExpirationDate?.type.toUpperCase() +
-                                      " Error"
-                                }
+                                // helperText={
+                                //   errors.physicalExamExpirationDate == undefined
+                                //     ? ""
+                                //     : "Exp Date " +
+                                //       errors.physicalExamExpirationDate?.type.toUpperCase() +
+                                //       " Error"
+                                // }
                               ></TextField>
                             </Grid>
                           </Grid>
@@ -715,7 +731,7 @@ function EmpApplicationForm3(props: Props) {
                         <DynamicAddressComponent
                           idPrefix="applicantAddresses"
                           setAddresses={updateAddressList}
-                          addressesList={form3DefaultValue.applicantAddresses}
+                          addressesList={props.data.applicantAddresses}
                           addressId="applicantAddresses"
                           cityId=""
                           stateId=""
@@ -759,7 +775,7 @@ function EmpApplicationForm3(props: Props) {
                         question="Have you worked for this company before?"
                         optionValue={["Yes", "No"]}
                         optionList={["Yes", "No"]}
-                        defaultSelected={form3DefaultValue.everWorkedForCompany}
+                        defaultSelected={props.data.everWorkedForCompany}
                         useForm={Forms}
                         isReq={reqBits.everWorkedForCompany}
                       ></RadioQuestions>
@@ -807,7 +823,7 @@ function EmpApplicationForm3(props: Props) {
                           "11",
                           "12",
                         ]}
-                        defaultSelected={form3DefaultValue.applicantSchoolGrade}
+                        defaultSelected={props.data.applicantSchoolGrade}
                         isReq={reqBits.applicantSchoolGrade}
                         useForm={Forms}
                       ></RadioQuestions>
@@ -817,9 +833,7 @@ function EmpApplicationForm3(props: Props) {
                         question="Please circle the highest Collage grade completed"
                         optionValue={["1", "2", "3", "4"]}
                         optionList={["1", "2", "3", "4"]}
-                        defaultSelected={
-                          form3DefaultValue.applicantCollegeGrade
-                        }
+                        defaultSelected={props.data.applicantCollegeGrade}
                         isReq={reqBits.applicantCollegeGrade}
                         useForm={Forms}
                       ></RadioQuestions>
@@ -829,9 +843,7 @@ function EmpApplicationForm3(props: Props) {
                         question="Please circle the highest Post Graduate grade completed"
                         optionValue={["1", "2", "3", "4"]}
                         optionList={["1", "2", "3", "4"]}
-                        defaultSelected={
-                          form3DefaultValue.applicantPostGraduateGrade
-                        }
+                        defaultSelected={props.data.applicantPostGraduateGrade}
                         isReq={reqBits.applicantPostGraduateGrade}
                         useForm={Forms}
                       ></RadioQuestions>
@@ -865,9 +877,7 @@ function EmpApplicationForm3(props: Props) {
                     <DynamicEmploymentHistoryComponent
                       idPrefix="employmentHistory"
                       useForm={Forms}
-                      employmentHistoryList={
-                        form3DefaultValue.employmentHistory
-                      }
+                      employmentHistoryList={props.data.employmentHistory}
                       setEmploymentHistoryList={updateEmploymentHistoryList}
                     ></DynamicEmploymentHistoryComponent>
                   </Grid>
@@ -897,7 +907,7 @@ function EmpApplicationForm3(props: Props) {
                     <DynamicDrivingExperienceComponent
                       idPrefix="employmentExperienceHistory"
                       drivingExperienceList={
-                        form3DefaultValue.employmentExperienceHistory
+                        props.data.employmentExperienceHistory
                       }
                       useForm={Forms}
                       setDrivingExperienceList={updateDrivingExperienceList}
@@ -922,7 +932,7 @@ function EmpApplicationForm3(props: Props) {
                   })}
                   multiline
                   rows={4}
-                  defaultValue={form3DefaultValue.lastFiveYearStatesOperate}
+                  defaultValue={props.data.lastFiveYearStatesOperate}
                   variant="outlined"
                   className="col-10"
                 />
@@ -937,7 +947,7 @@ function EmpApplicationForm3(props: Props) {
                   })}
                   name="Listspecialcourses"
                   rows={4}
-                  defaultValue={form3DefaultValue.Listspecialcourses}
+                  defaultValue={props.data.Listspecialcourses}
                   variant="outlined"
                   className="col-10"
                 />
@@ -952,7 +962,7 @@ function EmpApplicationForm3(props: Props) {
                     required: reqBits.ListanySafeDrivingAwards,
                   })}
                   name="ListanySafeDrivingAwards"
-                  defaultValue={form3DefaultValue.ListanySafeDrivingAwards}
+                  defaultValue={props.data.ListanySafeDrivingAwards}
                   variant="outlined"
                   className="col-10"
                 />
@@ -974,7 +984,7 @@ function EmpApplicationForm3(props: Props) {
                     <DynamicEmploymentAccidentHistoryComponent
                       idPrefix="employmentAccidentsHistory"
                       employmentAccidentHistoryList={
-                        form3DefaultValue.employmentAccidentsHistory
+                        props.data.employmentAccidentsHistory
                       }
                       useForm={Forms}
                       setEmploymentAccidentHistoryList={
@@ -1008,6 +1018,268 @@ function EmpApplicationForm3(props: Props) {
                   </div>
                   <div className="col-1"></div>
                 </div>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={10}>
+              <Paper
+                style={{ margin: "10px 0px" }}
+                elevation={3}
+                className={(classes.heading, classes.paperProminantStyle)}
+              >
+                <Typography className={classes.heading}>
+                  Driver’s License (list each driver’s license held in the past
+                  three(3) years):
+                </Typography>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-10 mt-2">
+                    <DynamicDriverLicense
+                      idPrefix="licences"
+                      dirverLicenseList={[]}
+                      setdirverLicenseList={updateDriverLicenseList}
+                      useForm={Forms}
+                    ></DynamicDriverLicense>
+                  </div>
+                  <div className="col-1"></div>
+                </div>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={10}>
+              <Paper
+                style={{ margin: "10px 0px" }}
+                elevation={3}
+                className={(classes.heading, classes.paperProminantStyle)}
+              >
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-10 mt-2">
+                    <RadioQuestions
+                      id="deniedLicences"
+                      question="Have you ever been denied a license, permit or privilege to operate a motor vehicle? *"
+                      optionList={["Yes", "No"]}
+                      optionValue={["Yes", "No"]}
+                      useForm={Forms}
+                      xsSize={11}
+                      defaultSelected={"Yes"}
+                      isReq={reqBits.deniedLicences}
+                    ></RadioQuestions>
+                  </div>
+                  <div className="col-1"></div>
+                </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-10 mt-2">
+                    <RadioQuestions
+                      id="permitLicences"
+                      question="Has any license, permit or privilege ever been suspended or revoked? *"
+                      optionList={["Yes", "No"]}
+                      optionValue={["Yes", "No"]}
+                      useForm={Forms}
+                      xsSize={11}
+                      defaultSelected={"Yes"}
+                      isReq={reqBits.permitLicences}
+                    ></RadioQuestions>
+                  </div>
+                  <div className="col-1"></div>
+                </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-10 mt-2">
+                    <RadioQuestions
+                      id="reasonforUnableToPerformActions"
+                      question="Is there any reason you might be unable to perform the functions of the job for which
+                      you have applied (as described in the job description)?"
+                      optionList={["Yes", "No"]}
+                      optionValue={["Yes", "No"]}
+                      useForm={Forms}
+                      xsSize={11}
+                      defaultSelected={"Yes"}
+                      isReq={reqBits.reasonforUnableToPerformActions}
+                    ></RadioQuestions>
+                  </div>
+                  <div className="col-1"></div>
+                </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-10 mt-2">
+                    <RadioQuestions
+                      id="convictedofafelony"
+                      question="Have you ever been convicted of a felony? *"
+                      optionList={["Yes", "No"]}
+                      optionValue={["Yes", "No"]}
+                      useForm={Forms}
+                      xsSize={11}
+                      defaultSelected={"Yes"}
+                      isReq={reqBits.convictedofafelony}
+                    ></RadioQuestions>
+                  </div>
+                  <div className="col-1"></div>
+                </div>
+                <br />
+                <br />
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-10 mt-2">
+                    <TextField
+                      id="outlined-multiline-static"
+                      label="If the answers to any questions listed above are “yes”,
+                      give details"
+                      multiline
+                      rows={4}
+                      inputRef={register({
+                        required: reqBits.answerToAnyQuestion,
+                      })}
+                      name="answerToAnyQuestion"
+                      defaultValue={props.data.answerToAnyQuestion}
+                      variant="outlined"
+                      className="col-11"
+                    />
+                  </div>
+                  <div className="col-1"></div>
+                </div>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={10}>
+              <Paper
+                style={{ margin: "10px 0px" }}
+                elevation={3}
+                className={(classes.heading, classes.paperProminantStyle)}
+              >
+                <Typography className={classes.heading}>
+                  Driver’s License (list each driver’s license held in the past
+                  three(3) years):
+                </Typography>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-10 mt-2">
+                    <DynamicReferences
+                      idPrefix="references"
+                      referenceList={[]}
+                      setReferenceList={updateReferencesList}
+                      useForm={Forms}
+                    ></DynamicReferences>
+                  </div>
+                  <div className="col-1"></div>
+                </div>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={10}>
+              <Paper
+                style={{ margin: "10px 0px" }}
+                elevation={3}
+                className={(classes.heading, classes.paperProminantStyle)}
+              >
+                <Typography className={classes.heading}>
+                  To Be Read and Signed by Applicant:
+                </Typography>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-10 mt-2 text-left">
+                    <Typography>
+                      <ul>
+                        <li>
+                          It is agreed and understood that any misrepresentation
+                          given on this application shall be considered an act
+                          of dishonesty.
+                        </li>
+                        <li>
+                          It is agreed and understood that the motor carrier or
+                          his agents may investigate the applicant’s background
+                          to obtain any and all information of concern to
+                          applicant’s record, whether same is of record or not,
+                          and applicant releases employers and person named
+                          herein from all liability for any damages on account
+                          of his furnishing such information.
+                        </li>
+                        <li>
+                          It is also agreed and understood that under the Fair
+                          Credit Reporting Act, Public Law 91-508, I have been
+                          told that this investigation may include an
+                          investigating Consumer Report, including information
+                          regarding my character, general reputation, personal
+                          characteristics, and mode of living.
+                        </li>
+                        <li>
+                          I agree to furnish such additional information and
+                          complete such examinations as may be required to
+                          complete my application file.
+                        </li>
+                        <li>
+                          It is agreed and understood that this Application in
+                          no way obligates the motor carrier to employ or hire
+                          the applicant.
+                        </li>
+                        <li>
+                          It is agreed and understood that if qualified and
+                          hired, I may be on a probationary period during which
+                          time I may be disqualified without recourse.
+                        </li>
+                        <li>
+                          This certifies that this application was completed by
+                          me, and that all entries on it and information in it
+                          are true and complete to the best of my knowledge.
+                        </li>
+                      </ul>
+                    </Typography>
+                  </div>
+                  <div className="col-1"></div>
+                </div>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={10}>
+              <Paper
+                elevation={3}
+                style={{ paddingLeft: "40px", paddingRight: "60px" }}
+                className={(classes.heading, classes.paperProminantStyle)}
+              >
+                <Typography align="left" variant="h6">
+                  Employee Signature
+                </Typography>
+                <SignatureCanvas
+                  penColor="black"
+                  ref={sigPad}
+                  canvasProps={{
+                    width: 500,
+                    height: 200,
+                    className: "sigCanvas",
+                  }}
+                />
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="baseline"
+                  spacing={3}
+                >
+                  <Grid item xs={3}></Grid>
+                  <Grid item xs={3}>
+                    <Button
+                      type="button"
+                      className="col-12"
+                      variant="contained"
+                      color="primary"
+                      onClick={clearSigPad}
+                    >
+                      Clear
+                    </Button>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Button
+                      className="col-12"
+                      variant="contained"
+                      color="primary"
+                      onClick={saveImage}
+                    >
+                      Save
+                    </Button>
+                  </Grid>
+                  <Grid item xs={3}></Grid>
+                </Grid>
               </Paper>
             </Grid>
 

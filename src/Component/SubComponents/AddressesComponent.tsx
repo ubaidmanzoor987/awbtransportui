@@ -71,10 +71,18 @@ export default function AddressesComponent(props: Props) {
   // const Forms = props.useForm;
   // const { register, handleSubmit, errors, defaultValues } = Forms;
 
-  const [addressesState, addressesStateHandler] = useState(props.addressesList);
+  const [addressesState, addressesStateHandler] = useState(
+    props.addressesList && props.addressesList.length > 0
+      ? props.addressesList
+      : [addr]
+  );
   const [errorsList, errorListHandler] = useState();
   useEffect(() => {
-    addressesStateHandler(props.addressesList);
+    addressesStateHandler(
+      props.addressesList && props.addressesList.length > 0
+        ? props.addressesList
+        : [addr]
+    );
   }, [props.addressesList]);
 
   useEffect(() => {

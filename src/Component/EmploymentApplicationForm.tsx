@@ -24,6 +24,7 @@ import EmpApplicationForm3 from "./EmpApplicationForm3";
 import EmpApplicationForm4 from "./EmpApplicationForm4";
 import EmpApplicationForm5 from "./EmpApplicationForm5";
 import EmpApplicationForm6 from "./EmpApplicationForm6";
+import EmpApplicationForm7 from "./EmpApplicationForm7";
 import DynamicAddition from "./DynamicAddition/DynamicAddition";
 import {
   states,
@@ -76,7 +77,7 @@ let addr1 = {
   lastYearAddressTo: "",
 };
 
-let debug = true;
+let debug = false;
 
 class EmploymentApplication extends Component<
   EmploymentApplicationProps,
@@ -85,7 +86,7 @@ class EmploymentApplication extends Component<
   constructor(props: any) {
     super(props);
     this.state = {
-      formCounter: 3,
+      formCounter: 1,
     };
     this.gotoNextForm = this.gotoNextForm.bind(this);
     this.gotoPreviousForm = this.gotoPreviousForm.bind(this);
@@ -142,16 +143,17 @@ class EmploymentApplication extends Component<
         <NavbarCareer addLogout={true} />
         <div className="container-fluid">
           <div className="row">
-            <div
+            {/* <div
               className="col mySideBar"
               style={{ flexGrow: 0, paddingLeft: "0px", paddingRight: "0px" }}
             >
-              {/* <SideBar activeEmployment={false} /> */}
-            </div>
-            <div className="col-9" style={{ paddingTop: "100px" }}>
+              <SideBar activeEmployment={false} />
+            </div> */}
+            <div className="col-12" style={{ paddingTop: "100px" }}>
               {this.state.formCounter === 1 ? (
                 <EmpApplicationForm1
                   data={this.context.data}
+                  setData={this.context.setUserData}
                   handler={this.gotoNextForm}
                 ></EmpApplicationForm1>
               ) : (
@@ -197,11 +199,14 @@ class EmploymentApplication extends Component<
               ) : (
                 ""
               )}
-              {/* {this.state.formCounter == 7 ? (
-                <EmpApplicationForm7 data={this.context.data} handler={[this.gotoNextForm, this.gotoPreviousForm]}></EmpApplicationForm7>
+              {this.state.formCounter == 7 ? (
+                <EmpApplicationForm7
+                  data={this.context.data}
+                  handler={[this.gotoNextForm, this.gotoPreviousForm]}
+                ></EmpApplicationForm7>
               ) : (
                 ""
-              )} */}
+              )}
 
               <Footer />
             </div>

@@ -196,7 +196,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
         <Grid item xs={12} style={{ padding: "20px 10px" }}>
           <Button
             size="small"
-            className="col-3"
+            className="col-5"
             variant="contained"
             color="primary"
             onClick={() =>
@@ -205,7 +205,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
               })
             }
           >
-            Another Address
+            Another Driving Expirence
           </Button>
         </Grid>
       </Grid>
