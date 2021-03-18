@@ -9,7 +9,9 @@ type Props = { data?: any; handler?: any };
 
 export default function EmpApplicationForm5(props: Props) {
   const classes = styleClasses.useStyles();
-  const Forms = useForm();
+  const Forms = useForm({
+    defaultValues: props.data,
+  });
   const { register, handleSubmit, errors, control } = Forms;
 
   const onSubmit = async (data: any) => {

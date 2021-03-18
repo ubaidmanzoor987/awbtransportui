@@ -144,8 +144,7 @@ function EmpApplicationForm3(props: Props) {
   const classes = useStyles();
 
   const onSubmit = async (data: any) => {
-    if (sigPad.current && sigPad.current.isEmpty()) return;
-    {
+    if (sigPad.current && sigPad.current.isEmpty()) {
       base64SignatureImage = sigPad.current
         .getTrimmedCanvas()
         .toDataURL("image/png");
