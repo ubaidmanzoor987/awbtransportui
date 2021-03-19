@@ -400,11 +400,17 @@ function EmpApplicationForm3(props: Props) {
                             container
                             direction="row"
                             justify="space-around"
-                            alignItems="flex-start"
+                            alignItems="center"
                             spacing={2}
                           >
-                            <Grid item xs={4}>
-                              <Typography className={classes.text}>
+                            <Grid item xs={3}>
+                              <Typography
+                                className={classes.text}
+                                style={{
+                                  textAlign: "left",
+                                  paddingLeft: "18px",
+                                }}
+                              >
                                 Application Date:
                               </Typography>
                             </Grid>

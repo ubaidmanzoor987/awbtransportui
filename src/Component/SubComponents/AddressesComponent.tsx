@@ -41,6 +41,7 @@ import {
 } from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from ".././SubComponents/RadioQuestions";
+import ReactAutoComplete from "./ReactAutoComplete";
 
 type Props = {
   idPrefix: string;
@@ -52,6 +53,8 @@ type Props = {
   zipCodeId: string;
   fromDateId: string;
   toDateId: string;
+  useForm: any;
+  data: any;
 };
 
 const RequireError: string = "Required *";
@@ -68,8 +71,8 @@ let addr = {
 
 export default function AddressesComponent(props: Props) {
   const classes = styleClasses.useStyles();
-  // const Forms = props.useForm;
-  // const { register, handleSubmit, errors, defaultValues } = Forms;
+  const Forms = props.useForm;
+  const { register, handleSubmit, errors, defaultValues } = Forms;
 
   const [addressesState, addressesStateHandler] = useState(
     props.addressesList && props.addressesList.length > 0
@@ -104,13 +107,6 @@ export default function AddressesComponent(props: Props) {
       >
         {addressesState.map((address: Address, index: number) => {
           return (
-            // lastYearAddress: string;
-            // lastYearAddressCity: string;
-            // lastYearAddressState: string;
-            // lastYearAddressZipCode: string;
-            // lastYearAddressfrom: string;
-            // lastYearAddressTo: string;
-
             <Accordion key={index}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.text}>
@@ -175,7 +171,15 @@ export default function AddressesComponent(props: Props) {
                     ></TextField>
                   </Grid>
                   <Grid item xs={4}>
-                    <FormControl
+                    <ReactAutoComplete
+                      id="lastYearAddressState"
+                      className="col-12"
+                      useForm={Forms}
+                      optionList={states}
+                      defaultValue={props.data.lastYearAddressState}
+                    ></ReactAutoComplete>
+
+                    {/* <FormControl
                       variant="outlined"
                       size="small"
                       className="col-12"
@@ -217,8 +221,8 @@ export default function AddressesComponent(props: Props) {
                           );
                         })}
                       </Select>
-                      {/* <FormHelperText>{errors.seqAddressCity && errors.seqAddressCity.message}</FormHelperText> */}
-                    </FormControl>
+                       <FormHelperText>{errors.seqAddressCity && errors.seqAddressCity.message}</FormHelperText> 
+                    </FormControl> */}
                   </Grid>
                   <Grid item xs={4}>
                     <TextField

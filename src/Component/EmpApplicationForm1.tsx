@@ -9,38 +9,22 @@ import {
   InputLabel,
   MenuItem,
   Paper,
-  Radio,
-  RadioGroup,
   Select,
   TextField,
 } from "@material-ui/core";
 import React, { Component, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AccordionActions from "@material-ui/core/AccordionActions";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+
 import { styleClasses } from "../Common/styleClasses";
-import AttachmentIcon from "@material-ui/icons/Attachment";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {
-  states,
-  Form1,
-  Addresses,
-  reqBits,
-  debug,
-} from "../Common/CommonVariables";
+import { states, Addresses, reqBits } from "../Common/CommonVariables";
 
 import { fileUploadApi } from "../services/fileUploadApi";
 
@@ -48,7 +32,8 @@ import { update } from "../services/updateApi";
 import RadioQuestions from "./SubComponents/RadioQuestions";
 import AddressesComponent from "./SubComponents/AddressesComponent";
 import classNames from "classnames";
-import { DynamicFileUpload } from "./DynamicAddition/DynamicFileUpload";
+import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
+
 type Props = { data?: any; handler?: any; setData: any };
 const startTimeVal = [
   { value: "Immediately" },
@@ -60,14 +45,6 @@ const classAExperienceLevelVal = [
   { value: "Have Class A, But Need Training" },
   { value: "Currently in the Truck School" },
 ];
-let addr = {
-  lastYearAddress: "Default",
-  lastYearAddressCity: "Default",
-  lastYearAddressState: "Default",
-  lastYearAddressZipCode: "Default",
-  lastYearAddressfrom: "Default",
-  lastYearAddressTo: "Default",
-};
 
 let UpdateAddressesList: Addresses;
 
@@ -102,51 +79,6 @@ function EmpApplicationForm1(props: Props) {
       fileUploadApi(formData);
     }
   };
-
-  // if (debug === true) {
-  //   props.data.first_name = "Default";
-  //   props.data.last_name = "Default";
-  //   props.data.phone_number = "111-111-1111 x1111";
-  //   props.data.email = "Default@email.com";
-  //   props.data.dateofBirth = "2018-01-01";
-  //   props.data.socialSecurity = "012345678";
-  //   props.data.address = "Default";
-  //   props.data.city = "Default";
-  //   props.data.state = states[1].value;
-  //   props.data.zipCode = "0123456";
-  //   props.data.lastThreeYearResidenceCheck = "false";
-  //   props.data.addresses = [
-  //     {
-  //       lastYearAddress: "Default",
-  //       lastYearAddressCity: "Default",
-  //       lastYearAddressState: states[1].value,
-  //       lastYearAddressZipCode: "0123456",
-  //       lastYearAddressfrom: "2018-01-01",
-  //       lastYearAddressTo: "2018-01-01",
-  //     },
-  //     {
-  //       lastYearAddress: "Default",
-  //       lastYearAddressCity: "Default",
-  //       lastYearAddressState: states[1].value,
-  //       lastYearAddressZipCode: "0123456",
-  //       lastYearAddressfrom: "2018-01-01",
-  //       lastYearAddressTo: "2018-01-01",
-  //     },
-  //     {
-  //       lastYearAddress: "Default",
-  //       lastYearAddressCity: "Default",
-  //       lastYearAddressState: states[1].value,
-  //       lastYearAddressZipCode: "0123456",
-  //       lastYearAddressfrom: "2018-01-01",
-  //       lastYearAddressTo: "2018-01-01",
-  //     },
-  //   ];
-  //   props.data.startTime = startTimeVal[1].value;
-  //   props.data.hearAbout = "Default";
-  //   props.data.eligibletoWorkInUnitedState = false;
-  //   props.data.classAExperienceLevel = classAExperienceLevelVal[1].value;
-  //   props.data.willingForDrugTest = false;
-  // }
 
   let preLoadedValues = {
     first_name: props.data.first_name,
@@ -369,77 +301,63 @@ function EmpApplicationForm1(props: Props) {
                       })}
                     ></TextField>
                   </Grid>
-                  <Grid item xs={4}>
-                    <TextField
-                      name="city"
-                      variant="outlined"
-                      size="small"
-                      type="text"
-                      label="city"
-                      className="col-6"
-                      error={errors.city == undefined ? false : true}
-                      helperText={errors.city && errors.city?.message}
-                      inputRef={register({
-                        required: {
-                          value: reqBits.city,
-                          message: RequireError,
-                        },
-                      })}
-                    ></TextField>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <FormControl
-                      variant="outlined"
-                      size="small"
-                      className="col-10"
+                  <Grid item xs={1}></Grid>
+                  <Grid item xs={10}>
+                    <Grid
+                      container
+                      direction="row"
+                      justify="space-between"
+                      alignItems="baseline"
+                      spacing={3}
                     >
-                      <InputLabel id="demo-simple-select-outlined-label">
-                        State
-                      </InputLabel>
-                      <Select
-                        name="state"
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        label="State"
-                        defaultValue={props.data?.state}
-                        onChange={(e) => {
-                          setManualStates({
-                            ...manualStates,
-                            state: e.target.value,
-                          });
-                        }}
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        {states.map(function (object: any, i: number) {
-                          return (
-                            <MenuItem value={object.value} key={i}>
-                              {object.value}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
+                      <Grid item xs={4}>
+                        <TextField
+                          name="city"
+                          variant="outlined"
+                          size="small"
+                          type="text"
+                          label="City"
+                          className="col-12"
+                          error={errors.city == undefined ? false : true}
+                          helperText={errors.city && errors.city?.message}
+                          inputRef={register({
+                            required: {
+                              value: reqBits.city,
+                              message: RequireError,
+                            },
+                          })}
+                        ></TextField>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <ReactAutoComplete
+                          id="state"
+                          className="col-12"
+                          useForm={Forms}
+                          optionList={states}
+                          defaultValue={props.data.state}
+                        ></ReactAutoComplete>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <TextField
+                          name="zipCode"
+                          variant="outlined"
+                          size="small"
+                          type="text"
+                          label="ZipCode"
+                          className="col-12"
+                          error={errors.zipCode == undefined ? false : true}
+                          helperText={errors.zipCode && errors.zipCode?.message}
+                          inputRef={register({
+                            required: {
+                              value: reqBits.zipCode,
+                              message: RequireError,
+                            },
+                          })}
+                        ></TextField>
+                      </Grid>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={4}>
-                    <TextField
-                      name="zipCode"
-                      variant="outlined"
-                      size="small"
-                      type="text"
-                      label="zipCode"
-                      className="col-6"
-                      error={errors.zipCode == undefined ? false : true}
-                      helperText={errors.zipCode && errors.zipCode?.message}
-                      inputRef={register({
-                        required: {
-                          value: reqBits.zipCode,
-                          message: RequireError,
-                        },
-                      })}
-                    ></TextField>
-                  </Grid>
+                  <Grid item xs={1}></Grid>
                 </Grid>
               </Paper>
             </Grid>
@@ -513,6 +431,8 @@ function EmpApplicationForm1(props: Props) {
                     {/* {(props.data.addresses = addr)} */}
                     <AddressesComponent
                       idPrefix=""
+                      useForm={Forms}
+                      data={props.data}
                       addressId="lastYearAddress"
                       cityId="lastYearAddressCity"
                       stateId="lastYearAddressState"
