@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import {
-  TextField,
-  InputLabel,
-  MenuItem,
-  Select,
-  Button,
-} from "@material-ui/core";
+import { TextField, InputLabel, MenuItem, Select, Button } from "@material-ui/core";
 import { withStyles, Theme } from "@material-ui/core/styles";
 import { user_data } from "./User";
 import SideBar from "./SideBar";
@@ -26,6 +20,7 @@ import EmpApplicationForm5 from "./EmpApplicationForm5";
 import EmpApplicationForm6 from "./EmpApplicationForm6";
 import EmpApplicationForm7 from "./EmpApplicationForm7";
 import DynamicAddition from "./DynamicAddition/DynamicAddition";
+
 import {
   states,
   employmentHistoryDummyElement,
@@ -34,30 +29,7 @@ import {
 } from "../Common/CommonVariables";
 
 type EmploymentApplicationStates = {
-  // form1: boolean;
-  // form2: boolean;
   formCounter: number;
-
-  // first_name: string;
-  // last_name: string;
-  // email: string;
-  // phone_number: string;
-  // dateofBirth: string;
-  // socialSecurity: string;
-  // address: string;
-  // city: string;
-  // state: string;
-  // zipCode: string;
-  // lastThreeYearResidenceCheck: boolean;
-  // addresses: Address[];
-  // resume?: File;
-  // startTime: string;
-  // hearAbout: string;
-  // eligibletoWorkInUnitedState: boolean;
-  // classAExperienceLevel: boolean;
-  // willingForDrugTest: boolean;
-  // errors: formErrors;
-  // open: boolean;
 };
 
 interface EmploymentApplicationProps {
@@ -79,10 +51,7 @@ let addr1 = {
 
 let debug = false;
 
-class EmploymentApplication extends Component<
-  EmploymentApplicationProps,
-  EmploymentApplicationStates
-> {
+class EmploymentApplication extends Component<EmploymentApplicationProps, EmploymentApplicationStates> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -108,12 +77,8 @@ class EmploymentApplication extends Component<
     if (debug === true) {
       this.context.data.addresses = [addr1];
       this.context.data.employmentHistory = [employmentHistoryDummyElement];
-      this.context.data.employmentExperienceHistory = [
-        drivingExperienceDummyElement,
-      ];
-      this.context.data.employmentAccidentsHistory = [
-        employmentAccidentHistoryDummyElement,
-      ];
+      this.context.data.employmentExperienceHistory = [drivingExperienceDummyElement];
+      this.context.data.employmentAccidentsHistory = [employmentAccidentHistoryDummyElement];
     } else {
     }
     if (this.context.data.user_name) {

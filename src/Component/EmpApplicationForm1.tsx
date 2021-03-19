@@ -33,13 +33,10 @@ import RadioQuestions from "./SubComponents/RadioQuestions";
 import AddressesComponent from "./SubComponents/AddressesComponent";
 import classNames from "classnames";
 import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
+import NumberFormat from "react-number-format";
 
 type Props = { data?: any; handler?: any; setData: any };
-const startTimeVal = [
-  { value: "Immediately" },
-  { value: "Within 2 Weeks" },
-  { value: "Within 1 Month" },
-];
+const startTimeVal = [{ value: "Immediately" }, { value: "Within 2 Weeks" }, { value: "Within 1 Month" }];
 const classAExperienceLevelVal = [
   { value: "Experienced Class A Driver" },
   { value: "Have Class A, But Need Training" },
@@ -59,21 +56,13 @@ function EmpApplicationForm1(props: Props) {
 
     if (manualStates.resume1 == undefined || manualStates.resume1 == null) {
       setManualStates({ ...manualStates, resume1: event.target.files[0] });
-      formData.append(
-        "file",
-        event.target.files[0],
-        event.target.files[0].name
-      );
+      formData.append("file", event.target.files[0], event.target.files[0].name);
       formData.append("user_name", props.data.user_name);
       // axios.post("api/fileUploadApi", formData);
       fileUploadApi(formData);
     } else {
       setManualStates({ ...manualStates, resume2: event.target.files[0] });
-      formData.append(
-        "file",
-        event.target.files[0],
-        event.target.files[0].name
-      );
+      formData.append("file", event.target.files[0], event.target.files[0].name);
       formData.append("user_name", props.data.user_name);
 
       fileUploadApi(formData);
@@ -106,6 +95,8 @@ function EmpApplicationForm1(props: Props) {
     willingForDrugTest: props.data.willingForDrugTest,
   };
 
+
+
   const Forms = useForm({
     defaultValues: props.data,
   });
@@ -134,13 +125,7 @@ function EmpApplicationForm1(props: Props) {
     <React.Fragment>
       <Container style={{ backgroundColor: "#fafafa" }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid
-            container
-            direction="row"
-            justify="space-around"
-            alignItems="baseline"
-            spacing={3}
-          >
+          <Grid container direction="row" justify="space-around" alignItems="baseline" spacing={3}>
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
@@ -149,19 +134,8 @@ function EmpApplicationForm1(props: Props) {
             <Grid item xs={1}></Grid>
             <Grid item xs={10}>
               <Paper elevation={3} className={classes.paper}>
-                <Grid
-                  container
-                  direction="row"
-                  justify="space-between"
-                  alignItems="baseline"
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    className={classes.heading}
-                    style={{ textAlign: "center", marginTop: "10px" }}
-                  >
+                <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
+                  <Grid item xs={12} className={classes.heading} style={{ textAlign: "center", marginTop: "10px" }}>
                     Basic Information
                   </Grid>
                   <Grid item xs={6}>
@@ -173,9 +147,7 @@ function EmpApplicationForm1(props: Props) {
                       className={classNames("col-8")}
                       label="First Name"
                       error={errors.first_name == undefined ? false : true}
-                      helperText={
-                        errors.first_name && errors.first_name?.message
-                      }
+                      helperText={errors.first_name && errors.first_name?.message}
                       inputRef={register({
                         required: {
                           value: reqBits.first_name,
@@ -204,9 +176,7 @@ function EmpApplicationForm1(props: Props) {
                       className="col-8"
                       error={errors.phone_number == undefined ? false : true}
                       label="Phone Number"
-                      helperText={
-                        errors.phone_number && errors.phone_number?.message
-                      }
+                      helperText={errors.phone_number && errors.phone_number?.message}
                       inputRef={register({
                         required: {
                           value: reqBits.phone_number,
@@ -251,9 +221,7 @@ function EmpApplicationForm1(props: Props) {
                       className="col-8"
                       error={errors.dateofBirth == undefined ? false : true}
                       helperText={
-                        errors.dateofBirth == undefined
-                          ? "Date of Birth"
-                          : "Date of Brith " + errors.dateofBirth?.message
+                        errors.dateofBirth == undefined ? "Date of Birth" : "Date of Brith " + errors.dateofBirth?.message
                       }
                       inputRef={register({
                         required: {
@@ -272,9 +240,7 @@ function EmpApplicationForm1(props: Props) {
                       label="Social Security"
                       className="col-8"
                       error={errors.socialSecurity == undefined ? false : true}
-                      helperText={
-                        errors.socialSecurity && errors.socialSecurity?.message
-                      }
+                      helperText={errors.socialSecurity && errors.socialSecurity?.message}
                       inputRef={register({
                         required: {
                           value: reqBits.socialSecurity,
@@ -303,13 +269,7 @@ function EmpApplicationForm1(props: Props) {
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={10}>
-                    <Grid
-                      container
-                      direction="row"
-                      justify="space-between"
-                      alignItems="baseline"
-                      spacing={3}
-                    >
+                    <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
                       <Grid item xs={4}>
                         <TextField
                           name="city"
@@ -367,18 +327,8 @@ function EmpApplicationForm1(props: Props) {
             <Grid item xs={1}></Grid>
             <Grid item xs={10}>
               <Paper elevation={3} className={classes.paper}>
-                <Grid
-                  container
-                  direction="row"
-                  justify="space-between"
-                  alignItems="center"
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    className={classes.heading}
-                    style={{ textAlign: "center", margin: "10px 0px" }}
-                  >
+                <Grid container direction="row" justify="space-between" alignItems="center">
+                  <Grid item xs={12} className={classes.heading} style={{ textAlign: "center", margin: "10px 0px" }}>
                     Address
                   </Grid>
                   <RadioQuestions
@@ -392,26 +342,12 @@ function EmpApplicationForm1(props: Props) {
                   />
 
                   <Grid item xs={1}></Grid>
-                  <Grid
-                    item
-                    xs={10}
-                    className="caption"
-                    style={{ textAlign: "left" }}
-                  >
-                    <b>NOTE 1:</b>{" "}
-                    <i>
-                      If no, add any additional addresses you lived at within
-                      the past 3 years below.
-                    </i>
+                  <Grid item xs={10} className="caption" style={{ textAlign: "left" }}>
+                    <b>NOTE 1:</b> <i>If no, add any additional addresses you lived at within the past 3 years below.</i>
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={1}></Grid>
-                  <Grid
-                    item
-                    xs={10}
-                    className="caption"
-                    style={{ textAlign: "left" }}
-                  >
+                  <Grid item xs={10} className="caption" style={{ textAlign: "left" }}>
                     <b>NOTE 2:</b> <i>List current address first</i>
                   </Grid>
                   <Grid item xs={1}></Grid>
@@ -419,11 +355,7 @@ function EmpApplicationForm1(props: Props) {
                   {/* Current Address Starting */}
                   <Grid item xs={1}></Grid>
                   <Grid item xs={10}>
-                    <Divider
-                      orientation="horizontal"
-                      variant="fullWidth"
-                      style={{ margin: "20px 0px" }}
-                    />
+                    <Divider orientation="horizontal" variant="fullWidth" style={{ margin: "20px 0px" }} />
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={1}></Grid>
@@ -464,25 +396,13 @@ function EmpApplicationForm1(props: Props) {
                   useForm={Forms}
                   setNewFileToUpload={handleFileUpload}
                 ></DynamicFileUpload> */}
-                <Grid
-                  container
-                  direction="row"
-                  justify="space-around"
-                  alignItems="center"
-                  spacing={3}
-                >
+                <Grid container direction="row" justify="space-around" alignItems="center" spacing={3}>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={10}>
                     {manualStates.resume1 && (
                       <div className="mb-3">
                         <Paper elevation={3} className={classes.paper}>
-                          <Grid
-                            container
-                            direction="row"
-                            justify="space-around"
-                            alignItems="center"
-                            spacing={3}
-                          >
+                          <Grid container direction="row" justify="space-around" alignItems="center" spacing={3}>
                             <Grid item xs={2}>
                               <InsertDriveFileIcon />
                             </Grid>
@@ -508,13 +428,7 @@ function EmpApplicationForm1(props: Props) {
                     {manualStates.resume2 && (
                       <div className="mb-3">
                         <Paper elevation={3} className={classes.paper}>
-                          <Grid
-                            container
-                            direction="row"
-                            justify="space-around"
-                            alignItems="center"
-                            spacing={3}
-                          >
+                          <Grid container direction="row" justify="space-around" alignItems="center" spacing={3}>
                             <Grid item xs={2}>
                               <InsertDriveFileIcon />
                             </Grid>
@@ -553,23 +467,10 @@ function EmpApplicationForm1(props: Props) {
                     Upload Resume
                   </Button>
                 </label>
-                <Grid
-                  container
-                  direction="row"
-                  justify="space-between"
-                  alignItems="center"
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    className="caption"
-                    style={{ textAlign: "center", marginTop: "10px" }}
-                  >
+                <Grid container direction="row" justify="space-between" alignItems="center">
+                  <Grid item xs={12} className="caption" style={{ textAlign: "center", marginTop: "10px" }}>
                     <b>NOTE:</b>
-                    <i>
-                      Please upload your resume in PDF format, and DMV record in
-                      PDF or any valid picture format.
-                    </i>
+                    <i>Please upload your resume in PDF format, and DMV record in PDF or any valid picture format.</i>
                   </Grid>
                 </Grid>
               </Paper>
@@ -583,36 +484,16 @@ function EmpApplicationForm1(props: Props) {
             <Grid item xs={10}>
               <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className={classes.heading}>
-                    Questions and Anwsers
-                  </Typography>
+                  <Typography className={classes.heading}>Questions and Anwsers</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="space-between"
-                    alignItems="center"
-                    spacing={3}
-                  >
-                    <Grid
-                      item
-                      xs={9}
-                      className={(classes.paper, classes.addressPaper)}
-                    >
-                      <Typography className={classes.text}>
-                        How Soon Are You Available To Start?
-                      </Typography>
+                  <Grid container direction="row" justify="space-between" alignItems="center" spacing={3}>
+                    <Grid item xs={9} className={(classes.paper, classes.addressPaper)}>
+                      <Typography className={classes.text}>How Soon Are You Available To Start?</Typography>
                     </Grid>
                     <Grid item xs={3}>
-                      <FormControl
-                        variant="outlined"
-                        size="small"
-                        className="col-12"
-                      >
-                        <InputLabel id="demo-simple-select-outlined-label">
-                          Join with in
-                        </InputLabel>
+                      <FormControl variant="outlined" size="small" className="col-12">
+                        <InputLabel id="demo-simple-select-outlined-label">Join with in</InputLabel>
                         <Select
                           name="startTime"
                           labelId="demo-simple-select-outlined-label"
@@ -645,29 +526,15 @@ function EmpApplicationForm1(props: Props) {
                             );
                           })}
                         </Select>
-                        <FormHelperText>
-                          {errors.startTime && errors.startTime?.message}
-                        </FormHelperText>
+                        <FormHelperText>{errors.startTime && errors.startTime?.message}</FormHelperText>
                       </FormControl>
                     </Grid>
-                    <Grid
-                      item
-                      xs={9}
-                      className={(classes.paper, classes.addressPaper)}
-                    >
-                      <Typography className={classes.text}>
-                        What is your Class A Driving Experience Level?
-                      </Typography>
+                    <Grid item xs={9} className={(classes.paper, classes.addressPaper)}>
+                      <Typography className={classes.text}>What is your Class A Driving Experience Level?</Typography>
                     </Grid>
                     <Grid item xs={3}>
-                      <FormControl
-                        variant="outlined"
-                        size="small"
-                        className="col-12"
-                      >
-                        <InputLabel id="classExperienceLbl">
-                          Experience Level
-                        </InputLabel>
+                      <FormControl variant="outlined" size="small" className="col-12">
+                        <InputLabel id="classExperienceLbl">Experience Level</InputLabel>
                         <Select
                           name="classAExperienceLevel"
                           labelId="classExperienceLbl"
@@ -691,10 +558,7 @@ function EmpApplicationForm1(props: Props) {
                           <MenuItem value="">
                             <em>None</em>
                           </MenuItem>
-                          {classAExperienceLevelVal.map(function (
-                            object: any,
-                            i: number
-                          ) {
+                          {classAExperienceLevelVal.map(function (object: any, i: number) {
                             return (
                               <MenuItem value={object.value} key={i}>
                                 {object.value}
@@ -702,20 +566,11 @@ function EmpApplicationForm1(props: Props) {
                             );
                           })}
                         </Select>
-                        <FormHelperText>
-                          {errors.classAExperienceLevel &&
-                            errors.classAExperienceLevel?.message}
-                        </FormHelperText>
+                        <FormHelperText>{errors.classAExperienceLevel && errors.classAExperienceLevel?.message}</FormHelperText>
                       </FormControl>
                     </Grid>
-                    <Grid
-                      item
-                      xs={9}
-                      className={(classes.paper, classes.addressPaper)}
-                    >
-                      <Typography className={classes.text}>
-                        How Did You Hear About Us?
-                      </Typography>
+                    <Grid item xs={9} className={(classes.paper, classes.addressPaper)}>
+                      <Typography className={classes.text}>How Did You Hear About Us?</Typography>
                     </Grid>
                     <Grid item xs={3}>
                       <TextField
@@ -766,12 +621,7 @@ function EmpApplicationForm1(props: Props) {
             {/* BUTTON Start */}
             <Grid item xs={4}></Grid>
             <Grid item xs={4}>
-              <Button
-                type="submit"
-                className="col-12"
-                variant="contained"
-                color="primary"
-              >
+              <Button type="submit" className="col-12" variant="contained" color="primary">
                 Save This & Next
               </Button>
             </Grid>

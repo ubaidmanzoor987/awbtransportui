@@ -9,7 +9,7 @@ type Props = {
   id: string;
   useForm?: any;
   optionList: option[];
-  defaultValue: string;
+  defaultValue?: string;
   className: string;
 };
 
@@ -25,9 +25,9 @@ export default function ReactAutoComplete(props: Props) {
       renderInput={(params) => (
         <TextField
           {...params}
+          autoComplete="off"
           name={props.id}
           className={props.className}
-          defaultValue={props.defaultValue}
           size="small"
           inputRef={register}
           label="States"
