@@ -1,5 +1,13 @@
 import React, { Component, RefObject } from "react";
-import { Collapse, Navbar as ReactStrapNavbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from "reactstrap";
+import {
+  Collapse,
+  Navbar as ReactStrapNavbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+} from "reactstrap";
 import { Link } from "react-scroll";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -10,6 +18,7 @@ const links = [
   { href: "team", text: "Team" },
   { href: "contact", text: "Contact" },
   { href: "/career", text: "Career Opportunities" },
+  { href: "/admin/login", text: "Admin Panel" },
 ];
 
 type createNavItemProps = {
@@ -19,14 +28,21 @@ type createNavItemProps = {
 
 const CreateNavItem = ({ href, text }: createNavItemProps) => (
   <NavItem className="nav-item">
-    {text != "Career Opportunities" ? (
-      <Link className="nav-link" activeClass="active" to={href} spy={true} smooth={true} duration={1000}>
-        {text}
-      </Link>
-    ) : (
+    {text == "Career Opportunities" || text == "Admin Panel" ? (
       <RouterLink className="nav-link" to={href}>
         {text}
       </RouterLink>
+    ) : (
+      <Link
+        className="nav-link"
+        activeClass="active"
+        to={href}
+        spy={true}
+        smooth={true}
+        duration={1000}
+      >
+        {text}
+      </Link>
     )}
   </NavItem>
 );
@@ -63,9 +79,19 @@ export default class Navbar extends Component<{}, NavbarState> {
     let y = 1 + (window.scrollY || window.pageYOffset) / 150;
     y = y < 1 ? 1 : y; // ensure y is always >= 1 (due to Safari's elastic scroll)
     if (y > 5) {
-      this.setState({ ...this.state, backgroundColor: "#212529", paddingTop: "0.5rem", paddingBottom: "0.5rem" });
+      this.setState({
+        ...this.state,
+        backgroundColor: "#212529",
+        paddingTop: "0.5rem",
+        paddingBottom: "0.5rem",
+      });
     } else {
-      this.setState({ ...this.state, backgroundColor: "transparent", paddingTop: "1rem", paddingBottom: "1rem" });
+      this.setState({
+        ...this.state,
+        backgroundColor: "transparent",
+        paddingTop: "1rem",
+        paddingBottom: "1rem",
+      });
     }
   };
   componentDidMount() {
@@ -90,7 +116,13 @@ export default class Navbar extends Component<{}, NavbarState> {
           }}
         >
           <NavbarBrand>
-            <Link activeClass="active" to="page-top" spy={true} smooth={true} duration={1000}>
+            <Link
+              activeClass="active"
+              to="page-top"
+              spy={true}
+              smooth={true}
+              duration={1000}
+            >
               <img src="assets/img/navbar-logo.png" alt="" />
             </Link>
           </NavbarBrand>
@@ -98,7 +130,11 @@ export default class Navbar extends Component<{}, NavbarState> {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               {links.map((link) => (
-                <CreateNavItem href={link.href} text={link.text} key={link.href} />
+                <CreateNavItem
+                  href={link.href}
+                  text={link.text}
+                  key={link.href}
+                />
               ))}
             </Nav>
           </Collapse>
