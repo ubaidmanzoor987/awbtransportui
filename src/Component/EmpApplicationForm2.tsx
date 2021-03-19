@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-type Props = { data?: any; handler?: any };
+type Props = { data?: any; handler?: any; setData: any };
 
 function EmpApplicationForm2(props: Props) {
   const gender = [{ value: "Male" }, { value: "Female" }, { value: "Other" }];
@@ -80,7 +80,7 @@ function EmpApplicationForm2(props: Props) {
     console.log(data);
     data.user_name = props.data.user_name;
     const resdata = await update(data);
-    console.log(resdata);
+    props.setData(resdata.data.data);
     props.handler[0]();
   };
 

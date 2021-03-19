@@ -14,9 +14,10 @@ export async function signin(data: LoginState ) {
                }
             }) ;
             const resultData = await res.json() as Result;
-            processResult(resultData);
-
-
+            console.log("resultData", resultData);
+            if (resultData.data){
+                processResult(resultData);
+            }
             return resultData;
     } catch (ex) {
         console.log("exception", ex);

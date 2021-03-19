@@ -26,15 +26,66 @@ export function processResult(resultData: any) {
     if (resultData.data.dateOfViolation) {
         resultData.data.dateOfViolation = new Date((resultData.data.dateOfViolation as any).$date).toISOString().split('T')[0];
     }
-    if (resultData.data.lastYearAddressfrom) {
-        resultData.data.lastYearAddressfrom = new Date((resultData.data.lastYearAddressfrom as any).$date).toISOString().split('T')[0];
+
+    if (resultData.data.addresses) {
+        resultData.data.addresses.forEach(function (el:any) {
+            el.lastYearAddressfrom = new Date((el.lastYearAddressfrom as any).$date).toISOString().split('T')[0];
+            el.lastYearAddressTo = new Date((el.lastYearAddressTo as any).$date).toISOString().split('T')[0];
+        });
     }
-    if (resultData.data.lastYearAddressTo) {
-        resultData.data.lastYearAddressTo = new Date((resultData.data.lastYearAddressTo as any).$date).toISOString().split('T')[0];
+
+    if (resultData.data.applicantAddresses) {
+        resultData.data.applicantAddresses.forEach(function (el:any) {
+            el.lastYearAddressfrom = new Date((el.lastYearAddressfrom as any).$date).toISOString().split('T')[0];
+            el.lastYearAddressTo = new Date((el.lastYearAddressTo as any).$date).toISOString().split('T')[0];
+        });
     }
+    if (resultData.data.employmentHistory) {
+        resultData.data.employmentHistory.forEach(function (el:any) {
+            el.employmentHistoryfrom = new Date((el.employmentHistoryfrom as any).$date).toISOString().split('T')[0];
+            el.employmentHistoryTo = new Date((el.employmentHistoryTo as any).$date).toISOString().split('T')[0];
+        });
+    }
+    if (resultData.data.employmentExperienceHistory) {
+        resultData.data.employmentExperienceHistory.forEach(function (el:any) {
+            el.experienceFromDate = new Date((el.experienceFromDate as any).$date).toISOString().split('T')[0];
+            el.experienceToDate = new Date((el.experienceToDate as any).$date).toISOString().split('T')[0];
+        });
+    }
+
+    if (resultData.data.employmentAccidentsHistory) {
+        resultData.data.employmentAccidentsHistory.forEach(function (el:any) {
+            el.dateOfAccident= new Date((el.dateOfAccident as any).$date).toISOString().split('T')[0];
+        });
+    }
+    
+    if (resultData.data.violations) {
+        resultData.data.violations.forEach(function (el:any) {
+            el.dateOfViolation= new Date((el.dateOfViolation as any).$date).toISOString().split('T')[0];
+        });
+    }
+
+    if (resultData.data.licences) {
+        resultData.data.licences.forEach(function (el:any) {
+            el.licenceExpirationDate= new Date((el.licenceExpirationDate as any).$date).toISOString().split('T')[0];
+        });
+    }
+    
+    if (resultData.data.alcoholTestExecutionDate) {
+        resultData.data.alcoholTestExecutionDate = new Date((resultData.data.alcoholTestExecutionDate as any).$date).toISOString().split('T')[0];
+    }
+
     if (resultData.data.employeeDate) {
         resultData.data.employeeDate = new Date((resultData.data.employeeDate as any).$date).toISOString().split('T')[0];
     }
+    if (resultData.data.applicationApplyDate) {
+        resultData.data.applicationApplyDate = new Date((resultData.data.applicationApplyDate as any).$date).toISOString().split('T')[0];
+    }
+
+    if (resultData.data.nameOfPersonProvidingInformationDate) {
+        resultData.data.nameOfPersonProvidingInformationDate = new Date((resultData.data.nameOfPersonProvidingInformationDate as any).$date).toISOString().split('T')[0];
+    }
+
     
-    
+    console.log("proces", resultData.data);
 }

@@ -17,6 +17,7 @@ function App() {
   const [user_data, setuserData] = useState({});
   const [user_list, setuserListData] = useState({});
   const setUserData = (data: any) => {
+    console.log("user_data", data);
     setuserData(data);
   };
   const setUserListData = (data: any) => {

@@ -97,6 +97,12 @@ export default function AddressesComponent(props: Props) {
     addressesStateHandler([...addressesState, addr]);
   };
 
+  const [accordianExpand, setAccordianExpand] = useState(true);
+
+  const toggleAccordian = () => {
+    setAccordianExpand(!accordianExpand);
+  };
+
   return (
     <React.Fragment>
       <Grid
@@ -107,7 +113,7 @@ export default function AddressesComponent(props: Props) {
       >
         {addressesState.map((address: Address, index: number) => {
           return (
-            <Accordion key={index}>
+            <Accordion key={index} defaultExpanded={true}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.text}>
                   Address {index + 1}

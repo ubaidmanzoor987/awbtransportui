@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import { TextField, InputLabel, MenuItem, Select, Button } from "@material-ui/core";
+import {
+  TextField,
+  InputLabel,
+  MenuItem,
+  Select,
+  Button,
+} from "@material-ui/core";
 import { withStyles, Theme } from "@material-ui/core/styles";
 import { user_data } from "./User";
 import SideBar from "./SideBar";
@@ -51,7 +57,10 @@ let addr1 = {
 
 let debug = false;
 
-class EmploymentApplication extends Component<EmploymentApplicationProps, EmploymentApplicationStates> {
+class EmploymentApplication extends Component<
+  EmploymentApplicationProps,
+  EmploymentApplicationStates
+> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -74,13 +83,17 @@ class EmploymentApplication extends Component<EmploymentApplicationProps, Employ
     // let data = { ...this.context.data, addresses: [addr1] };
     console.log("context", this.context);
     // this.context.data = this.context.data.data;
-    if (debug === true) {
-      this.context.data.addresses = [addr1];
-      this.context.data.employmentHistory = [employmentHistoryDummyElement];
-      this.context.data.employmentExperienceHistory = [drivingExperienceDummyElement];
-      this.context.data.employmentAccidentsHistory = [employmentAccidentHistoryDummyElement];
-    } else {
-    }
+    // if (debug === true) {
+    //   this.context.data.addresses = [addr1];
+    //   this.context.data.employmentHistory = [employmentHistoryDummyElement];
+    //   this.context.data.employmentExperienceHistory = [
+    //     drivingExperienceDummyElement,
+    //   ];
+    //   this.context.data.employmentAccidentsHistory = [
+    //     employmentAccidentHistoryDummyElement,
+    //   ];
+    // } else {
+    // }
     if (this.context.data.user_name) {
       this.setState(this.context.data);
     }
@@ -128,6 +141,7 @@ class EmploymentApplication extends Component<EmploymentApplicationProps, Employ
                 <EmpApplicationForm2
                   data={this.context.data}
                   handler={[this.gotoNextForm, this.gotoPreviousForm]}
+                  setData={this.context.setUserData}
                 ></EmpApplicationForm2>
               ) : (
                 ""
@@ -136,6 +150,7 @@ class EmploymentApplication extends Component<EmploymentApplicationProps, Employ
                 <EmpApplicationForm3
                   data={this.context.data}
                   handler={[this.gotoNextForm, this.gotoPreviousForm]}
+                  setData={this.context.setUserData}
                 ></EmpApplicationForm3>
               ) : (
                 ""
@@ -144,6 +159,7 @@ class EmploymentApplication extends Component<EmploymentApplicationProps, Employ
                 <EmpApplicationForm4
                   data={this.context.data}
                   handler={[this.gotoNextForm, this.gotoPreviousForm]}
+                  setData={this.context.setUserData}
                 ></EmpApplicationForm4>
               ) : (
                 ""
@@ -152,6 +168,7 @@ class EmploymentApplication extends Component<EmploymentApplicationProps, Employ
                 <EmpApplicationForm5
                   data={this.context.data}
                   handler={[this.gotoNextForm, this.gotoPreviousForm]}
+                  setData={this.context.setUserData}
                 ></EmpApplicationForm5>
               ) : (
                 ""
@@ -160,6 +177,7 @@ class EmploymentApplication extends Component<EmploymentApplicationProps, Employ
                 <EmpApplicationForm6
                   data={this.context.data}
                   handler={[this.gotoNextForm, this.gotoPreviousForm]}
+                  setData={this.context.setUserData}
                 ></EmpApplicationForm6>
               ) : (
                 ""
@@ -168,6 +186,7 @@ class EmploymentApplication extends Component<EmploymentApplicationProps, Employ
                 <EmpApplicationForm7
                   data={this.context.data}
                   handler={[this.gotoNextForm, this.gotoPreviousForm]}
+                  setData={this.context.setUserData}
                 ></EmpApplicationForm7>
               ) : (
                 ""

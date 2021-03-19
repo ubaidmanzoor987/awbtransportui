@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import styleClasses from "../Common/styleClasses";
 import { update } from "../services/updateApi";
 
-type Props = { data?: any; handler?: any };
+type Props = { data?: any; handler?: any; setData: any };
 
 export default function EmpApplicationForm5(props: Props) {
   const classes = styleClasses.useStyles();
@@ -15,10 +15,6 @@ export default function EmpApplicationForm5(props: Props) {
   const { register, handleSubmit, errors, control } = Forms;
 
   const onSubmit = async (data: any) => {
-    data.user_name = props.data.user_name;
-    // const resdata = await update(data);
-    // console.log(resdata);
-    console.log(data);
     props.handler[0]();
   };
 

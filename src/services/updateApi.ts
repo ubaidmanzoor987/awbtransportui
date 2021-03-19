@@ -14,7 +14,7 @@ export async function update(data: any) {
       },
     });
     const resultData = (await res.json()) as Result;
-    processResult(resultData);
+    processResult(resultData.data);
     return resultData;
   } catch (ex) {
     console.log("exception", ex);

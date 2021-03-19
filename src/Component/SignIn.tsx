@@ -18,8 +18,8 @@ export interface LoginState {
   user_name: string;
   password: string;
   errors: {
-    user_name: string;
-    password: string;
+    user_name?: string;
+    password?: string;
   };
 }
 
@@ -42,6 +42,10 @@ class Login extends React.Component<LoginProps, LoginState> {
   handleChange = (event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
+    this.setState({
+      ...this.state,
+      errors: {},
+    });
     let errors = this.state.errors;
     switch (name) {
       case "username":
@@ -59,11 +63,10 @@ class Login extends React.Component<LoginProps, LoginState> {
   handleSubmit = async (event: any) => {
     event.preventDefault();
     let validity = true;
+    if (this.state.errors.user_name && this.state.errors.password) {
+      validity = false;
+    }
     let errors = this.state.errors;
-
-    Object.values(this.state.errors).forEach(
-      (val) => val.length > 0 && (validity = false)
-    );
     if (
       validity == true &&
       this.state.user_name != "" &&
@@ -76,6 +79,7 @@ class Login extends React.Component<LoginProps, LoginState> {
       if (res.data) {
         this.context.setUserData(res.data);
       } else {
+        console.log("res", res);
         this.setState({
           ...this.state,
           errors: { ...errors, user_name: res.error },
@@ -118,8 +122,10 @@ class Login extends React.Component<LoginProps, LoginState> {
                       name="user_name"
                       onChange={this.handleChange}
                     />
-                    {errors.user_name == "" && (
+                    {errors.user_name ? (
                       <span style={{ color: "red" }}>{errors.user_name}</span>
+                    ) : (
+                      ""
                     )}
                   </div>
                   <div className="password">
@@ -129,8 +135,10 @@ class Login extends React.Component<LoginProps, LoginState> {
                       name="password"
                       onChange={this.handleChange}
                     />
-                    {errors.password.length > 0 && (
+                    {errors.password ? (
                       <span style={{ color: "red" }}>{errors.password}</span>
+                    ) : (
+                      ""
                     )}
                   </div>
                   <div className="submit">

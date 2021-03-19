@@ -4,14 +4,10 @@ import { Accordion, Col, Container, Row } from "react-bootstrap";
 import styleClasses from "../Common/styleClasses";
 import { update } from "../services/updateApi";
 
-type Props = { data?: any; handler?: any };
+type Props = { data?: any; handler?: any; setData: any };
 
 export default function EmpApplicationForm4(props: Props) {
   const onSubmit = async (data: any) => {
-    // const resdata = await update(data);
-    data.user_name = props.data.user_name;
-    // const resdata = await update(data);
-    // console.log(resdata);
     props.handler[0]();
   };
 

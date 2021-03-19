@@ -9,7 +9,7 @@ import SignatureCanvas from "react-signature-canvas";
 import { update } from "../services/updateApi";
 import { useRef } from "react";
 
-type Props = { data?: any; handler?: any };
+type Props = { data?: any; handler?: any; setData: any };
 
 export default function EmpApplicationForm6(props: Props) {
   const classes = styleClasses.useStyles();
@@ -48,8 +48,7 @@ export default function EmpApplicationForm6(props: Props) {
     console.log(
       "-------------------FORM 6 Submited Data and Response-------------------"
     );
-    console.log(data);
-    console.log(resdata);
+    props.setData(resdata.data.data);
     props.handler[0]();
   };
 

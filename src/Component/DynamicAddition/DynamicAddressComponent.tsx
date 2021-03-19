@@ -26,9 +26,19 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from "@material-ui/pickers";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 import { styleClasses } from "../../Common/styleClasses";
-import { Addresses, Form1, reqBits, states, AddressErrorsList } from "../../Common/CommonVariables";
+import {
+  Addresses,
+  Form1,
+  reqBits,
+  states,
+  AddressErrorsList,
+} from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
 import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
@@ -61,11 +71,20 @@ let addr = {
 
 export function DynamicAddressComponent(props: Props) {
   const classes = styleClasses.useStyles();
-  const { register, control, handleSubmit, reset, trigger, setError } = props.forms;
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+  const {
+    register,
     control,
-    name: props.addressId,
-  });
+    handleSubmit,
+    reset,
+    trigger,
+    setError,
+  } = props.forms;
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+    {
+      control,
+      name: props.addressId,
+    }
+  );
 
   const submit = (e: any) => {
     e.preventDefault();
@@ -74,14 +93,27 @@ export function DynamicAddressComponent(props: Props) {
 
   return (
     <React.Fragment>
-      <Grid container direction="row" justify="space-between" alignItems="center">
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
         {fields.map((item, index) => (
           <Accordion key={index}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.text}>Address {index + 1}</Typography>
+              <Typography className={classes.text}>
+                Address {index + 1}
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="baseline"
+                spacing={3}
+              >
                 <Grid item xs={12}>
                   <TextField
                     className="col-12"
@@ -189,7 +221,13 @@ export function DynamicAddressComponent(props: Props) {
           </Accordion>
         ))}
         <Grid item xs={12} style={{ padding: "20px 10px" }}>
-          <Button size="small" className="col-3" variant="contained" color="primary" onClick={() => append(addr)}>
+          <Button
+            size="small"
+            className="col-3"
+            variant="contained"
+            color="primary"
+            onClick={() => append(addr)}
+          >
             Another Address
           </Button>
         </Grid>
