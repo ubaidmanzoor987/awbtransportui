@@ -14,13 +14,13 @@ export async function signin(data: LoginState ) {
                }
             }) ;
             const resultData = await res.json() as Result;
-            console.log("resultData", resultData);
+            //console.log("resultData", resultData);
             if (resultData.data){
                 processResult(resultData);
             }
             return resultData;
     } catch (ex) {
-        console.log("exception", ex);
+        //console.log("exception", ex);
         return ex;
     }
 }

@@ -85,13 +85,13 @@ export default function EmploymentAccidentHistory(props: Props) {
             employmentAccidentHistoryItem: EmploymentAccidentHistoryInfo,
             index: number
           ) => {
-            console.log("----------------------ERRORS----------------------");
-            console.log(errors);
-            console.log(errors[props.idPrefix]);
-            console.log(
-              errors[props.idPrefix]?.employmentAccidentHistorystatus
-            );
-            console.log("----------------------ERRORS----------------------");
+            //console.log("----------------------ERRORS----------------------");
+            //console.log(errors);
+            //console.log(errors[props.idPrefix]);
+            //console.log(
+            //   errors[props.idPrefix]?.employmentAccidentHistorystatus
+            // );
+            //console.log("----------------------ERRORS----------------------");
             return (
               <Accordion elevation={3}>
                 <AccordionSummary
@@ -184,7 +184,7 @@ export default function EmploymentAccidentHistory(props: Props) {
                 ...employmentAccidentHistoryState,
                 employmentAccidentHistoryDummyElement,
               ]);
-              console.log(employmentAccidentHistoryState);
+              //console.log(employmentAccidentHistoryState);
             }}
           >
             Another Employment Accident History

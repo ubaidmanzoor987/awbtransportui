@@ -118,7 +118,7 @@ let ReferencesList: tReferences;
 type Props = { data?: any; handler?: any; setData: any };
 
 function EmpApplicationForm3(props: Props) {
-  console.log("props.data ", props.data);
+  // //console.log("props.data ", props.data);
   const Forms = useForm({ defaultValues: props.data });
   const { register, handleSubmit, errors, control } = Forms;
 
@@ -133,6 +133,10 @@ function EmpApplicationForm3(props: Props) {
   };
 
   const [phonePattern, setPhonePatten] = useState(
+    props.data.applicantPhoneNumber ? props.data.applicantPhoneNumber : ""
+  );
+
+  const [emergencyPhonePattern, setEmergencyPhonePatten] = useState(
     props.data.applicantPhoneNumber ? props.data.applicantPhoneNumber : ""
   );
 
@@ -157,7 +161,7 @@ function EmpApplicationForm3(props: Props) {
         .toDataURL("image/png");
     }
     data.signature = base64SignatureImage;
-    console.log(data);
+    //console.log(data);
     data.user_name = props.data.user_name;
     const resdata = await update(data);
     props.setData(resdata.data.data);
@@ -165,48 +169,48 @@ function EmpApplicationForm3(props: Props) {
   };
 
   const updateReferencesList = (updateReferences: any) => {
-    console.log("------------Update Driver License List------------");
+    //console.log("------------Update Driver License List------------");
     ReferencesList = updateReferences;
-    console.log(ReferencesList);
+    //console.log(ReferencesList);
   };
 
   const updateDriverLicenseList = (updateDriverLicense: any) => {
-    console.log("------------Update Driver License List------------");
+    //console.log("------------Update Driver License List------------");
     DriverLicenseList = updateDriverLicense;
-    console.log(DriverLicenseList);
+    //console.log(DriverLicenseList);
   };
 
   const updateTrafficConvictionsList = (updateTrafficConvictions: any) => {
-    console.log("------------Update Traffic Convictions List------------");
+    //console.log("------------Update Traffic Convictions List------------");
     TrafficConvictionsList = updateTrafficConvictions;
-    console.log(TrafficConvictionsList);
+    //console.log(TrafficConvictionsList);
   };
 
   const updateEmploymentAccidentHistoryList = (
     updateEmploymentAccidentHistories: any
   ) => {
-    console.log(
-      "------------Update Employment Accident History List------------"
-    );
+    //console.log(
+    // "------------Update Employment Accident History List------------"
+    // );
     EmploymentAccidentHistoryList = updateEmploymentAccidentHistories;
-    console.log(EmploymentAccidentHistoryList);
+    //console.log(EmploymentAccidentHistoryList);
   };
 
   const updateDrivingExperienceList = (updateDrivingExperiences: any) => {
-    console.log("------------Update Driving Experience List------------");
+    //console.log("------------Update Driving Experience List------------");
     UpdateDrivingExperienceList = updateDrivingExperiences;
-    console.log(UpdateDrivingExperienceList);
+    //console.log(UpdateDrivingExperienceList);
   };
 
   const updateEmploymentHistoryList = (udpatedEmploymentHistory: any) => {
-    console.log("------------Updated Employment History List------------");
+    //console.log("------------Updated Employment History List------------");
     UdpatedEmploymentHistoryList = udpatedEmploymentHistory;
-    console.log(UdpatedEmploymentHistoryList);
+    //console.log(UdpatedEmploymentHistoryList);
   };
 
   const updateAddressList = (updatedAddresses: any) => {
-    console.log("------------Updated Addresses------------");
-    //  console.log(updatedAddresses);
+    //console.log("------------Updated Addresses------------");
+    //  //console.log(updatedAddresses);
     UpdateAddressesList = updatedAddresses;
   };
 
@@ -322,11 +326,23 @@ function EmpApplicationForm3(props: Props) {
                         ></TextField>
                       </Grid>
                       <Grid item xs={4}>
+                        {/* <ReactAutoComplete
+                          id="state"
+                          label={"States"}
+                          className="col-12"
+                          useForm={Forms}
+                          optionList={states}
+                          defaultValue={props.data.state}
+                          error={errors && errors["state"]}
+                        ></ReactAutoComplete> */}
                         <ReactAutoComplete
                           id="companyState"
                           className="col-10"
+                          label="Company State"
                           useForm={Forms}
                           optionList={states}
+                          isReq={reqBits["companyState"]}
+                          error={errors && errors["companyState"]}
                           defaultValue={props.data.companyState}
                         ></ReactAutoComplete>
 
@@ -555,6 +571,12 @@ function EmpApplicationForm3(props: Props) {
                                     ? false
                                     : true
                                 }
+                                inputRef={register({
+                                  required: {
+                                    value: reqBits.applicantPhoneNumber,
+                                    message: RequireError,
+                                  },
+                                })}
                                 label="Phone Number"
                                 helperText={
                                   errors.applicantPhoneNumber &&
@@ -571,7 +593,7 @@ function EmpApplicationForm3(props: Props) {
                                       e.target.value
                                     );
                                     if (n) {
-                                      console.log(n);
+                                      //console.log(n);
                                       setPhonePatten(n);
                                     } else {
                                       setPhonePatten(e.target.value);
@@ -652,23 +674,32 @@ function EmpApplicationForm3(props: Props) {
                                     ? false
                                     : true
                                 }
-                                label="Emergency: Mobile Num"
-                                helperText={
-                                  errors.emergencyContactNumber &&
-                                  errors.emergencyContactNumber?.message
-                                }
                                 inputRef={register({
                                   required: {
                                     value: reqBits.emergencyContactNumber,
                                     message: RequireError,
                                   },
-                                  pattern: {
-                                    value: /^([0-9]{3}[-.][0-9]{3}[-.][0-9]{4}[-. ][x][0-9]{4})$/,
-                                    message:
-                                      WrongPatternError +
-                                      " : ###-###-#### x####",
-                                  },
                                 })}
+                                label="Emergency: Mobile Num"
+                                helperText={
+                                  errors.emergencyContactNumber &&
+                                  errors.emergencyContactNumber?.message
+                                }
+                                onChange={(e) => {
+                                  if (e.target.value.length > 11) {
+                                    const n = formatPhoneNumberIntl(
+                                      e.target.value
+                                    );
+                                    if (n) {
+                                      //console.log(n);
+                                      setEmergencyPhonePatten(n);
+                                    } else {
+                                      setEmergencyPhonePatten(e.target.value);
+                                    }
+                                  } else {
+                                    setEmergencyPhonePatten(e.target.value);
+                                  }
+                                }}
                               ></TextField>
                             </Grid>
                             <Grid item xs={5}>
@@ -705,9 +736,6 @@ function EmpApplicationForm3(props: Props) {
                                 inputRef={register({
                                   required: reqBits.applicantdateofbirth,
                                 })}
-                                // helperText={
-                                //   errors.applicantdateofbirth && errors.applicantdateofbirth?.type.toUpperCase() + " Error"
-                                // }
                               ></TextField>
                             </Grid>
                             <Grid item xs={11}>
@@ -962,8 +990,12 @@ function EmpApplicationForm3(props: Props) {
                   id="outlined-multiline-static"
                   label="List states operated in, for the last five (5) years:"
                   name="lastFiveYearStatesOperate"
+                  error={errors && errors.lastFiveYearStatesOperate}
                   inputRef={register({
-                    required: reqBits.lastFiveYearStatesOperate,
+                    required: {
+                      value: reqBits.lastFiveYearStatesOperate,
+                      message: RequireError,
+                    },
                   })}
                   multiline
                   rows={4}
@@ -977,8 +1009,12 @@ function EmpApplicationForm3(props: Props) {
                   id="outlined-multiline-static"
                   label="List special courses/training completed (PTD/DDC, HAZMAT, ETC)"
                   multiline
+                  error={errors && errors.Listspecialcourses}
                   inputRef={register({
-                    required: reqBits.Listspecialcourses,
+                    required: {
+                      value: reqBits.Listspecialcourses,
+                      message: RequireError,
+                    },
                   })}
                   name="Listspecialcourses"
                   rows={4}
@@ -993,8 +1029,12 @@ function EmpApplicationForm3(props: Props) {
                   label="List any Safe Driving Awards you hold and from whom:"
                   multiline
                   rows={4}
+                  error={errors && errors.ListanySafeDrivingAwards}
                   inputRef={register({
-                    required: reqBits.ListanySafeDrivingAwards,
+                    required: {
+                      value: reqBits.ListanySafeDrivingAwards,
+                      message: RequireError,
+                    },
                   })}
                   name="ListanySafeDrivingAwards"
                   defaultValue={props.data.ListanySafeDrivingAwards}
@@ -1163,8 +1203,12 @@ function EmpApplicationForm3(props: Props) {
                       give details"
                       multiline
                       rows={4}
+                      error={errors && errors.answerToAnyQuestion}
                       inputRef={register({
-                        required: reqBits.answerToAnyQuestion,
+                        required: {
+                          value: reqBits.answerToAnyQuestion,
+                          message: RequireError,
+                        },
                       })}
                       name="answerToAnyQuestion"
                       defaultValue={props.data.answerToAnyQuestion}
@@ -1184,8 +1228,9 @@ function EmpApplicationForm3(props: Props) {
                 className={(classes.heading, classes.paperProminantStyle)}
               >
                 <Typography className={classes.heading}>
-                  Driver’s License (list each driver’s license held in the past
-                  three(3) years):
+                  List three (3) persons for references, other than family
+                  <br />
+                  members, who have knowledge of your safety habits:
                 </Typography>
                 <div className="row">
                   <div className="col-1"></div>

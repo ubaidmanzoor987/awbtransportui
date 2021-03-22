@@ -74,6 +74,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
     reset,
     trigger,
     setError,
+    errors,
   } = props.useForm;
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -84,7 +85,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
 
   const submit = (e: any) => {
     e.preventDefault();
-    console.log(e.target.data);
+    //console.log(e.target.data);
   };
 
   return (
@@ -96,7 +97,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion elevation={3} key={index}>
+          <Accordion defaultExpanded elevation={3} key={index}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -117,8 +118,17 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                 <Grid item xs={6}>
                   <TextField
                     variant="outlined"
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].dateOfAccident
+                    }
                     inputRef={register({
-                      required: reqBits.dateOfAccident,
+                      required: {
+                        value: reqBits.dateOfAccident,
+                        message: RequireError,
+                      },
                     })}
                     name={`${props.idPrefix}[${index}].dateOfAccident`}
                     defaultValue={item.dateOfAccident}
@@ -133,8 +143,17 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                     variant="outlined"
                     defaultValue={item.numberofFatalities}
                     label="Num of Fatalities"
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].numberofFatalities
+                    }
                     inputRef={register({
-                      required: reqBits.numberofFatalities,
+                      required: {
+                        value: reqBits.numberofFatalities,
+                        message: RequireError,
+                      },
                     })}
                     name={`${props.idPrefix}[${index}].numberofFatalities`}
                     size="small"
@@ -147,8 +166,17 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                     variant="outlined"
                     defaultValue={item.numberofPeopleleInjured}
                     label="Num of Injured People"
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].numberofPeopleleInjured
+                    }
                     inputRef={register({
-                      required: reqBits.numberofPeopleleInjured,
+                      required: {
+                        value: reqBits.numberofPeopleleInjured,
+                        message: RequireError,
+                      },
                     })}
                     name={`${props.idPrefix}[${index}].numberofPeopleleInjured`}
                     size="small"
@@ -162,8 +190,17 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                     size="small"
                     defaultValue={item.NatureOfAccidents}
                     label="Nature of Accidents"
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].NatureOfAccidents
+                    }
                     inputRef={register({
-                      required: reqBits.NatureOfAccidents,
+                      required: {
+                        value: reqBits.NatureOfAccidents,
+                        message: RequireError,
+                      },
                     })}
                     name={`${props.idPrefix}[${index}].NatureOfAccidents`}
                     multiline
@@ -177,8 +214,17 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                     id="outlined-multiline-static"
                     defaultValue={item.LocationOfAccidents}
                     label="Location of Accident"
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].LocationOfAccidents
+                    }
                     inputRef={register({
-                      required: reqBits.LocationOfAccidents,
+                      required: {
+                        value: reqBits.LocationOfAccidents,
+                        message: RequireError,
+                      },
                     })}
                     name={`${props.idPrefix}[${index}].LocationOfAccidents`}
                     size="small"
@@ -203,7 +249,11 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                   variant="contained"
                   color="default"
                   id={"id" + index}
-                  onClick={() => remove(index)}
+                  onClick={() => {
+                    if (index > 0) {
+                      remove(index);
+                    }
+                  }}
                 >
                   Delete This
                 </Button>

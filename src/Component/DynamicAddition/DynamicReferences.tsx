@@ -70,6 +70,7 @@ export function DynamicReferences(props: Props) {
     reset,
     trigger,
     setError,
+    errors,
   } = props.useForm;
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -80,7 +81,7 @@ export function DynamicReferences(props: Props) {
 
   const submit = (e: any) => {
     e.preventDefault();
-    console.log(e.target.data);
+    //console.log(e.target.data);
   };
 
   return (
@@ -92,7 +93,7 @@ export function DynamicReferences(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion elevation={3}>
+          <Accordion defaultExpanded elevation={3}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -113,6 +114,13 @@ export function DynamicReferences(props: Props) {
                 <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].referencefirstName`}
+                    defaultValue={item.referencefirstName}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].referencefirstName
+                    }
                     inputRef={register({
                       required: {
                         value: reqBits.referencefirstName,
@@ -129,6 +137,13 @@ export function DynamicReferences(props: Props) {
                 <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].referencelastName`}
+                    defaultValue={item.referencelastName}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].referencelastName
+                    }
                     inputRef={register({
                       required: {
                         value: reqBits.referencelastName,
@@ -145,6 +160,13 @@ export function DynamicReferences(props: Props) {
                 <Grid item xs={12}>
                   <TextField
                     name={`${props.idPrefix}[${index}].referenceCompany`}
+                    defaultValue={item.referenceCompany}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].referenceCompany
+                    }
                     inputRef={register({
                       required: {
                         value: reqBits.referenceCompany,
@@ -161,6 +183,13 @@ export function DynamicReferences(props: Props) {
                 <Grid item xs={8}>
                   <TextField
                     name={`${props.idPrefix}[${index}].referenceTitle`}
+                    defaultValue={item.referenceTitle}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].referenceTitle
+                    }
                     inputRef={register({
                       required: {
                         value: reqBits.referenceTitle,
@@ -190,7 +219,11 @@ export function DynamicReferences(props: Props) {
                   variant="contained"
                   color="default"
                   id={"id" + index}
-                  onClick={() => remove(index)}
+                  onClick={() => {
+                    if (index > 0) {
+                      remove(index);
+                    }
+                  }}
                 >
                   Delete This
                 </Button>

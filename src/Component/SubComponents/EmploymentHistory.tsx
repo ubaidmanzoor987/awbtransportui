@@ -72,43 +72,43 @@ export default function EmploymentHistory(props: Props) {
 
   const isPropertyExist = (property: any) => {
     try {
-      console.log(
-        "-------------------isPropertyExist LOGGING-------------------"
-      );
-      console.log(property);
+      //console.log(
+      //   "-------------------isPropertyExist LOGGING-------------------"
+      // );
+      //console.log(property);
       if (property === undefined) {
-        console.log("-------------------FALSE-------------------");
-        console.log(property);
+        //console.log("-------------------FALSE-------------------");
+        //console.log(property);
         throw "Property 0";
       } else {
-        console.log("-------------------TRUE-------------------");
-        console.log(property);
+        //console.log("-------------------TRUE-------------------");
+        //console.log(property);
         return true;
       }
     } catch (e: any) {
-      console.log("-------------------Exception-------------------");
-      console.log(e);
+      //console.log("-------------------Exception-------------------");
+      //console.log(e);
       return false;
     }
   };
   const isPropertyExistReturnMessage = (property: any) => {
     try {
-      console.log(
-        "-------------------isPropertyExistReturnMessage LOGGING-------------------"
-      );
-      console.log(property);
+      //console.log(
+      //   "-------------------isPropertyExistReturnMessage LOGGING-------------------"
+      // );
+      //console.log(property);
       if (property === undefined) {
-        console.log("-------------------FALSE-------------------");
-        console.log(property);
+        //console.log("-------------------FALSE-------------------");
+        //console.log(property);
         throw "Property 0";
       } else {
-        console.log("-------------------TRUE-------------------");
-        console.log(property);
+        //console.log("-------------------TRUE-------------------");
+        //console.log(property);
         return property.message;
       }
     } catch (e: any) {
-      console.log("-------------------Exception-------------------");
-      console.log(property);
+      //console.log("-------------------Exception-------------------");
+      //console.log(property);
       return "";
     }
   };
@@ -123,11 +123,11 @@ export default function EmploymentHistory(props: Props) {
       >
         {employmentHistoryState.map(
           (employmentHistoryItem: EmploymentHistoryInfo, index: number) => {
-            console.log("----------------------ERRORS----------------------");
-            console.log(errors);
-            console.log(errors[props.idPrefix]);
-            console.log(errors[props.idPrefix]?.employmentHistorystatus);
-            console.log("----------------------ERRORS----------------------");
+            //console.log("----------------------ERRORS----------------------");
+            //console.log(errors);
+            //console.log(errors[props.idPrefix]);
+            //console.log(errors[props.idPrefix]?.employmentHistorystatus);
+            //console.log("----------------------ERRORS----------------------");
             return (
               // lastYearAddress: string;
               // lastYearAddressCity: string;
@@ -530,7 +530,7 @@ export default function EmploymentHistory(props: Props) {
                 ...employmentHistoryState,
                 employmentHistoryDummyElement,
               ]);
-              console.log(employmentHistoryState);
+              //console.log(employmentHistoryState);
             }}
           >
             Another Employment History

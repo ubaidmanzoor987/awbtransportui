@@ -78,6 +78,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
     reset,
     trigger,
     setError,
+    errors,
   } = props.useForm;
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -88,7 +89,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
 
   const submit = (e: any) => {
     e.preventDefault();
-    console.log(e.target.data);
+    //console.log(e.target.data);
   };
 
   return (
@@ -100,7 +101,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion key={index}>
+          <Accordion key={index} defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.text}>
                 Employment history {index + 1}
@@ -123,10 +124,15 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     className="col-12"
                     defaultValue={item.employmentHistoryfrom}
                     //useForms Handling Start
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].employmentHistoryfrom
+                    }
                     inputRef={register({
                       required: {
-                        // value: reqBits.employmentHistoryfrom,
-                        value: false,
+                        value: reqBits.employmentHistoryfrom,
                         message: RequireError,
                       },
                     })}
@@ -141,10 +147,15 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     defaultValue={item.employmentHistoryTo}
                     type="date"
                     className="col-12"
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].employmentHistoryTo
+                    }
                     inputRef={register({
                       required: {
-                        // value: reqBits.employmentHistoryTo,
-                        value: false,
+                        value: reqBits.employmentHistoryTo,
                         message: RequireError,
                       },
                     })}
@@ -161,10 +172,15 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     label="Present or Last Employer "
                     className="col-12"
                     //useForms Handling Start
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].employmentHistorystatus
+                    }
                     inputRef={register({
                       required: {
-                        // value: reqBits.employmentHistorystatus,
-                        value: false,
+                        value: reqBits.employmentHistorystatus,
                         message: RequireError,
                       },
                     })}
@@ -181,10 +197,15 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     type="text"
                     label="Position Held "
                     //useForms Handling Start
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].employmentHistoryposition
+                    }
                     inputRef={register({
                       required: {
-                        // value: reqBits.employmentHistoryposition,
-                        value: false,
+                        value: reqBits.employmentHistoryposition,
                         message: RequireError,
                       },
                     })}
@@ -201,10 +222,16 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     label="Company Phone"
                     className="col-12"
                     //useForms Handling Start
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index]
+                        .employmentHistorycompanyPhone
+                    }
                     inputRef={register({
                       required: {
-                        // value: reqBits.employmentHistorycompanyPhone,
-                        value: false,
+                        value: reqBits.employmentHistorycompanyPhone,
                         message: RequireError,
                       },
                     })}
@@ -222,10 +249,16 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     label="Reason for leaving"
                     //useForms Handling Start
 
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index]
+                        .employmentHistoryreasonForLeaving
+                    }
                     inputRef={register({
                       required: {
-                        // value: reqBits.employmentHistoryreasonForLeaving,
-                        value: false,
+                        value: reqBits.employmentHistoryreasonForLeaving,
                         message: RequireError,
                       },
                     })}
@@ -272,7 +305,11 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                   variant="contained"
                   color="default"
                   id={"id" + index}
-                  onClick={() => remove(index)}
+                  onClick={() => {
+                    if (index > 0) {
+                      remove(index);
+                    }
+                  }}
                 >
                   Delete This
                 </Button>

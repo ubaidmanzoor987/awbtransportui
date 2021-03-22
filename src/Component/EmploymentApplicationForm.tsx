@@ -1,23 +1,9 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import {
-  TextField,
-  InputLabel,
-  MenuItem,
-  Select,
-  Button,
-} from "@material-ui/core";
 import { withStyles, Theme } from "@material-ui/core/styles";
 import { user_data } from "./User";
-import SideBar from "./SideBar";
 import NavbarCareer from "./NavbarCareer";
 import Footer from "./Footer";
-import { Container, Col, Row } from "reactstrap";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
 import EmpApplicationForm1 from "./EmpApplicationForm1";
 import EmpApplicationForm2 from "./EmpApplicationForm2";
 import EmpApplicationForm3 from "./EmpApplicationForm3";
@@ -25,13 +11,13 @@ import EmpApplicationForm4 from "./EmpApplicationForm4";
 import EmpApplicationForm5 from "./EmpApplicationForm5";
 import EmpApplicationForm6 from "./EmpApplicationForm6";
 import EmpApplicationForm7 from "./EmpApplicationForm7";
-import DynamicAddition from "./DynamicAddition/DynamicAddition";
-
 import {
   states,
+  Addresses,
+  reqBits,
+  print,
+  addr,
   employmentHistoryDummyElement,
-  drivingExperienceDummyElement,
-  employmentAccidentHistoryDummyElement,
 } from "../Common/CommonVariables";
 
 type EmploymentApplicationStates = {
@@ -46,17 +32,6 @@ const styles = (theme: Theme) => ({
   root: {},
 });
 
-let addr1 = {
-  lastYearAddress: "",
-  lastYearAddressCity: "",
-  lastYearAddressState: "",
-  lastYearAddressZipCode: "",
-  lastYearAddressfrom: "",
-  lastYearAddressTo: "",
-};
-
-let debug = false;
-
 class EmploymentApplication extends Component<
   EmploymentApplicationProps,
   EmploymentApplicationStates
@@ -66,37 +41,24 @@ class EmploymentApplication extends Component<
     this.state = {
       formCounter: 1,
     };
+
     this.gotoNextForm = this.gotoNextForm.bind(this);
     this.gotoPreviousForm = this.gotoPreviousForm.bind(this);
-    if (debug === true) {
-      addr1 = {
-        lastYearAddress: "Default",
-        lastYearAddressCity: "Default",
-        lastYearAddressState: "Alaska",
-        lastYearAddressZipCode: "0000",
-        lastYearAddressfrom: "2018-01-01",
-        lastYearAddressTo: "2018-01-01",
-      };
-    }
   }
   componentDidMount() {
     // let data = { ...this.context.data, addresses: [addr1] };
-    console.log("context", this.context);
-    // this.context.data = this.context.data.data;
-    // if (debug === true) {
-    //   this.context.data.addresses = [addr1];
-    //   this.context.data.employmentHistory = [employmentHistoryDummyElement];
-    //   this.context.data.employmentExperienceHistory = [
-    //     drivingExperienceDummyElement,
-    //   ];
-    //   this.context.data.employmentAccidentsHistory = [
-    //     employmentAccidentHistoryDummyElement,
-    //   ];
-    // } else {
-    // }
+    //console.log("context", this.context);
+
     if (this.context.data.user_name) {
       this.setState(this.context.data);
     }
+
+    // this.context.data.employmentHistory ||
+    //   this.context.data.employmentHistory.push(employmentHistoryDummyElement);
+    // this.context.data.addressesList ||
+    //   this.context.data.addressesList.push(employmentHistoryDummyElement);
+    // this.context.data.applicantAddresses ||
+    //   this.context.data.applicantAddresses.push(employmentHistoryDummyElement);
   }
 
   gotoNextForm() {

@@ -17,7 +17,7 @@ export async function update(data: any) {
     processResult(resultData.data);
     return resultData;
   } catch (ex) {
-    console.log("exception", ex);
+    //console.log("exception", ex);
     return ex;
   }
 }

@@ -32,7 +32,7 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
-    console.log("context", this.context);
+    //console.log("context", this.context);
   }
 
   handleChange = (event: any) => {
@@ -68,9 +68,9 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
       this.state.password == "admin@admin.com"
     ) {
       const res = (await get_all_users()) as any;
-      console.log("res = ", res);
+      //console.log("res = ", res);
       if (res) {
-        console.log("res1 = ", this.context);
+        //console.log("res1 = ", this.context);
         this.context.setUserListData(res);
         this.setState({
           ...this.state,

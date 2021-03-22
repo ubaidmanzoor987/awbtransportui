@@ -181,54 +181,10 @@ export default function AddressesComponent(props: Props) {
                       id="lastYearAddressState"
                       className="col-12"
                       useForm={Forms}
+                      label="States"
                       optionList={states}
-                      defaultValue={props.data.lastYearAddressState}
+                      defaultValue={address.lastYearAddressState}
                     ></ReactAutoComplete>
-
-                    {/* <FormControl
-                      variant="outlined"
-                      size="small"
-                      className="col-12"
-                      required={reqBits.lastYearAddressState === true}
-                    >
-                      <InputLabel
-                        id={"demo-simple-select-outlined-label" + index}
-                      >
-                        State
-                      </InputLabel>
-                      <Select
-                        name={props.stateId}
-                        labelId={"demo-simple-select-outlined-label" + index}
-                        id="demo-simple-select-outlined"
-                        label={"State "}
-                        defaultValue={
-                          addressesState[index].lastYearAddressState
-                        }
-                        value={addressesState[index].lastYearAddressState}
-                        onChange={(e) => {
-                          console.log(e.target);
-                          const addrNew = {
-                            ...addressesState[index],
-                            lastYearAddressState: e.target.value as string,
-                          };
-                          const addressesStateNew = [...addressesState];
-                          addressesStateNew.splice(index, 1, addrNew);
-                          addressesStateHandler(addressesStateNew);
-                        }}
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        {states.map(function (object: any, i: number) {
-                          return (
-                            <MenuItem value={object.value} key={i}>
-                              {object.value}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                       <FormHelperText>{errors.seqAddressCity && errors.seqAddressCity.message}</FormHelperText> 
-                    </FormControl> */}
                   </Grid>
                   <Grid item xs={4}>
                     <TextField
@@ -338,7 +294,7 @@ export default function AddressesComponent(props: Props) {
             color="primary"
             onClick={(e) => {
               addressesStateHandler([...addressesState, addr]);
-              console.log(addressesState);
+              //console.log(addressesState);
             }}
           >
             Another Address

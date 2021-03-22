@@ -45,9 +45,9 @@ export default function EmpApplicationForm6(props: Props) {
     data.alcoholTestEmployeeSignature = base64SignatureImage;
     data.user_name = props.data.user_name;
     const resdata = await update(data);
-    console.log(
-      "-------------------FORM 6 Submited Data and Response-------------------"
-    );
+    //console.log(
+    //   "-------------------FORM 6 Submited Data and Response-------------------"
+    // );
     props.setData(resdata.data.data);
     props.handler[0]();
   };

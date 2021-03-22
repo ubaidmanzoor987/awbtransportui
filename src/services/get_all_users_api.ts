@@ -11,7 +11,7 @@ export async function get_all_users() {
             const resultData = await res.json();
             return resultData;
     } catch (ex) {
-        console.log("exception", ex);
+        //console.log("exception", ex);
         return ex;
     }
 }

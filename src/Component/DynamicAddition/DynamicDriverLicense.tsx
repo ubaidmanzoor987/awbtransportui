@@ -1,5 +1,9 @@
 import React from "react";
-import { Address, EmploymentAccidentHistories, driverLicenseDummyElement } from "../../Common/CommonVariables";
+import {
+  Address,
+  EmploymentAccidentHistories,
+  driverLicenseDummyElement,
+} from "../../Common/CommonVariables";
 import {
   Button,
   Divider,
@@ -26,9 +30,20 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from "@material-ui/pickers";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 import { styleClasses } from "../../Common/styleClasses";
-import { Addresses, Form1, reqBits, states, tDriverLicenses, AddressErrorsList } from "../../Common/CommonVariables";
+import {
+  Addresses,
+  Form1,
+  reqBits,
+  states,
+  tDriverLicenses,
+  AddressErrorsList,
+} from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
 import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
@@ -46,38 +61,88 @@ const WrongPatternError: string = "Wrong Pattern";
 
 export function DynamicDriverLicense(props: Props) {
   const classes = styleClasses.useStyles();
-  const { register, control, handleSubmit, reset, trigger, setError } = props.useForm;
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+  const {
+    register,
     control,
-    name: props.idPrefix,
-  });
+    handleSubmit,
+    reset,
+    trigger,
+    setError,
+    errors,
+  } = props.useForm;
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+    {
+      control,
+      name: props.idPrefix,
+    }
+  );
 
   const submit = (e: any) => {
     e.preventDefault();
-    console.log(e.target.data);
+    //console.log(e.target.data);
   };
 
   return (
     <React.Fragment>
-      <Grid container direction="row" justify="space-between" alignItems="center">
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
         {fields.map((item, index) => (
-          <Accordion elevation={3}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-              <Typography className={classes.smallHeading}>Driver’s License 1</Typography>
+          <Accordion elevation={3} defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography className={classes.smallHeading}>
+                Driver’s License {index}
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid container direction="row" justify="space-around" alignItems="baseline" spacing={3}>
+              <Grid
+                container
+                direction="row"
+                justify="space-around"
+                alignItems="baseline"
+                spacing={3}
+              >
                 <Grid item xs={6}>
-                  <ReactAutoComplete
-                    id={`${props.idPrefix}[${index}].licenceExpirationDate`}
+                  <TextField
+                    name={`${props.idPrefix}[${index}].licenceExpirationDate`}
+                    // defaultValue={`${props.idPrefix}[${index}].licenceExpirationDate`}
+                    defaultValue={item.licenceExpirationDate}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].licenceExpirationDate
+                    }
+                    inputRef={register({
+                      required: {
+                        value: reqBits.licenceExpirationDate,
+                        message: RequireError,
+                      },
+                    })}
                     className="col-12"
-                    useForm={props.useForm}
-                    optionList={states}
-                  ></ReactAutoComplete>
+                    variant="outlined"
+                    size="small"
+                    type="date"
+                    helperText="License Expiration Date"
+                  ></TextField>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].licenceNumber`}
+                    defaultValue={item.licenceNumber}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].licenceNumber
+                    }
                     inputRef={register({
                       required: {
                         value: reqBits.licenceNumber,
@@ -94,6 +159,13 @@ export function DynamicDriverLicense(props: Props) {
                 <Grid item xs={12}>
                   <TextField
                     name={`${props.idPrefix}[${index}].licenceType`}
+                    defaultValue={item.licenceType}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].licenceType
+                    }
                     inputRef={register({
                       required: {
                         value: reqBits.licenceType,
@@ -110,6 +182,13 @@ export function DynamicDriverLicense(props: Props) {
                 <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].licenceEndoresment`}
+                    defaultValue={item.licenceEndoresment}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].licenceEndoresment
+                    }
                     inputRef={register({
                       required: {
                         value: reqBits.licenceEndoresment,
@@ -120,7 +199,6 @@ export function DynamicDriverLicense(props: Props) {
                     size="small"
                     label="Endorsement"
                     rows={4}
-                    defaultValue=""
                     variant="outlined"
                     className="col-12"
                   />
@@ -128,6 +206,13 @@ export function DynamicDriverLicense(props: Props) {
                 <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].licenceExpirationDate`}
+                    defaultValue={item.licenceExpirationDate}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].licenceExpirationDate
+                    }
                     inputRef={register({
                       required: {
                         value: reqBits.licenceExpirationDate,
@@ -139,7 +224,6 @@ export function DynamicDriverLicense(props: Props) {
                     size="small"
                     type="date"
                     rows={4}
-                    defaultValue=""
                     variant="outlined"
                     className="col-12"
                   />
@@ -159,7 +243,11 @@ export function DynamicDriverLicense(props: Props) {
                   variant="contained"
                   color="default"
                   id={"id" + index}
-                  onClick={() => remove(index)}
+                  onClick={() => {
+                    if (index > 0) {
+                      remove(index);
+                    }
+                  }}
                 >
                   Delete This
                 </Button>

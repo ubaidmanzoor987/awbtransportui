@@ -72,6 +72,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
     handleSubmit,
     reset,
     trigger,
+    errors,
     setError,
   } = props.useForm;
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
@@ -83,7 +84,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
 
   const submit = (e: any) => {
     e.preventDefault();
-    console.log(e.target.data);
+    //console.log(e.target.data);
   };
 
   return (
@@ -95,7 +96,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion key={index}>
+          <Accordion defaultExpanded key={index}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -117,8 +118,17 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                   <TextField
                     // {`${props.idPrefix}[${index}].lastYearAddressTo`}
                     name={`${props.idPrefix}[${index}].experienceclassofEquipment`}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].experienceclassofEquipment
+                    }
                     inputRef={register({
-                      required: reqBits.experienceclassofEquipment,
+                      required: {
+                        value: reqBits.experienceclassofEquipment,
+                        message: RequireError,
+                      },
                     })}
                     variant="outlined"
                     size="small"
@@ -131,8 +141,17 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                 <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].experiencenumberOfMiles`}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].experiencenumberOfMiles
+                    }
                     inputRef={register({
-                      required: reqBits.experiencenumberOfMiles,
+                      required: {
+                        value: reqBits.experiencenumberOfMiles,
+                        message: RequireError,
+                      },
                     })}
                     variant="outlined"
                     size="small"
@@ -145,8 +164,17 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                 <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].experienceFromDate`}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].experienceFromDate
+                    }
                     inputRef={register({
-                      required: reqBits.experienceFromDate,
+                      required: {
+                        value: reqBits.experienceFromDate,
+                        message: RequireError,
+                      },
                     })}
                     defaultValue={item.experienceFromDate}
                     variant="outlined"
@@ -159,8 +187,17 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                 <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].experienceToDate`}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].experienceToDate
+                    }
                     inputRef={register({
-                      required: reqBits.experienceToDate,
+                      required: {
+                        value: reqBits.experienceToDate,
+                        message: RequireError,
+                      },
                     })}
                     variant="outlined"
                     defaultValue={item.experienceToDate}
@@ -185,7 +222,11 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                   variant="contained"
                   color="default"
                   id={"id" + index}
-                  onClick={() => remove(index)}
+                  onClick={() => {
+                    if (index > 0) {
+                      remove(index);
+                    }
+                  }}
                 >
                   Delete This
                 </Button>

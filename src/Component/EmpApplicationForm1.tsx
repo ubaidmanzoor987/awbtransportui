@@ -2,9 +2,7 @@ import {
   Button,
   Divider,
   FormControl,
-  FormControlLabel,
   FormHelperText,
-  FormLabel,
   Grid,
   InputLabel,
   MenuItem,
@@ -12,7 +10,7 @@ import {
   Select,
   TextField,
 } from "@material-ui/core";
-import React, { Component, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import Accordion from "@material-ui/core/Accordion";
@@ -24,7 +22,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { styleClasses } from "../Common/styleClasses";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { states, Addresses, reqBits } from "../Common/CommonVariables";
+import { states, Addresses, reqBits, print } from "../Common/CommonVariables";
 
 import { fileUploadApi } from "../services/fileUploadApi";
 
@@ -33,8 +31,9 @@ import RadioQuestions from "./SubComponents/RadioQuestions";
 import AddressesComponent from "./SubComponents/AddressesComponent";
 import classNames from "classnames";
 import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
-import NumberFormat from "react-number-format";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
+import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
+import { DynamicAddressComponent } from "./DynamicAddition/DynamicAddressComponent";
 
 type Props = { data?: any; handler?: any; setData: any };
 const startTimeVal = [
@@ -54,9 +53,6 @@ function EmpApplicationForm1(props: Props) {
   const [manualStates, setManualStates] = useState(props.data);
 
   const handleFileUpload = (event: any) => {
-    console.log("------------FILE UPLOAD----------");
-    console.log(event.target.files[0].name);
-    console.log(event.target.files[0]);
     const formData = new FormData();
 
     if (manualStates.resume1 == undefined || manualStates.resume1 == null) {
@@ -81,48 +77,25 @@ function EmpApplicationForm1(props: Props) {
       fileUploadApi(formData);
     }
   };
-  let preLoadedValues = {
-    first_name: props.data.first_name,
-    last_name: props.data.last_name,
-    phone_number: props.data.phone_number,
-    email: props.data.email,
-    dateofBirth: props.data.dateofBirth,
-    socialSecurity: props.data.socialSecurity,
-    address: props.data.address,
-    city: props.data.city,
-    state: props.data.state,
-    zipCode: props.data.zipCode,
-    lastThreeYearResidenceCheck: props.data.lastThreeYearResidenceCheck,
-    addresses: props.data.addresses,
-    lastYearAddress: props.data.lastYearAddress,
-    lastYearAddressCity: props.data.lastYearAddressCity,
-    lastYearAddressState: props.data.lastYearAddressState,
-    lastYearAddressZipCode: props.data.lastYearAddressZipCode,
-    lastYearAddressfrom: props.data.lastYearAddressfrom,
-    lastYearAddressTo: props.data.lastYearAddressTo,
-    startTime: props.data.startTime,
-    hearAbout: props.data.hearAbout,
-    eligibletoWorkInUnitedState: props.data.eligibletoWorkInUnitedState,
-    classAExperienceLevel: props.data.classAExperienceLevel,
-    willingForDrugTest: props.data.willingForDrugTest,
-  };
 
   const Forms = useForm({
     defaultValues: props.data,
   });
 
-  const { register, handleSubmit, errors } = Forms;
+  const { register, handleSubmit, errors, control } = Forms;
 
   const onSubmit = async (data: any) => {
-    data.addresses = UpdateAddressesList;
+    // data.addresses = UpdateAddressesList;
     data.phone_number = phonePattern;
     data.user_name = props.data.user_name;
-    console.log(data);
+    print("Sending :", data);
     const resdata = await update(data);
-    console.log("resdata", resdata);
+    print("Receiving :", data);
     props.setData(resdata.data.data);
     props.handler();
   };
+
+  print("On Rendering All PROPS :", props);
 
   const [phonePattern, setPhonePatten] = useState(
     props.data.phone_number ? props.data.phone_number : ""
@@ -179,7 +152,7 @@ function EmpApplicationForm1(props: Props) {
                       type="text"
                       className={classNames("col-8")}
                       label="First Name"
-                      error={errors.first_name == undefined ? false : true}
+                      error={errors.first_name === undefined ? false : true}
                       helperText={
                         errors.first_name && errors.first_name?.message
                       }
@@ -199,7 +172,13 @@ function EmpApplicationForm1(props: Props) {
                       type="text"
                       className="col-8"
                       label="Last Name"
-                      inputRef={register}
+                      error={errors.last_name === undefined ? false : true}
+                      inputRef={register({
+                        required: {
+                          value: reqBits.last_name,
+                          message: RequireError,
+                        },
+                      })}
                     ></TextField>
                   </Grid>
                   <Grid item xs={6}>
@@ -217,11 +196,16 @@ function EmpApplicationForm1(props: Props) {
                       value={
                         phonePattern ? phonePattern : props.data.phone_number
                       }
+                      inputRef={register({
+                        required: {
+                          value: reqBits.phone_number,
+                          message: RequireError,
+                        },
+                      })}
                       onChange={(e) => {
                         if (e.target.value.length > 11) {
                           const n = formatPhoneNumberIntl(e.target.value);
                           if (n) {
-                            console.log(n);
                             setPhonePatten(n);
                           } else {
                             setPhonePatten(e.target.value);
@@ -249,7 +233,7 @@ function EmpApplicationForm1(props: Props) {
                         },
                         pattern: {
                           value: /\S+@\S+\.\S+/,
-                          message: WrongPatternError + " Email",
+                          message: WrongPatternError,
                         },
                       })}
                     ></TextField>
@@ -286,12 +270,16 @@ function EmpApplicationForm1(props: Props) {
                       className="col-8"
                       error={errors.socialSecurity == undefined ? false : true}
                       helperText={
-                        errors.socialSecurity && errors.socialSecurity?.message
+                        errors.socialSecurity && errors.socialSecurity.message
                       }
                       inputRef={register({
                         required: {
                           value: reqBits.socialSecurity,
                           message: RequireError,
+                        },
+                        minLength: {
+                          value: 8,
+                          message: "min length is 8",
                         },
                       })}
                     ></TextField>
@@ -332,7 +320,7 @@ function EmpApplicationForm1(props: Props) {
                           label="City"
                           className="col-12"
                           error={errors.city == undefined ? false : true}
-                          helperText={errors.city && errors.city?.message}
+                          helperText={errors.city && errors.city.message}
                           inputRef={register({
                             required: {
                               value: reqBits.city,
@@ -344,10 +332,13 @@ function EmpApplicationForm1(props: Props) {
                       <Grid item xs={4}>
                         <ReactAutoComplete
                           id="state"
+                          label={"States"}
                           className="col-12"
                           useForm={Forms}
+                          isReq={reqBits["state"]}
                           optionList={states}
                           defaultValue={props.data.state}
+                          error={errors && errors["state"]}
                         ></ReactAutoComplete>
                       </Grid>
                       <Grid item xs={4}>
@@ -441,8 +432,19 @@ function EmpApplicationForm1(props: Props) {
                   <Grid item xs={1}></Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={10}>
-                    {/* {(props.data.addresses = addr)} */}
-                    <AddressesComponent
+                    <DynamicAddressComponent
+                      idPrefix="addresses"
+                      setAddresses={updateAddressList}
+                      addressesList={props.data.addresses}
+                      addressId="addresses"
+                      cityId=""
+                      stateId=""
+                      zipCodeId=""
+                      fromDateId=""
+                      toDateId=""
+                      forms={Forms}
+                    ></DynamicAddressComponent>
+                    {/* <AddressesComponent
                       idPrefix=""
                       useForm={Forms}
                       data={props.data}
@@ -454,7 +456,7 @@ function EmpApplicationForm1(props: Props) {
                       toDateId="lastYearAddressTo"
                       addressesList={props.data.addresses}
                       setAddresses={updateAddressList}
-                    ></AddressesComponent>
+                    ></AddressesComponent> */}
                   </Grid>
                   <Grid item xs={1}></Grid>
                   {/* Current Address Ending */}
@@ -469,14 +471,6 @@ function EmpApplicationForm1(props: Props) {
             <Grid item xs={1}></Grid>
             <Grid item xs={10}>
               <Paper elevation={3} className={classes.paper}>
-                {/* <Button onClick={()=>{console.log(manualStates.resume1);}}>check file uploaded</Button> */}
-
-                {/* <DynamicFileUpload
-                  idPrefix="fileUpload"
-                  // prevFileUploaded={props.fileUpload}
-                  useForm={Forms}
-                  setNewFileToUpload={handleFileUpload}
-                ></DynamicFileUpload> */}
                 <Grid
                   container
                   direction="row"
@@ -594,7 +588,7 @@ function EmpApplicationForm1(props: Props) {
             <Grid item xs={1}></Grid>
             {/* Questions and Awnsers Starting */}
             <Grid item xs={10}>
-              <Accordion>
+              <Accordion defaultExpanded>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography className={classes.heading}>
                     Questions and Anwsers
@@ -618,7 +612,39 @@ function EmpApplicationForm1(props: Props) {
                       </Typography>
                     </Grid>
                     <Grid item xs={3}>
-                      <FormControl
+                      <ReactAutoComplete
+                        id="startTime"
+                        label="Join with in"
+                        isReq={reqBits["startTime"]}
+                        className="col-12 text-left"
+                        useForm={Forms}
+                        optionList={startTimeVal}
+                        defaultValue={props.data.startTime}
+                        error={errors && errors["startTime"]}
+                      ></ReactAutoComplete>
+                      {/* <ReactHookFormSelect
+                        nameVal="startTime"
+                        label="Join with in"
+                        control={control}
+                        forms={Forms}
+                        defaultValue={props.data.startTime}
+                        variant="outlined"
+                        size="small"
+                        className="col-12 text-left"
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        {startTimeVal.map(function (object: any, i: number) {
+                          return (
+                            <MenuItem value={object.value} key={i}>
+                              {object.value}
+                            </MenuItem>
+                          );
+                        })}
+                      </ReactHookFormSelect> */}
+
+                      {/* <FormControl
                         variant="outlined"
                         size="small"
                         className="col-12"
@@ -639,29 +665,13 @@ function EmpApplicationForm1(props: Props) {
                             });
                           }}
 
-                          // error={errors.startTime == undefined ? false : true}
-                          // inputRef={register({
-                          //   required: {
-                          //     value: true,
-                          //     message: RequireError,
-                          //   },
-                          // })}
+                
                         >
-                          <MenuItem value="">
-                            <em>None</em>
-                          </MenuItem>
-                          {startTimeVal.map(function (object: any, i: number) {
-                            return (
-                              <MenuItem value={object.value} key={i}>
-                                {object.value}
-                              </MenuItem>
-                            );
-                          })}
                         </Select>
                         <FormHelperText>
                           {errors.startTime && errors.startTime?.message}
                         </FormHelperText>
-                      </FormControl>
+                      </FormControl> */}
                     </Grid>
                     <Grid
                       item
@@ -673,14 +683,52 @@ function EmpApplicationForm1(props: Props) {
                       </Typography>
                     </Grid>
                     <Grid item xs={3}>
-                      <FormControl
+                      <ReactAutoComplete
+                        id="classAExperienceLevel"
+                        isReq={reqBits["classAExperienceLevel"]}
+                        label="Experience Level"
+                        className="col-12 text-left"
+                        useForm={Forms}
+                        optionList={classAExperienceLevelVal}
+                        defaultValue={props.data.classAExperienceLevel}
+                        error={errors && errors["classAExperienceLevel"]}
+                      ></ReactAutoComplete>
+                      {/* <ReactHookFormSelect
+                        nameVal="classAExperienceLevel"
+                        label="Experience Level"
+                        control={control}
+                        defaultValue={props.data.classAExperienceLevel}
+                        variant="outlined"
+                        size="small"
+                        forms={Forms}
+                        error={
+                          errors.classAExperienceLevel === undefined
+                            ? false
+                            : true
+                        }
+                        className="col-12 text-left"
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        {classAExperienceLevelVal.map(function (
+                          object: any,
+                          i: number
+                        ) {
+                          return (
+                            <MenuItem value={object.value} key={i}>
+                              {object.value}
+                            </MenuItem>
+                          );
+                        })}
+                      </ReactHookFormSelect> */}
+
+                      {/* <FormControl
                         variant="outlined"
                         size="small"
                         className="col-12"
                       >
-                        <InputLabel id="classExperienceLbl">
-                          Experience Level
-                        </InputLabel>
+                        <InputLabel id="classExperienceLbl"></InputLabel>
                         <Select
                           name="classAExperienceLevel"
                           labelId="classExperienceLbl"
@@ -700,26 +748,12 @@ function EmpApplicationForm1(props: Props) {
                           //     message: RequireError,
                           //   },
                           // })}
-                        >
-                          <MenuItem value="">
-                            <em>None</em>
-                          </MenuItem>
-                          {classAExperienceLevelVal.map(function (
-                            object: any,
-                            i: number
-                          ) {
-                            return (
-                              <MenuItem value={object.value} key={i}>
-                                {object.value}
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
+                        ></Select>
                         <FormHelperText>
                           {errors.classAExperienceLevel &&
                             errors.classAExperienceLevel?.message}
                         </FormHelperText>
-                      </FormControl>
+                      </FormControl> */}
                     </Grid>
                     <Grid
                       item
@@ -738,7 +772,10 @@ function EmpApplicationForm1(props: Props) {
                         type="text"
                         label="Heard From ..."
                         className="col-12"
-                        inputRef={register}
+                        error={errors.hearAbout === undefined ? false : true}
+                        inputRef={register({
+                          required: { value: true, message: RequireError },
+                        })}
                       ></TextField>
                     </Grid>
 

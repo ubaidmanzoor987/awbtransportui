@@ -79,7 +79,7 @@ class Login extends React.Component<LoginProps, LoginState> {
       if (res.data) {
         this.context.setUserData(res.data);
       } else {
-        console.log("res", res);
+        //console.log("res", res);
         this.setState({
           ...this.state,
           errors: { ...errors, user_name: res.error },
@@ -102,7 +102,7 @@ class Login extends React.Component<LoginProps, LoginState> {
 
   render() {
     const { errors } = this.state;
-    console.log("user_data", this.context.data);
+    // //console.log("user_data", this.context.data);
     if (this.context.data.user_name) {
       return <Redirect to="/AwbTransportEmploymentApplication" />;
     }

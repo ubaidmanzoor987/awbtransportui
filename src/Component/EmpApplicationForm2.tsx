@@ -21,7 +21,8 @@ import { useForm } from "react-hook-form";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { ControlCameraOutlined } from "@material-ui/icons";
 import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
-import { debug } from "../Common/CommonVariables";
+import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
+import { debug, reqBits } from "../Common/CommonVariables";
 import { update } from "../services/updateApi";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -77,7 +78,7 @@ function EmpApplicationForm2(props: Props) {
   const classes = useStyles();
 
   const onSubmit = async (data: any) => {
-    console.log(data);
+    // //console.log(data);
     data.user_name = props.data.user_name;
     const resdata = await update(data);
     props.setData(resdata.data.data);
@@ -143,10 +144,22 @@ function EmpApplicationForm2(props: Props) {
                     </Paper>
                   </Grid>
                   <Grid item xs={6}>
-                    <ReactHookFormSelect
+                    <ReactAutoComplete
+                      id="gender"
+                      label="Gender"
+                      className="col-12 text-left"
+                      isReq={reqBits["gender"]}
+                      useForm={Forms}
+                      optionList={gender}
+                      defaultValue={props.data.gender}
+                      error={errors && errors["gender"]}
+                    ></ReactAutoComplete>
+
+                    {/* <ReactHookFormSelect
                       nameVal="gender"
                       label="Gender"
                       control={control}
+                      forms={Forms}
                       defaultValue={props?.data?.gender}
                       variant="outlined"
                       size="small"
@@ -160,12 +173,24 @@ function EmpApplicationForm2(props: Props) {
                           </MenuItem>
                         );
                       })}
-                    </ReactHookFormSelect>
+                    </ReactHookFormSelect> */}
                   </Grid>
                   <Grid item xs={6}>
+                    <ReactAutoComplete
+                      id="veteranStatus"
+                      label="Veteran Status"
+                      isReq={reqBits["veteranStatus"]}
+                      className="col-12 text-left"
+                      useForm={Forms}
+                      optionList={veteranStatus}
+                      defaultValue={props.data.veteranStatus}
+                      error={errors && errors["veteranStatus"]}
+                    ></ReactAutoComplete>
+                    {/* 
                     <ReactHookFormSelect
                       nameVal="veteranStatus"
                       label="Veteran Status"
+                      forms={Forms}
                       defaultValue={props?.data?.veteranStatus}
                       control={control}
                       variant="outlined"
@@ -180,7 +205,7 @@ function EmpApplicationForm2(props: Props) {
                           </MenuItem>
                         );
                       })}
-                    </ReactHookFormSelect>
+                    </ReactHookFormSelect> */}
                   </Grid>
                 </Grid>
                 <Grid item xs={12} style={{ marginTop: "25px" }}>

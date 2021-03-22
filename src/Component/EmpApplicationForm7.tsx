@@ -66,9 +66,9 @@ export default function EmpApplicationForm7(props: Props) {
     data.employeeSignature = base64SignatureImage;
     data.user_name = props.data.user_name;
     const resdata = await update(data);
-    console.log(
-      "-------------------FORM 7 Submited Data and Response-------------------"
-    );
+    //console.log(
+    //   "-------------------FORM 7 Submited Data and Response-------------------"
+    // );
     props.setData(resdata.data.data);
   };
 
@@ -322,7 +322,7 @@ export default function EmpApplicationForm7(props: Props) {
                             if (e.target.value.length > 11) {
                               const n = formatPhoneNumberIntl(e.target.value);
                               if (n) {
-                                console.log(n);
+                                //console.log(n);
                                 setPhonePatten(n);
                               } else {
                                 setPhonePatten(e.target.value);
@@ -332,8 +332,8 @@ export default function EmpApplicationForm7(props: Props) {
                             }
                           }}
                           onBlur={(e: any) => {
-                            console.log();
-                            console.log("EVENT ", e.target.value);
+                            //console.log();
+                            //console.log("EVENT ", e.target.value);
                           }}
 
                           // inputRef={register({
@@ -431,6 +431,7 @@ export default function EmpApplicationForm7(props: Props) {
                           id="newEmployeerState"
                           className="col-12"
                           useForm={Forms}
+                          label="States"
                           optionList={states}
                           defaultValue={props.data?.newEmployeerState}
                         ></ReactAutoComplete>
@@ -617,6 +618,7 @@ export default function EmpApplicationForm7(props: Props) {
                           id="prevEmployeerState"
                           className="col-12"
                           useForm={Forms}
+                          label="States"
                           optionList={states}
                           defaultValue={props.data?.prevEmployeerState}
                         ></ReactAutoComplete>

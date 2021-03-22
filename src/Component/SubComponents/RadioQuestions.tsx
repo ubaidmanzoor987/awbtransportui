@@ -13,6 +13,7 @@ import {
   reqBits,
   reqBitsKeys,
   RequireError,
+  print,
 } from "../../Common/CommonVariables";
 import { useStyles } from "../EmpApplicationForm3";
 
@@ -48,6 +49,8 @@ export default function RadioQuestions(props: Props) {
   const { register, handleSubmit, errors, control } = Forms;
   const bools = props.optionValue;
 
+  // print("Radio :", Forms);
+
   return (
     <>
       <Grid
@@ -71,20 +74,20 @@ export default function RadioQuestions(props: Props) {
         >
           <FormControl
             component="fieldset"
-            error={errors[props.id] === undefined ? false : true}
+            error={errors[props.id] && errors[props.id]}
           >
             <Controller
               rules={{ required: true }}
               control={control}
               name={props.id}
-              defaultValue={props.defaultSelected + ""}
+              defaultValue={props.defaultSelected}
               as={
                 <RadioGroup row>
                   {props.optionList.map((optionItem, index) => {
                     return (
                       <FormControlLabel
                         key={index}
-                        value={props.optionValue[index] + ""}
+                        value={props.optionValue[index]}
                         control={<Radio />}
                         label={optionItem}
                       />

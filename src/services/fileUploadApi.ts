@@ -11,7 +11,7 @@ export async function fileUploadApi(data: any ) {
             const resultData = await res.json() as Result;
             return resultData;
     } catch (ex) {
-        console.log("exception", ex);
+        //console.log("exception", ex);
         return ex;
     }
 }

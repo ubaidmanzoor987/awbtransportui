@@ -15,7 +15,7 @@ export async function register(data: SignUpState ) {
             const resultData = await res.json() as Result;
             return resultData;
     } catch (ex) {
-        console.log("exception", ex);
+        //console.log("exception", ex);
         return ex;
     }
 }

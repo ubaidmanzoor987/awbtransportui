@@ -70,6 +70,7 @@ export function DynamicTrafficConvictions(props: Props) {
     reset,
     trigger,
     setError,
+    errors,
   } = props.useForm;
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -80,7 +81,7 @@ export function DynamicTrafficConvictions(props: Props) {
 
   const submit = (e: any) => {
     e.preventDefault();
-    console.log(e.target.data);
+    //console.log(e.target.data);
   };
 
   return (
@@ -92,7 +93,7 @@ export function DynamicTrafficConvictions(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion elevation={3} key={index}>
+          <Accordion defaultExpanded elevation={3} key={index}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -118,8 +119,17 @@ export function DynamicTrafficConvictions(props: Props) {
                   <TextField
                     variant="outlined"
                     name={`${props.idPrefix}[${index}].dateOfViolation`}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].dateOfViolation
+                    }
                     inputRef={register({
-                      required: reqBits.dateOfViolation,
+                      required: {
+                        value: reqBits.dateOfViolation,
+                        message: RequireError,
+                      },
                     })}
                     defaultValue={item.dateOfViolation}
                     size="small"
@@ -132,8 +142,17 @@ export function DynamicTrafficConvictions(props: Props) {
                   <TextField
                     variant="outlined"
                     name={`${props.idPrefix}[${index}].ViolationPenalty`}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].ViolationPenalty
+                    }
                     inputRef={register({
-                      required: reqBits.ViolationPenalty,
+                      required: {
+                        value: reqBits.ViolationPenalty,
+                        message: RequireError,
+                      },
                     })}
                     defaultValue={item.ViolationPenalty}
                     size="small"
@@ -149,8 +168,17 @@ export function DynamicTrafficConvictions(props: Props) {
                     label="Location"
                     multiline
                     name={`${props.idPrefix}[${index}].LocationOfViolation`}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].LocationOfViolation
+                    }
                     inputRef={register({
-                      required: reqBits.LocationOfViolation,
+                      required: {
+                        value: reqBits.LocationOfViolation,
+                        message: RequireError,
+                      },
                     })}
                     size="small"
                     defaultValue={item.LocationOfViolation}
@@ -165,8 +193,17 @@ export function DynamicTrafficConvictions(props: Props) {
                     label="Charge"
                     multiline
                     name={`${props.idPrefix}[${index}].ViolationCharge`}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].ViolationCharge
+                    }
                     inputRef={register({
-                      required: reqBits.ViolationCharge,
+                      required: {
+                        value: reqBits.ViolationCharge,
+                        message: RequireError,
+                      },
                     })}
                     size="small"
                     defaultValue={item.ViolationCharge}
@@ -190,7 +227,11 @@ export function DynamicTrafficConvictions(props: Props) {
                   variant="contained"
                   color="default"
                   id={"id" + index}
-                  onClick={() => remove(index)}
+                  onClick={() => {
+                    if (index > 0) {
+                      remove(index);
+                    }
+                  }}
                 >
                   Delete This
                 </Button>

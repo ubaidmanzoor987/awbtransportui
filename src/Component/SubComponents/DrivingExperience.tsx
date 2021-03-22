@@ -51,7 +51,9 @@ export default function DrivingExperience(props: Props) {
   const Forms = props.useForm;
   const { register, handleSubmit, errors, defaultValues } = Forms;
 
-  const [drivingExperienceState, drivingExperienceStateHandler] = useState(props.drivingExperienceList);
+  const [drivingExperienceState, drivingExperienceStateHandler] = useState(
+    props.drivingExperienceList
+  );
   //   const [errorsList, errorListHandler] = useState();
   useEffect(() => {
     drivingExperienceStateHandler(props.drivingExperienceList);
@@ -63,70 +65,92 @@ export default function DrivingExperience(props: Props) {
 
   const addAddress = (event: any) => {
     event.preventDefault();
-    drivingExperienceStateHandler([...drivingExperienceState, drivingExperienceDummyElement]);
+    drivingExperienceStateHandler([
+      ...drivingExperienceState,
+      drivingExperienceDummyElement,
+    ]);
   };
 
   return (
     <React.Fragment>
-      <Grid container direction="row" justify="space-between" alignItems="center">
-        {drivingExperienceState.map((drivingExperienceItem: tDrivingExperience, index: number) => {
-          console.log("----------------------ERRORS----------------------");
-          console.log(errors);
-          console.log(errors[props.idPrefix]);
-          console.log(errors[props.idPrefix]?.drivingExperiencestatus);
-          console.log("----------------------ERRORS----------------------");
-          return (
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-                <Typography className={classes.heading}>Experience 1</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid container direction="row" justify="space-evenly" alignItems="center" spacing={1}>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="experienceclassofEquipment"
-                      variant="outlined"
-                      size="small"
-                      type="text"
-                      label="Class of Equipment"
-                      className="col-12"
-                    ></TextField>
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
+        {drivingExperienceState.map(
+          (drivingExperienceItem: tDrivingExperience, index: number) => {
+            //console.log("----------------------ERRORS----------------------");
+            //console.log(errors);
+            //console.log(errors[props.idPrefix]);
+            //console.log(errors[props.idPrefix]?.drivingExperiencestatus);
+            //console.log("----------------------ERRORS----------------------");
+            return (
+              <Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography className={classes.heading}>
+                    Experience 1
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="space-evenly"
+                    alignItems="center"
+                    spacing={1}
+                  >
+                    <Grid item xs={6}>
+                      <TextField
+                        name="experienceclassofEquipment"
+                        variant="outlined"
+                        size="small"
+                        type="text"
+                        label="Class of Equipment"
+                        className="col-12"
+                      ></TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        name="experiencenumberOfMiles"
+                        variant="outlined"
+                        size="small"
+                        type="number"
+                        label="Approximate Number of Miles"
+                        className="col-12"
+                      ></TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        name="fromDateDriving1"
+                        variant="outlined"
+                        size="small"
+                        type="date"
+                        helperText="From Date"
+                        className="col-12"
+                      ></TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        name="experienceToDate"
+                        variant="outlined"
+                        size="small"
+                        type="date"
+                        helperText="To Date"
+                        className="col-12"
+                      ></TextField>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="experiencenumberOfMiles"
-                      variant="outlined"
-                      size="small"
-                      type="number"
-                      label="Approximate Number of Miles"
-                      className="col-12"
-                    ></TextField>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="fromDateDriving1"
-                      variant="outlined"
-                      size="small"
-                      type="date"
-                      helperText="From Date"
-                      className="col-12"
-                    ></TextField>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="experienceToDate"
-                      variant="outlined"
-                      size="small"
-                      type="date"
-                      helperText="To Date"
-                      className="col-12"
-                    ></TextField>
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
-          );
-        })}
+                </AccordionDetails>
+              </Accordion>
+            );
+          }
+        )}
         <Grid item xs={12} style={{ padding: "20px 10px" }}>
           <Button
             size="small"
@@ -134,8 +158,11 @@ export default function DrivingExperience(props: Props) {
             variant="contained"
             color="primary"
             onClick={(e) => {
-              drivingExperienceStateHandler([...drivingExperienceState, drivingExperienceDummyElement]);
-              console.log(drivingExperienceState);
+              drivingExperienceStateHandler([
+                ...drivingExperienceState,
+                drivingExperienceDummyElement,
+              ]);
+              //console.log(drivingExperienceState);
             }}
           >
             Another Traffic Convictions History

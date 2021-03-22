@@ -83,15 +83,15 @@ export type EmploymentHistoryInfo = {
 };
 
 export let employmentHistoryDummyElement: EmploymentHistoryInfo = {
-  employmentHistoryfrom: "2018-01-01",
-  employmentHistoryTo: "2018-01-01",
-  employmentHistorystatus: "Default",
-  employmentHistoryposition: "Default",
-  employmentHistoryaddress: "Default",
-  employmentHistorycompanyPhone: "Default",
-  employmentHistoryreasonForLeaving: "Default",
-  employmentHistorysubjecttotheFMCSRs: "Default",
-  employmentHistorydrugandalcoholTesting: "Default",
+  employmentHistoryfrom: "",
+  employmentHistoryTo: "",
+  employmentHistorystatus: "",
+  employmentHistoryposition: "",
+  employmentHistoryaddress: "",
+  employmentHistorycompanyPhone: "",
+  employmentHistoryreasonForLeaving: "",
+  employmentHistorysubjecttotheFMCSRs: "",
+  employmentHistorydrugandalcoholTesting: "",
 };
 
 export type EmploymentHistories = EmploymentHistoryInfo[];
@@ -362,6 +362,150 @@ export let reqBits = {
   nameOfPersonProvidingInformationDate: false,
 };
 
+//------------------------------------------------
+//------------------------------------------------
+
+// export const reqBits = {
+//   first_name: true,
+//   last_name: true,
+//   phone_number: true,
+//   email: true,
+//   dateofBirth: true,
+//   socialSecurity: true,
+//   address: true,
+//   city: true,
+//   state: true,
+//   zipCode: true,
+//   lastThreeYearResidenceCheck: true,
+//   addresses: true,
+//   lastYearAddress: true,
+//   lastYearAddressCity: true,
+//   lastYearAddressState: true,
+//   lastYearAddressZipCode: true,
+//   lastYearAddressfrom: true,
+//   lastYearAddressTo: true,
+//   startTime: true,
+//   hearAbout: true,
+//   eligibletoWorkInUnitedState: true,
+//   classAExperienceLevel: true,
+//   willingForDrugTest: true,
+//   //Form 2
+//   gender: true,
+//   veteranStatus: true,
+//   //Form 3
+//   companyName: true,
+//   companyAddress: true,
+//   companyCity: true,
+//   companyState: true,
+//   companyPostCode: true,
+//   applicationApplyDate: true,
+//   applicationApplyAsPosition: true,
+//   applicantfirstName: true,
+//   applicantLastName: true,
+//   applicantPhoneNumber: true,
+//   emergencyContactfirstName: true,
+//   emergencyContactlastName: true,
+//   emergencyContactNumber: true,
+//   age: true,
+//   applicantdateofbirth: true,
+//   physicalExamExpirationDate: true,
+//   applicantAddresses: true,
+//   everWorkedForCompany: true,
+//   applicantSchoolGrade: true,
+//   applicantCollegeGrade: true,
+//   applicantPostGraduateGrade: true,
+//   employmentHistoryfrom: true,
+//   employmentHistoryTo: true,
+//   employmentHistorystatus: true,
+//   employmentHistoryposition: true,
+//   employmentHistoryaddress: true,
+//   employmentHistorycompanyPhone: true,
+//   employmentHistoryreasonForLeaving: true,
+//   employmentHistorysubjecttotheFMCSRs: true,
+//   employmentHistorydrugandalcoholTesting: true,
+//   employmentExperienceHistory: true,
+//   experienceclassofEquipment: true,
+//   experienceFromDate: true,
+//   experienceToDate: true,
+//   experiencenumberOfMiles: true,
+//   lastFiveYearStatesOperate: true,
+//   Listspecialcourses: true,
+//   ListanySafeDrivingAwards: true,
+//   dateOfAccident: true,
+//   NatureOfAccidents: true,
+//   LocationOfAccidents: true,
+//   numberofFatalities: true,
+//   numberofPeopleleInjured: true,
+//   dateOfViolation: true,
+//   LocationOfViolation: true,
+//   ViolationCharge: true,
+//   ViolationPenalty: true,
+//   stateOfLicence: true,
+//   licenceNumber: true,
+//   licenceType: true,
+//   licenceEndoresment: true,
+//   licenceExpirationDate: true,
+//   deniedLicences: true,
+//   permitLicences: true,
+//   reasonforUnableToPerformActions: true,
+//   convictedofafelony: true,
+//   answerToAnyQuestion: true,
+//   referencefirstName: true,
+//   referencelastName: true,
+//   referenceCompany: true,
+//   referenceTitle: true,
+//   referencePhoneNumber: true,
+//   referenceAddress: true,
+//   signature: true,
+//   dateOfApplication: true,
+//   remarks: true,
+//   //FORM6
+
+//   alcoholTestExecutionDate: true,
+//   alcoholTestEmployeeFirstName: true,
+//   alcoholTestEmployeeLastName: true,
+//   alcoholTestEmployeeSignature: true,
+//   alcoholTestSecurityNumber: true,
+
+//   //FORM7
+//   employeePrintedName: true,
+//   employeeSSNNumber: true,
+//   employeeSignature: true,
+//   employeeDate: true,
+
+//   newEmployeerName: true,
+//   newEmployeerAddress: true,
+//   newEmployeerCity: true,
+//   newEmployeerState: true,
+//   newEmployeerpostalCode: true,
+//   newEmployeerphone: true,
+//   newEmployeerFax: true,
+//   newEmployeedesignatedEmployeeReprsentative: true,
+
+//   prevEmployeerName: true,
+//   prevEmployeerAddress: true,
+//   prevEmployeerCity: true,
+//   prevEmployeerState: true,
+//   prevEmployeerpostalCode: true,
+//   prevEmployeerphone: true,
+//   prevEmployeerFax: true,
+//   prevEmployeedesignatedEmployeeReprsentative: true,
+
+//   employeeAlcoholTestRateHigher: true,
+//   employeeverifiedDrugTest: true,
+//   employeerefuseTest: true,
+//   employeeotherViolations: true,
+//   prevEmployeeReportDrug: true,
+//   answeredYes: true,
+
+//   nameOfPersonProvidingInformation: true,
+//   nameOfPersonProvidingInformationTitle: true,
+//   nameOfPersonProvidingInformationPhone: true,
+//   nameOfPersonProvidingInformationDate: true,
+// };
+//------------------------------------------------
+//------------------------------------------------
+
 export let reqBitsKeys = {
   first_name: "first_name",
   last_name: "last_name",
@@ -566,41 +710,16 @@ export type AddressErrorsList = [
   }
 ];
 
-// export let reqBitsKeys = [
-//   { first_name: 0 },
-//   { last_name: 1 },
-//   { phone_number: 2 },
-//   { email: 3 },
-//   { dateofBirth: 4 },
-//   { socialSecurity: 5 },
-//   { address: 6 },
-//   { city: 7 },
-//   { state: 8 },
-//   { zipCode: 9 },
-//   { lastThreeYearResidenceCheck: 10 },
-//   { addresses: 11 },
-//   { lastYearAddress: 12 },
-//   { lastYearAddressCity: 13 },
-//   { lastYearAddressState: 14 },
-//   { lastYearAddressZipCode: 15 },
-//   { lastYearAddressfrom: 16 },
-//   { lastYearAddressTo: 17 },
-//   { startTime: 18 },
-//   { hearAbout: 19 },
-//   { eligibletoWorkInUnitedState: 20 },
-//   { classAExperienceLevel: 21 },
-//   { willingForDrugTest: 22 },
-// ];
-
 export const WrongPatternError: string = "Wrong Pattern";
 export let debug = false;
+export let printDebug = true;
 export let addr = {
-  lastYearAddress: "Default",
-  lastYearAddressCity: "Default",
-  lastYearAddressState: "Alaska",
-  lastYearAddressZipCode: "Default",
-  lastYearAddressfrom: "2018-01-01",
-  lastYearAddressTo: "2018-01-01",
+  lastYearAddress: "",
+  lastYearAddressCity: "",
+  lastYearAddressState: "",
+  lastYearAddressZipCode: "",
+  lastYearAddressfrom: "",
+  lastYearAddressTo: "",
 };
 export const startTimeVal = [
   { value: "Immediately" },
@@ -631,7 +750,7 @@ export const form3DefaultValue = {
   age: 10,
   applicantdateofbirth: "2018-10-10",
   physicalExamExpirationDate: "2018-10-10",
-  applicantAddresses: [addr, addr],
+  applicantAddresses: [addr],
   everWorkedForCompany: "Yes",
   applicantSchoolGrade: "3",
   applicantCollegeGrade: "2",
@@ -680,4 +799,10 @@ export const form3DefaultValue = {
   signature: "Default",
   dateOfApplication: "2018-10-10",
   remarks: "Default",
+};
+
+export const print = (msg: string, obj: any) => {
+  if (printDebug == false) return;
+  console.log("PRINT : " + msg + " ");
+  console.log(obj);
 };

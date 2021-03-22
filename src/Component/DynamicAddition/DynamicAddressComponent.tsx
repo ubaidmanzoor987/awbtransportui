@@ -38,6 +38,7 @@ import {
   reqBits,
   states,
   AddressErrorsList,
+  print,
 } from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
@@ -61,16 +62,21 @@ const RequireError: string = "Required *";
 const WrongPatternError: string = "Wrong Pattern";
 
 let addr = {
-  lastYearAddress: "Default",
-  lastYearAddressCity: "Default",
-  lastYearAddressState: "Alaska",
-  lastYearAddressZipCode: "Default",
-  lastYearAddressfrom: "1990-01-01",
-  lastYearAddressTo: "1990-01-01",
+  lastYearAddress: "",
+  lastYearAddressCity: "",
+  lastYearAddressState: "",
+  lastYearAddressZipCode: "",
+  lastYearAddressfrom: "",
+  lastYearAddressTo: "",
 };
 
 export function DynamicAddressComponent(props: Props) {
   const classes = styleClasses.useStyles();
+  // print("Address List : ", props.addressesList);
+  if (props.addressesList.length === 0 || props.addressesList === []) {
+    props.addressesList.push(addr);
+  }
+
   const {
     register,
     control,
@@ -78,6 +84,7 @@ export function DynamicAddressComponent(props: Props) {
     reset,
     trigger,
     setError,
+    errors,
   } = props.forms;
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -88,7 +95,7 @@ export function DynamicAddressComponent(props: Props) {
 
   const submit = (e: any) => {
     e.preventDefault();
-    console.log(e.target.data);
+    //console.log(e.target.data);
   };
 
   return (
@@ -100,7 +107,7 @@ export function DynamicAddressComponent(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion key={index}>
+          <Accordion key={index} defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.text}>
                 Address {index + 1}
@@ -120,8 +127,17 @@ export function DynamicAddressComponent(props: Props) {
                     size="small"
                     variant="outlined"
                     name={`${props.addressId}[${index}].lastYearAddress`}
+                    error={
+                      errors &&
+                      errors[props.addressId] &&
+                      errors[props.addressId][index] &&
+                      errors[props.addressId][index].lastYearAddress
+                    }
                     inputRef={register({
-                      required: reqBits.lastYearAddress,
+                      required: {
+                        value: reqBits.lastYearAddress,
+                        message: RequireError,
+                      },
                     })}
                     defaultValue={item.lastYearAddress}
                   ></TextField>
@@ -130,8 +146,17 @@ export function DynamicAddressComponent(props: Props) {
                   <TextField
                     name={`${props.addressId}[${index}].lastYearAddressCity`}
                     inputRef={register({
-                      required: reqBits.lastYearAddressCity,
+                      required: {
+                        value: reqBits.lastYearAddressCity,
+                        message: RequireError,
+                      },
                     })}
+                    error={
+                      errors &&
+                      errors[props.addressId] &&
+                      errors[props.addressId][index] &&
+                      errors[props.addressId][index].lastYearAddressCity
+                    }
                     variant="outlined"
                     size="small"
                     defaultValue={item.lastYearAddressCity}
@@ -141,6 +166,19 @@ export function DynamicAddressComponent(props: Props) {
                 <Grid item xs={4}>
                   <ReactAutoComplete
                     id={`${props.addressId}[${index}].lastYearAddressState`}
+                    label="States"
+                    defaultValue={
+                      props.addressesList &&
+                      props.addressesList[index] &&
+                      props.addressesList[index].lastYearAddressState
+                    }
+                    error={
+                      errors &&
+                      errors[props.addressId] &&
+                      errors[props.addressId][index] &&
+                      errors[props.addressId][index].lastYearAddressState
+                    }
+                    isReq={reqBits["lastYearAddressState"]}
                     className="col-12"
                     useForm={props.forms}
                     optionList={states}
@@ -150,8 +188,17 @@ export function DynamicAddressComponent(props: Props) {
                   <TextField
                     name={`${props.addressId}[${index}].lastYearAddressZipCode`}
                     inputRef={register({
-                      required: reqBits.lastYearAddressZipCode,
+                      required: {
+                        value: reqBits.lastYearAddressZipCode,
+                        message: RequireError,
+                      },
                     })}
+                    error={
+                      errors &&
+                      errors[props.addressId] &&
+                      errors[props.addressId][index] &&
+                      errors[props.addressId][index].lastYearAddressZipCode
+                    }
                     variant="outlined"
                     size="small"
                     defaultValue={item.lastYearAddressZipCode}
@@ -169,8 +216,17 @@ export function DynamicAddressComponent(props: Props) {
                   <TextField
                     name={`${props.addressId}[${index}].lastYearAddressfrom`}
                     inputRef={register({
-                      required: reqBits.lastYearAddressfrom,
+                      required: {
+                        value: reqBits.lastYearAddressfrom,
+                        message: RequireError,
+                      },
                     })}
+                    error={
+                      errors &&
+                      errors[props.addressId] &&
+                      errors[props.addressId][index] &&
+                      errors[props.addressId][index].lastYearAddressfrom
+                    }
                     variant="outlined"
                     type="date"
                     defaultValue={item.lastYearAddressfrom}
@@ -186,8 +242,17 @@ export function DynamicAddressComponent(props: Props) {
                     // }
                     name={`${props.addressId}[${index}].lastYearAddressTo`}
                     inputRef={register({
-                      required: reqBits.lastYearAddressTo,
+                      required: {
+                        value: reqBits.lastYearAddressTo,
+                        message: RequireError,
+                      },
                     })}
+                    error={
+                      errors &&
+                      errors[props.addressId] &&
+                      errors[props.addressId][index] &&
+                      errors[props.addressId][index].lastYearAddressTo
+                    }
                     variant="outlined"
                     type="date"
                     defaultValue={item.lastYearAddressTo}
@@ -212,7 +277,11 @@ export function DynamicAddressComponent(props: Props) {
                   variant="contained"
                   color="default"
                   id={"id" + index}
-                  onClick={(e) => remove(index)}
+                  onClick={(e) => {
+                    if (index > 1) {
+                      remove(index);
+                    }
+                  }}
                 >
                   Delete This
                 </Button>

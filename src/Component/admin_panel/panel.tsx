@@ -41,7 +41,7 @@ class Adminpanel extends React.Component<AdminPanelProps, {}> {
   }
 
   componentDidMount() {
-    console.log("Props", this.context.user_list_data);
+    //console.log("Props", this.context.user_list_data);
   }
 
   render() {
