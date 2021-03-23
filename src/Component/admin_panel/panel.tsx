@@ -1,112 +1,114 @@
 import React from "react";
-import {
-  Grid,
-  Paper,
-  TableCell,
-  TableBody,
-  TableRow,
-  TableContainer,
-  TableHead,
-  Table,
-} from "@material-ui/core";
 import NavbarCareer from "../NavbarCareer";
 import Footer from "../Footer";
 import { users_data } from "../User";
+import {new_employee_pdf} from "../../services/new_employee_pdf";
+import { baseUrl } from "../../shared/baseUrl";
 
 type AdminPanelProps = {
   data?: any;
 };
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
 
 class Adminpanel extends React.Component<AdminPanelProps, {}> {
   constructor(props: any) {
     super(props);
   }
 
-  componentDidMount() {
-    //console.log("Props", this.context.user_list_data);
+  download_user_cv = (user_name: string) => {
+    window.open(baseUrl+"/api/get_resume?user_name="+user_name, "_blank");
+  }
+
+  download_new_employee_pdf = async (user_name: string) => {
+    window.open(baseUrl+"/api/pdf/new_employee?user_name="+user_name, "_blank");
   }
 
   render() {
     return (
       <>
-        <NavbarCareer addLogout={false} />
-        <div className="container-fluid" style={{ marginTop: "50px" }}>
-          <div className="row">
-            <div className="col-xs-12">
-              <h3>Users</h3>
-            </div>
-            <div className="col-xs-12">
-              <table
-                width="100%"
-                style={{ border: "1px solid black", alignSelf: "center" }}
-              >
-                <tr>
-                  <th>First name</th>
-                  <th>Last name</th>
-                  <th>Email</th>
-                  <th>Resume</th>
-                  <th>Pdf's</th>
-                </tr>
-                <tbody>
-                  {this.context.user_list_data.map(function (
-                    object: any,
-                    i: number
-                  ) {
-                    return (
-                      <tr key={i}>
-                        <td>{object.data.first_name}</td>
-                        <td>{object.data.last_name}</td>
-                        <td>{object.data.email}</td>
-                        <td>
-                          <button>Download Resume</button>
-                        </td>
-                        <td>
-                          <button>Download Pdf's</button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+        <NavbarCareer addLogout={true} />
+        <div className="container" style={{marginTop: "100px"}}>
+          <div className="row" style={{paddingBottom:"50px"}}>
+            <div className="col-md-12">
+              <h3>Users List</h3>
             </div>
           </div>
+          <div className="row" style={{border:"1px solid black"}}>
+            <div className="col-md-2">
+                <h6 style={{paddingTop:"8px"}}>
+                  First name
+                </h6>
+            </div>
+            <div className="col-md-2">
+              <h6 style={{paddingTop:"8px"}}>
+                Last name
+              </h6>
+            </div>
+            <div className="col-md-2">
+              <h6 style={{paddingTop:"8px"}}>
+                Email
+              </h6>
+            </div>  
+            <div className="col-md-1">
+                <h6 style={{paddingTop:"8px"}}>Resume</h6>
+            </div>
+            <div className="col-md-5">
+                <h6 style={{paddingTop:"8px"}}>Pdf's</h6>
+            </div>  
+          </div>
+            {
+            this.context.user_list_data.map( (object: any,i: number) => {
+                    return (
+                      <div className="row" key={i} style={{border:"1px solid black", paddingTop:"3px"}}>
+                        <div className="col-md-2">
+                          {
+                            object.data.first_name ? <p style={{paddingTop:"8px"}}>{object.data.first_name}</p>
+                            : <p style={{color:"red", paddingTop:"8px"}}>No First Name</p>
+                          }
+                        </div>
+                        <div className="col-md-2">
+                          {
+                            object.data.last_name ? <p style={{paddingTop:"8px"}}>{object.data.last_name}</p>
+                            : <p style={{color:"red", paddingTop:"8px"}}>No Last Name</p>
+                          }
+                        </div>
+                        <div className="col-md-2">
+                          {
+                            object.data.email ? <p style={{paddingTop:"8px"}}>{object.data.email}</p>
+                            : <p style={{color:"red", paddingTop:"8px"}}>No Email Found</p>
+                          }
+                          
+                        </div>
+                        <div className="col-md-1">
+                          <button 
+                            onClick={()=>{this.download_user_cv(object.data.user_name)}}
+                            style={{backgroundColor:"#1E2D3B", color:"white", borderRadius:"8px", marginTop:"8px"}}
+                          >
+                            Download
+                          </button>
+                        </div>
+                        <div className="col-md-5">
+                          <button onClick={()=>{this.download_new_employee_pdf(object.data.user_name)}} 
+                            style={{backgroundColor:"#1E2D3B", color:"white", borderRadius:"8px", marginLeft:"2px", marginTop:"8px"}}
+                          >
+                            Employee Info
+                          </button>
+                          <button style={{backgroundColor:"#1E2D3B", color:"white", borderRadius:"8px", marginLeft:"2px", marginTop:"8px"}}>
+                            Form i9
+                          </button>
+                          <button style={{backgroundColor:"#1E2D3B", color:"white", borderRadius:"8px", marginLeft:"2px", marginTop:"8px"}}>
+                            fw4
+                          </button>
+                          <button style={{backgroundColor:"#1E2D3B", color:"white", borderRadius:"8px", marginLeft:"2px", marginTop:"8px"}}>
+                            Driver Employment
+                          </button>
+                          <button style={{backgroundColor:"#1E2D3B", color:"white", borderRadius:"8px", marginLeft:"2px", marginTop:"8px"}}>
+                            All
+                          </button>
+                        </div>
+                      </div>
+                    );
+            })}
         </div>
-
-        {/* <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="baseline"
-          spacing={3}
-        >
-          <Grid item xs={12} >
-            <Paper elevation={3} className={}>
-              <h4>AWB Transport Inc., Employment Application</h4>
-            </Paper>
-          </Grid>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10}>
-            <p>Users</p>
-          </Grid>
-        </Grid> */}
         <Footer />
       </>
     );

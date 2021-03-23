@@ -42,13 +42,9 @@ class Login extends React.Component<LoginProps, LoginState> {
   handleChange = (event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
-    this.setState({
-      ...this.state,
-      errors: {},
-    });
     let errors = this.state.errors;
     switch (name) {
-      case "username":
+      case "user_name":
         errors.user_name = value == "" ? "Username must given!" : "";
         break;
       case "password":
@@ -79,7 +75,6 @@ class Login extends React.Component<LoginProps, LoginState> {
       if (res.data) {
         this.context.setUserData(res.data);
       } else {
-        //console.log("res", res);
         this.setState({
           ...this.state,
           errors: { ...errors, user_name: res.error },
@@ -122,10 +117,8 @@ class Login extends React.Component<LoginProps, LoginState> {
                       name="user_name"
                       onChange={this.handleChange}
                     />
-                    {errors.user_name ? (
+                    {errors.user_name && errors.user_name.length > 0 && (
                       <span style={{ color: "red" }}>{errors.user_name}</span>
-                    ) : (
-                      ""
                     )}
                   </div>
                   <div className="password">

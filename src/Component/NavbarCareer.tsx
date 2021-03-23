@@ -8,6 +8,7 @@ import {
   NavItem,
 } from "reactstrap";
 import { Link as RouterLink } from "react-router-dom";
+import { baseUrl } from "../shared/baseUrl";
 
 type createNavItemProps = {
   href: string;
@@ -75,7 +76,7 @@ export default class NavbarCareer extends Component<NavbarProps, NavbarState> {
           }}
         >
           <NavbarBrand>
-            <img src="assets/img/navbar-logo.png" alt="" />
+            <img src={baseUrl + "/assets/img/navbar-logo.png"} alt="" />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle}></NavbarToggler>
           <Collapse isOpen={this.state.isOpen} navbar>
