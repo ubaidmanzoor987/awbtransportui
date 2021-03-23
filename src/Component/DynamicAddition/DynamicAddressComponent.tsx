@@ -73,9 +73,6 @@ let addr = {
 export function DynamicAddressComponent(props: Props) {
   const classes = styleClasses.useStyles();
   // print("Address List : ", props.addressesList);
-  if (props.addressesList.length === 0 || props.addressesList === []) {
-    props.addressesList.push(addr);
-  }
 
   const {
     register,
@@ -278,7 +275,7 @@ export function DynamicAddressComponent(props: Props) {
                   color="default"
                   id={"id" + index}
                   onClick={(e) => {
-                    if (index > 1) {
+                    if (index > 0) {
                       remove(index);
                     }
                   }}
@@ -295,7 +292,9 @@ export function DynamicAddressComponent(props: Props) {
             className="col-3"
             variant="contained"
             color="primary"
-            onClick={() => append(addr)}
+            onClick={() => {
+              append(addr);
+            }}
           >
             Another Address
           </Button>

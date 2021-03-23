@@ -32,6 +32,7 @@ import {
   driverLicenseDummyElement,
   tDriverLicenseInfo,
   reqBits,
+  snackbarDuratuion,
 } from "../Common/CommonVariables";
 import { Addresses, tReferences } from "../Common/CommonVariables";
 import RadioQuestions from "./SubComponents/RadioQuestions";
@@ -52,9 +53,10 @@ import { DynamicDriverLicense } from "./DynamicAddition/DynamicDriverLicense";
 import { update } from "../services/updateApi";
 import { PinDropRounded } from "@material-ui/icons";
 import { DynamicReferences } from "./DynamicAddition/DynamicReferences";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
+import AlertComponent from "./SubComponents/AlertComponent";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -119,6 +121,8 @@ type Props = { data?: any; handler?: any; setData: any };
 
 function EmpApplicationForm3(props: Props) {
   // //console.log("props.data ", props.data);
+  const [signatureError, setSignatureError] = useState("");
+
   const Forms = useForm({ defaultValues: props.data });
   const { register, handleSubmit, errors, control } = Forms;
 
@@ -154,8 +158,30 @@ function EmpApplicationForm3(props: Props) {
 
   const classes = useStyles();
 
+  //-------------SNACKBAR-------------
+  const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
+  const [snackOpen, setSnackOpen] = React.useState(false);
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackOpen(false);
+    console.log("CLOSE AUTO");
+    if (succesOrErrorBit === "success") {
+      props.handler[0]();
+    }
+  };
+  //-------------SNACKBAR-------------
+
   const onSubmit = async (data: any) => {
     if (sigPad.current && sigPad.current.isEmpty()) {
+      setSignatureError("text-danger");
+      return;
+    }
+    {
+      setSignatureError("");
       base64SignatureImage = sigPad.current
         .getTrimmedCanvas()
         .toDataURL("image/png");
@@ -164,10 +190,39 @@ function EmpApplicationForm3(props: Props) {
     //console.log(data);
     data.user_name = props.data.user_name;
     const resdata = await update(data);
-    props.setData(resdata.data.data);
-    props.handler[0]();
+    try {
+      props.setData(resdata.data.data);
+      //-------------SNACKBAR-------------
+      setSuccesOrErrorBit("success");
+      setSnackOpen(true);
+      //-------------SNACKBAR-------------
+      // props.handler[0]();
+    } catch (ex) {
+      console.log("Error Exaption Seerver Error");
+      console.log(ex);
+      //-------------SNACKBAR-------------
+      setSuccesOrErrorBit("error");
+      setSnackOpen(true);
+      //-------------SNACKBAR-------------
+    }
   };
 
+  console.log("props.data.applicantAddresses");
+  console.log(props.data.applicantAddresses);
+
+  const [questionBits, setQuestionBits] = useState([
+    { deniedLicences: props.data.deniedLicences === "Yes" },
+    { permitLicences: props.data.permitLicences === "Yes" },
+    {
+      reasonforUnableToPerformActions:
+        props.data.reasonforUnableToPerformActions === "Yes",
+    },
+    { convictedofafelony: props.data.convictedofafelony === "Yes" },
+  ]);
+
+  const changeQuestionBits = () => {
+    // setQuestionBits(...questionBits, { deniedLicences: true });
+  };
   const updateReferencesList = (updateReferences: any) => {
     //console.log("------------Update Driver License List------------");
     ReferencesList = updateReferences;
@@ -490,6 +545,10 @@ function EmpApplicationForm3(props: Props) {
                                 useForm={Forms}
                                 isReq={false}
                                 xsSize={11}
+                                actionOnSelection={(e: any) => {
+                                  console.log("Radio Radios");
+                                  console.log(e);
+                                }}
                               ></RadioQuestions>
                             </Grid>
                           </Grid>
@@ -508,10 +567,10 @@ function EmpApplicationForm3(props: Props) {
                             container
                             direction="row"
                             justify="space-around"
-                            alignItems="center"
+                            alignItems="baseline"
                             spacing={1}
                           >
-                            <Grid item xs={5}>
+                            <Grid item xs={5} style={{ marginBottom: "10px" }}>
                               <TextField
                                 name="applicantfirstName"
                                 variant="outlined"
@@ -536,7 +595,7 @@ function EmpApplicationForm3(props: Props) {
                                 })}
                               ></TextField>
                             </Grid>
-                            <Grid item xs={5}>
+                            <Grid item xs={5} style={{ marginBottom: "10px" }}>
                               <TextField
                                 name="applicantLastName"
                                 variant="outlined"
@@ -559,7 +618,7 @@ function EmpApplicationForm3(props: Props) {
                                 }
                               ></TextField>
                             </Grid>
-                            <Grid item xs={11}>
+                            <Grid item xs={11} style={{ marginBottom: "10px" }}>
                               <TextField
                                 name="applicantPhoneNumber"
                                 variant="outlined"
@@ -614,7 +673,7 @@ function EmpApplicationForm3(props: Props) {
                                 // })}
                               ></TextField>
                             </Grid>
-                            <Grid item xs={5}>
+                            <Grid item xs={5} style={{ marginBottom: "10px" }}>
                               <TextField
                                 name="emergencyContactfirstName"
                                 variant="outlined"
@@ -639,7 +698,7 @@ function EmpApplicationForm3(props: Props) {
                                 })}
                               ></TextField>
                             </Grid>
-                            <Grid item xs={5}>
+                            <Grid item xs={5} style={{ marginBottom: "10px" }}>
                               <TextField
                                 name="emergencyContactlastName"
                                 variant="outlined"
@@ -662,7 +721,7 @@ function EmpApplicationForm3(props: Props) {
                                 }
                               ></TextField>
                             </Grid>
-                            <Grid item xs={11}>
+                            <Grid item xs={11} style={{ marginBottom: "10px" }}>
                               <TextField
                                 name="emergencyContactNumber"
                                 variant="outlined"
@@ -702,7 +761,7 @@ function EmpApplicationForm3(props: Props) {
                                 }}
                               ></TextField>
                             </Grid>
-                            <Grid item xs={5}>
+                            <Grid item xs={5} style={{ marginBottom: "10px" }}>
                               <TextField
                                 name="age"
                                 variant="outlined"
@@ -720,7 +779,7 @@ function EmpApplicationForm3(props: Props) {
                                 })}
                               ></TextField>
                             </Grid>
-                            <Grid item xs={5}>
+                            <Grid item xs={5} style={{ marginBottom: "10px" }}>
                               <TextField
                                 name="applicantdateofbirth"
                                 variant="outlined"
@@ -738,7 +797,7 @@ function EmpApplicationForm3(props: Props) {
                                 })}
                               ></TextField>
                             </Grid>
-                            <Grid item xs={11}>
+                            <Grid item xs={11} style={{ marginBottom: "10px" }}>
                               <TextField
                                 name="physicalExamExpirationDate"
                                 variant="outlined"
@@ -841,6 +900,10 @@ function EmpApplicationForm3(props: Props) {
                         defaultSelected={props.data.everWorkedForCompany}
                         useForm={Forms}
                         isReq={reqBits.everWorkedForCompany}
+                        actionOnSelection={(e: any) => {
+                          console.log("Radio Radios");
+                          console.log(e);
+                        }}
                       ></RadioQuestions>
                     </Paper>
                   </Grid>
@@ -889,6 +952,10 @@ function EmpApplicationForm3(props: Props) {
                         defaultSelected={props.data.applicantSchoolGrade}
                         isReq={reqBits.applicantSchoolGrade}
                         useForm={Forms}
+                        actionOnSelection={(e: any) => {
+                          console.log("Radio Radios");
+                          console.log(e);
+                        }}
                       ></RadioQuestions>
 
                       <RadioQuestions
@@ -899,6 +966,10 @@ function EmpApplicationForm3(props: Props) {
                         defaultSelected={props.data.applicantCollegeGrade}
                         isReq={reqBits.applicantCollegeGrade}
                         useForm={Forms}
+                        actionOnSelection={(e: any) => {
+                          console.log("Radio Radios");
+                          console.log(e);
+                        }}
                       ></RadioQuestions>
 
                       <RadioQuestions
@@ -909,6 +980,10 @@ function EmpApplicationForm3(props: Props) {
                         defaultSelected={props.data.applicantPostGraduateGrade}
                         isReq={reqBits.applicantPostGraduateGrade}
                         useForm={Forms}
+                        actionOnSelection={(e: any) => {
+                          console.log("Radio Radios");
+                          console.log(e);
+                        }}
                       ></RadioQuestions>
                     </Paper>
                   </Grid>
@@ -1139,6 +1214,10 @@ function EmpApplicationForm3(props: Props) {
                       xsSize={11}
                       defaultSelected={"Yes"}
                       isReq={reqBits.deniedLicences}
+                      actionOnSelection={(e: any) => {
+                        // console.log("Radio Radios");
+                        // console.log(e);
+                      }}
                     ></RadioQuestions>
                   </div>
                   <div className="col-1"></div>
@@ -1155,6 +1234,10 @@ function EmpApplicationForm3(props: Props) {
                       xsSize={11}
                       defaultSelected={"Yes"}
                       isReq={reqBits.permitLicences}
+                      actionOnSelection={(e: any) => {
+                        console.log("Radio Radios");
+                        console.log(e);
+                      }}
                     ></RadioQuestions>
                   </div>
                   <div className="col-1"></div>
@@ -1172,6 +1255,10 @@ function EmpApplicationForm3(props: Props) {
                       xsSize={11}
                       defaultSelected={"Yes"}
                       isReq={reqBits.reasonforUnableToPerformActions}
+                      actionOnSelection={(e: any) => {
+                        console.log("Radio Radios");
+                        console.log(e);
+                      }}
                     ></RadioQuestions>
                   </div>
                   <div className="col-1"></div>
@@ -1188,6 +1275,10 @@ function EmpApplicationForm3(props: Props) {
                       xsSize={11}
                       defaultSelected={"Yes"}
                       isReq={reqBits.convictedofafelony}
+                      actionOnSelection={(e: any) => {
+                        console.log("Radio Radios");
+                        console.log(e);
+                      }}
                     ></RadioQuestions>
                   </div>
                   <div className="col-1"></div>
@@ -1197,24 +1288,26 @@ function EmpApplicationForm3(props: Props) {
                 <div className="row">
                   <div className="col-1"></div>
                   <div className="col-10 mt-2">
-                    <TextField
-                      id="outlined-multiline-static"
-                      label="If the answers to any questions listed above are “yes”,
+                    {true && (
+                      <TextField
+                        id="outlined-multiline-static"
+                        label="If the answers to any questions listed above are “yes”,
                       give details"
-                      multiline
-                      rows={4}
-                      error={errors && errors.answerToAnyQuestion}
-                      inputRef={register({
-                        required: {
-                          value: reqBits.answerToAnyQuestion,
-                          message: RequireError,
-                        },
-                      })}
-                      name="answerToAnyQuestion"
-                      defaultValue={props.data.answerToAnyQuestion}
-                      variant="outlined"
-                      className="col-11"
-                    />
+                        multiline
+                        rows={4}
+                        error={errors && errors.answerToAnyQuestion}
+                        inputRef={register({
+                          required: {
+                            value: reqBits.answerToAnyQuestion,
+                            message: RequireError,
+                          },
+                        })}
+                        name="answerToAnyQuestion"
+                        defaultValue={props.data.answerToAnyQuestion}
+                        variant="outlined"
+                        className="col-11"
+                      />
+                    )}
                   </div>
                   <div className="col-1"></div>
                 </div>
@@ -1317,7 +1410,11 @@ function EmpApplicationForm3(props: Props) {
                 style={{ paddingLeft: "40px", paddingRight: "60px" }}
                 className={(classes.heading, classes.paperProminantStyle)}
               >
-                <Typography align="left" variant="h6">
+                <Typography
+                  align="left"
+                  variant="h6"
+                  className={signatureError}
+                >
                   Employee Signature
                 </Typography>
                 <SignatureCanvas
@@ -1388,6 +1485,13 @@ function EmpApplicationForm3(props: Props) {
             </Grid>
           </Grid>
         </form>
+        <AlertComponent
+          duration={snackbarDuratuion}
+          open={snackOpen}
+          message={succesOrErrorBit === "success" ? "Success" : "Error"}
+          onClose={handleClose}
+          severity={succesOrErrorBit}
+        ></AlertComponent>
       </Container>
     </React.Fragment>
   );

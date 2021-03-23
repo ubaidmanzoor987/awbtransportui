@@ -15,15 +15,16 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { ControlCameraOutlined } from "@material-ui/icons";
 import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
 import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
-import { debug, reqBits } from "../Common/CommonVariables";
+import { debug, reqBits, snackbarDuratuion } from "../Common/CommonVariables";
 import { update } from "../services/updateApi";
+import AlertComponent from "./SubComponents/AlertComponent";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,6 +72,23 @@ function EmpApplicationForm2(props: Props) {
     props.data.veteranStatus = veteranStatus[1].value;
   }
 
+  //-------------SNACKBAR-------------
+  const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
+  const [snackOpen, setSnackOpen] = React.useState(false);
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackOpen(false);
+    console.log("CLOSE AUTO");
+    if (succesOrErrorBit === "success") {
+      props.handler[0]();
+    }
+  };
+  //-------------SNACKBAR-------------
+
   const Forms = useForm();
 
   const { register, handleSubmit, errors, control } = Forms;
@@ -81,8 +99,21 @@ function EmpApplicationForm2(props: Props) {
     // //console.log(data);
     data.user_name = props.data.user_name;
     const resdata = await update(data);
-    props.setData(resdata.data.data);
-    props.handler[0]();
+    try {
+      props.setData(resdata.data.data);
+      //-------------SNACKBAR-------------
+      setSuccesOrErrorBit("success");
+      setSnackOpen(true);
+      //-------------SNACKBAR-------------
+      // props.handler[0]();
+    } catch (ex) {
+      console.log("Error Exaption Seerver Error");
+      console.log(ex);
+      //-------------SNACKBAR-------------
+      setSuccesOrErrorBit("error");
+      setSnackOpen(true);
+      //-------------SNACKBAR-------------
+    }
   };
 
   const RequireError: string = "Required *";
@@ -244,6 +275,13 @@ function EmpApplicationForm2(props: Props) {
             {/* BUTTON End */}
           </Grid>
         </form>
+        <AlertComponent
+          duration={snackbarDuratuion}
+          open={snackOpen}
+          message={succesOrErrorBit === "success" ? "Success" : "Error"}
+          onClose={handleClose}
+          severity={succesOrErrorBit}
+        ></AlertComponent>
       </Container>
     </React.Fragment>
   );

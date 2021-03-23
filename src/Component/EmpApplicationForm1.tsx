@@ -9,6 +9,7 @@ import {
   Paper,
   Select,
   TextField,
+  Snackbar,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Container, Row } from "react-bootstrap";
@@ -22,7 +23,14 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { styleClasses } from "../Common/styleClasses";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { states, Addresses, reqBits, print } from "../Common/CommonVariables";
+import {
+  states,
+  Addresses,
+  reqBits,
+  print,
+  snackbarDuratuion,
+} from "../Common/CommonVariables";
+import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 
 import { fileUploadApi } from "../services/fileUploadApi";
 
@@ -49,29 +57,37 @@ const classAExperienceLevelVal = [
 
 let UpdateAddressesList: Addresses;
 
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function EmpApplicationForm1(props: Props) {
   const [manualStates, setManualStates] = useState(props.data);
 
-  const handleFileUpload = (event: any) => {
+  const [hideAddressesComponent, setHideAddressesComponent] = useState(
+    !(props.data.lastThreeYearResidenceCheck === "Yes")
+  );
+
+  let resumeFile1 = undefined;
+  let resumeFile2 = undefined;
+
+  const handleMultipleFiles = (e: any) => {
+    resumeFile1 = e.target.files[0];
+    resumeFile1 = e.target.files[0];
+  };
+
+  const handleFileUpload = (element: any) => {
     const formData = new FormData();
 
     if (manualStates.resume1 == undefined || manualStates.resume1 == null) {
-      setManualStates({ ...manualStates, resume1: event.target.files[0] });
-      formData.append(
-        "file",
-        event.target.files[0],
-        event.target.files[0].name
-      );
+      setManualStates({ ...manualStates, resume1: element.files[0] });
+      formData.append("file", element.files[0], element.files[0].name);
       formData.append("user_name", props.data.user_name);
       // axios.post("api/fileUploadApi", formData);
       fileUploadApi(formData);
     } else {
-      setManualStates({ ...manualStates, resume2: event.target.files[0] });
-      formData.append(
-        "file",
-        event.target.files[0],
-        event.target.files[0].name
-      );
+      setManualStates({ ...manualStates, resume2: element.files[0] });
+      formData.append("file", element.files[0], element.files[0].name);
       formData.append("user_name", props.data.user_name);
 
       fileUploadApi(formData);
@@ -84,15 +100,30 @@ function EmpApplicationForm1(props: Props) {
 
   const { register, handleSubmit, errors, control } = Forms;
 
+  const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
+
   const onSubmit = async (data: any) => {
-    // data.addresses = UpdateAddressesList;
+    if (hideAddressesComponent === true) {
+      data.addresses = undefined;
+    }
+
+    // handleFileUpload(document.getElementById("resumeFilesToUpload"));
     data.phone_number = phonePattern;
     data.user_name = props.data.user_name;
     print("Sending :", data);
     const resdata = await update(data);
-    print("Receiving :", data);
-    props.setData(resdata.data.data);
-    props.handler();
+    try {
+      print("Receiving :", data);
+      props.setData(resdata.data.data);
+      setSuccesOrErrorBit("success");
+      setSuccessSnackOpen(true);
+      // props.handler();
+    } catch (ex) {
+      console.log("Error Exaption Seerver Error");
+      console.log(ex);
+      setSuccesOrErrorBit("error");
+      setSuccessSnackOpen(true);
+    }
   };
 
   print("On Rendering All PROPS :", props);
@@ -109,6 +140,22 @@ function EmpApplicationForm1(props: Props) {
 
   const RequireError: string = "Required *";
   const WrongPatternError: string = "Wrong Pattern";
+
+  //-------------SNACKBAR-------------
+  const [successSnackOpen, setSuccessSnackOpen] = React.useState(false);
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSuccessSnackOpen(false);
+    console.log("CLOSE AUTO");
+    if (succesOrErrorBit === "success") {
+      props.handler();
+    }
+  };
+  //-------------SNACKBAR-------------
 
   return (
     <React.Fragment>
@@ -390,6 +437,13 @@ function EmpApplicationForm1(props: Props) {
                     question="Have You Lived At This Residence For The Past 3 Years?"
                     optionList={["Yes", "No"]}
                     optionValue={["Yes", "No"]}
+                    actionOnSelection={(e: any) => {
+                      console.log("actionOnSelection");
+                      console.log(e);
+                      console.log(e.target.value);
+                      let hideOnNO: boolean = e.target.value === "No";
+                      setHideAddressesComponent(hideOnNO);
+                    }}
                     useForm={Forms}
                     isReq={reqBits.lastThreeYearResidenceCheck}
                     defaultSelected={props.data.lastThreeYearResidenceCheck}
@@ -432,18 +486,20 @@ function EmpApplicationForm1(props: Props) {
                   <Grid item xs={1}></Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={10}>
-                    <DynamicAddressComponent
-                      idPrefix="addresses"
-                      setAddresses={updateAddressList}
-                      addressesList={props.data.addresses}
-                      addressId="addresses"
-                      cityId=""
-                      stateId=""
-                      zipCodeId=""
-                      fromDateId=""
-                      toDateId=""
-                      forms={Forms}
-                    ></DynamicAddressComponent>
+                    {hideAddressesComponent && (
+                      <DynamicAddressComponent
+                        idPrefix="addresses"
+                        setAddresses={updateAddressList}
+                        addressesList={props.data.addresses}
+                        addressId="addresses"
+                        cityId=""
+                        stateId=""
+                        zipCodeId=""
+                        fromDateId=""
+                        toDateId=""
+                        forms={Forms}
+                      ></DynamicAddressComponent>
+                    )}
                     {/* <AddressesComponent
                       idPrefix=""
                       useForm={Forms}
@@ -551,11 +607,11 @@ function EmpApplicationForm1(props: Props) {
                 <input
                   accept=".pdf,.jpg,.jpge,.doc,.docx"
                   className={classes.input}
-                  id="contained-button-file"
+                  id="resumeFilesToUpload"
                   type="file"
                   onChange={handleFileUpload}
                 />
-                <label htmlFor="contained-button-file">
+                <label htmlFor="resumeFilesToUpload">
                   <Button variant="contained" color="primary" component="span">
                     Upload Resume
                   </Button>
@@ -829,6 +885,16 @@ function EmpApplicationForm1(props: Props) {
             {/* BUTTON End */}
           </Grid>
         </form>
+        <Snackbar
+          open={successSnackOpen}
+          autoHideDuration={snackbarDuratuion}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity={succesOrErrorBit as "success"}>
+            {succesOrErrorBit === "success" && "Success"}
+            {succesOrErrorBit === "error" && "Server Error"}
+          </Alert>
+        </Snackbar>
       </Container>
     </React.Fragment>
   );

@@ -52,6 +52,12 @@ class EmploymentApplication extends Component<
     if (this.context.data.user_name) {
       this.setState(this.context.data);
     }
+    if (this.context.data.applicantAddresses.length == 0) {
+      this.context.data.applicantAddresses.push(addr);
+    }
+    if (this.context.data.employmentHistory.length == 0) {
+      this.context.data.employmentHistory.push(employmentHistoryDummyElement);
+    }
 
     // this.context.data.employmentHistory ||
     //   this.context.data.employmentHistory.push(employmentHistoryDummyElement);

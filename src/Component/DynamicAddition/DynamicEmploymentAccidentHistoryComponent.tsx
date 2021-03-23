@@ -188,21 +188,21 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                   <TextField
                     id="outlined-multiline-static"
                     size="small"
-                    defaultValue={item.NatureOfAccidents}
-                    label="Nature of Accidents"
+                    defaultValue={item.NumberOfAccidents}
+                    label="Number of Accidents"
                     error={
                       errors &&
                       errors[props.idPrefix] &&
                       errors[props.idPrefix][index] &&
-                      errors[props.idPrefix][index].NatureOfAccidents
+                      errors[props.idPrefix][index].NumberOfAccidents
                     }
                     inputRef={register({
                       required: {
-                        value: reqBits.NatureOfAccidents,
+                        value: reqBits.NumberOfAccidents,
                         message: RequireError,
                       },
                     })}
-                    name={`${props.idPrefix}[${index}].NatureOfAccidents`}
+                    name={`${props.idPrefix}[${index}].NumberOfAccidents`}
                     multiline
                     rows={4}
                     variant="outlined"

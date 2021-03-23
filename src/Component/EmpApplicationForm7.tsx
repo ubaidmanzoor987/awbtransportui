@@ -18,6 +18,16 @@ import {
   Select,
   TextField,
 } from "@material-ui/core";
+import * as Scroll from "react-scroll";
+import {
+  Link,
+  Element,
+  Events,
+  animateScroll as scroll,
+  scrollSpy,
+  scroller,
+} from "react-scroll";
+
 import { Accordion, Col, Container, Row } from "react-bootstrap";
 import { update } from "../services/updateApi";
 import SignatureCanvas from "react-signature-canvas";
@@ -27,6 +37,8 @@ import { reqBits, RequireError, states } from "../Common/CommonVariables";
 import { useRef, useState } from "react";
 import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
+import { snackbarDuratuion } from "../Common/CommonVariables";
+import AlertComponent from "./SubComponents/AlertComponent";
 
 type Props = { data?: any; handler?: any; setData: any };
 
@@ -37,6 +49,13 @@ export default function EmpApplicationForm7(props: Props) {
   });
   const { register, handleSubmit, errors, control } = Forms;
   const [phonePattern, setPhonePatten] = useState("");
+  const [prevEmplpoyerPhonePattern, setprevEmplpoyerPhonePattern] = useState(
+    ""
+  );
+  const [
+    nameOfPersonProvidingInformationPhone,
+    setNameOfPersonProvidingInformationPhone,
+  ] = useState("");
 
   const sigPad = useRef<any>();
   let base64SignatureImage = "";
@@ -48,6 +67,12 @@ export default function EmpApplicationForm7(props: Props) {
     }
   };
 
+  let Link = Scroll.Link;
+  let Element = Scroll.Element;
+  let Events = Scroll.Events;
+  let scroll = Scroll.animateScroll;
+  let scrollSpy = Scroll.scrollSpy;
+
   const saveImage = () => {
     if (sigPad.current && !sigPad.current.isEmpty()) {
       base64SignatureImage = sigPad.current
@@ -56,9 +81,51 @@ export default function EmpApplicationForm7(props: Props) {
     }
   };
 
+  function errorChecking() {
+    if (errors && errors.nameOfPersonProvidingInformationDate) {
+      return "Date: " + errors.nameOfPersonProvidingInformationDate.message;
+    }
+    return "Date";
+  }
+
+  console.log("errorChecking()");
+  console.log(errorChecking());
+
+  //-------------SNACKBAR-------------
+  const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
+  const [snackOpen, setSnackOpen] = React.useState(false);
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackOpen(false);
+    console.log("CLOSE AUTO");
+    if (succesOrErrorBit === "success") {
+      // props.handler[0]();
+    }
+  };
+  //-------------SNACKBAR-------------
+
+  const [signatureError, setSignatureError] = useState("");
+
   const onSubmit = async (data: any) => {
-    if (sigPad.current && sigPad.current.isEmpty()) return;
+    if (sigPad.current && sigPad.current.isEmpty()) {
+      setSignatureError("text-danger");
+      console.log("scroller");
+      console.log(scroller);
+      scroller.scrollTo("sigPadElement", {
+        duration: 100,
+        delay: 100,
+        smooth: false,
+        containerId: "MyContainerId",
+        offset: 50, // Scrolls to element + 50 pixels down the page
+      });
+      return;
+    }
     {
+      setSignatureError("");
       base64SignatureImage = sigPad.current
         .getTrimmedCanvas()
         .toDataURL("image/png");
@@ -66,15 +133,26 @@ export default function EmpApplicationForm7(props: Props) {
     data.employeeSignature = base64SignatureImage;
     data.user_name = props.data.user_name;
     const resdata = await update(data);
-    //console.log(
-    //   "-------------------FORM 7 Submited Data and Response-------------------"
-    // );
-    props.setData(resdata.data.data);
+    try {
+      props.setData(resdata.data.data);
+      //-------------SNACKBAR-------------
+      setSuccesOrErrorBit("success");
+      setSnackOpen(true);
+      //-------------SNACKBAR-------------
+      // props.handler[0]();
+    } catch (ex) {
+      console.log("Error Exaption Seerver Error");
+      console.log(ex);
+      //-------------SNACKBAR-------------
+      setSuccesOrErrorBit("error");
+      setSnackOpen(true);
+      //-------------SNACKBAR-------------
+    }
   };
 
   return (
     <React.Fragment>
-      <Container style={{ backgroundColor: "#fafafa" }}>
+      <Container id="MyContainerId" style={{ backgroundColor: "#fafafa" }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid
             container
@@ -125,12 +203,22 @@ export default function EmpApplicationForm7(props: Props) {
                           type="text"
                           label="Employee Printed Name"
                           className="col-12"
+                          error={
+                            errors && errors.employeePrintedName !== undefined
+                              ? true
+                              : false
+                          }
                           inputRef={register({
                             required: {
                               value: reqBits.employeePrintedName,
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.employeePrintedName &&
+                            errors.employeePrintedName.message
+                          }
                         ></TextField>
                       </Grid>
                       <Grid item xs={6}>
@@ -141,12 +229,22 @@ export default function EmpApplicationForm7(props: Props) {
                           type="text"
                           label="Employee SSN or ID Number"
                           className="col-12"
+                          error={
+                            errors && errors.employeeSSNNumber !== undefined
+                              ? true
+                              : false
+                          }
                           inputRef={register({
                             required: {
                               value: reqBits.employeeSSNNumber,
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.employeeSSNNumber &&
+                            errors.employeeSSNNumber.message
+                          }
                         ></TextField>
                       </Grid>
                     </Grid>
@@ -188,9 +286,16 @@ export default function EmpApplicationForm7(props: Props) {
                       style={{ paddingLeft: "40px", paddingRight: "60px" }}
                       className={(classes.heading, classes.paperProminantStyle)}
                     >
-                      <Typography align="left" variant="h6">
+                      <Typography
+                        align="left"
+                        variant="h6"
+                        className={signatureError}
+                      >
                         Employee Signature
                       </Typography>
+                      <Element name="sigPadElement" className="element">
+                        <div></div>
+                      </Element>
                       <SignatureCanvas
                         penColor="black"
                         ref={sigPad}
@@ -200,6 +305,7 @@ export default function EmpApplicationForm7(props: Props) {
                           className: "sigCanvas",
                         }}
                       />
+
                       <Grid
                         container
                         direction="row"
@@ -240,14 +346,22 @@ export default function EmpApplicationForm7(props: Props) {
                       variant="outlined"
                       size="small"
                       type="date"
-                      helperText="Employee Date"
                       className="col-12"
+                      error={errors && errors.employeeDate}
                       inputRef={register({
                         required: {
                           value: reqBits.employeeDate,
                           message: RequireError,
                         },
                       })}
+                      helperText={(() => {
+                        if (errors && errors.employeeDate) {
+                          return (
+                            "Employee Date: " + errors.employeeDate.message
+                          );
+                        }
+                        return "Employee Date";
+                      })()}
                     ></TextField>
                   </Grid>
                 </Grid>
@@ -294,12 +408,22 @@ export default function EmpApplicationForm7(props: Props) {
                           type="text"
                           label="New Employer Name"
                           className="col-12"
+                          error={
+                            errors && errors.newEmployeerName !== undefined
+                              ? true
+                              : false
+                          }
                           inputRef={register({
                             required: {
                               value: reqBits.newEmployeerName,
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.newEmployeerName &&
+                            errors.newEmployeerName.message
+                          }
                         ></TextField>
                       </Grid>
                       <Grid item xs={6}>
@@ -311,11 +435,20 @@ export default function EmpApplicationForm7(props: Props) {
                           label="Phone"
                           className="col-12"
                           error={
-                            errors.newEmployeerphone == undefined ? false : true
+                            errors && errors.newEmployeerphone !== undefined
+                              ? true
+                              : false
                           }
+                          inputRef={register({
+                            required: {
+                              value: reqBits.newEmployeerphone,
+                              message: RequireError,
+                            },
+                          })}
                           helperText={
+                            errors &&
                             errors.newEmployeerphone &&
-                            errors.newEmployeerphone?.message
+                            errors.newEmployeerphone.message
                           }
                           value={phonePattern}
                           onChange={(e) => {
@@ -352,12 +485,22 @@ export default function EmpApplicationForm7(props: Props) {
                           type="text"
                           label="Fax"
                           className="col-12"
+                          error={
+                            errors && errors.newEmployeerFax !== undefined
+                              ? true
+                              : false
+                          }
                           inputRef={register({
                             required: {
                               value: reqBits.newEmployeerFax,
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.newEmployeerFax &&
+                            errors.newEmployeerFax.message
+                          }
                         ></TextField>
                       </Grid>
                       <Grid item xs={6}>
@@ -368,6 +511,13 @@ export default function EmpApplicationForm7(props: Props) {
                           type="text"
                           label="Designated Employer Representative"
                           className="col-12"
+                          error={
+                            errors &&
+                            errors.newEmployeedesignatedEmployeeReprsentative !==
+                              undefined
+                              ? true
+                              : false
+                          }
                           inputRef={register({
                             required: {
                               value:
@@ -375,6 +525,12 @@ export default function EmpApplicationForm7(props: Props) {
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.newEmployeedesignatedEmployeeReprsentative &&
+                            errors.newEmployeedesignatedEmployeeReprsentative
+                              .message
+                          }
                         ></TextField>
                       </Grid>
 
@@ -387,13 +543,9 @@ export default function EmpApplicationForm7(props: Props) {
                           type="text"
                           label="Address"
                           error={
-                            errors.newEmployeerAddress == undefined
-                              ? false
-                              : true
-                          }
-                          helperText={
-                            errors.newEmployeerAddress &&
-                            errors.newEmployeerAddress?.message
+                            errors && errors.newEmployeerAddress !== undefined
+                              ? true
+                              : false
                           }
                           inputRef={register({
                             required: {
@@ -401,6 +553,11 @@ export default function EmpApplicationForm7(props: Props) {
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.newEmployeerAddress &&
+                            errors.newEmployeerAddress.message
+                          }
                         ></TextField>
                       </Grid>
                       <Grid item xs={4}>
@@ -412,11 +569,9 @@ export default function EmpApplicationForm7(props: Props) {
                           label="City"
                           className="col-12"
                           error={
-                            errors.newEmployeerCity == undefined ? false : true
-                          }
-                          helperText={
-                            errors.newEmployeerCity &&
-                            errors.newEmployeerCity?.message
+                            errors && errors.newEmployeerCity !== undefined
+                              ? true
+                              : false
                           }
                           inputRef={register({
                             required: {
@@ -424,6 +579,11 @@ export default function EmpApplicationForm7(props: Props) {
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.newEmployeerCity &&
+                            errors.newEmployeerCity.message
+                          }
                         ></TextField>
                       </Grid>
                       <Grid item xs={4}>
@@ -434,6 +594,8 @@ export default function EmpApplicationForm7(props: Props) {
                           label="States"
                           optionList={states}
                           defaultValue={props.data?.newEmployeerState}
+                          error={errors && errors["newEmployeerState"]}
+                          isReq={reqBits.newEmployeerState}
                         ></ReactAutoComplete>
                       </Grid>
                       <Grid item xs={4}>
@@ -445,13 +607,10 @@ export default function EmpApplicationForm7(props: Props) {
                           label="Zip Code"
                           className="col-12"
                           error={
-                            errors.newEmployeerpostalCode == undefined
-                              ? false
-                              : true
-                          }
-                          helperText={
-                            errors.newEmployeerpostalCode &&
-                            errors.newEmployeerpostalCode?.message
+                            errors &&
+                            errors.newEmployeerpostalCode !== undefined
+                              ? true
+                              : false
                           }
                           inputRef={register({
                             required: {
@@ -459,6 +618,11 @@ export default function EmpApplicationForm7(props: Props) {
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.newEmployeerpostalCode &&
+                            errors.newEmployeerpostalCode.message
+                          }
                         ></TextField>
                       </Grid>
                     </Grid>
@@ -505,14 +669,24 @@ export default function EmpApplicationForm7(props: Props) {
                           variant="outlined"
                           size="small"
                           type="text"
-                          label="New Employer Name"
+                          label="Prev Employer Name"
                           className="col-12"
+                          error={
+                            errors && errors.prevEmployeerName !== undefined
+                              ? true
+                              : false
+                          }
                           inputRef={register({
                             required: {
                               value: reqBits.prevEmployeerName,
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.prevEmployeerName &&
+                            errors.prevEmployeerName.message
+                          }
                         ></TextField>
                       </Grid>
                       <Grid item xs={6}>
@@ -521,14 +695,38 @@ export default function EmpApplicationForm7(props: Props) {
                           variant="outlined"
                           size="small"
                           type="text"
-                          label="Phone"
+                          label="Prev Employer Phone"
                           className="col-12"
+                          error={
+                            errors && errors.prevEmployeerphone !== undefined
+                              ? true
+                              : false
+                          }
                           inputRef={register({
                             required: {
                               value: reqBits.prevEmployeerphone,
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.prevEmployeerphone &&
+                            errors.prevEmployeerphone.message
+                          }
+                          value={prevEmplpoyerPhonePattern}
+                          onChange={(e) => {
+                            if (e.target.value.length > 11) {
+                              const n = formatPhoneNumberIntl(e.target.value);
+                              if (n) {
+                                //console.log(n);
+                                setprevEmplpoyerPhonePattern(n);
+                              } else {
+                                setprevEmplpoyerPhonePattern(e.target.value);
+                              }
+                            } else {
+                              setprevEmplpoyerPhonePattern(e.target.value);
+                            }
+                          }}
                         ></TextField>
                       </Grid>
                       <Grid item xs={6}>
@@ -537,14 +735,24 @@ export default function EmpApplicationForm7(props: Props) {
                           variant="outlined"
                           size="small"
                           type="text"
-                          label="Fax"
+                          label="Prev Employer Fax"
                           className="col-12"
+                          error={
+                            errors && errors.prevEmployeerFax !== undefined
+                              ? true
+                              : false
+                          }
                           inputRef={register({
                             required: {
                               value: reqBits.prevEmployeerFax,
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.prevEmployeerFax &&
+                            errors.prevEmployeerFax.message
+                          }
                         ></TextField>
                       </Grid>
                       <Grid item xs={6}>
@@ -555,6 +763,13 @@ export default function EmpApplicationForm7(props: Props) {
                           type="text"
                           label="Designated Employer Representative"
                           className="col-12"
+                          error={
+                            errors &&
+                            errors.prevEmployeedesignatedEmployeeReprsentative !==
+                              undefined
+                              ? true
+                              : false
+                          }
                           inputRef={register({
                             required: {
                               value:
@@ -562,6 +777,12 @@ export default function EmpApplicationForm7(props: Props) {
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.prevEmployeedesignatedEmployeeReprsentative &&
+                            errors.prevEmployeedesignatedEmployeeReprsentative
+                              .message
+                          }
                         ></TextField>
                       </Grid>
 
@@ -572,15 +793,11 @@ export default function EmpApplicationForm7(props: Props) {
                           variant="outlined"
                           size="small"
                           type="text"
-                          label="Address"
+                          label="Prev Employer Address"
                           error={
-                            errors.prevEmployeerAddress == undefined
-                              ? false
-                              : true
-                          }
-                          helperText={
-                            errors.prevEmployeerAddress &&
-                            errors.prevEmployeerAddress?.message
+                            errors && errors.prevEmployeerAddress !== undefined
+                              ? true
+                              : false
                           }
                           inputRef={register({
                             required: {
@@ -588,6 +805,11 @@ export default function EmpApplicationForm7(props: Props) {
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.prevEmployeerAddress &&
+                            errors.prevEmployeerAddress.message
+                          }
                         ></TextField>
                       </Grid>
                       <Grid item xs={4}>
@@ -599,11 +821,9 @@ export default function EmpApplicationForm7(props: Props) {
                           label="City"
                           className="col-12"
                           error={
-                            errors.prevEmployeerCity == undefined ? false : true
-                          }
-                          helperText={
-                            errors.prevEmployeerCity &&
-                            errors.prevEmployeerCity?.message
+                            errors && errors.prevEmployeerCity !== undefined
+                              ? true
+                              : false
                           }
                           inputRef={register({
                             required: {
@@ -611,6 +831,11 @@ export default function EmpApplicationForm7(props: Props) {
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.prevEmployeerCity &&
+                            errors.prevEmployeerCity.message
+                          }
                         ></TextField>
                       </Grid>
                       <Grid item xs={4}>
@@ -621,6 +846,8 @@ export default function EmpApplicationForm7(props: Props) {
                           label="States"
                           optionList={states}
                           defaultValue={props.data?.prevEmployeerState}
+                          isReq={reqBits.prevEmployeerState}
+                          error={errors && errors["prevEmployeerState"]}
                         ></ReactAutoComplete>
                       </Grid>
                       <Grid item xs={4}>
@@ -632,13 +859,10 @@ export default function EmpApplicationForm7(props: Props) {
                           label="Zip Code"
                           className="col-12"
                           error={
-                            errors.prevEmployeerpostalCode == undefined
-                              ? false
-                              : true
-                          }
-                          helperText={
-                            errors.prevEmployeerpostalCode &&
-                            errors.prevEmployeerpostalCode?.message
+                            errors &&
+                            errors.prevEmployeerpostalCode !== undefined
+                              ? true
+                              : false
                           }
                           inputRef={register({
                             required: {
@@ -646,6 +870,11 @@ export default function EmpApplicationForm7(props: Props) {
                               message: RequireError,
                             },
                           })}
+                          helperText={
+                            errors &&
+                            errors.prevEmployeerpostalCode &&
+                            errors.prevEmployeerpostalCode.message
+                          }
                         ></TextField>
                       </Grid>
                     </Grid>
@@ -774,12 +1003,23 @@ export default function EmpApplicationForm7(props: Props) {
                         type="text"
                         label="A:"
                         className="col-12"
+                        error={
+                          errors &&
+                          errors.nameOfPersonProvidingInformation !== undefined
+                            ? true
+                            : false
+                        }
                         inputRef={register({
                           required: {
                             value: reqBits.nameOfPersonProvidingInformation,
                             message: RequireError,
                           },
                         })}
+                        helperText={
+                          errors &&
+                          errors.nameOfPersonProvidingInformation &&
+                          errors.nameOfPersonProvidingInformation.message
+                        }
                       ></TextField>
                     </Grid>
                     <Grid item xs={5}>
@@ -790,6 +1030,13 @@ export default function EmpApplicationForm7(props: Props) {
                         type="text"
                         label="Title"
                         className="col-12"
+                        error={
+                          errors &&
+                          errors.nameOfPersonProvidingInformationTitle !==
+                            undefined
+                            ? true
+                            : false
+                        }
                         inputRef={register({
                           required: {
                             value:
@@ -797,6 +1044,11 @@ export default function EmpApplicationForm7(props: Props) {
                             message: RequireError,
                           },
                         })}
+                        helperText={
+                          errors &&
+                          errors.nameOfPersonProvidingInformationTitle &&
+                          errors.nameOfPersonProvidingInformationTitle.message
+                        }
                       ></TextField>
                     </Grid>
                     <Grid item xs={5}>
@@ -807,6 +1059,13 @@ export default function EmpApplicationForm7(props: Props) {
                         type="text"
                         label="Phone #"
                         className="col-12"
+                        error={
+                          errors &&
+                          errors.nameOfPersonProvidingInformationPhone !==
+                            undefined
+                            ? true
+                            : false
+                        }
                         inputRef={register({
                           required: {
                             value:
@@ -814,6 +1073,29 @@ export default function EmpApplicationForm7(props: Props) {
                             message: RequireError,
                           },
                         })}
+                        helperText={
+                          errors &&
+                          errors.nameOfPersonProvidingInformationPhone &&
+                          errors.nameOfPersonProvidingInformationPhone.message
+                        }
+                        value={nameOfPersonProvidingInformationPhone}
+                        onChange={(e) => {
+                          if (e.target.value.length > 11) {
+                            const n = formatPhoneNumberIntl(e.target.value);
+                            if (n) {
+                              //console.log(n);
+                              setNameOfPersonProvidingInformationPhone(n);
+                            } else {
+                              setNameOfPersonProvidingInformationPhone(
+                                e.target.value
+                              );
+                            }
+                          } else {
+                            setNameOfPersonProvidingInformationPhone(
+                              e.target.value
+                            );
+                          }
+                        }}
                       ></TextField>
                     </Grid>
                     <Grid item xs={5}>
@@ -822,14 +1104,33 @@ export default function EmpApplicationForm7(props: Props) {
                         variant="outlined"
                         size="small"
                         type="date"
-                        helperText="Date"
                         className="col-12"
+                        error={
+                          errors &&
+                          errors.nameOfPersonProvidingInformationDate !==
+                            undefined
+                            ? true
+                            : false
+                        }
                         inputRef={register({
                           required: {
                             value: reqBits.nameOfPersonProvidingInformationDate,
                             message: RequireError,
                           },
                         })}
+                        helperText={(() => {
+                          if (
+                            errors &&
+                            errors.nameOfPersonProvidingInformationDate
+                          ) {
+                            return (
+                              "Date: " +
+                              errors.nameOfPersonProvidingInformationDate
+                                .message
+                            );
+                          }
+                          return "Date";
+                        })()}
                       ></TextField>
                     </Grid>
                   </Grid>
@@ -864,6 +1165,17 @@ export default function EmpApplicationForm7(props: Props) {
             {/* BUTTON End */}
           </Grid>
         </form>
+        <AlertComponent
+          duration={snackbarDuratuion}
+          open={snackOpen}
+          onClose={handleClose}
+          severity={succesOrErrorBit}
+          message={
+            succesOrErrorBit === "success"
+              ? "All Data Saved Successfully"
+              : "Error"
+          }
+        ></AlertComponent>
       </Container>
     </React.Fragment>
   );

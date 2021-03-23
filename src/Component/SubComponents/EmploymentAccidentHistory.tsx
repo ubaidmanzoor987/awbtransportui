@@ -146,7 +146,7 @@ export default function EmploymentAccidentHistory(props: Props) {
                         id="outlined-multiline-static"
                         size="small"
                         label="Nature of Accidents"
-                        name="NatureOfAccidents"
+                        name="NumberOfAccidents"
                         multiline
                         rows={4}
                         defaultValue=""

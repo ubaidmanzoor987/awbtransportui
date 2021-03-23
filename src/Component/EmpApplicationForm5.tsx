@@ -1,9 +1,12 @@
 import { Button, Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
+import { useState } from "react";
 import { Accordion, Col, Container, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import styleClasses from "../Common/styleClasses";
 import { update } from "../services/updateApi";
+import { snackbarDuratuion } from "../Common/CommonVariables";
+import AlertComponent from "./SubComponents/AlertComponent";
 
 type Props = { data?: any; handler?: any; setData: any };
 
@@ -14,7 +17,30 @@ export default function EmpApplicationForm5(props: Props) {
   });
   const { register, handleSubmit, errors, control } = Forms;
 
+  //-------------SNACKBAR-------------
+  const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
+  const [snackOpen, setSnackOpen] = React.useState(false);
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackOpen(false);
+    console.log("CLOSE AUTO");
+    console.log(succesOrErrorBit);
+
+    if (succesOrErrorBit === "success") {
+      props.handler[0]();
+    }
+  };
+  //-------------SNACKBAR-------------
+
   const onSubmit = async (data: any) => {
+    //-------------SNACKBAR-------------
+    // setSuccesOrErrorBit("success");
+    // setSnackOpen(true);
+    //-------------SNACKBAR-------------
     props.handler[0]();
   };
 
@@ -494,6 +520,13 @@ export default function EmpApplicationForm5(props: Props) {
             {/* BUTTON End */}
           </Grid>
         </form>
+        <AlertComponent
+          duration={snackbarDuratuion}
+          open={snackOpen}
+          onClose={handleClose}
+          severity={succesOrErrorBit}
+          message="Accepted the Above Terms and Conditions"
+        ></AlertComponent>
       </Container>
     </div>
   );

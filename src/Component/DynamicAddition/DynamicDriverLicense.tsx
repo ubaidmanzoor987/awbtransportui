@@ -98,7 +98,7 @@ export function DynamicDriverLicense(props: Props) {
               id="panel1a-header"
             >
               <Typography className={classes.smallHeading}>
-                Driver’s License {index}
+                Driver’s License {index + 1}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>

@@ -12,6 +12,7 @@
 /build
 
 # misc
+/awb_ui_errors
 .DS_Store
 .env.local
 .env.development.local

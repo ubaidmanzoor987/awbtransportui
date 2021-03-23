@@ -7,7 +7,11 @@ import { useForm } from "react-hook-form";
 import drug_and_alcohol_policy_snapshot_1 from "../assets/images/drug and alcohol policy snapshot 1.jpg";
 import SignatureCanvas from "react-signature-canvas";
 import { update } from "../services/updateApi";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { snackbarDuratuion } from "../Common/CommonVariables";
+import Box from "@material-ui/core/Box";
+
+import AlertComponent from "./SubComponents/AlertComponent";
 
 type Props = { data?: any; handler?: any; setData: any };
 
@@ -35,9 +39,32 @@ export default function EmpApplicationForm6(props: Props) {
     }
   };
 
+  //-------------SNACKBAR-------------
+  const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
+  const [snackOpen, setSnackOpen] = React.useState(false);
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackOpen(false);
+    console.log("CLOSE AUTO");
+    if (succesOrErrorBit === "success") {
+      props.handler[0]();
+    }
+  };
+  //-------------SNACKBAR-------------
+
+  const [signatureError, setSignatureError] = useState("");
+
   const onSubmit = async (data: any) => {
-    if (sigPad.current && sigPad.current.isEmpty()) return;
+    if (sigPad.current && sigPad.current.isEmpty()) {
+      setSignatureError("text-danger");
+      return;
+    }
     {
+      setSignatureError("");
       base64SignatureImage = sigPad.current
         .getTrimmedCanvas()
         .toDataURL("image/png");
@@ -45,11 +72,21 @@ export default function EmpApplicationForm6(props: Props) {
     data.alcoholTestEmployeeSignature = base64SignatureImage;
     data.user_name = props.data.user_name;
     const resdata = await update(data);
-    //console.log(
-    //   "-------------------FORM 6 Submited Data and Response-------------------"
-    // );
-    props.setData(resdata.data.data);
-    props.handler[0]();
+    try {
+      props.setData(resdata.data.data);
+      //-------------SNACKBAR-------------
+      setSuccesOrErrorBit("success");
+      setSnackOpen(true);
+      //-------------SNACKBAR-------------
+      // props.handler[0]();
+    } catch (ex) {
+      console.log("Error Exaption Seerver Error");
+      console.log(ex);
+      //-------------SNACKBAR-------------
+      setSuccesOrErrorBit("error");
+      setSnackOpen(true);
+      //-------------SNACKBAR-------------
+    }
   };
 
   return (
@@ -990,6 +1027,7 @@ export default function EmpApplicationForm6(props: Props) {
                         type="text"
                         label="Employee First Name"
                         className="col-12"
+                        error={errors && errors.alcoholTestEmployeeFirstName}
                         inputRef={register({
                           required: {
                             value: reqBits.alcoholTestEmployeeFirstName,
@@ -1006,6 +1044,7 @@ export default function EmpApplicationForm6(props: Props) {
                         type="text"
                         label="Employee Last Name"
                         className="col-12"
+                        error={errors && errors.alcoholTestEmployeeLastName}
                         inputRef={register({
                           required: {
                             value: reqBits.alcoholTestEmployeeLastName,
@@ -1022,11 +1061,13 @@ export default function EmpApplicationForm6(props: Props) {
                         type="text"
                         label="Social Security Number"
                         className="col-12"
+                        error={errors && errors.alcoholTestSecurityNumber}
                         inputRef={register({
                           required: {
                             value: reqBits.alcoholTestSecurityNumber,
                             message: RequireError,
                           },
+                          minLength: { value: 8, message: "Min 8 Chracters" },
                         })}
                       ></TextField>
                     </Grid>
@@ -1038,6 +1079,7 @@ export default function EmpApplicationForm6(props: Props) {
                         type="date"
                         helperText="Executed on the date"
                         className="col-12"
+                        error={errors && errors.alcoholTestExecutionDate}
                         inputRef={register({
                           required: {
                             value: reqBits.alcoholTestExecutionDate,
@@ -1054,7 +1096,11 @@ export default function EmpApplicationForm6(props: Props) {
                           (classes.heading, classes.paperProminantStyle)
                         }
                       >
-                        <Typography align="left" variant="h6">
+                        <Typography
+                          className={signatureError}
+                          align="left"
+                          variant="h6"
+                        >
                           Employee Signature
                         </Typography>
                         <SignatureCanvas
@@ -1140,6 +1186,14 @@ export default function EmpApplicationForm6(props: Props) {
             {/* BUTTON End */}
           </Grid>
         </form>
+        <AlertComponent
+          duration={snackbarDuratuion}
+          open={snackOpen}
+          onClose={handleClose}
+          severity={succesOrErrorBit}
+          message="Accepted the All Terms and Conditions"
+          // message={succesOrErrorBit === "success" ? "Success" : "Error"}
+        ></AlertComponent>
       </Container>
     </div>
   );

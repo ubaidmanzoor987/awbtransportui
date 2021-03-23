@@ -160,7 +160,7 @@ export type tTrafficConvictions = tTrafficConvictionInfo[];
 
 export type EmploymentAccidentHistoryInfo = {
   dateOfAccident: string;
-  NatureOfAccidents: string;
+  NumberOfAccidents: string;
   LocationOfAccidents: string;
   numberofFatalities: number;
   numberofPeopleleInjured: number;
@@ -168,7 +168,7 @@ export type EmploymentAccidentHistoryInfo = {
 
 export let employmentAccidentHistoryDummyElement: EmploymentAccidentHistoryInfo = {
   dateOfAccident: "2018-01-01",
-  NatureOfAccidents: "Default",
+  NumberOfAccidents: "Default",
   LocationOfAccidents: "Default",
   numberofFatalities: 21,
   numberofPeopleleInjured: 123,
@@ -290,7 +290,7 @@ export let reqBits = {
   Listspecialcourses: true,
   ListanySafeDrivingAwards: false,
   dateOfAccident: false,
-  NatureOfAccidents: false,
+  NumberOfAccidents: false,
   LocationOfAccidents: true,
   numberofFatalities: true,
   numberofPeopleleInjured: true,
@@ -432,7 +432,7 @@ export let reqBits = {
 //   Listspecialcourses: true,
 //   ListanySafeDrivingAwards: true,
 //   dateOfAccident: true,
-//   NatureOfAccidents: true,
+//   NumberOfAccidents: true,
 //   LocationOfAccidents: true,
 //   numberofFatalities: true,
 //   numberofPeopleleInjured: true,
@@ -574,7 +574,7 @@ export let reqBitsKeys = {
   Listspecialcourses: "Listspecialcourses",
   ListanySafeDrivingAwards: "ListanySafeDrivingAwards",
   dateOfAccident: "dateOfAccident",
-  NatureOfAccidents: "NatureOfAccidents",
+  NumberOfAccidents: "NumberOfAccidents",
   LocationOfAccidents: "LocationOfAccidents",
   numberofFatalities: "numberofFatalities",
   numberofPeopleleInjured: "numberofPeopleleInjured",
@@ -670,7 +670,7 @@ export let reqBitsViaStr: Dict = {
   Listspecialcourses: true,
   ListanySafeDrivingAwards: false,
   dateOfAccident: false,
-  NatureOfAccidents: false,
+  NumberOfAccidents: false,
   LocationOfAccidents: true,
   numberofFatalities: true,
   numberofPeopleleInjured: true,
@@ -772,7 +772,7 @@ export const form3DefaultValue = {
   ],
   violations: [trafficConvictionDummyElement],
   dateOfAccident: "Default",
-  NatureOfAccidents: "Default",
+  NumberOfAccidents: "Default",
   LocationOfAccidents: "Default",
   numberofFatalities: "Default",
   numberofPeopleleInjured: "Default",
@@ -806,3 +806,5 @@ export const print = (msg: string, obj: any) => {
   console.log("PRINT : " + msg + " ");
   console.log(obj);
 };
+
+export const snackbarDuratuion: number = 2000;

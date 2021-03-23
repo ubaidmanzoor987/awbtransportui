@@ -24,6 +24,7 @@ type Props = {
   optionValue: boolean[] | string[];
   defaultSelected?: string;
   useForm: any;
+  actionOnSelection?: any;
   xsSize?:
     | boolean
     | "auto"
@@ -87,6 +88,10 @@ export default function RadioQuestions(props: Props) {
                     return (
                       <FormControlLabel
                         key={index}
+                        onChange={(e: any) => {
+                          console.log("Selected Radio");
+                          props.actionOnSelection && props.actionOnSelection(e);
+                        }}
                         value={props.optionValue[index]}
                         control={<Radio />}
                         label={optionItem}
