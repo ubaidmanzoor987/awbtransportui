@@ -11065,3 +11065,17 @@ div {
 .sideBarRemoveFlexGrow {
   flex-grow: 0 !important;
 }
+
+.admin_btn_download {
+  background-color:"#1E2D3B";
+  color:"white"; 
+  border-radius:"8px";
+  margin-top:"8px";
+}
+.admin_btn_download_more {
+  margin-left:"2px"
+}
+
+.mycl h6 {
+  padding-top:"8px"
+}
