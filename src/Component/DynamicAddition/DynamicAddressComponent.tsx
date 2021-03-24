@@ -26,9 +26,20 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from "@material-ui/pickers";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 import { styleClasses } from "../../Common/styleClasses";
-import { Addresses, Form1, reqBits, states, AddressErrorsList, print } from "../../Common/CommonVariables";
+import {
+  Addresses,
+  Form1,
+  reqBits,
+  states,
+  AddressErrorsList,
+  print,
+} from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
 import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
@@ -63,11 +74,21 @@ export function DynamicAddressComponent(props: Props) {
   const classes = styleClasses.useStyles();
   // print("Address List : ", props.addressesList);
 
-  const { register, control, handleSubmit, reset, trigger, setError, errors } = props.forms;
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+  const {
+    register,
     control,
-    name: props.addressId,
-  });
+    handleSubmit,
+    reset,
+    trigger,
+    setError,
+    errors,
+  } = props.forms;
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+    {
+      control,
+      name: props.addressId,
+    }
+  );
 
   const submit = (e: any) => {
     e.preventDefault();
@@ -76,14 +97,27 @@ export function DynamicAddressComponent(props: Props) {
 
   return (
     <React.Fragment>
-      <Grid container direction="row" justify="space-between" alignItems="center">
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
         {fields.map((item, index) => (
           <Accordion key={index} defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.text}>Address {index + 1}</Typography>
+              <Typography className={classes.text}>
+                Address {index + 1}
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="baseline"
+                spacing={3}
+              >
                 <Grid item xs={12}>
                   <TextField
                     className="col-12"
@@ -127,7 +161,7 @@ export function DynamicAddressComponent(props: Props) {
                   ></TextField>
                 </Grid>
                 <Grid item xs={4}>
-                  <ReactAutoComplete
+                  {/* <ReactAutoComplete
                     id={`${props.addressId}[${index}].lastYearAddressState`}
                     label="States"
                     defaultValue={
@@ -143,7 +177,31 @@ export function DynamicAddressComponent(props: Props) {
                     className="col-12"
                     useForm={props.forms}
                     optionList={states}
-                  ></ReactAutoComplete>
+                  ></ReactAutoComplete> */}
+                  <ReactHookFormSelect
+                    nameVal={`${props.addressId}[${index}].lastYearAddressState`}
+                    label="State"
+                    forms={props.forms}
+                    defaultValue={
+                      props.addressesList &&
+                      props.addressesList[index] &&
+                      props.addressesList[index].lastYearAddressState
+                    }
+                    control={control}
+                    isReq={reqBits["lastYearAddressState"]}
+                    variant="outlined"
+                    size="small"
+                    className="col-12"
+                  >
+                    <option aria-label="None" value="" />
+                    {states.map(function (object: any, i: number) {
+                      return (
+                        <option value={object.value} key={i}>
+                          {object.value}
+                        </option>
+                      );
+                    })}
+                  </ReactHookFormSelect>
                 </Grid>
                 <Grid item xs={4}>
                   <TextField
@@ -153,7 +211,10 @@ export function DynamicAddressComponent(props: Props) {
                         value: reqBits.lastYearAddressZipCode,
                         message: RequireError,
                       },
-                      maxLength: { value: 5, message: "Please Input 5 Digits only" },
+                      maxLength: {
+                        value: 5,
+                        message: "Please Input 5 Digits only",
+                      },
                     })}
                     error={
                       errors &&
@@ -182,9 +243,6 @@ export function DynamicAddressComponent(props: Props) {
                         value: reqBits.lastYearAddressfrom,
                         message: RequireError,
                       },
-                      maxLength: { value: 5, message: "Please Input 5 Digits only" },
-
-                      pattern: { value: /[0-9]{5}/, message: "Please Input 5 Digits only" },
                     })}
                     error={
                       errors &&

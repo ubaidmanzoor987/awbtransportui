@@ -11,7 +11,7 @@ type Props = {
   defaultValue?: string;
   children: any;
   forms: any;
-
+  isReq?: boolean;
   variant?: "standard" | "outlined" | "filled";
   size?: "small" | "medium";
   className: string;
@@ -31,6 +31,7 @@ function ReactHookFormSelect(props: Props) {
       <Controller
         as={
           <Select
+            native
             labelId={labelId}
             label={props.label}
             error={
@@ -38,7 +39,10 @@ function ReactHookFormSelect(props: Props) {
               (errors[props.nameVal] === undefined ? false : true)
             }
             inputRef={register({
-              required: { value: true, message: RequireError },
+              required: {
+                value: props.isReq === undefined ? false : props.isReq,
+                message: RequireError,
+              },
             })}
             onChange={(e) => {
               // if (e.target.value === "") {

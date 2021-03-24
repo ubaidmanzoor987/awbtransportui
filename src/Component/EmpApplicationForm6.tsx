@@ -40,9 +40,9 @@ export default function EmpApplicationForm6(props: Props) {
     }
   };
 
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   //-------------SNACKBAR-------------
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
@@ -1074,6 +1074,10 @@ export default function EmpApplicationForm6(props: Props) {
                           },
                           minLength: { value: 9, message: "Min 9 Digits" },
                         })}
+                        helperText={
+                          errors.alcoholTestSecurityNumber &&
+                          errors.alcoholTestSecurityNumber.message
+                        }
                       ></TextField>
                     </Grid>
                     <Grid item xs={5}>

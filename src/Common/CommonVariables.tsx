@@ -808,3 +808,13 @@ export const print = (msg: string, obj: any) => {
 };
 
 export const snackbarDuratuion: number = 2000;
+
+export const getMaxDate = () => {
+  let date = new Date();
+  date.setFullYear(date.getFullYear() - 16);
+  // max: "2020-01-01",
+  console.log("date.toLocaleDateString()");
+  console.log(date.toISOString().split("T")[0]);
+
+  return date.toISOString().split("T")[0];
+};

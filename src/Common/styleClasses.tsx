@@ -9,7 +9,7 @@ export class styleClasses extends Component {
         flexGrow: 1,
       },
       paper: {
-        color: theme.palette.text.secondary,
+        color: "#000000",
         padding: "20px 10px",
       },
       addressPaper: {
@@ -18,16 +18,16 @@ export class styleClasses extends Component {
       heading: {
         fontSize: theme.typography.pxToRem(19),
         fontWeight: theme.typography.fontWeightRegular,
-        color: theme.palette.text.secondary,
+        color: "#000000",
       },
       text: {
         fontSize: theme.typography.pxToRem(17),
         fontWeight: theme.typography.fontWeightRegular,
-        color: theme.palette.text.secondary,
+        color: "#000000",
       },
       secondaryHeading: {
         fontSize: theme.typography.pxToRem(15),
-        color: theme.palette.text.secondary,
+        color: "#000000",
       },
       input: {
         display: "none",
@@ -48,13 +48,13 @@ export class styleClasses extends Component {
       smallHeading: {
         fontSize: theme.typography.pxToRem(17),
         fontWeight: theme.typography.fontWeightRegular,
-        color: theme.palette.text.secondary,
+        color: "#000000",
         textJustify: "inter-word",
       },
       caption: {
         fontSize: theme.typography.pxToRem(12),
         fontWeight: theme.typography.fontWeightRegular,
-        color: theme.palette.text.secondary,
+        color: "#000000",
         textAlign: "left",
       },
     })

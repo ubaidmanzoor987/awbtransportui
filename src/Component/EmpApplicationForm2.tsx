@@ -32,18 +32,18 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     paper: {
-      color: theme.palette.text.secondary,
+      color: "#000000",
       padding: "5px 10px",
     },
     heading: {
       fontSize: theme.typography.pxToRem(19),
       fontWeight: theme.typography.fontWeightRegular,
-      color: theme.palette.text.secondary,
+      color: "#000000",
     },
     text: {
       fontSize: theme.typography.pxToRem(17),
       fontWeight: theme.typography.fontWeightRegular,
-      color: theme.palette.text.secondary,
+      color: "#000000",
     },
 
     input: {
@@ -59,7 +59,12 @@ const useStyles = makeStyles((theme: Theme) =>
 type Props = { data?: any; handler?: any; setData: any };
 
 function EmpApplicationForm2(props: Props) {
-  const gender = [{ value: "Male" }, { value: "Female" }, { value: "Other" }];
+  const gender = [
+    { value: "Male" },
+    { value: "Female" },
+    { value: "Other" },
+    { value: "Not want to disclose" },
+  ];
   const veteranStatus = [
     { value: "No Military Experience" },
     { value: "Veteran (VA Eligible)" },
@@ -126,7 +131,13 @@ function EmpApplicationForm2(props: Props) {
     <React.Fragment>
       <Container style={{ backgroundColor: "#fafafa" }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="baseline"
+            spacing={3}
+          >
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
@@ -134,70 +145,90 @@ function EmpApplicationForm2(props: Props) {
             </Grid>
             <Grid item xs={1}></Grid>
             <Grid item xs={10}>
-              <Paper elevation={3} className={classes.paper} style={{ padding: "30px 15px" }}>
-                <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
-                  <Grid item xs={12} className={classes.heading} style={{ textAlign: "center", marginTop: "10px" }}>
+              <Paper
+                elevation={3}
+                className={classes.paper}
+                style={{ padding: "30px 15px" }}
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="baseline"
+                  spacing={3}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    className={classes.heading}
+                    style={{ textAlign: "center", marginTop: "10px" }}
+                  >
                     <b>EEO Information</b>
                   </Grid>
                   <Grid item xs={12}>
                     <Paper elevation={3} className={classes.paper}>
                       <Typography align="justify">
-                        We provide equal opportunity to all qualified individuals regardless of race, color, religion, age, sex,
-                        national origin, veteran status or disability.
+                        We provide equal opportunity to all qualified
+                        individuals regardless of race, color, religion, age,
+                        sex, national origin, veteran status or disability.
                       </Typography>
                     </Paper>
                     <Paper elevation={3} className={classes.paper}>
                       <Typography align="justify">
-                        <b>Providing this information is voluntary.</b> We ask for this information to maintain records. Any
-                        information you voluntarily provide is confidential and will not be considered in making any employment
+                        <b>Providing this information is voluntary.</b> We ask
+                        for this information to maintain records. Any
+                        information you voluntarily provide is confidential and
+                        will not be considered in making any employment
                         decision. If you choose no.
                       </Typography>
                     </Paper>
                   </Grid>
                   <Grid item xs={6}>
-                    <ReactAutoComplete
+                    {/* <ReactAutoComplete
                       id="gender"
                       label="Gender"
                       className="col-12 text-left"
-                      isReq={reqBits["gender"]}
                       useForm={Forms}
                       optionList={gender}
                       defaultValue={props.data.gender}
+                      isReq={reqBits["gender"]}
                       error={errors && errors["gender"]}
-                    ></ReactAutoComplete>
+                    ></ReactAutoComplete> */}
 
-                    {/* <ReactHookFormSelect
+                    <ReactHookFormSelect
                       nameVal="gender"
                       label="Gender"
                       control={control}
                       forms={Forms}
                       defaultValue={props?.data?.gender}
                       variant="outlined"
+                      isReq={reqBits["gender"]}
+                      error={errors && errors["gender"]}
                       size="small"
-                      className="col-10"
+                      className="col-12"
                     >
-                      <MenuItem value="">None</MenuItem>
+                      <option aria-label="None" value="" />
                       {gender.map(function (object: any, i: number) {
                         return (
-                          <MenuItem value={object.value} key={i}>
+                          <option value={object.value} key={i}>
                             {object.value}
-                          </MenuItem>
+                          </option>
                         );
                       })}
-                    </ReactHookFormSelect> */}
+                    </ReactHookFormSelect>
                   </Grid>
                   <Grid item xs={6}>
-                    <ReactAutoComplete
+                    {/* <ReactAutoComplete
                       id="veteranStatus"
                       label="Veteran Status"
-                      isReq={reqBits["veteranStatus"]}
                       className="col-12 text-left"
                       useForm={Forms}
                       optionList={veteranStatus}
                       defaultValue={props.data.veteranStatus}
+                      isReq={reqBits["veteranStatus"]}
                       error={errors && errors["veteranStatus"]}
-                    ></ReactAutoComplete>
-                    {/* 
+                    ></ReactAutoComplete> */}
+
                     <ReactHookFormSelect
                       nameVal="veteranStatus"
                       label="Veteran Status"
@@ -205,18 +236,20 @@ function EmpApplicationForm2(props: Props) {
                       defaultValue={props?.data?.veteranStatus}
                       control={control}
                       variant="outlined"
+                      isReq={reqBits["veteranStatus"]}
+                      error={errors && errors["veteranStatus"]}
                       size="small"
-                      className="col-10"
+                      className="col-12"
                     >
-                      <MenuItem value="">None</MenuItem>
+                      <option aria-label="None" value="" />
                       {veteranStatus.map(function (object: any, i: number) {
                         return (
-                          <MenuItem value={object.value} key={i}>
+                          <option value={object.value} key={i}>
                             {object.value}
-                          </MenuItem>
+                          </option>
                         );
                       })}
-                    </ReactHookFormSelect> */}
+                    </ReactHookFormSelect>
                   </Grid>
                 </Grid>
                 <Grid item xs={12} style={{ marginTop: "25px" }}>
@@ -242,7 +275,12 @@ function EmpApplicationForm2(props: Props) {
               </Button>
             </Grid>
             <Grid item xs={4}>
-              <Button type="submit" className="col-12" variant="contained" color="primary">
+              <Button
+                type="submit"
+                className="col-12"
+                variant="contained"
+                color="primary"
+              >
                 Save This & Next
               </Button>
             </Grid>
@@ -253,7 +291,11 @@ function EmpApplicationForm2(props: Props) {
         <AlertComponent
           duration={snackbarDuratuion}
           open={snackOpen}
-          message={succesOrErrorBit === "success" ? "Data Saved Successfully" : "Server Error"}
+          message={
+            succesOrErrorBit === "success"
+              ? "Data Saved Successfully"
+              : "Server Error"
+          }
           onClose={handleClose}
           severity={succesOrErrorBit}
         ></AlertComponent>
