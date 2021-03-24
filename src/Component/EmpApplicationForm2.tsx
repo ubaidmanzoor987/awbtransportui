@@ -278,7 +278,11 @@ function EmpApplicationForm2(props: Props) {
         <AlertComponent
           duration={snackbarDuratuion}
           open={snackOpen}
-          message={succesOrErrorBit === "success" ? "Success" : "Error"}
+          message={
+            succesOrErrorBit === "success"
+              ? "Data Saved Successfully"
+              : "Server Error"
+          }
           onClose={handleClose}
           severity={succesOrErrorBit}
         ></AlertComponent>

@@ -11,6 +11,7 @@ import EmpApplicationForm4 from "./EmpApplicationForm4";
 import EmpApplicationForm5 from "./EmpApplicationForm5";
 import EmpApplicationForm6 from "./EmpApplicationForm6";
 import EmpApplicationForm7 from "./EmpApplicationForm7";
+import EmpApplicationAllDataFilled from "./EmpApplicationAllDataFilled";
 import {
   states,
   Addresses,
@@ -58,13 +59,6 @@ class EmploymentApplication extends Component<
     if (this.context.data.employmentHistory.length == 0) {
       this.context.data.employmentHistory.push(employmentHistoryDummyElement);
     }
-
-    // this.context.data.employmentHistory ||
-    //   this.context.data.employmentHistory.push(employmentHistoryDummyElement);
-    // this.context.data.addressesList ||
-    //   this.context.data.addressesList.push(employmentHistoryDummyElement);
-    // this.context.data.applicantAddresses ||
-    //   this.context.data.applicantAddresses.push(employmentHistoryDummyElement);
   }
 
   gotoNextForm() {
@@ -156,6 +150,16 @@ class EmploymentApplication extends Component<
                   handler={[this.gotoNextForm, this.gotoPreviousForm]}
                   setData={this.context.setUserData}
                 ></EmpApplicationForm7>
+              ) : (
+                ""
+              )}
+
+              {this.state.formCounter == 8 ? (
+                <EmpApplicationAllDataFilled
+                  data={this.context.data}
+                  handler={[this.gotoNextForm, this.gotoPreviousForm]}
+                  setData={this.context.setUserData}
+                ></EmpApplicationAllDataFilled>
               ) : (
                 ""
               )}

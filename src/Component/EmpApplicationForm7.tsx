@@ -103,7 +103,7 @@ export default function EmpApplicationForm7(props: Props) {
     setSnackOpen(false);
     console.log("CLOSE AUTO");
     if (succesOrErrorBit === "success") {
-      // props.handler[0]();
+      props.handler[0]();
     }
   };
   //-------------SNACKBAR-------------

@@ -891,7 +891,7 @@ function EmpApplicationForm1(props: Props) {
           onClose={handleClose}
         >
           <Alert onClose={handleClose} severity={succesOrErrorBit as "success"}>
-            {succesOrErrorBit === "success" && "Success"}
+            {succesOrErrorBit === "success" && "Data Saved Successfully"}
             {succesOrErrorBit === "error" && "Server Error"}
           </Alert>
         </Snackbar>
