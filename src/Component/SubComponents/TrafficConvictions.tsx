@@ -51,9 +51,7 @@ export default function TrafficConvictions(props: Props) {
   const Forms = props.useForm;
   const { register, handleSubmit, errors, defaultValues } = Forms;
 
-  const [trafficConvictionsState, trafficConvictionsStateHandler] = useState(
-    props.trafficConvictionsList
-  );
+  const [trafficConvictionsState, trafficConvictionsStateHandler] = useState(props.trafficConvictionsList);
   //   const [errorsList, errorListHandler] = useState();
   useEffect(() => {
     trafficConvictionsStateHandler(props.trafficConvictionsList);
@@ -65,103 +63,80 @@ export default function TrafficConvictions(props: Props) {
 
   const addAddress = (event: any) => {
     event.preventDefault();
-    trafficConvictionsStateHandler([
-      ...trafficConvictionsState,
-      trafficConvictionDummyElement,
-    ]);
+    trafficConvictionsStateHandler([...trafficConvictionsState, trafficConvictionDummyElement]);
   };
 
   return (
     <React.Fragment>
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-      >
-        {trafficConvictionsState.map(
-          (trafficConvictionsItem: tTrafficConvictionInfo, index: number) => {
-            //console.log("----------------------ERRORS----------------------");
-            //console.log(errors);
-            //console.log(errors[props.idPrefix]);
-            //console.log(errors[props.idPrefix]?.trafficConvictionsstatus);
-            //console.log("----------------------ERRORS----------------------");
-            return (
-              <Accordion elevation={3}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography className={classes.smallHeading}>
-                    Traffic Convictions and Forfeitures for the last three (3)
-                    years : 1
-                    <Typography className={classes.caption}>
-                      (other than parking violations)
-                    </Typography>
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="space-around"
-                    alignItems="baseline"
-                    spacing={1}
-                  >
-                    <Grid item xs={6}>
-                      <TextField
-                        variant="outlined"
-                        name="dateOfViolation"
-                        size="small"
-                        helperText="Date Of Violation"
-                        type="date"
-                        className="col-12"
-                      ></TextField>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        variant="outlined"
-                        name="ViolationPenalty"
-                        size="small"
-                        label="Penalty"
-                        type="number"
-                        className="col-12"
-                      ></TextField>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <TextField
-                        id="outlined-multiline-static"
-                        label="Location"
-                        multiline
-                        name="LocationOfViolation"
-                        size="small"
-                        rows={4}
-                        defaultValue=""
-                        variant="outlined"
-                        className="col-12"
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        id="outlined-multiline-static"
-                        label="Charge"
-                        multiline
-                        name="ViolationCharge"
-                        size="small"
-                        rows={4}
-                        defaultValue=""
-                        variant="outlined"
-                        className="col-12"
-                      />
-                    </Grid>
+      <Grid container direction="row" justify="space-between" alignItems="center">
+        {trafficConvictionsState.map((trafficConvictionsItem: tTrafficConvictionInfo, index: number) => {
+          //console.log("----------------------ERRORS----------------------");
+          //console.log(errors);
+          //console.log(errors[props.idPrefix]);
+          //console.log(errors[props.idPrefix]?.trafficConvictionsstatus);
+          //console.log("----------------------ERRORS----------------------");
+          return (
+            <Accordion elevation={3}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+                <Typography className={classes.smallHeading}>
+                  Traffic Convictions and Forfeitures for the last three (3) years : 1
+                  <Typography className={classes.caption}>(other than parking violations)</Typography>
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid container direction="row" justify="space-around" alignItems="baseline" spacing={1}>
+                  <Grid item xs={6}>
+                    <TextField
+                      variant="outlined"
+                      name="dateOfViolation"
+                      size="small"
+                      helperText="Date Of Violation"
+                      type="date"
+                      className="col-12"
+                    ></TextField>
                   </Grid>
-                </AccordionDetails>
-              </Accordion>
-            );
-          }
-        )}
+                  <Grid item xs={6}>
+                    <TextField
+                      variant="outlined"
+                      name="ViolationPenalty"
+                      size="small"
+                      label="Penalty"
+                      type="number"
+                      className="col-12"
+                    ></TextField>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      id="outlined-multiline-static"
+                      label="Location"
+                      multiline
+                      name="LocationOfViolation"
+                      size="small"
+                      rows={4}
+                      defaultValue=""
+                      variant="outlined"
+                      className="col-12"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      id="outlined-multiline-static"
+                      label="Charge"
+                      multiline
+                      name="ViolationCharge"
+                      size="small"
+                      rows={4}
+                      defaultValue=""
+                      variant="outlined"
+                      className="col-12"
+                    />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+          );
+        })}
         <Grid item xs={12} style={{ padding: "20px 10px" }}>
           <Button
             size="small"
@@ -169,14 +144,11 @@ export default function TrafficConvictions(props: Props) {
             variant="contained"
             color="primary"
             onClick={(e) => {
-              trafficConvictionsStateHandler([
-                ...trafficConvictionsState,
-                trafficConvictionDummyElement,
-              ]);
+              trafficConvictionsStateHandler([...trafficConvictionsState, trafficConvictionDummyElement]);
               //console.log(trafficConvictionsState);
             }}
           >
-            Another Traffic Convictions History
+            Adds History
           </Button>
         </Grid>
       </Grid>

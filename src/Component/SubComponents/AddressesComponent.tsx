@@ -25,20 +25,9 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from "@material-ui/pickers";
 import { styleClasses } from "../../Common/styleClasses";
-import {
-  Address,
-  Addresses,
-  Form1,
-  reqBits,
-  states,
-  AddressErrorsList,
-} from "../../Common/CommonVariables";
+import { Address, Addresses, Form1, reqBits, states, AddressErrorsList } from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from ".././SubComponents/RadioQuestions";
 import ReactAutoComplete from "./ReactAutoComplete";
@@ -75,17 +64,11 @@ export default function AddressesComponent(props: Props) {
   const { register, handleSubmit, errors, defaultValues } = Forms;
 
   const [addressesState, addressesStateHandler] = useState(
-    props.addressesList && props.addressesList.length > 0
-      ? props.addressesList
-      : [addr]
+    props.addressesList && props.addressesList.length > 0 ? props.addressesList : [addr]
   );
   const [errorsList, errorListHandler] = useState();
   useEffect(() => {
-    addressesStateHandler(
-      props.addressesList && props.addressesList.length > 0
-        ? props.addressesList
-        : [addr]
-    );
+    addressesStateHandler(props.addressesList && props.addressesList.length > 0 ? props.addressesList : [addr]);
   }, [props.addressesList]);
 
   useEffect(() => {
@@ -105,28 +88,15 @@ export default function AddressesComponent(props: Props) {
 
   return (
     <React.Fragment>
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-      >
+      <Grid container direction="row" justify="space-between" alignItems="center">
         {addressesState.map((address: Address, index: number) => {
           return (
             <Accordion key={index} defaultExpanded={true}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.text}>
-                  Address {index + 1}
-                </Typography>
+                <Typography className={classes.text}>Address {index + 1}</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Grid
-                  container
-                  direction="row"
-                  justify="space-between"
-                  alignItems="baseline"
-                  spacing={3}
-                >
+                <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
                   <Grid item xs={12}>
                     <TextField
                       className="col-12"
@@ -157,9 +127,7 @@ export default function AddressesComponent(props: Props) {
                       label={
                         "City " +
                         (() => {
-                          return reqBits.lastYearAddressCity === true
-                            ? "*"
-                            : "";
+                          return reqBits.lastYearAddressCity === true ? "*" : "";
                         })()
                       }
                       required={reqBits.lastYearAddressCity === true}
@@ -195,11 +163,13 @@ export default function AddressesComponent(props: Props) {
                       label={
                         "Zip Code " +
                         (() => {
-                          return reqBits.lastYearAddressZipCode == true
-                            ? "*"
-                            : "";
+                          return reqBits.lastYearAddressZipCode == true ? "*" : "";
                         })()
                       }
+                      inputRef={register({
+                        maxLength: { value: 5, message: "Please Input 5 Digits only" },
+                        pattern: { value: /[0-9]{5}/, message: "Please Input 5 Digits only" },
+                      })}
                       required={reqBits.lastYearAddressZipCode == true}
                       className="col-12"
                       value={addressesState[index].lastYearAddressZipCode}
@@ -279,7 +249,7 @@ export default function AddressesComponent(props: Props) {
                       }
                     }}
                   >
-                    Delete This
+                    Delete Entry
                   </Button>
                 </Grid>
               </AccordionActions>
@@ -297,7 +267,7 @@ export default function AddressesComponent(props: Props) {
               //console.log(addressesState);
             }}
           >
-            Another Address
+            Add
           </Button>
         </Grid>
       </Grid>

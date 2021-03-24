@@ -26,20 +26,9 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from "@material-ui/pickers";
 import { styleClasses } from "../../Common/styleClasses";
-import {
-  Addresses,
-  Form1,
-  reqBits,
-  states,
-  AddressErrorsList,
-  tTrafficConvictions,
-} from "../../Common/CommonVariables";
+import { Addresses, Form1, reqBits, states, AddressErrorsList, tTrafficConvictions } from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
 import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
@@ -63,21 +52,11 @@ let dummy = {
 
 export function DynamicTrafficConvictions(props: Props) {
   const classes = styleClasses.useStyles();
-  const {
-    register,
+  const { register, control, handleSubmit, reset, trigger, setError, errors } = props.useForm;
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
     control,
-    handleSubmit,
-    reset,
-    trigger,
-    setError,
-    errors,
-  } = props.useForm;
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control,
-      name: props.idPrefix,
-    }
-  );
+    name: props.idPrefix,
+  });
 
   const submit = (e: any) => {
     e.preventDefault();
@@ -86,35 +65,17 @@ export function DynamicTrafficConvictions(props: Props) {
 
   return (
     <React.Fragment>
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-      >
+      <Grid container direction="row" justify="space-between" alignItems="center">
         {fields.map((item, index) => (
           <Accordion defaultExpanded elevation={3} key={index}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
               <Typography className={classes.smallHeading}>
-                Traffic Convictions and Forfeitures for the last three (3) years
-                : 1
-                <Typography className={classes.caption}>
-                  (other than parking violations)
-                </Typography>
+                Traffic Convictions and Forfeitures for the last three (3) years : 1
+                <Typography className={classes.caption}>(other than parking violations)</Typography>
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid
-                container
-                direction="row"
-                justify="space-around"
-                alignItems="baseline"
-                spacing={1}
-              >
+              <Grid container direction="row" justify="space-around" alignItems="baseline" spacing={1}>
                 <Grid item xs={6}>
                   <TextField
                     variant="outlined"
@@ -233,7 +194,7 @@ export function DynamicTrafficConvictions(props: Props) {
                     }
                   }}
                 >
-                  Delete This
+                  Delete Entry
                 </Button>
               </Grid>
             </AccordionActions>
@@ -251,7 +212,7 @@ export function DynamicTrafficConvictions(props: Props) {
               })
             }
           >
-            Another Traffic Conviction
+            Add
           </Button>
         </Grid>
       </Grid>

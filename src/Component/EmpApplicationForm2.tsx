@@ -15,7 +15,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
@@ -66,6 +66,10 @@ function EmpApplicationForm2(props: Props) {
     { value: "Active Reverse" },
     { value: "Other" },
   ];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (debug === true) {
     props.data.gender = gender[1].value;
@@ -122,13 +126,7 @@ function EmpApplicationForm2(props: Props) {
     <React.Fragment>
       <Container style={{ backgroundColor: "#fafafa" }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid
-            container
-            direction="row"
-            justify="space-between"
-            alignItems="baseline"
-            spacing={3}
-          >
+          <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
@@ -136,40 +134,22 @@ function EmpApplicationForm2(props: Props) {
             </Grid>
             <Grid item xs={1}></Grid>
             <Grid item xs={10}>
-              <Paper
-                elevation={3}
-                className={classes.paper}
-                style={{ padding: "30px 15px" }}
-              >
-                <Grid
-                  container
-                  direction="row"
-                  justify="space-between"
-                  alignItems="baseline"
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    className={classes.heading}
-                    style={{ textAlign: "center", marginTop: "10px" }}
-                  >
+              <Paper elevation={3} className={classes.paper} style={{ padding: "30px 15px" }}>
+                <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
+                  <Grid item xs={12} className={classes.heading} style={{ textAlign: "center", marginTop: "10px" }}>
                     <b>EEO Information</b>
                   </Grid>
                   <Grid item xs={12}>
                     <Paper elevation={3} className={classes.paper}>
                       <Typography align="justify">
-                        We provide equal opportunity to all qualified
-                        individuals regardless of race, color, religion, age,
-                        sex, national origin, veteran status or disability.
+                        We provide equal opportunity to all qualified individuals regardless of race, color, religion, age, sex,
+                        national origin, veteran status or disability.
                       </Typography>
                     </Paper>
                     <Paper elevation={3} className={classes.paper}>
                       <Typography align="justify">
-                        <b>Providing this information is voluntary.</b> We ask
-                        for this information to maintain records. Any
-                        information you voluntarily provide is confidential and
-                        will not be considered in making any employment
+                        <b>Providing this information is voluntary.</b> We ask for this information to maintain records. Any
+                        information you voluntarily provide is confidential and will not be considered in making any employment
                         decision. If you choose no.
                       </Typography>
                     </Paper>
@@ -262,12 +242,7 @@ function EmpApplicationForm2(props: Props) {
               </Button>
             </Grid>
             <Grid item xs={4}>
-              <Button
-                type="submit"
-                className="col-12"
-                variant="contained"
-                color="primary"
-              >
+              <Button type="submit" className="col-12" variant="contained" color="primary">
                 Save This & Next
               </Button>
             </Grid>
@@ -278,11 +253,7 @@ function EmpApplicationForm2(props: Props) {
         <AlertComponent
           duration={snackbarDuratuion}
           open={snackOpen}
-          message={
-            succesOrErrorBit === "success"
-              ? "Data Saved Successfully"
-              : "Server Error"
-          }
+          message={succesOrErrorBit === "success" ? "Data Saved Successfully" : "Server Error"}
           onClose={handleClose}
           severity={succesOrErrorBit}
         ></AlertComponent>

@@ -10,6 +10,7 @@ import { update } from "../services/updateApi";
 import { useRef, useState } from "react";
 import { snackbarDuratuion } from "../Common/CommonVariables";
 import Box from "@material-ui/core/Box";
+import { useEffect } from "react";
 
 import AlertComponent from "./SubComponents/AlertComponent";
 
@@ -38,6 +39,10 @@ export default function EmpApplicationForm6(props: Props) {
         .toDataURL("image/png");
     }
   };
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
 
   //-------------SNACKBAR-------------
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
@@ -1067,7 +1072,7 @@ export default function EmpApplicationForm6(props: Props) {
                             value: reqBits.alcoholTestSecurityNumber,
                             message: RequireError,
                           },
-                          minLength: { value: 8, message: "Min 8 Chracters" },
+                          minLength: { value: 9, message: "Min 9 Digits" },
                         })}
                       ></TextField>
                     </Grid>
