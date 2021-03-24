@@ -147,7 +147,7 @@ function EmpApplicationForm1(props: Props) {
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
 
   const onSubmit = async (data: any) => {
-    if (hideAddressesComponent === true) {
+    if (hideAddressesComponent === false) {
       data.addresses = undefined;
     }
 
