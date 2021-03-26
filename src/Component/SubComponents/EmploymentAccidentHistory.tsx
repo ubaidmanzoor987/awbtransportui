@@ -134,7 +134,7 @@ export default function EmploymentAccidentHistory(props: Props) {
                     <Grid item xs={12}>
                       <TextField
                         variant="outlined"
-                        label="Num of Injured People"
+                        label="Number of Injured People"
                         name="numberofPeopleleInjured"
                         size="small"
                         className="col-12"

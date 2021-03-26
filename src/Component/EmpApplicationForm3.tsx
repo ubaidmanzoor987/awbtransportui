@@ -5,6 +5,7 @@ import {
   Paper,
   TextField,
   Typography,
+  FormHelperText,
 } from "@material-ui/core";
 import React from "react";
 import { Container } from "react-bootstrap";
@@ -128,10 +129,22 @@ function EmpApplicationForm3(props: Props) {
   const Forms = useForm({ defaultValues: props.data });
   const { register, handleSubmit, errors, control } = Forms;
 
-  const sigPad = useRef<any>();
+  const [licenseQuestionBits, setLicenseQuestionBits] = useState({
+    deniedLicences: props.data.deniedLicences === "Yes",
+    permitLicences: props.data.permitLicences === "Yes",
+    reasonforUnableToPerformActions:
+      props.data.reasonforUnableToPerformActions === "Yes",
+    convictedofafelony: props.data.convictedofafelony === "Yes",
+  });
+
+  // let sigPad = useRef<any>();
+  let sigPad:any ;
   let base64SignatureImage = "";
 
   const clearSigPad = () => {
+    console.log("ref");
+    console.log(sigPad);
+    console.log(typeof sigPad);
     if (sigPad && sigPad.current) {
       sigPad.current?.clear();
       base64SignatureImage = "";
@@ -140,6 +153,7 @@ function EmpApplicationForm3(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // sigPad.fromDataURL(props.data.signature, null);
   }, []);
 
   const [phonePattern, setPhonePatten] = useState(
@@ -224,19 +238,6 @@ function EmpApplicationForm3(props: Props) {
   console.log("props.data.applicantAddresses");
   console.log(props.data.applicantAddresses);
 
-  const [questionBits, setQuestionBits] = useState([
-    { deniedLicences: props.data.deniedLicences === "Yes" },
-    { permitLicences: props.data.permitLicences === "Yes" },
-    {
-      reasonforUnableToPerformActions:
-        props.data.reasonforUnableToPerformActions === "Yes",
-    },
-    { convictedofafelony: props.data.convictedofafelony === "Yes" },
-  ]);
-
-  const changeQuestionBits = () => {
-    // setQuestionBits(...questionBits, { deniedLicences: true });
-  };
   const updateReferencesList = (updateReferences: any) => {
     //console.log("------------Update Driver License List------------");
     ReferencesList = updateReferences;
@@ -338,9 +339,7 @@ function EmpApplicationForm3(props: Props) {
                           error={
                             errors.companyName === undefined ? false : true
                           }
-                          helperText={
-                            errors.companyName && errors.companyName?.message
-                          }
+                          helperText={RequireError}
                           inputRef={register({
                             required: {
                               value: reqBits.companyName,
@@ -360,10 +359,7 @@ function EmpApplicationForm3(props: Props) {
                           error={
                             errors.companyAddress == undefined ? false : true
                           }
-                          helperText={
-                            errors.companyAddress &&
-                            errors.companyAddress?.message
-                          }
+                          helperText={RequireError}
                           inputRef={register({
                             required: {
                               value: reqBits.companyAddress,
@@ -531,11 +527,7 @@ function EmpApplicationForm3(props: Props) {
                                   required: reqBits.applicationApplyDate,
                                 })}
                                 defaultValue={props.data.applicationApplyDate}
-                                helperText={
-                                  errors.applicationApplyDate &&
-                                  errors.applicationApplyDate?.type.toUpperCase() +
-                                    " Error"
-                                }
+                                helperText={RequireError}
                               ></TextField>
                             </Grid>
                             <Grid item xs={12}>
@@ -558,7 +550,7 @@ function EmpApplicationForm3(props: Props) {
                                   props.data.applicationApplyAsPosition
                                 }
                                 useForm={Forms}
-                                isReq={false}
+                                isReq={reqBits.applicationApplyAsPosition}
                                 xsSize={11}
                                 actionOnSelection={(e: any) => {
                                   console.log("Radio Radios");
@@ -598,10 +590,7 @@ function EmpApplicationForm3(props: Props) {
                                     : true
                                 }
                                 label="First Name"
-                                helperText={
-                                  errors.applicantfirstName &&
-                                  errors.applicantfirstName?.message
-                                }
+                                helperText={RequireError}
                                 inputRef={register({
                                   required: {
                                     value: reqBits.applicantfirstName,
@@ -626,11 +615,7 @@ function EmpApplicationForm3(props: Props) {
                                 inputRef={register({
                                   required: reqBits.applicantLastName,
                                 })}
-                                helperText={
-                                  errors.applicantLastName &&
-                                  errors.applicantLastName?.type.toUpperCase() +
-                                    " Error"
-                                }
+                                helperText={RequireError}
                               ></TextField>
                             </Grid>
                             <Grid item xs={11} style={{ marginBottom: "10px" }}>
@@ -652,10 +637,7 @@ function EmpApplicationForm3(props: Props) {
                                   },
                                 })}
                                 label="Phone Number"
-                                helperText={
-                                  errors.applicantPhoneNumber &&
-                                  errors.applicantPhoneNumber?.message
-                                }
+                                helperText={RequireError}
                                 value={
                                   phonePattern
                                     ? phonePattern
@@ -701,15 +683,9 @@ function EmpApplicationForm3(props: Props) {
                                     : true
                                 }
                                 label="Emergency: First Name"
-                                helperText={
-                                  errors.emergencyContactfirstName &&
-                                  errors.emergencyContactfirstName?.message
-                                }
+                                helperText={RequireError}
                                 inputRef={register({
-                                  required: {
-                                    value: reqBits.emergencyContactfirstName,
-                                    message: RequireError,
-                                  },
+                                  required: reqBits.emergencyContactfirstName,
                                 })}
                               ></TextField>
                             </Grid>
@@ -729,11 +705,7 @@ function EmpApplicationForm3(props: Props) {
                                 inputRef={register({
                                   required: reqBits.emergencyContactlastName,
                                 })}
-                                helperText={
-                                  errors.emergencyContactlastName &&
-                                  errors.emergencyContactlastName?.type.toUpperCase() +
-                                    " Error"
-                                }
+                                helperText={RequireError}
                               ></TextField>
                             </Grid>
                             <Grid item xs={11} style={{ marginBottom: "10px" }}>
@@ -749,16 +721,10 @@ function EmpApplicationForm3(props: Props) {
                                     : true
                                 }
                                 inputRef={register({
-                                  required: {
-                                    value: reqBits.emergencyContactNumber,
-                                    message: RequireError,
-                                  },
+                                  required: reqBits.emergencyContactNumber,
                                 })}
-                                label="Emergency: Mobile Num"
-                                helperText={
-                                  errors.emergencyContactNumber &&
-                                  errors.emergencyContactNumber?.message
-                                }
+                                label="Emergency: Mobile Number"
+                                helperText={RequireError}
                                 onChange={(e) => {
                                   if (e.target.value.length > 11) {
                                     const n = formatPhoneNumberIntl(
@@ -785,12 +751,9 @@ function EmpApplicationForm3(props: Props) {
                                 className="col-12"
                                 error={errors.age == undefined ? false : true}
                                 label="Age"
-                                helperText={errors.age && errors.age?.message}
+                                helperText={RequireError}
                                 inputRef={register({
-                                  required: {
-                                    value: reqBits.age,
-                                    message: RequireError,
-                                  },
+                                  required: reqBits.age,
                                 })}
                               ></TextField>
                             </Grid>
@@ -806,7 +769,7 @@ function EmpApplicationForm3(props: Props) {
                                     ? false
                                     : true
                                 }
-                                helperText="Date of Birth"
+                                helperText={"Date of Birth " + RequireError}
                                 inputRef={register({
                                   required: reqBits.applicantdateofbirth,
                                 })}
@@ -1081,45 +1044,41 @@ function EmpApplicationForm3(props: Props) {
               >
                 <TextField
                   id="outlined-multiline-static"
-                  label="List states operated in, for the last five (5) years:"
+                  label={`List states operated in, for the last five (5) years: `}
                   name="lastFiveYearStatesOperate"
                   error={errors && errors.lastFiveYearStatesOperate}
                   inputRef={register({
-                    required: {
-                      value: reqBits.lastFiveYearStatesOperate,
-                      message: RequireError,
-                    },
+                    required: reqBits.lastFiveYearStatesOperate,
                   })}
+                  helperText={reqBits.lastFiveYearStatesOperate && RequireError}
                   multiline
                   rows={4}
                   defaultValue={props.data.lastFiveYearStatesOperate}
                   variant="outlined"
                   className="col-10"
-                />
+                ></TextField>
                 <br />
                 <br />
                 <TextField
                   id="outlined-multiline-static"
-                  label="List special courses/training completed (PTD/DDC, HAZMAT, ETC)"
+                  label={`List special courses/training completed (PTD/DDC, HAZMAT, ETC) `}
                   multiline
                   error={errors && errors.Listspecialcourses}
                   inputRef={register({
-                    required: {
-                      value: reqBits.Listspecialcourses,
-                      message: RequireError,
-                    },
+                    required: reqBits.Listspecialcourses,
                   })}
                   name="Listspecialcourses"
                   rows={4}
                   defaultValue={props.data.Listspecialcourses}
                   variant="outlined"
                   className="col-10"
+                  helperText={reqBits.Listspecialcourses && "Required *"}
                 />
                 <br />
                 <br />
                 <TextField
                   id="outlined-multiline-static"
-                  label="List any Safe Driving Awards you hold and from whom:"
+                  label={`List any Safe Driving Awards you hold and from whom:`}
                   multiline
                   rows={4}
                   error={errors && errors.ListanySafeDrivingAwards}
@@ -1133,7 +1092,8 @@ function EmpApplicationForm3(props: Props) {
                   defaultValue={props.data.ListanySafeDrivingAwards}
                   variant="outlined"
                   className="col-10"
-                />
+                  helperText={reqBits.ListanySafeDrivingAwards && RequireError}
+                ></TextField>
               </Paper>
             </Grid>
 
@@ -1230,11 +1190,22 @@ function EmpApplicationForm3(props: Props) {
                       optionValue={["Yes", "No"]}
                       useForm={Forms}
                       xsSize={11}
-                      defaultSelected={"Yes"}
+                      defaultSelected={props.data.deniedLicences}
                       isReq={reqBits.deniedLicences}
                       actionOnSelection={(e: any) => {
                         // console.log("Radio Radios");
                         // console.log(e);
+                        if (e.target.value === "Yes") {
+                          setLicenseQuestionBits({
+                            ...licenseQuestionBits,
+                            deniedLicences: true,
+                          });
+                        } else {
+                          setLicenseQuestionBits({
+                            ...licenseQuestionBits,
+                            deniedLicences: false,
+                          });
+                        }
                       }}
                     ></RadioQuestions>
                   </div>
@@ -1250,11 +1221,22 @@ function EmpApplicationForm3(props: Props) {
                       optionValue={["Yes", "No"]}
                       useForm={Forms}
                       xsSize={11}
-                      defaultSelected={"Yes"}
+                      defaultSelected={props.data.permitLicences}
                       isReq={reqBits.permitLicences}
                       actionOnSelection={(e: any) => {
                         console.log("Radio Radios");
                         console.log(e);
+                        if (e.target.value === "Yes") {
+                          setLicenseQuestionBits({
+                            ...licenseQuestionBits,
+                            permitLicences: true,
+                          });
+                        } else {
+                          setLicenseQuestionBits({
+                            ...licenseQuestionBits,
+                            permitLicences: false,
+                          });
+                        }
                       }}
                     ></RadioQuestions>
                   </div>
@@ -1271,11 +1253,24 @@ function EmpApplicationForm3(props: Props) {
                       optionValue={["Yes", "No"]}
                       useForm={Forms}
                       xsSize={11}
-                      defaultSelected={"Yes"}
+                      defaultSelected={
+                        props.data.reasonforUnableToPerformActions
+                      }
                       isReq={reqBits.reasonforUnableToPerformActions}
                       actionOnSelection={(e: any) => {
                         console.log("Radio Radios");
                         console.log(e);
+                        if (e.target.value === "Yes") {
+                          setLicenseQuestionBits({
+                            ...licenseQuestionBits,
+                            reasonforUnableToPerformActions: true,
+                          });
+                        } else {
+                          setLicenseQuestionBits({
+                            ...licenseQuestionBits,
+                            reasonforUnableToPerformActions: false,
+                          });
+                        }
                       }}
                     ></RadioQuestions>
                   </div>
@@ -1291,11 +1286,22 @@ function EmpApplicationForm3(props: Props) {
                       optionValue={["Yes", "No"]}
                       useForm={Forms}
                       xsSize={11}
-                      defaultSelected={"Yes"}
+                      defaultSelected={props.data.convictedofafelony}
                       isReq={reqBits.convictedofafelony}
                       actionOnSelection={(e: any) => {
                         console.log("Radio Radios");
                         console.log(e);
+                        if (e.target.value === "Yes") {
+                          setLicenseQuestionBits({
+                            ...licenseQuestionBits,
+                            convictedofafelony: true,
+                          });
+                        } else {
+                          setLicenseQuestionBits({
+                            ...licenseQuestionBits,
+                            convictedofafelony: false,
+                          });
+                        }
                       }}
                     ></RadioQuestions>
                   </div>
@@ -1306,7 +1312,10 @@ function EmpApplicationForm3(props: Props) {
                 <div className="row">
                   <div className="col-1"></div>
                   <div className="col-10 mt-2">
-                    {true && (
+                    {(licenseQuestionBits.deniedLicences ||
+                      licenseQuestionBits.permitLicences ||
+                      licenseQuestionBits.convictedofafelony ||
+                      licenseQuestionBits.reasonforUnableToPerformActions) && (
                       <TextField
                         id="outlined-multiline-static"
                         label="If the answers to any questions listed above are “yes”,
@@ -1320,6 +1329,7 @@ function EmpApplicationForm3(props: Props) {
                             message: RequireError,
                           },
                         })}
+                        helperText={reqBits.answerToAnyQuestion && RequireError}
                         name="answerToAnyQuestion"
                         defaultValue={props.data.answerToAnyQuestion}
                         variant="outlined"
@@ -1444,15 +1454,29 @@ function EmpApplicationForm3(props: Props) {
                     Please ! Sign here
                   </Typography>
                 )}
-                <SignatureCanvas
-                  penColor="black"
-                  ref={sigPad}
-                  canvasProps={{
-                    width: 500,
-                    height: 200,
-                    className: "sigCanvas",
+                <div
+                  style={{
+                    boxShadow:
+                      "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                    display: "inline-block",
+                    margin: "20px",
                   }}
-                />
+                >
+                  <SignatureCanvas
+                    penColor="black"
+                    ref={(ref) => {
+                      sigPad = ref;
+                     
+                    }}
+                    canvasProps={{
+                      width: 600,
+                      height: 150,
+
+                      className: "sigCanvas",
+                    }}
+                  />
+                </div>
+
                 <Grid
                   container
                   direction="row"
@@ -1460,8 +1484,8 @@ function EmpApplicationForm3(props: Props) {
                   alignItems="baseline"
                   spacing={3}
                 >
-                  <Grid item xs={3}></Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={5}></Grid>
+                  <Grid item xs={2}>
                     <Button
                       type="button"
                       className="col-12"
@@ -1472,7 +1496,7 @@ function EmpApplicationForm3(props: Props) {
                       Clear
                     </Button>
                   </Grid>
-                  <Grid item xs={3}>
+                  {/* <Grid item xs={2}>
                     <Button
                       className="col-12"
                       variant="contained"
@@ -1481,8 +1505,8 @@ function EmpApplicationForm3(props: Props) {
                     >
                       Save
                     </Button>
-                  </Grid>
-                  <Grid item xs={3}></Grid>
+                  </Grid> */}
+                  <Grid item xs={5}></Grid>
                 </Grid>
               </Paper>
             </Grid>

@@ -155,6 +155,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                         message: RequireError,
                       },
                     })}
+                    helperText={reqBits.numberofFatalities && RequireError}
                     name={`${props.idPrefix}[${index}].numberofFatalities`}
                     size="small"
                     type="text"
@@ -165,7 +166,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                   <TextField
                     variant="outlined"
                     defaultValue={item.numberofPeopleleInjured}
-                    label="Num of Injured People"
+                    label="Number of Injured People"
                     error={
                       errors &&
                       errors[props.idPrefix] &&
@@ -178,6 +179,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                         message: RequireError,
                       },
                     })}
+                    helperText={reqBits.numberofPeopleleInjured && RequireError}
                     name={`${props.idPrefix}[${index}].numberofPeopleleInjured`}
                     size="small"
                     className="col-12"
@@ -226,6 +228,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                         message: RequireError,
                       },
                     })}
+                    helperText={reqBits.LocationOfAccidents && RequireError}
                     name={`${props.idPrefix}[${index}].LocationOfAccidents`}
                     size="small"
                     multiline

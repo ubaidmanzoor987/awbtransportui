@@ -16,6 +16,6 @@ export interface Result {
         lastYearAddressfrom: string,
         lastYearAddressTo: string
     }, 
-    error: string
+    error: string,
     
 }

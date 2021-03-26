@@ -136,6 +136,7 @@ export function DynamicAddressComponent(props: Props) {
                         message: RequireError,
                       },
                     })}
+                    helperText={reqBits.lastYearAddress && RequireError}
                     defaultValue={item.lastYearAddress}
                   ></TextField>
                 </Grid>

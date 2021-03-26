@@ -192,6 +192,7 @@ export default function AddressesComponent(props: Props) {
                       forms={Forms}
                       defaultValue={address.lastYearAddressState}
                       control={control}
+                      isReq={reqBits.lastYearAddressState}
                       variant="outlined"
                       size="small"
                       className="col-12"

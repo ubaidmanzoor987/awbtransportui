@@ -14,10 +14,10 @@ class Adminpanel extends React.Component<AdminPanelProps, {}> {
     super(props);
   }
 
-  download_user_cv = (user_name: string) => {
+  download_user_cv = (user_name: string,fileName:string) => {
     console.log("user_name");
-    console.log(baseUrl + "/api/get_resume?user_name=" + user_name);
-    window.open(baseUrl + "/api/get_resume?user_name=" + user_name, "_blank");
+    console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
+    window.open(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`, "_blank");
   };
 
   download_new_employee_pdf = async (user_name: string) => {
@@ -96,7 +96,7 @@ class Adminpanel extends React.Component<AdminPanelProps, {}> {
                 <div className="col-md-1">
                   <button
                     onClick={() => {
-                      this.download_user_cv(object.data.user_name);
+                      this.download_user_cv(object.data.user_name, "resume");
                     }}
                     style={{
                       backgroundColor: "#1E2D3B",

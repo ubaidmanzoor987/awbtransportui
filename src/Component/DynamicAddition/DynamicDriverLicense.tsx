@@ -3,6 +3,7 @@ import {
   Address,
   EmploymentAccidentHistories,
   driverLicenseDummyElement,
+  licenseType,
 } from "../../Common/CommonVariables";
 import {
   Button,
@@ -114,6 +115,10 @@ export function DynamicDriverLicense(props: Props) {
                     name={`${props.idPrefix}[${index}].licenceExpirationDate`}
                     // defaultValue={`${props.idPrefix}[${index}].licenceExpirationDate`}
                     defaultValue={item.licenceExpirationDate}
+                    helperText={
+                      reqBits.licenceExpirationDate &&
+                      "License Expiration Date" + RequireError
+                    }
                     error={
                       errors &&
                       errors[props.idPrefix] &&
@@ -130,7 +135,6 @@ export function DynamicDriverLicense(props: Props) {
                     variant="outlined"
                     size="small"
                     type="date"
-                    helperText="License Expiration Date"
                   ></TextField>
                 </Grid>
                 <Grid item xs={6}>
@@ -149,15 +153,41 @@ export function DynamicDriverLicense(props: Props) {
                         message: RequireError,
                       },
                     })}
+                    helperText={reqBits.licenceNumber && RequireError}
                     variant="outlined"
-                    label="License"
+                    label="License Number"
                     size="small"
                     type="text"
                     className="col-12"
                   ></TextField>
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                  <ReactHookFormSelect
+                    nameVal={`${props.idPrefix}[${index}].licenceType`}
+                    label="Type"
+                    control={control}
+                    forms={props.useForm}
+                    defaultValue={item.licenceType}
+                    variant="outlined"
+                    size="small"
+                    className="col-12"
+                    isReq={reqBits.licenceType}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].licenceType
+                    }
+                  >
+                    {licenseType.map(function (object: any, i: number) {
+                      return (
+                        <option value={object.value} key={i}>
+                          {object.value}
+                        </option>
+                      );
+                    })}
+                  </ReactHookFormSelect>
+                  {/* <TextField
                     name={`${props.idPrefix}[${index}].licenceType`}
                     defaultValue={item.licenceType}
                     error={
@@ -177,7 +207,34 @@ export function DynamicDriverLicense(props: Props) {
                     size="small"
                     className="col-12"
                     type="text"
-                  ></TextField>
+                  ></TextField> */}
+                </Grid>
+                <Grid item xs={6}>
+                  <ReactHookFormSelect
+                    nameVal={`${props.idPrefix}[${index}].stateOfLicence`}
+                    label="State"
+                    control={control}
+                    forms={props.useForm}
+                    defaultValue={item.stateOfLicence}
+                    variant="outlined"
+                    size="small"
+                    className="col-12"
+                    isReq={reqBits.stateOfLicence}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].stateOfLicence
+                    }
+                  >
+                    {states.map(function (object: any, i: number) {
+                      return (
+                        <option value={object.value} key={i}>
+                          {object.value}
+                        </option>
+                      );
+                    })}
+                  </ReactHookFormSelect>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -203,7 +260,7 @@ export function DynamicDriverLicense(props: Props) {
                     className="col-12"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                {/* <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].licenceExpirationDate`}
                     defaultValue={item.licenceExpirationDate}
@@ -227,7 +284,7 @@ export function DynamicDriverLicense(props: Props) {
                     variant="outlined"
                     className="col-12"
                   />
-                </Grid>
+                </Grid> */}
               </Grid>
             </AccordionDetails>{" "}
             <AccordionActions

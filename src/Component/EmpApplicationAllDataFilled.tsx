@@ -37,7 +37,7 @@ function EmpApplicationAllDataFilled(props: Props) {
                 >
                   <h4 style={{ marginBottom: "30px" }}>Successfully Saved</h4>
                   <i>
-                    Thank You For Applying In Awb Transport. We will contact you
+                    Thank You For Applying at Awb Transport. We will contact you
                     soon .
                   </i>
                 </Grid>

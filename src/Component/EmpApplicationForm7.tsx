@@ -322,16 +322,24 @@ export default function EmpApplicationForm7(props: Props) {
                       <Element name="sigPadElement" className="element">
                         <div></div>
                       </Element>
-
-                      <SignatureCanvas
-                        penColor="black"
-                        ref={sigPad}
-                        canvasProps={{
-                          width: 500,
-                          height: 200,
-                          className: "sigCanvas",
+                      <div
+                        style={{
+                          boxShadow:
+                            "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                          display: "inline-block",
+                          margin: "20px",
                         }}
-                      />
+                      >
+                        <SignatureCanvas
+                          penColor="black"
+                          ref={sigPad}
+                          canvasProps={{
+                            width: 500,
+                            height: 150,
+                            className: "sigCanvas",
+                          }}
+                        />
+                      </div>
 
                       <Grid
                         container
@@ -340,8 +348,8 @@ export default function EmpApplicationForm7(props: Props) {
                         alignItems="baseline"
                         spacing={3}
                       >
-                        <Grid item xs={3}></Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={5}></Grid>
+                        <Grid item xs={2}>
                           <Button
                             type="button"
                             className="col-12"
@@ -352,17 +360,17 @@ export default function EmpApplicationForm7(props: Props) {
                             Clear
                           </Button>
                         </Grid>
-                        <Grid item xs={3}>
-                          <Button
-                            className="col-12"
-                            variant="contained"
-                            color="primary"
-                            onClick={saveImage}
-                          >
-                            Save
-                          </Button>
-                        </Grid>
-                        <Grid item xs={3}></Grid>
+                        {/* <Grid item xs={2}>
+                    <Button
+                      className="col-12"
+                      variant="contained"
+                      color="primary"
+                      onClick={saveImage}
+                    >
+                      Save
+                    </Button>
+                  </Grid> */}
+                        <Grid item xs={5}></Grid>
                       </Grid>
                     </Paper>
                   </Grid>
@@ -459,7 +467,7 @@ export default function EmpApplicationForm7(props: Props) {
                           variant="outlined"
                           size="small"
                           type="text"
-                          label="Phone"
+                          label="Phone Number"
                           className="col-12"
                           error={
                             errors && errors.newEmployeerphone !== undefined
@@ -913,6 +921,7 @@ export default function EmpApplicationForm7(props: Props) {
                           defaultValue={props?.data?.prevEmployeerState}
                           control={control}
                           variant="outlined"
+                          isReq={reqBits.prevEmployeerState}
                           size="small"
                           className="col-12"
                         >
@@ -1085,7 +1094,7 @@ export default function EmpApplicationForm7(props: Props) {
                         variant="outlined"
                         size="small"
                         type="text"
-                        label="A:"
+                        label="Name"
                         className="col-12"
                         error={
                           errors &&
@@ -1141,7 +1150,7 @@ export default function EmpApplicationForm7(props: Props) {
                         variant="outlined"
                         size="small"
                         type="text"
-                        label="Phone #"
+                        label="Phone Number"
                         className="col-12"
                         error={
                           errors &&

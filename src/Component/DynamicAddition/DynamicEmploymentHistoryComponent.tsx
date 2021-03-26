@@ -131,11 +131,9 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                       errors[props.idPrefix][index].employmentHistoryfrom
                     }
                     inputRef={register({
-                      required: {
-                        value: reqBits.employmentHistoryfrom,
-                        message: RequireError,
-                      },
+                      required: reqBits.employmentHistoryfrom,
                     })}
+                    helperText={reqBits.employmentHistoryfrom && RequireError}
                     //useForms Handling End
                   ></TextField>
                 </Grid>
@@ -154,11 +152,9 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                       errors[props.idPrefix][index].employmentHistoryTo
                     }
                     inputRef={register({
-                      required: {
-                        value: reqBits.employmentHistoryTo,
-                        message: RequireError,
-                      },
+                      required: reqBits.employmentHistoryTo,
                     })}
+                    helperText={reqBits.employmentHistoryTo && RequireError}
                     //useForms Handling End
                   ></TextField>
                 </Grid>
@@ -179,11 +175,9 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                       errors[props.idPrefix][index].employmentHistorystatus
                     }
                     inputRef={register({
-                      required: {
-                        value: reqBits.employmentHistorystatus,
-                        message: RequireError,
-                      },
+                      required: reqBits.employmentHistorystatus,
                     })}
+                    helperText={reqBits.employmentHistorystatus && RequireError}
                     //useForms Handling End
                   ></TextField>
                 </Grid>
@@ -204,11 +198,11 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                       errors[props.idPrefix][index].employmentHistoryposition
                     }
                     inputRef={register({
-                      required: {
-                        value: reqBits.employmentHistoryposition,
-                        message: RequireError,
-                      },
+                      required: reqBits.employmentHistoryposition,
                     })}
+                    helperText={
+                      reqBits.employmentHistoryposition && RequireError
+                    }
                     //useForms Handling End
                   ></TextField>
                 </Grid>
@@ -219,7 +213,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     size="small"
                     type="text"
                     defaultValue={item.employmentHistorycompanyPhone}
-                    label="Company Phone"
+                    label="Company Phone Number"
                     className="col-12"
                     //useForms Handling Start
                     error={
@@ -230,11 +224,11 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                         .employmentHistorycompanyPhone
                     }
                     inputRef={register({
-                      required: {
-                        value: reqBits.employmentHistorycompanyPhone,
-                        message: RequireError,
-                      },
+                      required: reqBits.employmentHistorycompanyPhone,
                     })}
+                    helperText={
+                      reqBits.employmentHistorycompanyPhone && RequireError
+                    }
                     //useForms Handling End
                   ></TextField>
                 </Grid>
@@ -257,15 +251,40 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                         .employmentHistoryreasonForLeaving
                     }
                     inputRef={register({
-                      required: {
-                        value: reqBits.employmentHistoryreasonForLeaving,
-                        message: RequireError,
-                      },
+                      required: reqBits.employmentHistoryreasonForLeaving,
                     })}
+                    helperText={reqBits.employmentHistoryreasonForLeaving}
                     //useForms Handling End
                   ></TextField>
                 </Grid>
                 {/* <Grid item xs={1}></Grid> */}
+
+                <Grid item xs={12}>
+                  <TextField
+                    className="col-12"
+                    name={`${props.idPrefix}[${index}].employmentHistoryaddress`}
+                    variant="outlined"
+                    size="small"
+                    defaultValue={item.employmentHistoryaddress}
+                    type="text"
+                    label="Address"
+                    //useForms Handling Start
+
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].employmentHistoryaddress
+                    }
+                    inputRef={register({
+                      required: reqBits.employmentHistoryaddress,
+                    })}
+                    helperText={
+                      reqBits.employmentHistoryaddress && RequireError
+                    }
+                    //useForms Handling End
+                  ></TextField>
+                </Grid>
 
                 <RadioQuestions
                   id={`${props.idPrefix}[${index}].employmentHistorysubjecttotheFMCSRs`}

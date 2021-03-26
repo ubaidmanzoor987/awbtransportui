@@ -60,6 +60,19 @@ export const states = [
   { value: "WI - Wisconsin" },
   { value: "WY - Wyoming" },
 ];
+
+export const licenseType = [
+  {
+    value:
+      "Class A: Combination (tractor plus trailer) vehicle of 26,001 pounds",
+  },
+  { value: "Class B: Single (straight) vehicle include trucks and buses" },
+  {
+    value:
+      "Class C: Single vehicles include small buses, strecthed limousines , and non-commercial vehicles",
+  },
+];
+
 export type Address = {
   lastYearAddress: string;
   lastYearAddressCity: string;
@@ -126,6 +139,9 @@ export type tReferenceInfo = {
   referenceTitle: string;
   referencePhoneNumber: string;
   referenceAddress: string;
+  referenceCity: string;
+  referenceState: string;
+  referenceZipCode: string;
 };
 
 export let ReferenceDummyElement: tReferenceInfo = {
@@ -135,6 +151,9 @@ export let ReferenceDummyElement: tReferenceInfo = {
   referenceTitle: "",
   referencePhoneNumber: "",
   referenceAddress: "",
+  referenceCity: "",
+  referenceState: "",
+  referenceZipCode: "",
 };
 
 export type tReferences = tReferenceInfo[];
@@ -288,7 +307,7 @@ export let reqBits = {
   experiencenumberOfMiles: true,
   lastFiveYearStatesOperate: true,
   Listspecialcourses: true,
-  ListanySafeDrivingAwards: false,
+  ListanySafeDrivingAwards: true,
   dateOfAccident: false,
   NumberOfAccidents: false,
   LocationOfAccidents: true,
@@ -301,7 +320,7 @@ export let reqBits = {
   stateOfLicence: true,
   licenceNumber: true,
   licenceType: true,
-  licenceEndoresment: true,
+  licenceEndoresment: false,
   licenceExpirationDate: true,
   deniedLicences: true,
   permitLicences: true,
@@ -314,6 +333,9 @@ export let reqBits = {
   referenceTitle: false,
   referencePhoneNumber: true,
   referenceAddress: true,
+  referenceCity: false,
+  referenceState: false,
+  referenceZipCode: false,
   signature: false,
   dateOfApplication: true,
   remarks: false,
@@ -650,8 +672,8 @@ export let reqBitsViaStr: Dict = {
   applicantAddresses: true,
   everWorkedForCompany: true,
   applicantSchoolGrade: true,
-  applicantCollegeGrade: true,
-  applicantPostGraduateGrade: true,
+  applicantCollegeGrade: false,
+  applicantPostGraduateGrade: false,
   employmentHistoryfrom: true,
   employmentHistoryTo: true,
   employmentHistorystatus: true,

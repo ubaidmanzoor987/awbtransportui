@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Address,
   EmploymentAccidentHistories,
@@ -127,6 +127,7 @@ export function DynamicReferences(props: Props) {
                         message: RequireError,
                       },
                     })}
+                    helperText={reqBits.referencefirstName && RequireError}
                     variant="outlined"
                     label="First Name"
                     size="small"
@@ -180,7 +181,7 @@ export function DynamicReferences(props: Props) {
                     type="text"
                   ></TextField>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].referenceTitle`}
                     defaultValue={item.referenceTitle}
@@ -203,6 +204,154 @@ export function DynamicReferences(props: Props) {
                     variant="outlined"
                     className="col-12"
                   />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    name="referencePhoneNumber"
+                    variant="outlined"
+                    size="small"
+                    type="text"
+                    className="col-12"
+                    error={
+                      errors.referencePhoneNumber == undefined ? false : true
+                    }
+                    inputRef={register({
+                      required: {
+                        value: reqBits.referencePhoneNumber,
+                        message: RequireError,
+                      },
+                    })}
+                    label="Phone Number"
+                    helperText={reqBits.referencePhoneNumber && RequireError}
+
+                    // inputRef={register({
+                    //   required: {
+                    //     value: reqBits.referencePhoneNumber,
+                    //     message: RequireError,
+                    //   },
+                    //   pattern: {
+                    //     value: /^([0-9]{3}[-.][0-9]{3}[-.][0-9]{4}[-. ][x][0-9]{4})$/,
+                    //     message: WrongPatternError + " : ###-###-#### x####",
+                    //   },
+                    // })}
+                  ></TextField>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    name="referenceAddress"
+                    variant="outlined"
+                    size="small"
+                    type="text"
+                    className="col-12"
+                    error={errors.referenceAddress == undefined ? false : true}
+                    inputRef={register({
+                      required: {
+                        value: reqBits.referenceAddress,
+                        message: RequireError,
+                      },
+                    })}
+                    label="Address"
+                    helperText={reqBits.referenceAddress && RequireError}
+
+                    // inputRef={register({
+                    //   required: {
+                    //     value: reqBits.referenceAddress,
+                    //     message: RequireError,
+                    //   },
+                    //   pattern: {
+                    //     value: /^([0-9]{3}[-.][0-9]{3}[-.][0-9]{4}[-. ][x][0-9]{4})$/,
+                    //     message: WrongPatternError + " : ###-###-#### x####",
+                    //   },
+                    // })}
+                  ></TextField>
+                </Grid>
+
+                <Grid item xs={4}>
+                  <TextField
+                    name="referenceCity"
+                    variant="outlined"
+                    size="small"
+                    type="text"
+                    className="col-12"
+                    error={errors.referenceCity == undefined ? false : true}
+                    inputRef={register({
+                      required: {
+                        value: reqBits.referenceCity,
+                        message: RequireError,
+                      },
+                    })}
+                    label="Address"
+                    helperText={reqBits.referenceCity && RequireError}
+
+                    // inputRef={register({
+                    //   required: {
+                    //     value: reqBits.referenceCity,
+                    //     message: RequireError,
+                    //   },
+                    //   pattern: {
+                    //     value: /^([0-9]{3}[-.][0-9]{3}[-.][0-9]{4}[-. ][x][0-9]{4})$/,
+                    //     message: WrongPatternError + " : ###-###-#### x####",
+                    //   },
+                    // })}
+                  ></TextField>
+                </Grid>
+
+                <Grid item xs={4}>
+                  <ReactHookFormSelect
+                    nameVal="referenceState"
+                    label="State"
+                    variant="outlined"
+                    size="small"
+                    forms={props.useForm}
+                    control={control}
+                    isReq={reqBits["referenceState"]}
+                    error={errors && errors["referenceState"]}
+                    className="col-12"
+                    defaultValue={
+                      props.referenceList[index].referenceState &&
+                      props.referenceList[index].referenceState
+                    }
+                  >
+                    <option aria-label="None" value="" />
+
+                    {states.map(function (object: any, i: number) {
+                      return (
+                        <option value={object.value} key={i}>
+                          {object.value}
+                        </option>
+                      );
+                    })}
+                  </ReactHookFormSelect>
+                </Grid>
+
+                <Grid item xs={4}>
+                  <TextField
+                    name="referenceZipCode"
+                    variant="outlined"
+                    size="small"
+                    type="text"
+                    className="col-12"
+                    error={errors.referenceZipCode == undefined ? false : true}
+                    inputRef={register({
+                      required: {
+                        value: reqBits.referenceZipCode,
+                        message: RequireError,
+                      },
+                    })}
+                    label="Address"
+                    helperText={reqBits.referenceZipCode && RequireError}
+
+                    // inputRef={register({
+                    //   required: {
+                    //     value: reqBits.referenceZipCode,
+                    //     message: RequireError,
+                    //   },
+                    //   pattern: {
+                    //     value: /^([0-9]{3}[-.][0-9]{3}[-.][0-9]{4}[-. ][x][0-9]{4})$/,
+                    //     message: WrongPatternError + " : ###-###-#### x####",
+                    //   },
+                    // })}
+                  ></TextField>
                 </Grid>
               </Grid>
             </AccordionDetails>

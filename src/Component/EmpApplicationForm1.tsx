@@ -89,38 +89,50 @@ function EmpApplicationForm1(props: Props) {
 
   const removeUploadedFileFromServer = (e: any) => {
     console.log("Remove Resume API");
+
   };
 
-  const download_user_cv = (user_name: string) => {
+  const download_user_cv = (user_name: string,fileName:string) => {
     console.log("user_name");
-    console.log(baseUrl + "/api/get_resume?user_name=" + user_name);
-    window.open(baseUrl + "/api/get_resume?user_name=" + user_name, "_blank");
+    console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
+    window.open(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`, "_blank");
   };
+  let res:any ;
+ const [response , setResponse] = useState("");
 
-  const handleFileUpload = async (event: any) => {
+  const handleFileUpload = async (event: any , fileName:string) => {
     if (event.target.files === undefined) return;
-    const formData = new FormData();
-    console.log("manualStates.resume");
-    console.log(manualStates.resume);
+    console.log("fileName");
+    console.log(fileName);
 
+    const formData = new FormData();
     // if (manualStates.resume == undefined || manualStates.resume == null) {
-    setManualStates({ ...manualStates, resume: event.target.files[0].name });
-    formData.append("file", event.target.files[0], event.target.files[0].name);
+    if(fileName === "resume"){
+      setManualStates({ ...manualStates, resume: event.target.files[0]?.name });
+    }
+    else if(fileName === "dmvFile"){
+      setManualStates({ ...manualStates, dmvFile: event.target.files[0]?.name });
+    }
+    formData.append("file", event.target.files[0], event.target.files[0]?.name);
     formData.append("user_name", props.data.user_name);
-    console.log("formData");
-    console.log(formData);
+    formData.append(fileName,fileName);
+    // formData.append("resume", 'dummy');
     let response = await fileUploadApi(formData);
     console.log("response uploaded");
-    console.log(response);
-    console.log(response.ok);
-    console.log(response.status);
-    if (response.ok === true && response.status === 200) {
+    res = await response.json();
+    console.log("res");
+    console.log(res);
+    console.log(res.error);
+    // if (response.ok === true && response.status === 200) {
+    if (res.status === "true" ) {
       setFileUploadSuccesOrErrorBit("success");
       setFileUploadSuccessSnackOpen(true);
-    } else {
+    setResponse(res.message);
+  } else {
       setFileUploadSuccesOrErrorBit("error");
       setFileUploadSuccessSnackOpen(true);
-    }
+    setResponse(res.error);
+  }
     // } else {
     //   setManualStates({ ...manualStates, resume2: event.target.files[0] });
     //   formData.append(
@@ -164,7 +176,7 @@ function EmpApplicationForm1(props: Props) {
     }
     console.log("data form1 submit");
     console.log(data);
-    // handleFileUpload(document.getElementById("resumeFilesToUpload"));
+    // handleFileUpload(document.getElementById("dmvFilesToUpload"));
     data.phone_number = phonePattern;
     data.user_name = props.data.user_name;
     print("Sending :", data);
@@ -275,9 +287,7 @@ function EmpApplicationForm1(props: Props) {
                       className={classNames("col-8")}
                       label="First Name"
                       error={errors.first_name === undefined ? false : true}
-                      helperText={
-                        errors.first_name && errors.first_name?.message
-                      }
+                      helperText={RequireError}
                       inputRef={register({
                         required: {
                           value: reqBits.first_name,
@@ -312,9 +322,7 @@ function EmpApplicationForm1(props: Props) {
                       className="col-8"
                       error={errors.phone_number == undefined ? false : true}
                       label="Phone Number"
-                      helperText={
-                        errors.phone_number && errors.phone_number?.message
-                      }
+                      helperText={RequireError}
                       value={
                         phonePattern ? phonePattern : props.data.phone_number
                       }
@@ -372,11 +380,7 @@ function EmpApplicationForm1(props: Props) {
                       }}
                       className="col-8"
                       error={errors.dateofBirth == undefined ? false : true}
-                      helperText={
-                        errors.dateofBirth == undefined
-                          ? "Date of Birth"
-                          : "Date of Brith " + errors.dateofBirth?.message
-                      }
+                      helperText={"Date of Brith " + RequireError}
                       inputRef={register({
                         required: {
                           value: reqBits.dateofBirth,
@@ -416,9 +420,7 @@ function EmpApplicationForm1(props: Props) {
                       label="Social Security"
                       className="col-8"
                       error={errors.socialSecurity == undefined ? false : true}
-                      helperText={
-                        errors.socialSecurity && errors.socialSecurity.message
-                      }
+                      helperText={RequireError}
                       inputRef={register({
                         required: {
                           value: reqBits.socialSecurity,
@@ -440,7 +442,7 @@ function EmpApplicationForm1(props: Props) {
                       type="text"
                       label="Address"
                       error={errors.address == undefined ? false : true}
-                      helperText={errors.address && errors.address?.message}
+                      helperText={RequireError}
                       inputRef={register({
                         required: {
                           value: reqBits.address,
@@ -495,6 +497,7 @@ function EmpApplicationForm1(props: Props) {
                           defaultValue={props.data.state}
                           variant="outlined"
                           size="small"
+                          isReq={reqBits.state}
                           className="col-12"
                         >
                           <option aria-label="None" value="" />
@@ -643,19 +646,7 @@ function EmpApplicationForm1(props: Props) {
                         forms={Forms}
                       ></DynamicAddressComponent>
                     )}
-                    {/* <AddressesComponent
-                      idPrefix=""
-                      useForm={Forms}
-                      data={props.data}
-                      addressId="lastYearAddress"
-                      cityId="lastYearAddressCity"
-                      stateId="lastYearAddressState"
-                      zipCodeId="lastYearAddressZipCode"
-                      fromDateId="lastYearAddressfrom"
-                      toDateId="lastYearAddressTo"
-                      addressesList={props.data.addresses}
-                      setAddresses={updateAddressList}
-                    ></AddressesComponent> */}
+                  
                   </Grid>
                   <Grid item xs={1}></Grid>
                   {/* Current Address Ending */}
@@ -699,7 +690,7 @@ function EmpApplicationForm1(props: Props) {
                               <Button>
                                 <VisibilityIcon
                                   onClick={(e: any) => {
-                                    download_user_cv(props.data.user_name);
+                                    download_user_cv(props.data.user_name,"resume");
                                   }}
                                 />
                               </Button>
@@ -721,38 +712,7 @@ function EmpApplicationForm1(props: Props) {
                         </Paper>
                       </div>
                     )}
-                    {/* {manualStates.resume2 && (
-                      <div className="mb-3">
-                        <Paper elevation={3} className={classes.paper}>
-                          <Grid
-                            container
-                            direction="row"
-                            justify="space-around"
-                            alignItems="center"
-                            spacing={3}
-                          >
-                            <Grid item xs={2}>
-                              <InsertDriveFileIcon />
-                            </Grid>
-                            <Grid item xs={8} className="text-left">
-                              {manualStates.resume2?.name}
-                            </Grid>
-                            <Grid item xs={2}>
-                              <Button>
-                                <DeleteIcon
-                                  onClick={() => {
-                                    setManualStates({
-                                      ...manualStates,
-                                      resume2: null,
-                                    });
-                                  }}
-                                />
-                              </Button>
-                            </Grid>
-                          </Grid>
-                        </Paper>
-                      </div>
-                    )} */}
+                 
                   </Grid>
                   <Grid item xs={1}></Grid>
                 </Grid>
@@ -762,7 +722,7 @@ function EmpApplicationForm1(props: Props) {
                   className={classes.input}
                   id="resumeFilesToUpload"
                   type="file"
-                  onChange={handleFileUpload}
+                  onChange={(e)=>{handleFileUpload(e,"resume")}}
                 />
                 <label htmlFor="resumeFilesToUpload">
                   <Button variant="contained" color="primary" component="span">
@@ -783,8 +743,7 @@ function EmpApplicationForm1(props: Props) {
                   >
                     <b>NOTE:</b>
                     <i>
-                      Please upload your resume in PDF format, and DMV record in
-                      PDF or any valid picture format.
+                      Please upload your resume in PDF format, or any valid picture format.
                     </i>
                   </Grid>
                 </Grid>
@@ -792,6 +751,104 @@ function EmpApplicationForm1(props: Props) {
             </Grid>
             <Grid item xs={1}></Grid>
             {/* Upload Resume End */}
+
+
+     {/* Upload dmvFile Start */}
+     <Grid item xs={1}></Grid>
+            <Grid item xs={10}>
+              <Paper elevation={3} className={classes.paper}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-around"
+                  alignItems="center"
+                  spacing={3}
+                >
+                  <Grid item xs={1}></Grid>
+                  <Grid item xs={10}>
+                    {manualStates.dmvFile && (
+                      <div className="mb-3">
+                        <Paper elevation={3} className={classes.paper}>
+                          <Grid
+                            container
+                            direction="row"
+                            justify="space-around"
+                            alignItems="center"
+                            spacing={3}
+                          >
+                            <Grid item xs={1}>
+                              <InsertDriveFileIcon />
+                            </Grid>
+                            <Grid item xs={6} className="text-left">
+                              {manualStates.dmvFile}
+                            </Grid>
+                            <Grid item xs={1}>
+                              <Button>
+                                <VisibilityIcon
+                                  onClick={(e: any) => {
+                                    download_user_cv(props.data.user_name,"dmvFile");
+                                  }}
+                                />
+                              </Button>
+                            </Grid>
+                            <Grid item xs={1}>
+                              <Button>
+                                <DeleteIcon
+                                  onClick={(e: any) => {
+                                    setManualStates({
+                                      ...manualStates,
+                                      dmvFile: null,
+                                    });
+                                    removeUploadedFileFromServer(e);
+                                  }}
+                                />
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Paper>
+                      </div>
+                    )}
+                
+                  </Grid>
+                  <Grid item xs={1}></Grid>
+                </Grid>
+
+                <input
+                  accept=".pdf,.jpg,.jpge,.doc,.docx"
+                  className={classes.input}
+                  id="dmvFilesToUpload"
+                  type="file"
+                  onChange={(e)=>{handleFileUpload(e,"dmvFile"); console.log("DVM FIle")}}
+                />
+                <label htmlFor="dmvFilesToUpload">
+                  <Button variant="contained" color="primary" component="span">
+                    Upload DMV
+                  </Button>
+                </label>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    className="caption"
+                    style={{ textAlign: "center", marginTop: "10px" }}
+                  >
+                    <b>NOTE:</b>
+                    <i>
+                      Please upload your DMV in PDF format, or any valid picture format.
+                    </i>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+            <Grid item xs={1}></Grid>
+            {/* Upload dmvFile End */}
+
+
 
             {/* Questions Start */}
             <Grid item xs={1}></Grid>
@@ -813,14 +870,14 @@ function EmpApplicationForm1(props: Props) {
                   >
                     <Grid
                       item
-                      xs={9}
+                      xs={8}
                       className={(classes.paper, classes.addressPaper)}
                     >
                       <Typography className={classes.text}>
                         How Soon Are You Available To Start?
                       </Typography>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                       {/* <ReactAutoComplete
                         id="startTime"
                         label="Join with in"
@@ -839,6 +896,7 @@ function EmpApplicationForm1(props: Props) {
                         defaultValue={props.data.startTime}
                         variant="outlined"
                         size="small"
+                        isReq={reqBits.startTime}
                         className="col-12 text-left"
                       >
                         <option aria-label="None" value="" />
@@ -883,14 +941,14 @@ function EmpApplicationForm1(props: Props) {
                     </Grid>
                     <Grid
                       item
-                      xs={9}
+                      xs={8}
                       className={(classes.paper, classes.addressPaper)}
                     >
                       <Typography className={classes.text}>
                         What is your Class A Driving Experience Level?
                       </Typography>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                       {/* <ReactAutoComplete
                         id="classAExperienceLevel"
                         isReq={reqBits["classAExperienceLevel"]}
@@ -909,6 +967,7 @@ function EmpApplicationForm1(props: Props) {
                         variant="outlined"
                         size="small"
                         forms={Forms}
+                        isReq={reqBits.classAExperienceLevel}
                         error={
                           errors.classAExperienceLevel === undefined
                             ? false
@@ -962,16 +1021,17 @@ function EmpApplicationForm1(props: Props) {
                         </FormHelperText>
                       </FormControl> */}
                     </Grid>
+                    <br/>
                     <Grid
                       item
-                      xs={9}
+                      xs={8}
                       className={(classes.paper, classes.addressPaper)}
                     >
                       <Typography className={classes.text}>
                         How Did You Hear About Us?
                       </Typography>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                       <TextField
                         name="hearAbout"
                         variant="outlined"
@@ -1075,9 +1135,9 @@ function EmpApplicationForm1(props: Props) {
             severity={fileUploadSuccesOrErrorBit as "success"}
           >
             {fileUploadSuccesOrErrorBit === "success" &&
-              "Thank you for submitting your resume"}
+              response}
             {fileUploadSuccesOrErrorBit === "error" &&
-              "Server Error: Kindly Re-Upload"}
+              response }
           </Alert>
         </Snackbar>
       </Container>

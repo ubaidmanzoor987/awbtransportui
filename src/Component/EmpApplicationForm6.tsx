@@ -1132,15 +1132,24 @@ export default function EmpApplicationForm6(props: Props) {
                             Please ! Sign here
                           </Typography>
                         )}
-                        <SignatureCanvas
-                          penColor="black"
-                          ref={sigPad}
-                          canvasProps={{
-                            width: 500,
-                            height: 200,
-                            className: "sigCanvas",
+                        <div
+                          style={{
+                            boxShadow:
+                              "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                            display: "inline-block",
+                            margin: "20px",
                           }}
-                        />
+                        >
+                          <SignatureCanvas
+                            penColor="black"
+                            ref={sigPad}
+                            canvasProps={{
+                              width: 500,
+                              height: 150,
+                              className: "sigCanvas",
+                            }}
+                          />
+                        </div>
                         <Grid
                           container
                           direction="row"
@@ -1148,8 +1157,8 @@ export default function EmpApplicationForm6(props: Props) {
                           alignItems="baseline"
                           spacing={3}
                         >
-                          <Grid item xs={3}></Grid>
-                          <Grid item xs={3}>
+                          <Grid item xs={5}></Grid>
+                          <Grid item xs={2}>
                             <Button
                               type="button"
                               className="col-12"
@@ -1160,17 +1169,17 @@ export default function EmpApplicationForm6(props: Props) {
                               Clear
                             </Button>
                           </Grid>
-                          <Grid item xs={3}>
-                            <Button
-                              className="col-12"
-                              variant="contained"
-                              color="primary"
-                              onClick={saveImage}
-                            >
-                              Save
-                            </Button>
-                          </Grid>
-                          <Grid item xs={3}></Grid>
+                          {/* <Grid item xs={2}>
+                    <Button
+                      className="col-12"
+                      variant="contained"
+                      color="primary"
+                      onClick={saveImage}
+                    >
+                      Save
+                    </Button>
+                  </Grid> */}
+                          <Grid item xs={5}></Grid>
                         </Grid>
                       </Paper>
                     </Grid>

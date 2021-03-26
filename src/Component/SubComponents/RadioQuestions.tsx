@@ -6,6 +6,7 @@ import {
   RadioGroup,
   Typography,
   FormHelperText,
+  FormLabel,
 } from "@material-ui/core";
 import React from "react";
 import { Controller } from "react-hook-form";
@@ -101,9 +102,13 @@ export default function RadioQuestions(props: Props) {
                 </RadioGroup>
               }
             />
-            <FormHelperText>
+            <FormLabel component="legend">
+              {props.isReq && RequireError}
+            </FormLabel>
+
+            {/* <FormHelperText>
               {errors[props.id] && errors[props.id].message}
-            </FormHelperText>
+            </FormHelperText> */}
           </FormControl>
         </Grid>
       </Grid>

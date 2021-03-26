@@ -125,11 +125,11 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                       errors[props.idPrefix][index].experienceclassofEquipment
                     }
                     inputRef={register({
-                      required: {
-                        value: reqBits.experienceclassofEquipment,
-                        message: RequireError,
-                      },
+                      required: reqBits.experienceclassofEquipment,
                     })}
+                    helperText={
+                      reqBits.experienceclassofEquipment && RequireError
+                    }
                     variant="outlined"
                     size="small"
                     defaultValue={item.experienceclassofEquipment}
@@ -148,11 +148,9 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                       errors[props.idPrefix][index].experiencenumberOfMiles
                     }
                     inputRef={register({
-                      required: {
-                        value: reqBits.experiencenumberOfMiles,
-                        message: RequireError,
-                      },
+                      required: reqBits.experiencenumberOfMiles,
                     })}
+                    helperText={reqBits.experiencenumberOfMiles && RequireError}
                     variant="outlined"
                     size="small"
                     defaultValue={item.experiencenumberOfMiles}
@@ -171,16 +169,15 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                       errors[props.idPrefix][index].experienceFromDate
                     }
                     inputRef={register({
-                      required: {
-                        value: reqBits.experienceFromDate,
-                        message: RequireError,
-                      },
+                      required: reqBits.experienceFromDate,
                     })}
+                    helperText={
+                      reqBits.experienceFromDate && "From Date" + RequireError
+                    }
                     defaultValue={item.experienceFromDate}
                     variant="outlined"
                     size="small"
                     type="date"
-                    helperText="From Date"
                     className="col-12"
                   ></TextField>
                 </Grid>
