@@ -9,11 +9,3 @@ Num change to Number => Capture 7
 awnser field change to required => Capture 6
 
 
-
-
-P: Passenger Transport (Required to transport more than 16 or more passengers and to drive a bus)
-H: Hazardous Materials (Required to haul dangerous goods)
-N: Tank Vehicles (Required for carrying liquids in bulk)
-T: Double/Triple Trailers (Class A licenses only - required to operate double or triple trailers)
-X: Hazardous Materials and Tank Combination
-S: School Bus (Required to operate a school bus)

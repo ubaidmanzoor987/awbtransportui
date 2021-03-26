@@ -266,7 +266,7 @@ export function DynamicReferences(props: Props) {
                   ></TextField>
                 </Grid>
 
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                   <TextField
                     name="referenceCity"
                     variant="outlined"
@@ -280,7 +280,7 @@ export function DynamicReferences(props: Props) {
                         message: RequireError,
                       },
                     })}
-                    label="Address"
+                    label="City"
                     helperText={reqBits.referenceCity && RequireError}
 
                     // inputRef={register({
@@ -296,7 +296,7 @@ export function DynamicReferences(props: Props) {
                   ></TextField>
                 </Grid>
 
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                   <ReactHookFormSelect
                     nameVal="referenceState"
                     label="State"
@@ -322,9 +322,9 @@ export function DynamicReferences(props: Props) {
                       );
                     })}
                   </ReactHookFormSelect>
-                </Grid>
+                </Grid> */}
 
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                   <TextField
                     name="referenceZipCode"
                     variant="outlined"
@@ -338,7 +338,7 @@ export function DynamicReferences(props: Props) {
                         message: RequireError,
                       },
                     })}
-                    label="Address"
+                    label="Zip Code"
                     helperText={reqBits.referenceZipCode && RequireError}
 
                     // inputRef={register({

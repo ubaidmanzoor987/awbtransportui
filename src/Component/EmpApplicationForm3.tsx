@@ -137,8 +137,8 @@ function EmpApplicationForm3(props: Props) {
     convictedofafelony: props.data.convictedofafelony === "Yes",
   });
 
-  // let sigPad = useRef<any>();
-  let sigPad:any ;
+  let sigPad = useRef<any>();
+  //let sigPad:any ;
   let base64SignatureImage = "";
 
   const clearSigPad = () => {
@@ -1464,10 +1464,7 @@ function EmpApplicationForm3(props: Props) {
                 >
                   <SignatureCanvas
                     penColor="black"
-                    ref={(ref) => {
-                      sigPad = ref;
-                     
-                    }}
+                    ref={sigPad}
                     canvasProps={{
                       width: 600,
                       height: 150,
