@@ -40,7 +40,7 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
     const { name, value } = event.target;
     let errors = this.state.errors;
     switch (name) {
-      case "username":
+      case "user_name":
         errors.user_name = value == "" ? "Username must given!" : "";
         break;
       case "password":
@@ -77,9 +77,12 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
           chk_login: true,
         });
       }
-    } else {
-      errors.user_name = "Incorrect Username given!";
-      errors.password = "Incorrect Password given!";
+    } else if (this.state.user_name != 'admin'){
+      this.setState({
+        ...this.state,
+        errors: { ...errors, user_name: "Invalid User Name and Password" },
+      })
+      
     }
   };
 

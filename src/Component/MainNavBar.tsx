@@ -18,7 +18,7 @@ const links = [
   { href: "team", text: "Team" },
   { href: "contact", text: "Contact" },
   { href: "/career", text: "Career Opportunities" },
-  { href: "/admin/login", text: "Admin Panel" },
+  // { href: "/admin/login", text: "Admin Panel" },
 ];
 
 type createNavItemProps = {

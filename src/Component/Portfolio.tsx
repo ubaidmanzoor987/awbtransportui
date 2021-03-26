@@ -9,7 +9,9 @@ export default function Portfolio() {
             <div className="container">
                 <div className="text-center">
                     <h2 className="section-heading text-uppercase">Portfolio</h2>
-                    <h3 className="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h3 className="section-subheading text-muted">You are now on the list. And will be the 
+                    one to know about our latest jobs and much more.
+                    </h3>
                 </div>
                 <div className="row">
                     <div className="col-lg-4 col-sm-6 mb-4">

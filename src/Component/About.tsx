@@ -22,7 +22,7 @@ export default function About() {
               </div>
               <div className="timeline-panel">
                 <div className="timeline-heading">
-                  <h4>2009-2011</h4>
+                  <h4>2013</h4>
                   <h4 className="subheading">Our Humble Beginnings</h4>
                 </div>
                 <div className="timeline-body">
@@ -40,13 +40,13 @@ export default function About() {
               <div className="timeline-image">
                 <img
                   className="rounded-circle img-fluid"
-                  src="assets/img/about/2.jpg"
+                  src="assets/img/about/2.jpeg"
                   alt=""
                 />
               </div>
               <div className="timeline-panel">
                 <div className="timeline-heading">
-                  <h4>March 2011</h4>
+                  <h4>March 2013</h4>
                   <h4 className="subheading">An Agency is Born</h4>
                 </div>
                 <div className="timeline-body">
@@ -70,7 +70,7 @@ export default function About() {
               </div>
               <div className="timeline-panel">
                 <div className="timeline-heading">
-                  <h4>December 2012</h4>
+                  <h4>December 2013</h4>
                   <h4 className="subheading">Transition to Full Service</h4>
                 </div>
                 <div className="timeline-body">
@@ -88,7 +88,7 @@ export default function About() {
               <div className="timeline-image">
                 <img
                   className="rounded-circle img-fluid"
-                  src="assets/img/about/4.jpeg"
+                  src="assets/img/about/2.jpeg"
                   alt=""
                 />
               </div>
