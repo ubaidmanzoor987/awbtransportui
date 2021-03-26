@@ -203,7 +203,7 @@ export function DynamicTrafficConvictions(props: Props) {
         <Grid item xs={12} style={{ padding: "20px 10px" }}>
           <Button
             size="small"
-            className="col-5"
+            className="col-3"
             variant="contained"
             color="primary"
             onClick={() =>
