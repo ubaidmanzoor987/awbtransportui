@@ -74,6 +74,12 @@ function App() {
                 <Route exact path="/AwbTransportEmploymentApplication">
                   <EmploymentApplication />
                 </Route>
+                <Route path="*">
+                    <div>
+                      <p>Error Not Found</p>
+                    </div>
+                </Route>
+
               </Switch>
             </User.Provider>
           </Route>
