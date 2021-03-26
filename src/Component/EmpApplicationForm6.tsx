@@ -31,12 +31,21 @@ export default function EmpApplicationForm6(props: Props) {
       base64SignatureImage = "";
     }
   };
+  const [signatureHelperTextError, setSignatureHelperTextError] = useState(
+    false
+  );
 
   const saveImage = () => {
     if (sigPad.current && !sigPad.current.isEmpty()) {
+      setSignatureError("");
+      setSignatureHelperTextError(false);
+
       base64SignatureImage = sigPad.current
         ?.getTrimmedCanvas()
         .toDataURL("image/png");
+    } else {
+      setSignatureError("text-danger");
+      setSignatureHelperTextError(true);
     }
   };
 
@@ -66,10 +75,12 @@ export default function EmpApplicationForm6(props: Props) {
   const onSubmit = async (data: any) => {
     if (sigPad.current && sigPad.current.isEmpty()) {
       setSignatureError("text-danger");
+      setSignatureHelperTextError(true);
       return;
     }
     {
       setSignatureError("");
+      setSignatureHelperTextError(false);
       base64SignatureImage = sigPad.current
         .getTrimmedCanvas()
         .toDataURL("image/png");
@@ -1112,6 +1123,15 @@ export default function EmpApplicationForm6(props: Props) {
                         >
                           Employee Signature
                         </Typography>
+                        {signatureHelperTextError === true && (
+                          <Typography
+                            align="left"
+                            variant="subtitle2"
+                            className="text-danger"
+                          >
+                            Please ! Sign here
+                          </Typography>
+                        )}
                         <SignatureCanvas
                           penColor="black"
                           ref={sigPad}

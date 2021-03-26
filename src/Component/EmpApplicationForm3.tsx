@@ -122,7 +122,9 @@ type Props = { data?: any; handler?: any; setData: any };
 function EmpApplicationForm3(props: Props) {
   // //console.log("props.data ", props.data);
   const [signatureError, setSignatureError] = useState("");
-
+  const [signatureHelperTextError, setSignatureHelperTextError] = useState(
+    false
+  );
   const Forms = useForm({ defaultValues: props.data });
   const { register, handleSubmit, errors, control } = Forms;
 
@@ -150,9 +152,15 @@ function EmpApplicationForm3(props: Props) {
 
   const saveImage = () => {
     if (sigPad.current && !sigPad.current.isEmpty()) {
+      setSignatureError("");
+      setSignatureHelperTextError(false);
+
       base64SignatureImage = sigPad.current
         ?.getTrimmedCanvas()
         .toDataURL("image/png");
+    } else {
+      setSignatureError("text-danger");
+      setSignatureHelperTextError(true);
     }
   };
 
@@ -182,10 +190,12 @@ function EmpApplicationForm3(props: Props) {
   const onSubmit = async (data: any) => {
     if (sigPad.current && sigPad.current.isEmpty()) {
       setSignatureError("text-danger");
+      setSignatureHelperTextError(true);
       return;
     }
     {
       setSignatureError("");
+      setSignatureHelperTextError(false);
       base64SignatureImage = sigPad.current
         .getTrimmedCanvas()
         .toDataURL("image/png");
@@ -1425,6 +1435,15 @@ function EmpApplicationForm3(props: Props) {
                 >
                   Employee Signature
                 </Typography>
+                {signatureHelperTextError === true && (
+                  <Typography
+                    align="left"
+                    variant="subtitle2"
+                    className="text-danger"
+                  >
+                    Please ! Sign here
+                  </Typography>
+                )}
                 <SignatureCanvas
                   penColor="black"
                   ref={sigPad}
@@ -1496,7 +1515,11 @@ function EmpApplicationForm3(props: Props) {
         <AlertComponent
           duration={snackbarDuratuion}
           open={snackOpen}
-          message={succesOrErrorBit === "success" ? "Saved" : "Error"}
+          message={
+            succesOrErrorBit === "success"
+              ? "Data Saved Successfully"
+              : "Server Error"
+          }
           onClose={handleClose}
           severity={succesOrErrorBit}
         ></AlertComponent>

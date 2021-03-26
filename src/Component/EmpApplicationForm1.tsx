@@ -19,7 +19,8 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
+import GetAppIcon from "@material-ui/icons/GetApp";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import { styleClasses } from "../Common/styleClasses";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -49,6 +50,7 @@ import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
 import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
 import { DynamicAddressComponent } from "./DynamicAddition/DynamicAddressComponent";
+import { baseUrl } from "../shared/baseUrl";
 
 type Props = { data?: any; handler?: any; setData: any };
 const startTimeVal = [
@@ -76,10 +78,8 @@ function EmpApplicationForm1(props: Props) {
   );
 
   let resumeFile1 = undefined;
-  let resumeFile2 = undefined;
 
   const handleMultipleFiles = (e: any) => {
-    resumeFile1 = e.target.files[0];
     resumeFile1 = e.target.files[0];
   };
 
@@ -87,49 +87,52 @@ function EmpApplicationForm1(props: Props) {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleFileUpload = (event: any) => {
-    const formData = new FormData();
-
-    if (manualStates.resume1 == undefined || manualStates.resume1 == null) {
-      setManualStates({ ...manualStates, resume1: event.target.files[0] });
-      formData.append(
-        "file",
-        event.target.files[0],
-        event.target.files[0].name
-      );
-      formData.append("user_name", props.data.user_name);
-      // axios.post("api/fileUploadApi", formData);
-      fileUploadApi(formData);
-    } else {
-      setManualStates({ ...manualStates, resume2: event.target.files[0] });
-      formData.append(
-        "file",
-        event.target.files[0],
-        event.target.files[0].name
-      );
-      formData.append("user_name", props.data.user_name);
-
-      fileUploadApi(formData);
-    }
+  const removeUploadedFileFromServer = (e: any) => {
+    console.log("Remove Resume API");
   };
 
-  // const handleFileUpload = (element: any) => {
-  //   const formData = new FormData();
+  const download_user_cv = (user_name: string) => {
+    console.log("user_name");
+    console.log(baseUrl + "/api/get_resume?user_name=" + user_name);
+    window.open(baseUrl + "/api/get_resume?user_name=" + user_name, "_blank");
+  };
 
-  //   if (manualStates.resume1 == undefined || manualStates.resume1 == null) {
-  //     setManualStates({ ...manualStates, resume1: element.files[0] });
-  //     formData.append("file", element.files[0], element.files[0].name);
-  //     formData.append("user_name", props.data.user_name);
-  //     // axios.post("api/fileUploadApi", formData);
-  //     fileUploadApi(formData);
-  //   } else {
-  //     setManualStates({ ...manualStates, resume2: element.files[0] });
-  //     formData.append("file", element.files[0], element.files[0].name);
-  //     formData.append("user_name", props.data.user_name);
+  const handleFileUpload = async (event: any) => {
+    if (event.target.files === undefined) return;
+    const formData = new FormData();
+    console.log("manualStates.resume");
+    console.log(manualStates.resume);
 
-  //     fileUploadApi(formData);
-  //   }
-  // };
+    // if (manualStates.resume == undefined || manualStates.resume == null) {
+    setManualStates({ ...manualStates, resume: event.target.files[0].name });
+    formData.append("file", event.target.files[0], event.target.files[0].name);
+    formData.append("user_name", props.data.user_name);
+    console.log("formData");
+    console.log(formData);
+    let response = await fileUploadApi(formData);
+    console.log("response uploaded");
+    console.log(response);
+    console.log(response.ok);
+    console.log(response.status);
+    if (response.ok === true && response.status === 200) {
+      setFileUploadSuccesOrErrorBit("success");
+      setFileUploadSuccessSnackOpen(true);
+    } else {
+      setFileUploadSuccesOrErrorBit("error");
+      setFileUploadSuccessSnackOpen(true);
+    }
+    // } else {
+    //   setManualStates({ ...manualStates, resume2: event.target.files[0] });
+    //   formData.append(
+    //     "file",
+    //     event.target.files[0],
+    //     event.target.files[0].name
+    //   );
+    //   formData.append("user_name", props.data.user_name);
+
+    //   fileUploadApi(formData);
+    // }
+  };
 
   const Forms = useForm({
     defaultValues: props.data,
@@ -145,12 +148,22 @@ function EmpApplicationForm1(props: Props) {
   } = Forms;
 
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
+  const [fileUploadSuccesOrErrorBit, setFileUploadSuccesOrErrorBit] = useState(
+    "success"
+  );
 
   const onSubmit = async (data: any) => {
+    console.log("errors[]");
+    console.log(errors["eligibletoWorkInUnitedState"]);
+    console.log(errors["willingForDrugTest"]);
+    // if (errors["eligibletoWorkInUnitedState"] || errors["willingForDrugTest"]) {
+    //   return;
+    // }
     if (hideAddressesComponent === false) {
       data.addresses = undefined;
     }
-
+    console.log("data form1 submit");
+    console.log(data);
     // handleFileUpload(document.getElementById("resumeFilesToUpload"));
     data.phone_number = phonePattern;
     data.user_name = props.data.user_name;
@@ -170,8 +183,6 @@ function EmpApplicationForm1(props: Props) {
     }
   };
 
-  print("On Rendering All PROPS :", props);
-
   const [phonePattern, setPhonePatten] = useState(
     props.data.phone_number ? props.data.phone_number : ""
   );
@@ -187,6 +198,10 @@ function EmpApplicationForm1(props: Props) {
 
   //-------------SNACKBAR-------------
   const [successSnackOpen, setSuccessSnackOpen] = React.useState(false);
+  const [
+    fileUploadSuccessSnackOpen,
+    setFileUploadSuccessSnackOpen,
+  ] = React.useState(false);
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -199,11 +214,23 @@ function EmpApplicationForm1(props: Props) {
       props.handler();
     }
   };
+
+  const handleFileUploadClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setFileUploadSuccessSnackOpen(false);
+    console.log("CLOSE AUTO");
+  };
   //-------------SNACKBAR-------------
 
-  console.log("new Date()");
+  // console.log("new Date()");
 
-  getMaxDate();
+  // getMaxDate();
 
   return (
     <React.Fragment>
@@ -652,7 +679,7 @@ function EmpApplicationForm1(props: Props) {
                 >
                   <Grid item xs={1}></Grid>
                   <Grid item xs={10}>
-                    {manualStates.resume1 && (
+                    {manualStates.resume && (
                       <div className="mb-3">
                         <Paper elevation={3} className={classes.paper}>
                           <Grid
@@ -662,20 +689,30 @@ function EmpApplicationForm1(props: Props) {
                             alignItems="center"
                             spacing={3}
                           >
-                            <Grid item xs={2}>
+                            <Grid item xs={1}>
                               <InsertDriveFileIcon />
                             </Grid>
-                            <Grid item xs={8} className="text-left">
-                              {manualStates.resume1?.name}
+                            <Grid item xs={6} className="text-left">
+                              {manualStates.resume}
                             </Grid>
-                            <Grid item xs={2}>
+                            <Grid item xs={1}>
+                              <Button>
+                                <VisibilityIcon
+                                  onClick={(e: any) => {
+                                    download_user_cv(props.data.user_name);
+                                  }}
+                                />
+                              </Button>
+                            </Grid>
+                            <Grid item xs={1}>
                               <Button>
                                 <DeleteIcon
-                                  onClick={() => {
+                                  onClick={(e: any) => {
                                     setManualStates({
                                       ...manualStates,
-                                      resume1: null,
+                                      resume: null,
                                     });
+                                    removeUploadedFileFromServer(e);
                                   }}
                                 />
                               </Button>
@@ -684,7 +721,7 @@ function EmpApplicationForm1(props: Props) {
                         </Paper>
                       </div>
                     )}
-                    {manualStates.resume2 && (
+                    {/* {manualStates.resume2 && (
                       <div className="mb-3">
                         <Paper elevation={3} className={classes.paper}>
                           <Grid
@@ -715,7 +752,7 @@ function EmpApplicationForm1(props: Props) {
                           </Grid>
                         </Paper>
                       </div>
-                    )}
+                    )} */}
                   </Grid>
                   <Grid item xs={1}></Grid>
                 </Grid>
@@ -944,7 +981,10 @@ function EmpApplicationForm1(props: Props) {
                         className="col-12"
                         error={errors.hearAbout === undefined ? false : true}
                         inputRef={register({
-                          required: { value: true, message: RequireError },
+                          required: {
+                            value: reqBits.hearAbout,
+                            message: RequireError,
+                          },
                         })}
                       ></TextField>
                     </Grid>
@@ -958,10 +998,18 @@ function EmpApplicationForm1(props: Props) {
                         xsSize={12}
                         useForm={Forms}
                         isReq={reqBits.eligibletoWorkInUnitedState}
+                        // errorMessage="Dear User: You Must be Eligible To Work In The United States"
+                        // onChangeSetError={(e: any) => {
+                        //   if (e.target.value === "No") {
+                        //     return true;
+                        //   } else {
+                        //     return false;
+                        //   }
+                        // }}
                         defaultSelected={props.data.eligibletoWorkInUnitedState}
                       />
                     </div>
-
+                    <br />
                     <div style={{ paddingLeft: "13px" }}>
                       <RadioQuestions
                         id="willingForDrugTest"
@@ -973,6 +1021,14 @@ function EmpApplicationForm1(props: Props) {
                         useForm={Forms}
                         isReq={reqBits.willingForDrugTest}
                         defaultSelected={props.data.willingForDrugTest}
+                        // errorMessage="Dear User: You must be willing to undertake a drug test as part of this hiring process."
+                        // onChangeSetError={(e: any) => {
+                        //   if (e.target.value === "No") {
+                        //     return true;
+                        //   } else {
+                        //     return false;
+                        //   }
+                        // }}
                       />
                     </div>
                   </Grid>
@@ -1007,6 +1063,21 @@ function EmpApplicationForm1(props: Props) {
           <Alert onClose={handleClose} severity={succesOrErrorBit as "success"}>
             {succesOrErrorBit === "success" && "Data Saved Successfully"}
             {succesOrErrorBit === "error" && "Server Error"}
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={fileUploadSuccessSnackOpen}
+          autoHideDuration={snackbarDuratuion}
+          onClose={handleFileUploadClose}
+        >
+          <Alert
+            onClose={handleFileUploadClose}
+            severity={fileUploadSuccesOrErrorBit as "success"}
+          >
+            {fileUploadSuccesOrErrorBit === "success" &&
+              "Thank you for submitting your resume"}
+            {fileUploadSuccesOrErrorBit === "error" &&
+              "Server Error: Kindly Re-Upload"}
           </Alert>
         </Snackbar>
       </Container>

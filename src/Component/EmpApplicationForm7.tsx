@@ -1,6 +1,6 @@
 import React from "react";
 import styleClasses from "../Common/styleClasses";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
   Button,
   Divider,
@@ -49,13 +49,13 @@ export default function EmpApplicationForm7(props: Props) {
     defaultValues: props.data,
   });
   const { register, handleSubmit, errors, control } = Forms;
-  const [phonePattern, setPhonePatten] = useState("");
+  const [phonePattern, setPhonePatten] = useState(props.data.newEmployeerphone);
   const [prevEmplpoyerPhonePattern, setprevEmplpoyerPhonePattern] = useState(
     ""
   );
   const [
-    nameOfPersonProvidingInformationPhone,
-    setNameOfPersonProvidingInformationPhone,
+    nameOfPersonProvidingInformationPhonePattern,
+    setNameOfPersonProvidingInformationPhonePattern,
   ] = useState("");
 
   const sigPad = useRef<any>();
@@ -80,9 +80,15 @@ export default function EmpApplicationForm7(props: Props) {
 
   const saveImage = () => {
     if (sigPad.current && !sigPad.current.isEmpty()) {
+      setSignatureError("");
+      setSignatureHelperTextError(false);
+
       base64SignatureImage = sigPad.current
         ?.getTrimmedCanvas()
         .toDataURL("image/png");
+    } else {
+      setSignatureError("text-danger");
+      setSignatureHelperTextError(true);
     }
   };
 
@@ -98,6 +104,9 @@ export default function EmpApplicationForm7(props: Props) {
 
   //-------------SNACKBAR-------------
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
+  const [signatureHelperTextError, setSignatureHelperTextError] = useState(
+    false
+  );
   const [snackOpen, setSnackOpen] = React.useState(false);
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
@@ -118,6 +127,7 @@ export default function EmpApplicationForm7(props: Props) {
   const onSubmit = async (data: any) => {
     if (sigPad.current && sigPad.current.isEmpty()) {
       setSignatureError("text-danger");
+      setSignatureHelperTextError(true);
       console.log("scroller");
       console.log(scroller);
       scroller.scrollTo("sigPadElement", {
@@ -131,6 +141,8 @@ export default function EmpApplicationForm7(props: Props) {
     }
     {
       setSignatureError("");
+      setSignatureHelperTextError(false);
+
       base64SignatureImage = sigPad.current
         .getTrimmedCanvas()
         .toDataURL("image/png");
@@ -298,9 +310,19 @@ export default function EmpApplicationForm7(props: Props) {
                       >
                         Employee Signature
                       </Typography>
+                      {signatureHelperTextError === true && (
+                        <Typography
+                          align="left"
+                          variant="subtitle2"
+                          className="text-danger"
+                        >
+                          Please ! Sign here
+                        </Typography>
+                      )}
                       <Element name="sigPadElement" className="element">
                         <div></div>
                       </Element>
+
                       <SignatureCanvas
                         penColor="black"
                         ref={sigPad}
@@ -1140,20 +1162,26 @@ export default function EmpApplicationForm7(props: Props) {
                           errors.nameOfPersonProvidingInformationPhone &&
                           errors.nameOfPersonProvidingInformationPhone.message
                         }
-                        value={nameOfPersonProvidingInformationPhone}
+                        value={
+                          nameOfPersonProvidingInformationPhonePattern
+                            ? nameOfPersonProvidingInformationPhonePattern
+                            : props.data.nameOfPersonProvidingInformationPhone
+                        }
                         onChange={(e) => {
                           if (e.target.value.length > 11) {
                             const n = formatPhoneNumberIntl(e.target.value);
                             if (n) {
                               //console.log(n);
-                              setNameOfPersonProvidingInformationPhone(n);
+                              setNameOfPersonProvidingInformationPhonePattern(
+                                n
+                              );
                             } else {
-                              setNameOfPersonProvidingInformationPhone(
+                              setNameOfPersonProvidingInformationPhonePattern(
                                 e.target.value
                               );
                             }
                           } else {
-                            setNameOfPersonProvidingInformationPhone(
+                            setNameOfPersonProvidingInformationPhonePattern(
                               e.target.value
                             );
                           }
