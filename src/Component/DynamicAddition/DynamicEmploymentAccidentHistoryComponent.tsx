@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   Address,
   EmploymentAccidentHistories,
@@ -83,6 +83,12 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
     }
   );
 
+  useEffect(()=>{
+    if(fields.length === 0){
+      append(props.employmentAccidentHistoryList);
+    }
+  },[]);
+
   const submit = (e: any) => {
     e.preventDefault();
     //console.log(e.target.data);
@@ -97,7 +103,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion defaultExpanded elevation={3} key={index}>
+          <Accordion defaultExpanded elevation={3} key={item.id}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -115,7 +121,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                 alignItems="baseline"
                 spacing={3}
               >
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
                     variant="outlined"
                     error={
@@ -138,7 +144,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                     className="col-12"
                   ></TextField>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
                     variant="outlined"
                     defaultValue={item.numberofFatalities}
@@ -162,7 +168,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                     className="col-12"
                   ></TextField>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={4}>
                   <TextField
                     variant="outlined"
                     defaultValue={item.numberofPeopleleInjured}
@@ -251,11 +257,10 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                   className="col-6"
                   variant="contained"
                   color="default"
-                  id={"id" + index}
                   onClick={() => {
-                    if (index > 0) {
+                    //if (index > 0) {
                       remove(index);
-                    }
+                    //}
                   }}
                 >
                   Delete Entry

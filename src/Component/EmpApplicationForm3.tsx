@@ -14,7 +14,7 @@ import SignatureCanvas from "react-signature-canvas";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { useEffect } from "react";
 import {
-  addr,
+  dummyAddrData,
   debug,
   startTimeVal,
   states,
@@ -215,8 +215,11 @@ function EmpApplicationForm3(props: Props) {
         .toDataURL("image/png");
     }
     data.signature = base64SignatureImage;
-    //console.log(data);
+    console.log("datadata");
+    console.log(data);
     data.user_name = props.data.user_name;
+    data.applicantfirstName = props.data.first_name;
+    data.applicantLastName = props.data.last_name
     const resdata = await update(data);
     try {
       props.setData(resdata.data.data);
@@ -597,6 +600,7 @@ function EmpApplicationForm3(props: Props) {
                                     message: RequireError,
                                   },
                                 })}
+                                value={props.data.first_name}
                               ></TextField>
                             </Grid>
                             <Grid item xs={5} style={{ marginBottom: "10px" }}>
@@ -606,6 +610,7 @@ function EmpApplicationForm3(props: Props) {
                                 size="small"
                                 type="text"
                                 className="col-12"
+                                value={props.data.last_name}
                                 error={
                                   errors.applicantLastName === undefined
                                     ? false
@@ -790,7 +795,7 @@ function EmpApplicationForm3(props: Props) {
                                     ? false
                                     : true
                                 }
-                                helperText="Phyical Exam Exp Date"
+                                helperText="Phyical Exam Expiration Date Required *"
                                 inputRef={register({
                                   required: reqBits.physicalExamExpirationDate,
                                 })}
@@ -837,6 +842,7 @@ function EmpApplicationForm3(props: Props) {
                           addressesList={props.data.applicantAddresses}
                           addressId="applicantAddresses"
                           cityId=""
+                          minElementLimit={0}
                           stateId=""
                           zipCodeId=""
                           fromDateId=""

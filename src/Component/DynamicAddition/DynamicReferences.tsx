@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Address,
   EmploymentAccidentHistories,
@@ -79,10 +79,13 @@ export function DynamicReferences(props: Props) {
     }
   );
 
-  const submit = (e: any) => {
-    e.preventDefault();
-    //console.log(e.target.data);
-  };
+  useEffect(()=>{
+    if(fields.length === 0){
+      append(props.referenceList);
+    }
+  },[]);
+
+ 
 
   return (
     <React.Fragment>
@@ -93,7 +96,7 @@ export function DynamicReferences(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion defaultExpanded elevation={3}>
+          <Accordion key={item.id} defaultExpanded elevation={3}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -207,13 +210,17 @@ export function DynamicReferences(props: Props) {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    name="referencePhoneNumber"
+                    name={`${props.idPrefix}[${index}].referencePhoneNumber`}
+                    defaultValue={item.referencePhoneNumber}
                     variant="outlined"
                     size="small"
                     type="text"
                     className="col-12"
                     error={
-                      errors.referencePhoneNumber == undefined ? false : true
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].referencePhoneNumber
                     }
                     inputRef={register({
                       required: {
@@ -238,12 +245,18 @@ export function DynamicReferences(props: Props) {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    name="referenceAddress"
+                    name={`${props.idPrefix}[${index}].referenceAddress`}
+                    defaultValue={item.referenceAddress}
                     variant="outlined"
                     size="small"
                     type="text"
                     className="col-12"
-                    error={errors.referenceAddress == undefined ? false : true}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].referenceAddress
+                    }                    
                     inputRef={register({
                       required: {
                         value: reqBits.referenceAddress,
@@ -266,14 +279,20 @@ export function DynamicReferences(props: Props) {
                   ></TextField>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
-                    name="referenceCity"
+                    name={`${props.idPrefix}[${index}].referenceCity`}
+                    defaultValue={item.referenceCity}
                     variant="outlined"
                     size="small"
                     type="text"
                     className="col-12"
-                    error={errors.referenceCity == undefined ? false : true}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].referenceCity
+                    }   
                     inputRef={register({
                       required: {
                         value: reqBits.referenceCity,
@@ -296,9 +315,9 @@ export function DynamicReferences(props: Props) {
                   ></TextField>
                 </Grid>
 
-                {/* <Grid item xs={4}>
+                <Grid item xs={4}>
                   <ReactHookFormSelect
-                    nameVal="referenceState"
+                    nameVal={`${props.idPrefix}[${index}].referenceState`}
                     label="State"
                     variant="outlined"
                     size="small"
@@ -308,8 +327,8 @@ export function DynamicReferences(props: Props) {
                     error={errors && errors["referenceState"]}
                     className="col-12"
                     defaultValue={
-                      props.referenceList[index].referenceState &&
-                      props.referenceList[index].referenceState
+                      item.referenceState &&
+                      item.referenceState
                     }
                   >
                     <option aria-label="None" value="" />
@@ -322,11 +341,12 @@ export function DynamicReferences(props: Props) {
                       );
                     })}
                   </ReactHookFormSelect>
-                </Grid> */}
+                </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
-                    name="referenceZipCode"
+                    name={`${props.idPrefix}[${index}].referenceZipCode`}
+                    defaultValue={item.referenceZipCode}
                     variant="outlined"
                     size="small"
                     type="text"
@@ -367,11 +387,10 @@ export function DynamicReferences(props: Props) {
                   className="col-6"
                   variant="contained"
                   color="default"
-                  id={"id" + index}
                   onClick={() => {
-                    if (index > 0) {
+                    //if (index > 0) {
                       remove(index);
-                    }
+                    //}
                   }}
                 >
                   Delete Entry
@@ -388,7 +407,7 @@ export function DynamicReferences(props: Props) {
             color="primary"
             onClick={() =>
               append({
-                driverLicenseDummyElement,
+                ReferenceDummyElement,
               })
             }
           >

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Address } from "../../Common/CommonVariables";
 import {
   Button,
@@ -51,6 +51,7 @@ type Props = {
   settrafficConvictionsList: any;
 };
 
+
 const RequireError: string = "Required *";
 const WrongPatternError: string = "Wrong Pattern";
 
@@ -79,6 +80,12 @@ export function DynamicTrafficConvictions(props: Props) {
     }
   );
 
+  useEffect(()=>{
+    if(fields.length === 0){
+      append(props.trafficConvictionsList);
+    }
+  },[]);
+
   const submit = (e: any) => {
     e.preventDefault();
     //console.log(e.target.data);
@@ -93,7 +100,7 @@ export function DynamicTrafficConvictions(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion defaultExpanded elevation={3} key={index}>
+          <Accordion defaultExpanded elevation={3} key={item.id}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -227,11 +234,10 @@ export function DynamicTrafficConvictions(props: Props) {
                   className="col-6"
                   variant="contained"
                   color="default"
-                  id={"id" + index}
                   onClick={() => {
-                    if (index > 0) {
+                    //if (index > 0) {
                       remove(index);
-                    }
+                    //}
                   }}
                 >
                   Delete Entry

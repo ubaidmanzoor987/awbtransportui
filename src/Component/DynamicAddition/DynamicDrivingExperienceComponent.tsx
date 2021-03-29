@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   Address,
   tDrivingExperiences,
@@ -87,6 +87,13 @@ export function DynamicDrivingExperienceComponent(props: Props) {
     //console.log(e.target.data);
   };
 
+  useEffect(()=>{
+    if(fields.length === 0){
+      append(props.drivingExperienceList);
+    }
+  },[]);
+
+
   return (
     <React.Fragment>
       <Grid
@@ -96,7 +103,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion defaultExpanded key={index}>
+          <Accordion defaultExpanded key={item.id}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -218,11 +225,10 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                   className="col-6"
                   variant="contained"
                   color="default"
-                  id={"id" + index}
                   onClick={() => {
-                    if (index > 0) {
+                   // if (index > 0) {
                       remove(index);
-                    }
+                    //}
                   }}
                 >
                   Delete Entry

@@ -8,7 +8,7 @@ import {
   FormHelperText,
   FormLabel,
 } from "@material-ui/core";
-import React from "react";
+import React,{useState} from "react";
 import { Controller } from "react-hook-form";
 import {
   reqBits,
@@ -26,6 +26,8 @@ type Props = {
   defaultSelected?: string;
   useForm: any;
   actionOnSelection?: any;
+  helperMessage?:string;
+  showMessageOnValue?:string;
   xsSize?:
     | boolean
     | "auto"
@@ -48,10 +50,16 @@ type Props = {
 export default function RadioQuestions(props: Props) {
   const classes = useStyles();
   const Forms = props.useForm;
-  const { register, handleSubmit, errors, control } = Forms;
+  const { register, handleSubmit, errors, control , setError} = Forms;
   const bools = props.optionValue;
+  const defaultValue = props.defaultSelected;
+  const [value,setValue] = useState(defaultValue);
+
 
   // print("Radio :", Forms);
+
+  
+
 
   return (
     <>
@@ -83,6 +91,7 @@ export default function RadioQuestions(props: Props) {
               control={control}
               name={props.id}
               defaultValue={props.defaultSelected}
+              // required={isReq}
               as={
                 <RadioGroup row>
                   {props.optionList.map((optionItem, index) => {
@@ -90,8 +99,13 @@ export default function RadioQuestions(props: Props) {
                       <FormControlLabel
                         key={index}
                         onChange={(e: any) => {
+                          const v = e.target.value;
                           console.log("Selected Radio");
                           props.actionOnSelection && props.actionOnSelection(e);
+                          setValue(v);
+                          console.log("value");
+                          console.log(value);
+                        
                         }}
                         value={props.optionValue[index]}
                         control={<Radio />}
@@ -103,7 +117,8 @@ export default function RadioQuestions(props: Props) {
               }
             />
             <FormLabel component="legend">
-              {props.isReq && RequireError}
+              {props.isReq && RequireError }
+              {value === props.showMessageOnValue && props.helperMessage }
             </FormLabel>
 
             {/* <FormHelperText>

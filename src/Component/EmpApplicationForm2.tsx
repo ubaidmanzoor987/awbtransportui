@@ -63,7 +63,7 @@ function EmpApplicationForm2(props: Props) {
     { value: "Male" },
     { value: "Female" },
     { value: "Other" },
-    { value: "Not want to disclose" },
+    { value: "I choose not to disclose" },
   ];
   const veteranStatus = [
     { value: "No Military Experience" },

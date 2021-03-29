@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useEffect} from "react";
 import { Address } from "../../Common/CommonVariables";
 import {
   Button,
@@ -39,6 +39,7 @@ import {
   states,
   AddressErrorsList,
   print,
+  dummyAddrData,
 } from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
@@ -56,24 +57,17 @@ type Props = {
   fromDateId: string;
   toDateId: string;
   forms: any;
+  minElementLimit:number;
 };
 
 const RequireError: string = "Required *";
 const WrongPatternError: string = "Wrong Pattern";
 
-let addr = {
-  lastYearAddress: "",
-  lastYearAddressCity: "",
-  lastYearAddressState: "",
-  lastYearAddressZipCode: "",
-  lastYearAddressfrom: "",
-  lastYearAddressTo: "",
-};
+
 
 export function DynamicAddressComponent(props: Props) {
   const classes = styleClasses.useStyles();
-  // print("Address List : ", props.addressesList);
-
+  print("Address List : ", props.addressesList);
   const {
     register,
     control,
@@ -83,6 +77,8 @@ export function DynamicAddressComponent(props: Props) {
     setError,
     errors,
   } = props.forms;
+  console.log("props.forms");  
+  console.log(props.forms);  
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
       control,
@@ -95,6 +91,14 @@ export function DynamicAddressComponent(props: Props) {
     //console.log(e.target.data);
   };
 
+  useEffect(()=>{
+    if(fields.length === 0){
+      append(props.addressesList);
+    }
+  },[]);
+
+   
+
   return (
     <React.Fragment>
       <Grid
@@ -104,7 +108,7 @@ export function DynamicAddressComponent(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion key={index} defaultExpanded>
+          <Accordion key={item.id} defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.text}>
                 Address {index + 1}
@@ -300,9 +304,12 @@ export function DynamicAddressComponent(props: Props) {
                   className="col-6"
                   variant="contained"
                   color="default"
-                  id={"id" + index}
                   onClick={(e) => {
-                    if (index > 0) {
+
+                    if(fields.length > props.minElementLimit) 
+                    {
+                      console.log("index");  
+                      console.log(index);  
                       remove(index);
                     }
                   }}
@@ -320,7 +327,7 @@ export function DynamicAddressComponent(props: Props) {
             variant="contained"
             color="primary"
             onClick={() => {
-              append(addr);
+              append(dummyAddrData);
             }}
           >
             Add

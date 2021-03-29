@@ -45,12 +45,14 @@ import { fileUploadApi } from "../services/fileUploadApi";
 import { update } from "../services/updateApi";
 import RadioQuestions from "./SubComponents/RadioQuestions";
 import AddressesComponent from "./SubComponents/AddressesComponent";
+import FileUploadComponent from "./SubComponents/FileUploadComponent";
 import classNames from "classnames";
 import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
 import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
 import { DynamicAddressComponent } from "./DynamicAddition/DynamicAddressComponent";
 import { baseUrl } from "../shared/baseUrl";
+import {deleteFile} from "../services/removeFileApi";
 
 type Props = { data?: any; handler?: any; setData: any };
 const startTimeVal = [
@@ -71,11 +73,21 @@ function Alert(props: AlertProps) {
 }
 
 function EmpApplicationForm1(props: Props) {
-  const [manualStates, setManualStates] = useState(props.data);
+  let data = props.data;
+  const [manualStates, setManualStates] = useState(data);
 
   const [hideAddressesComponent, setHideAddressesComponent] = useState(
-    !(props.data.lastThreeYearResidenceCheck === "Yes")
+    !(manualStates.lastThreeYearResidenceCheck === "Yes")
   );
+
+
+
+  useEffect(()=>{   
+    console.log("hideAddressesComponent");
+    console.log(hideAddressesComponent);
+    if(hideAddressesComponent === false){
+      data.addresses = "";
+    }},[hideAddressesComponent]);
 
   let resumeFile1 = undefined;
 
@@ -87,16 +99,9 @@ function EmpApplicationForm1(props: Props) {
     window.scrollTo(0, 0);
   }, []);
 
-  const removeUploadedFileFromServer = (e: any) => {
-    console.log("Remove Resume API");
 
-  };
 
-  const download_user_cv = (user_name: string,fileName:string) => {
-    console.log("user_name");
-    console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
-    window.open(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`, "_blank");
-  };
+ 
   let res:any ;
  const [response , setResponse] = useState("");
 
@@ -107,14 +112,9 @@ function EmpApplicationForm1(props: Props) {
 
     const formData = new FormData();
     // if (manualStates.resume == undefined || manualStates.resume == null) {
-    if(fileName === "resume"){
-      setManualStates({ ...manualStates, resume: event.target.files[0]?.name });
-    }
-    else if(fileName === "dmvFile"){
-      setManualStates({ ...manualStates, dmvFile: event.target.files[0]?.name });
-    }
+
     formData.append("file", event.target.files[0], event.target.files[0]?.name);
-    formData.append("user_name", props.data.user_name);
+    formData.append("user_name", manualStates.user_name);
     formData.append(fileName,fileName);
     // formData.append("resume", 'dummy');
     let response = await fileUploadApi(formData);
@@ -127,12 +127,20 @@ function EmpApplicationForm1(props: Props) {
     if (res.status === "true" ) {
       setFileUploadSuccesOrErrorBit("success");
       setFileUploadSuccessSnackOpen(true);
-    setResponse(res.message);
-  } else {
-      setFileUploadSuccesOrErrorBit("error");
-      setFileUploadSuccessSnackOpen(true);
-    setResponse(res.error);
-  }
+      setResponse(res.message);
+      setManualStates({...manualStates,[fileName]:event.target.files[0]?.name})
+
+      // if(fileName === "resume"){
+      //   setManualStates({ ...manualStates, resume: event.target.files[0]?.name });
+      // }
+      // else if(fileName === "dmvFile"){
+      //   setManualStates({ ...manualStates, dmvFile: event.target.files[0]?.name });
+      // }
+    } else {
+        setFileUploadSuccesOrErrorBit("error");
+        setFileUploadSuccessSnackOpen(true);
+      setResponse(res.error);
+    }
     // } else {
     //   setManualStates({ ...manualStates, resume2: event.target.files[0] });
     //   formData.append(
@@ -140,16 +148,18 @@ function EmpApplicationForm1(props: Props) {
     //     event.target.files[0],
     //     event.target.files[0].name
     //   );
-    //   formData.append("user_name", props.data.user_name);
+    //   formData.append("user_name", manualStates.user_name);
 
     //   fileUploadApi(formData);
     // }
   };
 
-  const Forms = useForm({
-    defaultValues: props.data,
-  });
 
+  const Forms = useForm({
+    defaultValues: data,
+  });
+  console.log("data");
+  console.log(data);
   const {
     register,
     handleSubmit,
@@ -164,13 +174,28 @@ function EmpApplicationForm1(props: Props) {
     "success"
   );
 
+  const eligibletoWorkInUnitedStateErrorMessage = "You must be eligible to work in United States";
+  const willingForDrugTestErrorMessage =  "You must be willing to undertake a drug test as part of this hiring process"
   const onSubmit = async (data: any) => {
-    console.log("errors[]");
-    console.log(errors["eligibletoWorkInUnitedState"]);
-    console.log(errors["willingForDrugTest"]);
-    // if (errors["eligibletoWorkInUnitedState"] || errors["willingForDrugTest"]) {
-    //   return;
-    // }
+    if(data.eligibletoWorkInUnitedState === "No")
+    {
+      setError("eligibletoWorkInUnitedState", {
+        type: "manual",
+        message: eligibletoWorkInUnitedStateErrorMessage
+      });
+    }
+
+    if(data.willingForDrugTest === "No")
+    {
+      setError("willingForDrugTest", {
+        type: "manual",
+        message: willingForDrugTestErrorMessage
+      });
+    }
+    
+    if(data.willingForDrugTest === "No" || data.eligibletoWorkInUnitedState === "No")
+    {return;}
+
     if (hideAddressesComponent === false) {
       data.addresses = undefined;
     }
@@ -178,7 +203,7 @@ function EmpApplicationForm1(props: Props) {
     console.log(data);
     // handleFileUpload(document.getElementById("dmvFilesToUpload"));
     data.phone_number = phonePattern;
-    data.user_name = props.data.user_name;
+    data.user_name = manualStates.user_name;
     print("Sending :", data);
     const resdata = await update(data);
     try {
@@ -196,7 +221,7 @@ function EmpApplicationForm1(props: Props) {
   };
 
   const [phonePattern, setPhonePatten] = useState(
-    props.data.phone_number ? props.data.phone_number : ""
+    manualStates.phone_number ? manualStates.phone_number : ""
   );
 
   const updateAddressList = (updatedAddresses: any) => {
@@ -207,6 +232,37 @@ function EmpApplicationForm1(props: Props) {
 
   const RequireError: string = "Required *";
   const WrongPatternError: string = "Wrong Pattern";
+
+  const download_user_cv = (user_name: string,fileName:string) => {
+    console.log("user_name");
+    console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
+    window.open(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`, "_blank");
+};
+
+
+
+const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
+  console.log("Remove Resume API");
+  console.log(fileName);
+  let res = await deleteFile(props.data.user_name,fileName)
+  if (res.success != undefined ) 
+  {
+    setManualStates({
+      ...manualStates,
+      [fileName]: null,
+    });
+    setFileUploadSuccesOrErrorBit("success");
+    setFileUploadSuccessSnackOpen(true);
+    setResponse(res.success);
+  } 
+  else if(res.error != undefined ) 
+  {
+    setFileUploadSuccesOrErrorBit("error");
+    setFileUploadSuccessSnackOpen(true);
+    setResponse(res.error);
+  }
+};
+
 
   //-------------SNACKBAR-------------
   const [successSnackOpen, setSuccessSnackOpen] = React.useState(false);
@@ -227,6 +283,7 @@ function EmpApplicationForm1(props: Props) {
     }
   };
 
+ 
   const handleFileUploadClose = (
     event?: React.SyntheticEvent,
     reason?: string
@@ -324,7 +381,7 @@ function EmpApplicationForm1(props: Props) {
                       label="Phone Number"
                       helperText={RequireError}
                       value={
-                        phonePattern ? phonePattern : props.data.phone_number
+                        phonePattern ? phonePattern : manualStates.phone_number
                       }
                       inputRef={register({
                         required: {
@@ -460,7 +517,25 @@ function EmpApplicationForm1(props: Props) {
                       alignItems="baseline"
                       spacing={3}
                     >
-                      <Grid item xs={4}>
+                   <Grid item xs={6}>
+                        <TextField
+                          name="fromDateAddress"
+                          variant="outlined"
+                          size="small"
+                          type="date"
+                          className="col-12"
+                          error={errors.fromDateAddress == undefined ? false : true}
+                          helperText={`From Date ${errors.fromDateAddress !== undefined ? errors.fromDateAddress.message : ""}`}
+                          inputRef={register({
+                            required: {
+                              value: reqBits.fromDateAddress,
+                              message: RequireError,
+                            },
+                          })}
+                        ></TextField>
+                      </Grid>
+
+                      <Grid item xs={6}>
                         <TextField
                           name="city"
                           variant="outlined"
@@ -478,7 +553,7 @@ function EmpApplicationForm1(props: Props) {
                           })}
                         ></TextField>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={6}>
                         {/* <ReactAutoComplete
                           id="state"
                           label={"States"}
@@ -486,7 +561,7 @@ function EmpApplicationForm1(props: Props) {
                           useForm={Forms}
                           isReq={reqBits["state"]}
                           optionList={states}
-                          defaultValue={props.data.state}
+                          defaultValue={manualStates.state}
                           error={errors && errors["state"]}
                         ></ReactAutoComplete> */}
                         <ReactHookFormSelect
@@ -494,7 +569,7 @@ function EmpApplicationForm1(props: Props) {
                           label="States"
                           control={control}
                           forms={Forms}
-                          defaultValue={props.data.state}
+                          defaultValue={manualStates.state}
                           variant="outlined"
                           size="small"
                           isReq={reqBits.state}
@@ -511,7 +586,7 @@ function EmpApplicationForm1(props: Props) {
                           })}
                         </ReactHookFormSelect>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={6}>
                         <TextField
                           name="zipCode"
                           variant="outlined"
@@ -592,8 +667,8 @@ function EmpApplicationForm1(props: Props) {
                     }}
                     useForm={Forms}
                     isReq={reqBits.lastThreeYearResidenceCheck}
-                    defaultSelected={props.data.lastThreeYearResidenceCheck}
-                  />
+                    defaultSelected={manualStates.lastThreeYearResidenceCheck}
+                    />
 
                   <Grid item xs={1}></Grid>
                   <Grid
@@ -602,9 +677,9 @@ function EmpApplicationForm1(props: Props) {
                     className="caption"
                     style={{ textAlign: "left" }}
                   >
-                    <b>NOTE 1:</b>{" "}
+                    <b>NOTE 1:</b>
                     <i>
-                      If no, add any additional addresses you lived at within
+                      If  no, add any additional addresses you lived at within
                       the past 3 years below.
                     </i>
                   </Grid>
@@ -616,7 +691,7 @@ function EmpApplicationForm1(props: Props) {
                     className="caption"
                     style={{ textAlign: "left" }}
                   >
-                    <b>NOTE 2:</b> <i>List current address first</i>
+                    {/* <b>NOTE 2:</b> <i>List current address first</i> */}
                   </Grid>
                   <Grid item xs={1}></Grid>
                   {/* <Grid item xs={1}></Grid> */}
@@ -636,10 +711,11 @@ function EmpApplicationForm1(props: Props) {
                       <DynamicAddressComponent
                         idPrefix="addresses"
                         setAddresses={updateAddressList}
-                        addressesList={props.data.addresses}
+                        addressesList={manualStates.addresses}
                         addressId="addresses"
                         cityId=""
                         stateId=""
+                        minElementLimit={1}
                         zipCodeId=""
                         fromDateId=""
                         toDateId=""
@@ -656,8 +732,24 @@ function EmpApplicationForm1(props: Props) {
             </Grid>
             <Grid item xs={1}></Grid>
             {/* Question End */}
+{/* 
+                        <FileUploadComponent
+                             id="resume"
+                             buttonText="Upload Resume"
+                             fileName={manualStates.resume}
+                             user_name={manualStates.user_name}
+                             handleFileUpload={handleFileUpload}
+                             message="Please upload your resume in PDF format, or any valid picture format."
+                        /> */}
+
+            <Grid item xs={1}></Grid>
+            <Grid item xs={10}>
+                        
+            </Grid>
+            <Grid item xs={1}></Grid>
 
             {/* Upload Resume Start */}
+            <br/>
             <Grid item xs={1}></Grid>
             <Grid item xs={10}>
               <Paper elevation={3} className={classes.paper}>
@@ -684,13 +776,13 @@ function EmpApplicationForm1(props: Props) {
                               <InsertDriveFileIcon />
                             </Grid>
                             <Grid item xs={6} className="text-left">
-                              {manualStates.resume}
+                            {(manualStates.resume.length > 25) ?manualStates.resume.substring(0,25)+"...":manualStates.resume}
                             </Grid>
                             <Grid item xs={1}>
                               <Button>
                                 <VisibilityIcon
                                   onClick={(e: any) => {
-                                    download_user_cv(props.data.user_name,"resume");
+                                    download_user_cv(manualStates.user_name,"resume");
                                   }}
                                 />
                               </Button>
@@ -699,11 +791,7 @@ function EmpApplicationForm1(props: Props) {
                               <Button>
                                 <DeleteIcon
                                   onClick={(e: any) => {
-                                    setManualStates({
-                                      ...manualStates,
-                                      resume: null,
-                                    });
-                                    removeUploadedFileFromServer(e);
+                                    removeUploadedFileFromServer(e,"resume");
                                   }}
                                 />
                               </Button>
@@ -750,10 +838,12 @@ function EmpApplicationForm1(props: Props) {
               </Paper>
             </Grid>
             <Grid item xs={1}></Grid>
-            {/* Upload Resume End */}
-
+ {/* Upload Resume End */}
+ 
+ 
 
      {/* Upload dmvFile Start */}
+     <br/>
      <Grid item xs={1}></Grid>
             <Grid item xs={10}>
               <Paper elevation={3} className={classes.paper}>
@@ -780,13 +870,13 @@ function EmpApplicationForm1(props: Props) {
                               <InsertDriveFileIcon />
                             </Grid>
                             <Grid item xs={6} className="text-left">
-                              {manualStates.dmvFile}
+                            {(manualStates.dmvFile.length > 25) ?manualStates.dmvFile.substring(0,25)+"...":manualStates.dmvFile}
                             </Grid>
                             <Grid item xs={1}>
                               <Button>
                                 <VisibilityIcon
                                   onClick={(e: any) => {
-                                    download_user_cv(props.data.user_name,"dmvFile");
+                                    download_user_cv(manualStates.user_name,"dmvFile");
                                   }}
                                 />
                               </Button>
@@ -795,11 +885,8 @@ function EmpApplicationForm1(props: Props) {
                               <Button>
                                 <DeleteIcon
                                   onClick={(e: any) => {
-                                    setManualStates({
-                                      ...manualStates,
-                                      dmvFile: null,
-                                    });
-                                    removeUploadedFileFromServer(e);
+                                    
+                                    removeUploadedFileFromServer(e,"dmvFile");
                                   }}
                                 />
                               </Button>
@@ -850,6 +937,206 @@ function EmpApplicationForm1(props: Props) {
 
 
 
+
+
+
+
+     {/* Upload dodMedicalCardFile Start */}
+     <br/>
+     <Grid item xs={1}></Grid>
+            <Grid item xs={10}>
+              <Paper elevation={3} className={classes.paper}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-around"
+                  alignItems="center"
+                  spacing={3}
+                >
+                  <Grid item xs={1}></Grid>
+                  <Grid item xs={10}>
+                    {manualStates.dodMedicalCardFile && (
+                      <div className="mb-3">
+                        <Paper elevation={3} className={classes.paper}>
+                          <Grid
+                            container
+                            direction="row"
+                            justify="space-around"
+                            alignItems="center"
+                            spacing={3}
+                          >
+                            <Grid item xs={1}>
+                              <InsertDriveFileIcon />
+                            </Grid>
+                            <Grid item xs={6} className="text-left">
+                              {(manualStates.dodMedicalCardFile.length > 25) ?manualStates.dodMedicalCardFile.substring(0,25)+"...":manualStates.dodMedicalCardFile}
+                            </Grid>
+                            <Grid item xs={1}>
+                              <Button>
+                                <VisibilityIcon
+                                  onClick={(e: any) => {
+                                    download_user_cv(manualStates.user_name,"dodMedicalCardFile");
+                                  }}
+                                />
+                              </Button>
+                            </Grid>
+                            <Grid item xs={1}>
+                              <Button>
+                                <DeleteIcon
+                                  onClick={(e: any) => {
+                                  
+                                    removeUploadedFileFromServer(e,"dodMedicalCardFile");
+                                  }}
+                                />
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Paper>
+                      </div>
+                    )}
+                
+                  </Grid>
+                  <Grid item xs={1}></Grid>
+                </Grid>
+
+                <input
+                  accept=".pdf,.jpg,.jpge,.doc,.docx"
+                  className={classes.input}
+                  id="dodMedicalCardFilesToUpload"
+                  type="file"
+                  onChange={(e)=>{handleFileUpload(e,"dodMedicalCardFile"); console.log("DVM FIle")}}
+                />
+                <label htmlFor="dodMedicalCardFilesToUpload">
+                  <Button variant="contained" color="primary" component="span">
+                    Upload DOD Medical Card Files
+                  </Button>
+                </label>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    className="caption"
+                    style={{ textAlign: "center", marginTop: "10px" }}
+                  >
+                    <b>NOTE:</b>
+                    <i>
+                      Please upload your DOD Medical Card File in PDF format, or any valid picture format.
+                    </i>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+            <Grid item xs={1}></Grid>
+            {/* Upload dodMedicalCardFile End */}
+
+
+
+
+
+
+     {/* Upload driverLicenceFile Start */}
+     <br/>
+     <Grid item xs={1}></Grid>
+            <Grid item xs={10}>
+              <Paper elevation={3} className={classes.paper}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-around"
+                  alignItems="center"
+                  spacing={3}
+                >
+                  <Grid item xs={1}></Grid>
+                  <Grid item xs={10}>
+                    {manualStates.driverLicenceFile && (
+                      <div className="mb-3">
+                        <Paper elevation={3} className={classes.paper}>
+                          <Grid
+                            container
+                            direction="row"
+                            justify="space-around"
+                            alignItems="center"
+                            spacing={3}
+                          >
+                            <Grid item xs={1}>
+                              <InsertDriveFileIcon />
+                            </Grid>
+                            <Grid item xs={6} className="text-left">
+                              {(manualStates.driverLicenceFile.length > 25) ?manualStates.driverLicenceFile.substring(0,25)+"...":manualStates.driverLicenceFile}
+                            </Grid>
+                            <Grid item xs={1}>
+                              <Button>
+                                <VisibilityIcon
+                                  onClick={(e: any) => {
+                                    download_user_cv(manualStates.user_name,"driverLicenceFile");
+                                  }}
+                                />
+                              </Button>
+                            </Grid>
+                            <Grid item xs={1}>
+                              <Button>
+                                <DeleteIcon
+                                  onClick={(e: any) => {
+                                  
+                                    removeUploadedFileFromServer(e,"driverLicenceFile");
+                                  }}
+                                />
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Paper>
+                      </div>
+                    )}
+                
+                  </Grid>
+                  <Grid item xs={1}></Grid>
+                </Grid>
+
+                <input
+                  accept=".pdf,.jpg,.jpge,.doc,.docx"
+                  className={classes.input}
+                  id="driverLicenceFilesToUpload"
+                  type="file"
+                  onChange={(e)=>{handleFileUpload(e,"driverLicenceFile"); console.log("DVM FIle")}}
+                />
+                <label htmlFor="driverLicenceFilesToUpload">
+                  <Button variant="contained" color="primary" component="span">
+                    Upload Driver License File
+                  </Button>
+                </label>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    className="caption"
+                    style={{ textAlign: "center", marginTop: "10px" }}
+                  >
+                    <b>NOTE:</b>
+                    <i>
+                      Please upload your DOD Medical Card File in PDF format, or any valid picture format.
+                    </i>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+            <Grid item xs={1}></Grid>
+            {/* Upload driverLicenceFile End */}
+
+
+
+
+
+
             {/* Questions Start */}
             <Grid item xs={1}></Grid>
             {/* Questions and Awnsers Starting */}
@@ -885,7 +1172,7 @@ function EmpApplicationForm1(props: Props) {
                         className="col-12 text-left"
                         useForm={Forms}
                         optionList={startTimeVal}
-                        defaultValue={props.data.startTime}
+                        defaultValue={manualStates.startTime}
                         error={errors && errors["startTime"]}
                       ></ReactAutoComplete> */}
                       <ReactHookFormSelect
@@ -893,7 +1180,7 @@ function EmpApplicationForm1(props: Props) {
                         label="Choose"
                         control={control}
                         forms={Forms}
-                        defaultValue={props.data.startTime}
+                        defaultValue={manualStates.startTime}
                         variant="outlined"
                         size="small"
                         isReq={reqBits.startTime}
@@ -956,14 +1243,14 @@ function EmpApplicationForm1(props: Props) {
                         className="col-12 text-left"
                         useForm={Forms}
                         optionList={classAExperienceLevelVal}
-                        defaultValue={props.data.classAExperienceLevel}
+                        defaultValue={manualStates.classAExperienceLevel}
                         error={errors && errors["classAExperienceLevel"]}
                       ></ReactAutoComplete> */}
                       <ReactHookFormSelect
                         nameVal="classAExperienceLevel"
                         label="Experience Level"
                         control={control}
-                        defaultValue={props.data.classAExperienceLevel}
+                        defaultValue={manualStates.classAExperienceLevel}
                         variant="outlined"
                         size="small"
                         forms={Forms}
@@ -1058,15 +1345,9 @@ function EmpApplicationForm1(props: Props) {
                         xsSize={12}
                         useForm={Forms}
                         isReq={reqBits.eligibletoWorkInUnitedState}
-                        // errorMessage="Dear User: You Must be Eligible To Work In The United States"
-                        // onChangeSetError={(e: any) => {
-                        //   if (e.target.value === "No") {
-                        //     return true;
-                        //   } else {
-                        //     return false;
-                        //   }
-                        // }}
-                        defaultSelected={props.data.eligibletoWorkInUnitedState}
+                        defaultSelected={manualStates.eligibletoWorkInUnitedState}
+                        helperMessage={eligibletoWorkInUnitedStateErrorMessage}
+                        showMessageOnValue="No"
                       />
                     </div>
                     <br />
@@ -1080,15 +1361,9 @@ function EmpApplicationForm1(props: Props) {
                         optionValue={["Yes", "No"]}
                         useForm={Forms}
                         isReq={reqBits.willingForDrugTest}
-                        defaultSelected={props.data.willingForDrugTest}
-                        // errorMessage="Dear User: You must be willing to undertake a drug test as part of this hiring process."
-                        // onChangeSetError={(e: any) => {
-                        //   if (e.target.value === "No") {
-                        //     return true;
-                        //   } else {
-                        //     return false;
-                        //   }
-                        // }}
+                        defaultSelected={manualStates.willingForDrugTest}
+                        helperMessage={willingForDrugTestErrorMessage}
+                        showMessageOnValue="No"
                       />
                     </div>
                   </Grid>

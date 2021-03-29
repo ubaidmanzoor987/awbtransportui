@@ -84,6 +84,10 @@ export function processResult(resultData: any) {
 
     if (resultData.data.nameOfPersonProvidingInformationDate) {
         resultData.data.nameOfPersonProvidingInformationDate = new Date((resultData.data.nameOfPersonProvidingInformationDate as any).$date).toISOString().split('T')[0];
+    }  
+    
+    if (resultData.data.fromDateAddress) {
+        resultData.data.fromDateAddress = new Date((resultData.data.fromDateAddress as any).$date).toISOString().split('T')[0];
     }
 
     

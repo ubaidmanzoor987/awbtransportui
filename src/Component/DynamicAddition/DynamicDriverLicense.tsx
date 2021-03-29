@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   Address,
   EmploymentAccidentHistories,
@@ -78,6 +78,14 @@ export function DynamicDriverLicense(props: Props) {
     }
   );
 
+
+  useEffect(()=>{
+    if(fields.length === 0){
+      append(props.dirverLicenseList);
+    }
+  },[]);
+
+   
   const submit = (e: any) => {
     e.preventDefault();
     //console.log(e.target.data);
@@ -92,7 +100,7 @@ export function DynamicDriverLicense(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion elevation={3} defaultExpanded>
+          <Accordion key={item.id} elevation={3} defaultExpanded>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -299,11 +307,10 @@ export function DynamicDriverLicense(props: Props) {
                   className="col-6"
                   variant="contained"
                   color="default"
-                  id={"id" + index}
                   onClick={() => {
-                    if (index > 0) {
+                    //if (index > 0) {
                       remove(index);
-                    }
+                    //}
                   }}
                 >
                   Delete Entry

@@ -21,7 +21,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import {
-  addr,
+  dummyAddrData as addr,
   debug,
   startTimeVal,
   states,

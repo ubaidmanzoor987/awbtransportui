@@ -47,11 +47,13 @@ function ReactHookFormSelect(props: Props) {
               },
             })}
             onChange={(e) => {
+              console.log("On Select CHange");
+              console.log(e.target.value);
               // if (e.target.value === "") {
-              setError("Required", {
-                type: "manual",
-                message: "Required *",
-              });
+              // setError("Required", {
+              //   type: "manual",
+              //   message: "Required *",
+              // });
               // }
             }}
           >

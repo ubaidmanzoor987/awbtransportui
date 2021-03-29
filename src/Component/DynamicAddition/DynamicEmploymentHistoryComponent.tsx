@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   Address,
   EmploymentHistories,
@@ -71,6 +71,7 @@ const WrongPatternError: string = "Wrong Pattern";
 
 export function DynamicEmploymentHistoryComponent(props: Props) {
   const classes = styleClasses.useStyles();
+  let data =props.employmentHistoryList;
   const {
     register,
     control,
@@ -87,6 +88,14 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
     }
   );
 
+  useEffect(()=>{
+    if(fields.length === 0){
+      append(props.employmentHistoryList);
+    }
+    console.log("props.employmentHistoryList");
+    console.log(props.employmentHistoryList);
+  },[]);
+
   const submit = (e: any) => {
     e.preventDefault();
     //console.log(e.target.data);
@@ -101,7 +110,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
         alignItems="center"
       >
         {fields.map((item, index) => (
-          <Accordion key={index} defaultExpanded>
+          <Accordion key={item.id} defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.text}>
                 Employment history {index + 1}
@@ -293,7 +302,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                   optionValue={["Yes", "No"]}
                   useForm={props.useForm}
                   xsSize={11}
-                  defaultSelected={"Yes"}
+                  defaultSelected={props.employmentHistoryList[index]?.employmentHistorysubjecttotheFMCSRs}
                   isReq={reqBits.employmentHistorysubjecttotheFMCSRs}
                 ></RadioQuestions>
 
@@ -304,6 +313,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                   any DOT- regulated mode subject to the drug and alcohol
                   testing requirements of 49 CFR Part 40?"
                   optionList={["Yes", "No"]}
+                  defaultSelected={props.employmentHistoryList[index]?.employmentHistorydrugandalcoholTesting}
                   useForm={props.useForm}
                   xsSize={11}
                   isReq={reqBits.employmentHistorydrugandalcoholTesting}
@@ -323,11 +333,10 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                   className="col-6"
                   variant="contained"
                   color="default"
-                  id={"id" + index}
                   onClick={() => {
-                    if (index > 0) {
+                    //if (index > 0) {
                       remove(index);
-                    }
+                    //}
                   }}
                 >
                   Delete Entry

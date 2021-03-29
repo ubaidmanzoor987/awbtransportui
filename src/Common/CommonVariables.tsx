@@ -168,9 +168,9 @@ export type tTrafficConvictionInfo = {
 };
 
 export let trafficConvictionDummyElement: tTrafficConvictionInfo = {
-  dateOfViolation: "2018-01-01",
-  LocationOfViolation: "Default",
-  ViolationCharge: "Default",
+  dateOfViolation: "",
+  LocationOfViolation: "",
+  ViolationCharge: "",
   ViolationPenalty: 10,
 };
 
@@ -186,11 +186,11 @@ export type EmploymentAccidentHistoryInfo = {
 };
 
 export let employmentAccidentHistoryDummyElement: EmploymentAccidentHistoryInfo = {
-  dateOfAccident: "2018-01-01",
-  NumberOfAccidents: "Default",
-  LocationOfAccidents: "Default",
-  numberofFatalities: 21,
-  numberofPeopleleInjured: 123,
+  dateOfAccident: "",
+  NumberOfAccidents: "",
+  LocationOfAccidents: "",
+  numberofFatalities: 0,
+  numberofPeopleleInjured: 0,
 };
 
 export type EmploymentAccidentHistories = EmploymentAccidentHistoryInfo[];
@@ -214,10 +214,10 @@ export type tDrivingExperience = {
 export type tDrivingExperiences = tDrivingExperience[];
 
 export let drivingExperienceDummyElement: tDrivingExperience = {
-  experienceclassofEquipment: "Default",
-  experienceFromDate: "2018-01-01",
-  experienceToDate: "2018-01-01",
-  experiencenumberOfMiles: 10,
+  experienceclassofEquipment: "",
+  experienceFromDate: "",
+  experienceToDate: "",
+  experiencenumberOfMiles: 0,
 };
 export type Form1 = {
   first_name: string;
@@ -246,6 +246,7 @@ export let reqBits = {
   first_name: true,
   last_name: false,
   phone_number: true,
+  fromDateAddress:true,
   email: false,
   dateofBirth: true,
   socialSecurity: true,
@@ -289,8 +290,8 @@ export let reqBits = {
   applicantAddresses: true,
   everWorkedForCompany: true,
   applicantSchoolGrade: true,
-  applicantCollegeGrade: true,
-  applicantPostGraduateGrade: true,
+  applicantCollegeGrade: false,
+  applicantPostGraduateGrade: false,
   employmentHistoryfrom: true,
   employmentHistoryTo: true,
   employmentHistorystatus: true,
@@ -735,7 +736,7 @@ export type AddressErrorsList = [
 export const WrongPatternError: string = "Wrong Pattern";
 export let debug = false;
 export let printDebug = true;
-export let addr = {
+export let dummyAddrData = {
   lastYearAddress: "",
   lastYearAddressCity: "",
   lastYearAddressState: "",
@@ -756,71 +757,68 @@ export const gender = [
 ];
 
 export const form3DefaultValue = {
-  companyName: "Default",
-  companyAddress: "Default",
-  companyCity: "Default",
-  companyState: "Default",
-  companyPostCode: "Default",
+  companyName: "",
+  companyAddress: "",
+  companyCity: "",
+  companyState: "",
+  companyPostCode: "",
   applicationApplyDate: "2018-10-10",
   applicationApplyAsPosition: "Contractor",
-  applicantfirstName: "Default",
-  applicantLastName: "Default",
+  applicantfirstName: "",
+  applicantLastName: "",
   applicantPhoneNumber: "111-111-1111 x1111",
-  emergencyContactfirstName: "Default",
-  emergencyContactlastName: "Default",
+  emergencyContactfirstName: "",
+  emergencyContactlastName: "",
   emergencyContactNumber: "111-111-1111 x1111",
   age: 10,
   applicantdateofbirth: "2018-10-10",
   physicalExamExpirationDate: "2018-10-10",
-  applicantAddresses: [addr],
+  applicantAddresses: [dummyAddrData],
   everWorkedForCompany: "Yes",
   applicantSchoolGrade: "3",
   applicantCollegeGrade: "2",
   applicantPostGraduateGrade: "4",
   employmentHistory: [
     employmentHistoryDummyElement,
-    employmentHistoryDummyElement,
   ],
   employmentExperienceHistory: [
     drivingExperienceDummyElement,
-    drivingExperienceDummyElement,
   ],
-  lastFiveYearStatesOperate: "Default",
-  Listspecialcourses: "Default",
-  ListanySafeDrivingAwards: "Default",
+  lastFiveYearStatesOperate: "",
+  Listspecialcourses: "",
+  ListanySafeDrivingAwards: "",
   employmentAccidentsHistory: [
-    employmentAccidentHistoryDummyElement,
     employmentAccidentHistoryDummyElement,
   ],
   violations: [trafficConvictionDummyElement],
-  dateOfAccident: "Default",
-  NumberOfAccidents: "Default",
-  LocationOfAccidents: "Default",
-  numberofFatalities: "Default",
-  numberofPeopleleInjured: "Default",
+  dateOfAccident: "",
+  NumberOfAccidents: "",
+  LocationOfAccidents: "",
+  numberofFatalities: "",
+  numberofPeopleleInjured: "",
   dateOfViolation: "2018-10-10",
-  LocationOfViolation: "Default",
-  ViolationCharge: "Default",
-  ViolationPenalty: "Default",
-  stateOfLicence: "Default",
-  licenceNumber: "Default",
-  licenceType: "Default",
-  licenceEndoresment: "Default",
+  LocationOfViolation: "",
+  ViolationCharge: "",
+  ViolationPenalty: "",
+  stateOfLicence: "",
+  licenceNumber: "",
+  licenceType: "",
+  licenceEndoresment: "",
   licenceExpirationDate: "2018-10-10",
-  deniedLicences: "Default",
-  permitLicences: "Default",
-  reasonforUnableToPerformActions: "Default",
-  convictedofafelony: "Default",
-  answerToAnyQuestion: "Default",
-  referencefirstName: "Default",
-  referencelastName: "Default",
-  referenceCompany: "Default",
-  referenceTitle: "Default",
+  deniedLicences: "",
+  permitLicences: "",
+  reasonforUnableToPerformActions: "",
+  convictedofafelony: "",
+  answerToAnyQuestion: "",
+  referencefirstName: "",
+  referencelastName: "",
+  referenceCompany: "",
+  referenceTitle: "",
   referencePhoneNumber: "111-111-1111 x1111",
-  referenceAddress: "Default",
-  signature: "Default",
+  referenceAddress: "",
+  signature: "",
   dateOfApplication: "2018-10-10",
-  remarks: "Default",
+  remarks: "",
 };
 
 export const print = (msg: string, obj: any) => {
