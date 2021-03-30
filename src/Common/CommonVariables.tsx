@@ -167,14 +167,14 @@ export type tTrafficConvictionInfo = {
   dateOfViolation: string;
   LocationOfViolation: string;
   ViolationCharge: string;
-  ViolationPenalty: number;
+  ViolationPenalty?: number;
 };
 
 export let trafficConvictionDummyElement: tTrafficConvictionInfo = {
   dateOfViolation: "",
   LocationOfViolation: "",
   ViolationCharge: "",
-  ViolationPenalty: 10,
+  ViolationPenalty: undefined,
 };
 
 export type tTrafficConvictions = tTrafficConvictionInfo[];
@@ -211,7 +211,7 @@ export type tDrivingExperience = {
   experienceclassofEquipment: string;
   experienceFromDate: string;
   experienceToDate: string;
-  experiencenumberOfMiles: number;
+  experiencenumberOfMiles?: number;
 };
 
 export type tDrivingExperiences = tDrivingExperience[];
@@ -220,7 +220,7 @@ export let drivingExperienceDummyElement: tDrivingExperience = {
   experienceclassofEquipment: "",
   experienceFromDate: "",
   experienceToDate: "",
-  experiencenumberOfMiles: 0,
+  experiencenumberOfMiles: undefined,
 };
 export type Form1 = {
   first_name: string;
@@ -524,11 +524,16 @@ export let reqBits = {
 //   employeeotherViolations: true,
 //   prevEmployeeReportDrug: true,
 //   answeredYes: true,
+//   employmentHistorycompanyName:true,
 
 //   nameOfPersonProvidingInformation: true,
 //   nameOfPersonProvidingInformationTitle: true,
 //   nameOfPersonProvidingInformationPhone: true,
 //   nameOfPersonProvidingInformationDate: true,
+//   referenceCity:true,
+//   referenceState:true,
+//   referenceZipCode:true,
+//   fromDateAddress:true,
 // };
 //------------------------------------------------
 //------------------------------------------------
@@ -843,3 +848,12 @@ export const getMaxDate = () => {
 
   return date.toISOString().split("T")[0];
 };
+
+
+
+export const getMinDateLimit = (fromDate:string) => {
+  if(fromDate === "" || fromDate === undefined ) return "";
+  let date = new Date(fromDate);
+  date.setDate(date.getDate()+1);
+  return date.toISOString().split("T")[0];
+}

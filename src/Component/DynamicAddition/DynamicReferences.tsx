@@ -50,6 +50,7 @@ import {
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
 import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
+import PhoneNumberComponent from "../SubComponents/PhoneNumberComponent";
 
 type Props = {
   idPrefix: string;
@@ -209,6 +210,20 @@ export function DynamicReferences(props: Props) {
                   />
                 </Grid>
                 <Grid item xs={6}>
+
+                <PhoneNumberComponent
+                      label="Phone Number"
+                      mainId={`${props.idPrefix}[${index}].referencePhoneNumber`}
+                      defaultValue={item.referencePhoneNumber}
+                      className="col-12"
+                      useForms={props.useForm}
+                      isPartOfDynamicComponent={true}
+                      parentId={props.idPrefix}
+                      childSubId="referencePhoneNumber"
+                      parentIndex={index}
+                ></PhoneNumberComponent>
+
+{/* 
                   <TextField
                     name={`${props.idPrefix}[${index}].referencePhoneNumber`}
                     defaultValue={item.referencePhoneNumber}
@@ -241,7 +256,7 @@ export function DynamicReferences(props: Props) {
                     //     message: WrongPatternError + " : ###-###-#### x####",
                     //   },
                     // })}
-                  ></TextField>
+                  ></TextField> */}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField

@@ -22,7 +22,6 @@ type Props = {
   parentId?:string;
   childSubId?:string;
   parentIndex?:number;
-
 };
 
 function ReactHookFormSelect(props: Props) {

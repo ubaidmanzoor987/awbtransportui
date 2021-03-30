@@ -1,4 +1,4 @@
-import React , {useEffect} from "react";
+import React , {useEffect,useState} from "react";
 import { Address } from "../../Common/CommonVariables";
 import {
   Button,
@@ -40,11 +40,13 @@ import {
   AddressErrorsList,
   print,
   dummyAddrData,
+  getMinDateLimit,
 } from "../../Common/CommonVariables";
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
 import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
 import ReactAutoComplete from "../SubComponents/ReactAutoComplete";
+import FromToDateComponent from "../SubComponents/FromToDate";
 
 type Props = {
   idPrefix: string;
@@ -68,6 +70,7 @@ const WrongPatternError: string = "Wrong Pattern";
 export function DynamicAddressComponent(props: Props) {
   const classes = styleClasses.useStyles();
   print("Address List : ", props.addressesList);
+  const [fromDate,setFromDate] = useState("");
   const {
     register,
     control,
@@ -147,6 +150,7 @@ export function DynamicAddressComponent(props: Props) {
                 <Grid item xs={4}>
                   <TextField
                     name={`${props.addressId}[${index}].lastYearAddressCity`}
+                    label="City"
                     inputRef={register({
                       required: {
                         value: reqBits.lastYearAddressCity,
@@ -240,7 +244,17 @@ export function DynamicAddressComponent(props: Props) {
                     className="col-12"
                   ></TextField>
                 </Grid>
-                <Grid item xs={6}>
+                <FromToDateComponent
+                  useForm={props.forms}
+                  mainId={props.addressId}
+                  index={index}
+                  item={item}
+                  fromId="lastYearAddressfrom"
+                  toId="lastYearAddressTo"
+                  defaultFromDate={item.lastYearAddressfrom}
+                  defaultToDate={item.lastYearAddressTo}
+                  ></FromToDateComponent>
+                {/* <Grid item xs={6}>
                   <TextField
                     name={`${props.addressId}[${index}].lastYearAddressfrom`}
                     inputRef={register({
@@ -254,6 +268,12 @@ export function DynamicAddressComponent(props: Props) {
                       errors[props.addressId] &&
                       errors[props.addressId][index] &&
                       errors[props.addressId][index].lastYearAddressfrom
+                    }
+                    onChange={(e:any)=>{
+                        setFromDate(getMinDateLimit(e.target.value))
+                        console.log("e.target.value from date");
+                        console.log(e.target.value);
+                      }
                     }
                     variant="outlined"
                     type="date"
@@ -275,6 +295,12 @@ export function DynamicAddressComponent(props: Props) {
                         message: RequireError,
                       },
                     })}
+                    onChange={(e:any)=>{
+
+                    }}
+                    inputProps={{
+                      min: fromDate,
+                    }}
                     error={
                       errors &&
                       errors[props.addressId] &&
@@ -288,7 +314,7 @@ export function DynamicAddressComponent(props: Props) {
                     className="col-12"
                     helperText={"To Date Require *"}
                   ></TextField>
-                </Grid>
+                </Grid> */}
               </Grid>
             </AccordionDetails>
             <Divider />

@@ -46,6 +46,7 @@ import {
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
 import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
+import FromToDateComponent from "../SubComponents/FromToDate";
 
 type Props = {
   idPrefix: string;
@@ -166,7 +167,18 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                     className="col-12"
                   ></TextField>
                 </Grid>
-                <Grid item xs={6}>
+                <FromToDateComponent
+                  useForm={props.useForm}
+                  mainId={props.idPrefix}
+                  index={index}
+                  item={item}
+                  fromId="experienceFromDate"
+                  toId="experienceToDate"
+                  defaultFromDate={item.experienceFromDate}
+                  defaultToDate={item.experienceToDate}
+                  ></FromToDateComponent>
+
+                {/* <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].experienceFromDate`}
                     error={
@@ -179,7 +191,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                       required: reqBits.experienceFromDate,
                     })}
                     helperText={
-                      reqBits.experienceFromDate && "From Date" + RequireError
+                      reqBits.experienceFromDate && "From Date " + RequireError
                     }
                     defaultValue={item.experienceFromDate}
                     variant="outlined"
@@ -210,7 +222,7 @@ export function DynamicDrivingExperienceComponent(props: Props) {
                     helperText="To Date"
                     className="col-12"
                   ></TextField>
-                </Grid>
+                </Grid> */}
               </Grid>
             </AccordionDetails>
             <AccordionActions

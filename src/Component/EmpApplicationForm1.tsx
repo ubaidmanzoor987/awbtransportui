@@ -53,6 +53,9 @@ import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
 import { DynamicAddressComponent } from "./DynamicAddition/DynamicAddressComponent";
 import { baseUrl } from "../shared/baseUrl";
 import {deleteFile} from "../services/removeFileApi";
+import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
+
+
 
 type Props = { data?: any; handler?: any; setData: any };
 const startTimeVal = [
@@ -157,6 +160,7 @@ function EmpApplicationForm1(props: Props) {
 
   const Forms = useForm({
     defaultValues: data,
+    shouldFocusError: true,
   });
   console.log("data");
   console.log(data);
@@ -201,8 +205,7 @@ function EmpApplicationForm1(props: Props) {
     }
     console.log("data form1 submit");
     console.log(data);
-    // handleFileUpload(document.getElementById("dmvFilesToUpload"));
-    data.phone_number = phonePattern;
+    // data.phone_number = phonePattern;
     data.user_name = manualStates.user_name;
     print("Sending :", data);
     const resdata = await update(data);
@@ -211,7 +214,6 @@ function EmpApplicationForm1(props: Props) {
       props.setData(resdata.data.data);
       setSuccesOrErrorBit("success");
       setSuccessSnackOpen(true);
-      // props.handler();
     } catch (ex) {
       console.log("Error Exaption Seerver Error");
       console.log(ex);
@@ -371,7 +373,14 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                     ></TextField>
                   </Grid>
                   <Grid item xs={6}>
-                    <TextField
+                  <PhoneNumberComponent
+                        mainId="phone_number"
+                        label="Phone Number"
+                        defaultValue={manualStates.phone_number}
+                        className="col-8"
+                        useForms={Forms}
+                  ></PhoneNumberComponent>
+                    {/* <TextField
                       name="phone_number"
                       variant="outlined"
                       size="small"
@@ -379,7 +388,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       className="col-8"
                       error={errors.phone_number == undefined ? false : true}
                       label="Phone Number"
-                      helperText={RequireError}
+                      helperText={errors["phone_number"] === undefined ? (RequireError + " " + "+# ### ### #### ext.####") : errors["phone_number"].message}
                       value={
                         phonePattern ? phonePattern : manualStates.phone_number
                       }
@@ -388,20 +397,23 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                           value: reqBits.phone_number,
                           message: RequireError,
                         },
+                        // pattern:{value:/^[+][0-9]{15,26}$/ , message:"Invalid Input : +# ### ### #### ext.####"}
                       })}
-                      onChange={(e) => {
-                        if (e.target.value.length > 11) {
-                          const n = formatPhoneNumberIntl(e.target.value);
+                      // onChange={(e)=>{setPhonePatten(e.target.value)}}
+                      onChange={(e:any) => {
+                        let val = e.target.value;
+                        if (val.length > 11) {
+                          const n = formatPhoneNumberIntl(val);
                           if (n) {
                             setPhonePatten(n);
                           } else {
-                            setPhonePatten(e.target.value);
+                            setPhonePatten(val);
                           }
                         } else {
-                          setPhonePatten(e.target.value);
+                          setPhonePatten(val);
                         }
                       }}
-                    ></TextField>
+                    ></TextField> */}
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -477,7 +489,13 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       label="Social Security"
                       className="col-8"
                       error={errors.socialSecurity == undefined ? false : true}
-                      helperText={RequireError}
+                      helperText={reqBits.socialSecurity 
+                        ? 
+                        ((errors["socialSecurity"] !== undefined 
+                              ? (errors["socialSecurity"].message) 
+                              : RequireError)) 
+                        : ""   
+                      }
                       inputRef={register({
                         required: {
                           value: reqBits.socialSecurity,

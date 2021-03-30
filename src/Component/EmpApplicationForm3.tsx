@@ -58,6 +58,8 @@ import { useRef, useState } from "react";
 import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
 import AlertComponent from "./SubComponents/AlertComponent";
+import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
+
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -126,7 +128,7 @@ function EmpApplicationForm3(props: Props) {
   const [signatureHelperTextError, setSignatureHelperTextError] = useState(
     false
   );
-  const Forms = useForm({ defaultValues: props.data });
+  const Forms = useForm({ defaultValues: props.data, shouldFocusError:true, criteriaMode:"all" });
   const { register, handleSubmit, errors, control } = Forms;
 
   const [licenseQuestionBits, setLicenseQuestionBits] = useState({
@@ -624,7 +626,14 @@ function EmpApplicationForm3(props: Props) {
                               ></TextField>
                             </Grid>
                             <Grid item xs={11} style={{ marginBottom: "10px" }}>
-                              <TextField
+                            <PhoneNumberComponent
+                                  className="col-12"
+                                  mainId="applicantPhoneNumber"
+                                  label="Phone Number"
+                                  defaultValue={props.data.applicantPhoneNumber}
+                                  useForms={Forms}
+                            ></PhoneNumberComponent>
+                              {/* <TextField
                                 name="applicantPhoneNumber"
                                 variant="outlined"
                                 size="small"
@@ -635,34 +644,57 @@ function EmpApplicationForm3(props: Props) {
                                     ? false
                                     : true
                                 }
+                                helperText={errors["applicantPhoneNumber"] === undefined ? (RequireError + " " + "+# ### ### #### ext.####") : errors["applicantPhoneNumber"].message}
+                                
                                 inputRef={register({
                                   required: {
                                     value: reqBits.applicantPhoneNumber,
                                     message: RequireError,
                                   },
+                                  // pattern:{value:/^[+][0-9]{15,26}$/ , message:"Invalid Input : +# ### ### #### ext.####"}
                                 })}
+                                // onChange={(e)=>{setPhonePatten(e.target.value)}}
+                                onChange={(e:any) => {
+                                  let val = e.target.value;
+                                  if (val.length > 11) {
+                                    const n = formatPhoneNumberIntl(val);
+                                    if (n) {
+                                      setPhonePatten(n);
+                                    } else {
+                                      setPhonePatten(val);
+                                    }
+                                  } else {
+                                    setPhonePatten(val);
+                                  }
+                                }}
+                                // inputRef={register({
+                                //   required: {
+                                //     value: reqBits.applicantPhoneNumber,
+                                //     message: RequireError,
+                                //   },
+                                // })}
                                 label="Phone Number"
-                                helperText={RequireError}
+                                // helperText={RequireError}
                                 value={
                                   phonePattern
                                     ? phonePattern
                                     : props.data.applicantPhoneNumber
                                 }
-                                onChange={(e) => {
-                                  if (e.target.value.length > 11) {
-                                    const n = formatPhoneNumberIntl(
-                                      e.target.value
-                                    );
-                                    if (n) {
-                                      //console.log(n);
-                                      setPhonePatten(n);
-                                    } else {
-                                      setPhonePatten(e.target.value);
-                                    }
-                                  } else {
-                                    setPhonePatten(e.target.value);
-                                  }
-                                }}
+                                // onChange={(e) => {
+                                //   if (e.target.value.length > 11) {
+                                //     const n = formatPhoneNumberIntl(
+                                //       e.target.value
+                                //     );
+                                //     if (n) {
+                                //       //console.log(n);
+                                //       setPhonePatten(n);
+                                //     } else {
+                                //       setPhonePatten(e.target.value);
+                                //     }
+                                //   } else {
+                                //     setPhonePatten(e.target.value);
+                                //   }
+                                // }}
                                 // inputRef={register({
                                 //   required: {
                                 //     value: reqBits.applicantPhoneNumber,
@@ -673,7 +705,7 @@ function EmpApplicationForm3(props: Props) {
                                 //     message: WrongPatternError + " : ###-###-#### x####",
                                 //   },
                                 // })}
-                              ></TextField>
+                              ></TextField> */}
                             </Grid>
                             <Grid item xs={5} style={{ marginBottom: "10px" }}>
                               <TextField
@@ -714,7 +746,14 @@ function EmpApplicationForm3(props: Props) {
                               ></TextField>
                             </Grid>
                             <Grid item xs={11} style={{ marginBottom: "10px" }}>
-                              <TextField
+                            <PhoneNumberComponent
+                                  label="Emergency: Mobile Number"
+                                  mainId="emergencyContactNumber"
+                                  defaultValue={props.data.emergencyContactNumber}
+                                  className="col-12"
+                                  useForms={Forms}
+                            ></PhoneNumberComponent>
+                              {/* <TextField
                                 name="emergencyContactNumber"
                                 variant="outlined"
                                 size="small"
@@ -745,7 +784,7 @@ function EmpApplicationForm3(props: Props) {
                                     setEmergencyPhonePatten(e.target.value);
                                   }
                                 }}
-                              ></TextField>
+                              ></TextField> */}
                             </Grid>
                             <Grid item xs={5} style={{ marginBottom: "10px" }}>
                               <TextField
