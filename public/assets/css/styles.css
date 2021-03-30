@@ -10932,6 +10932,7 @@ div {
   font-family: Lato;
 }
 
+
 #signup .wrapper {
   height: 103vh;
   display: flex;
@@ -10940,7 +10941,7 @@ div {
   align-items: center;
   background-image: url("../img/trucks/4.jpeg");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100%;
 }
 
 #signup .form-wrapper {

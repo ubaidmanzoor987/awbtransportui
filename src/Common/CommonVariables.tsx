@@ -62,6 +62,7 @@ export const states = [
 ];
 
 export const licenseType = [
+  
   {
     value:
       "Class A: Combination (tractor plus trailer) vehicle of 26,001 pounds",
@@ -93,6 +94,7 @@ export type EmploymentHistoryInfo = {
   employmentHistoryreasonForLeaving: string;
   employmentHistorysubjecttotheFMCSRs: string;
   employmentHistorydrugandalcoholTesting: string;
+  employmentHistorycompanyName:string;
 };
 
 export let employmentHistoryDummyElement: EmploymentHistoryInfo = {
@@ -105,6 +107,7 @@ export let employmentHistoryDummyElement: EmploymentHistoryInfo = {
   employmentHistoryreasonForLeaving: "",
   employmentHistorysubjecttotheFMCSRs: "",
   employmentHistorydrugandalcoholTesting: "",
+  employmentHistorycompanyName: "",
 };
 
 export type EmploymentHistories = EmploymentHistoryInfo[];
@@ -181,16 +184,16 @@ export type EmploymentAccidentHistoryInfo = {
   dateOfAccident: string;
   NumberOfAccidents: string;
   LocationOfAccidents: string;
-  numberofFatalities: number;
-  numberofPeopleleInjured: number;
+  numberofFatalities?: number;
+  numberofPeopleleInjured?: number;
 };
 
 export let employmentAccidentHistoryDummyElement: EmploymentAccidentHistoryInfo = {
   dateOfAccident: "",
   NumberOfAccidents: "",
   LocationOfAccidents: "",
-  numberofFatalities: 0,
-  numberofPeopleleInjured: 0,
+  numberofFatalities: undefined ,
+  numberofPeopleleInjured: undefined,
 };
 
 export type EmploymentAccidentHistories = EmploymentAccidentHistoryInfo[];
@@ -243,6 +246,7 @@ export type Form1 = {
 type Dict = { [index: string]: boolean };
 
 export let reqBits = {
+  employmentHistorycompanyName:true,
   first_name: true,
   last_name: false,
   phone_number: true,
@@ -778,6 +782,7 @@ export const form3DefaultValue = {
   applicantSchoolGrade: "3",
   applicantCollegeGrade: "2",
   applicantPostGraduateGrade: "4",
+  
   employmentHistory: [
     employmentHistoryDummyElement,
   ],

@@ -4,6 +4,7 @@ import { FormLabel } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import { Controller } from "react-hook-form";
 import { RequireError } from "../../Common/CommonVariables";
+import { AnyRecordWithTtl } from "node:dns";
 
 type Props = {
   nameVal: string;
@@ -17,12 +18,44 @@ type Props = {
   size?: "small" | "medium";
   className: string;
   error?: boolean;
+  isPartOfDynamicComponent?:boolean;
+  parentId?:string;
+  childSubId?:string;
+  parentIndex?:number;
+
 };
 
 function ReactHookFormSelect(props: Props) {
   const { register, handleSubmit, errors, control, setError } = props.forms;
   let lable = props.label + props.isReq ? ("Required *"):"";
   const labelId = `${props.nameVal}-label`;
+
+
+  function errorChecking()
+  {
+
+    try
+    {
+      if(props.isPartOfDynamicComponent === true){
+        console.log("React Hook Select Error 1:");
+        console.log("props.parentId && props.parentIndex && props.childSubId");
+        console.log(props.parentId);
+        console.log(props.parentIndex );
+        console.log(props.childSubId)
+        if(errors && props.parentId && props.parentIndex !== undefined && props.childSubId) {
+          console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
+          console.log(errors[props.parentId][props.parentIndex][props.childSubId]);
+          return errors[props.parentId][props.parentIndex][props.childSubId];
+        }
+        return false;
+      }
+    } 
+    catch(ex) 
+    {
+      return false;  
+    }
+  }
+
   return (
     <FormControl
       className={props.className}
@@ -36,25 +69,40 @@ function ReactHookFormSelect(props: Props) {
             native
             labelId={labelId}
             label={props.label + props.isReq ? ("Required *"):""}
-            error={
-              errors[props.nameVal] &&
-              (errors[props.nameVal] === undefined ? false : true)
+            // error={
+            //   errors[props.nameVal] &&
+            //   (errors[props.nameVal] === undefined ? false : true)
+            // }
+            error={props?.isPartOfDynamicComponent?
+              (errorChecking()):
+              (errors[props.nameVal] &&
+                (errors[props.nameVal] === undefined ? false : true))
             }
             inputRef={register({
               required: {
-                value: props.isReq === undefined ? false : props.isReq,
+                value: props.isReq ,
                 message: RequireError,
               },
             })}
-            onChange={(e) => {
+            onChange={(e:any) => {
               console.log("On Select CHange");
               console.log(e.target.value);
-              // if (e.target.value === "") {
-              // setError("Required", {
-              //   type: "manual",
-              //   message: "Required *",
-              // });
-              // }
+              if (e.target.value === "") {
+              setError("Required", {
+                type: "manual",
+                message: "Required *",
+              });
+              }
+            }}
+            onSubmit={(e:any) => {
+              console.log("On Select CHange");
+              console.log(e.target.value);
+              if (e.target.value === "") {
+              setError("Required", {
+                type: "manual",
+                message: "Required *",
+              });
+              }
             }}
           >
             {props.children}

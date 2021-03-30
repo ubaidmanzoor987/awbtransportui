@@ -1440,6 +1440,7 @@ function EmpApplicationForm3(props: Props) {
 
             <Grid item xs={10}>
               <Paper
+             
                 elevation={3}
                 style={{ paddingLeft: "40px", paddingRight: "60px" }}
                 className={(classes.heading, classes.paperProminantStyle)}
@@ -1461,6 +1462,7 @@ function EmpApplicationForm3(props: Props) {
                   </Typography>
                 )}
                 <div
+                
                   style={{
                     boxShadow:
                       "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
@@ -1468,16 +1470,45 @@ function EmpApplicationForm3(props: Props) {
                     margin: "20px",
                   }}
                 >
-                  <SignatureCanvas
-                    penColor="black"
-                    ref={sigPad}
-                    canvasProps={{
-                      width: 600,
-                      height: 150,
+                  {/* <Controller
+                      rules={{ required: true }}
+                      control={control}
+                      name={"sigPadC"}
+                      onSubmit={(e:any)=>{
+                        if (sigPad.current && sigPad.current.isEmpty()) {
+                        setSignatureError("text-danger");
+                        setSignatureHelperTextError(true);
+                      }}} 
+                      
+                      error={true}
 
-                      className: "sigCanvas",
-                    }}
-                  />
+                      as={
+                        <SignatureCanvas
+                          penColor="black"
+                          ref={sigPad}
+                        
+                          canvasProps={{
+                            width: 600,
+                            height: 150,
+      
+                            className: "sigCanvas",
+                          }}
+                        />  
+                      }
+                  >
+                  </Controller> */}
+
+                    <SignatureCanvas
+                        penColor="black"
+                        ref={sigPad}
+                      
+                        canvasProps={{
+                          width: 600,
+                          height: 150,
+    
+                          className: "sigCanvas",
+                        }}
+                      />  
                 </div>
 
                 <Grid

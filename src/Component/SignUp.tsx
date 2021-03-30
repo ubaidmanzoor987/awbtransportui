@@ -171,7 +171,7 @@ class SignUp extends Component<
         <NavbarCareer addLogout={false} />
         <div id="signup">
           <div className="wrapper">
-            <div style={{ margin: "20px" }} className="col-sm-3">
+            <div style={{ margin: "20px" }} className="col-lg-4 col-md-6 col-sm-6">
               <div className="form-wrapper">
                 <h2>Sign Up</h2>
                 <form onSubmit={this.handleSubmit} noValidate>

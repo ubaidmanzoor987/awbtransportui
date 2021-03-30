@@ -64,6 +64,7 @@ let empHstry: EmploymentHistoryInfo = {
   employmentHistoryreasonForLeaving: "",
   employmentHistorysubjecttotheFMCSRs: "",
   employmentHistorydrugandalcoholTesting: "",
+  employmentHistorycompanyName:"",
 };
 
 const RequireError: string = "Required *";
@@ -268,7 +269,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                 </Grid>
                 {/* <Grid item xs={1}></Grid> */}
 
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <TextField
                     className="col-12"
                     name={`${props.idPrefix}[${index}].employmentHistoryaddress`}
@@ -295,6 +296,34 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                   ></TextField>
                 </Grid>
 
+                <Grid item xs={6}>
+                  <TextField
+                    className="col-12"
+                    name={`${props.idPrefix}[${index}].employmentHistorycompanyName`}
+                    variant="outlined"
+                    size="small"
+                    defaultValue={item.employmentHistorycompanyName}
+                    type="text"
+                    label="Company Name"
+                    //useForms Handling Start
+
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].employmentHistorycompanyName
+                    }
+                    inputRef={register({
+                      required: reqBits.employmentHistorycompanyName,
+                    })}
+                    helperText={
+                      reqBits.employmentHistorycompanyName && RequireError
+                    }
+                    //useForms Handling End
+                  ></TextField>
+                </Grid>
+
+
                 <RadioQuestions
                   id={`${props.idPrefix}[${index}].employmentHistorysubjecttotheFMCSRs`}
                   question="Were you subject to the FMCSRs while employed here?"
@@ -304,11 +333,19 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                   xsSize={11}
                   defaultSelected={props.employmentHistoryList[index]?.employmentHistorysubjecttotheFMCSRs}
                   isReq={reqBits.employmentHistorysubjecttotheFMCSRs}
+                  isPartOfDynamicComponent={true}
+                  parentId={props.idPrefix}
+                  childSubId={"employmentHistorysubjecttotheFMCSRs"}
+                  parentIndex={index}
                 ></RadioQuestions>
 
                 <RadioQuestions
                   id={`${props.idPrefix}[${index}].employmentHistorydrugandalcoholTesting`}
                   optionValue={["Yes", "No"]}
+                  isPartOfDynamicComponent={true}
+                  parentId={props.idPrefix}
+                  childSubId={"employmentHistorydrugandalcoholTesting"}
+                  parentIndex={index}
                   question="Was your job designated as a safety-sensitive function in
                   any DOT- regulated mode subject to the drug and alcohol
                   testing requirements of 49 CFR Part 40?"

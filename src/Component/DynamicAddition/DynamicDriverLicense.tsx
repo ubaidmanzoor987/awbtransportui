@@ -125,7 +125,7 @@ export function DynamicDriverLicense(props: Props) {
                     defaultValue={item.licenceExpirationDate}
                     helperText={
                       reqBits.licenceExpirationDate &&
-                      "License Expiration Date" + RequireError
+                      "License Expiration Date " + RequireError
                     }
                     error={
                       errors &&
@@ -186,7 +186,13 @@ export function DynamicDriverLicense(props: Props) {
                       errors[props.idPrefix][index] &&
                       errors[props.idPrefix][index].licenceType
                     }
+                    isPartOfDynamicComponent={true}
+                    parentId={props.idPrefix}
+                    childSubId="licenceType"
+                    parentIndex={index}
                   >
+                    <option aria-label="None" value="" />
+
                     {licenseType.map(function (object: any, i: number) {
                       return (
                         <option value={object.value} key={i}>
@@ -234,7 +240,13 @@ export function DynamicDriverLicense(props: Props) {
                       errors[props.idPrefix][index] &&
                       errors[props.idPrefix][index].stateOfLicence
                     }
+                    isPartOfDynamicComponent={true}
+                    parentId={props.idPrefix}
+                    childSubId="stateOfLicence"
+                    parentIndex={index}
                   >
+                    <option aria-label="None" value="" />
+
                     {states.map(function (object: any, i: number) {
                       return (
                         <option value={object.value} key={i}>

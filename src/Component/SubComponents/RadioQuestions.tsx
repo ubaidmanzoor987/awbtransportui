@@ -45,6 +45,10 @@ type Props = {
     | 11
     | undefined;
   isReq: boolean;
+  isPartOfDynamicComponent?:boolean;
+  parentId?:string;
+  childSubId?:string;
+  parentIndex?:number;
 };
 
 export default function RadioQuestions(props: Props) {
@@ -56,7 +60,30 @@ export default function RadioQuestions(props: Props) {
   const [value,setValue] = useState(defaultValue);
 
 
-  // print("Radio :", Forms);
+  function errorChecking()
+  {
+
+    try
+    {
+      if(props.isPartOfDynamicComponent === true){
+        console.log("Radio Error 1:");
+        console.log("props.parentId && props.parentIndex && props.childSubId");
+        console.log(props.parentId);
+        console.log(props.parentIndex );
+        console.log(props.childSubId)
+        if(errors && props.parentId && props.parentIndex !== undefined && props.childSubId) {
+          console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
+          console.log(errors[props.parentId][props.parentIndex][props.childSubId]);
+          return errors[props.parentId][props.parentIndex][props.childSubId];
+        }
+        return false;
+      }
+    } 
+    catch(ex) 
+    {
+      return false;  
+    }
+  }
 
   
 
@@ -84,14 +111,17 @@ export default function RadioQuestions(props: Props) {
         >
           <FormControl
             component="fieldset"
-            error={errors[props.id] && errors[props.id]}
+            error={props?.isPartOfDynamicComponent?
+              (errorChecking()):
+              (errors && errors[props?.id] &&
+                errors[props?.id])
+            }
           >
             <Controller
-              rules={{ required: true }}
+              rules={{ required: props.isReq }}
               control={control}
               name={props.id}
               defaultValue={props.defaultSelected}
-              // required={isReq}
               as={
                 <RadioGroup row>
                   {props.optionList.map((optionItem, index) => {
