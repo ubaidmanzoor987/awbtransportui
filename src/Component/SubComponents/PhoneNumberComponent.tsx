@@ -64,7 +64,9 @@ export default function PhoneNumberComponent(props:Props){
           console.log(props.parentId);
           console.log(props.parentIndex );
           console.log(props.childSubId)
-          if(errors && props.parentId && props.parentIndex !== undefined && props.childSubId) {
+            console.log(errors);
+            console.log(reqBits[props.childSubId as "phone_number"]);
+            if(errors && props.parentId && props.parentIndex !== undefined && props.childSubId) {
             console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
             console.log(errors[props.parentId][props.parentIndex][props.childSubId]);
             return errors[props.parentId][props.parentIndex][props.childSubId];
@@ -89,18 +91,18 @@ export default function PhoneNumberComponent(props:Props){
             console.log("props.parentId && props.parentIndex && props.childSubId");
             console.log(props.parentId);
             console.log(props.parentIndex );
-            console.log(props.childSubId)
+            console.log(props.childSubId);
             if(errors && props.parentId && props.parentIndex !== undefined && props.childSubId) {
               console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
               console.log(errors[props.parentId][props.parentIndex][props.childSubId].message);
-              return errors[props.parentId][props.parentIndex][props.childSubId].message;
+              return errors[props.parentId][props.parentIndex][props.childSubId].message + " " + "(+# ### ### #### x####)";
             }
-            return (RequireError + " " + "+# ### ### #### ext.####");
+            return (RequireError + " " + "(+# ### ### #### x####)");
           }
         } 
         catch(ex) 
         {
-          return (RequireError + " " + "+# ### ### #### ext.####");  
+          return (RequireError + " " + "(+# ### ### #### x####)");  
         }
       }
 
@@ -115,7 +117,7 @@ export default function PhoneNumberComponent(props:Props){
         className={props.className}
         // error={errors[props.mainId] == undefined ? false : true}
         error={
-            props.isPartOfDynamicComponent === true
+            (props.isPartOfDynamicComponent === true)
             ? (errorChecking())
             : (errors[props.mainId] && (errors[props.mainId] === undefined ? false : true))
           }
@@ -123,22 +125,44 @@ export default function PhoneNumberComponent(props:Props){
         helperText={
             props.isPartOfDynamicComponent !== undefined && props.isPartOfDynamicComponent === true
             ? (helperText())
-            : (errors[props.mainId] === undefined ? (RequireError + " " + "+# ### ### #### ext.####") : errors[props.mainId].message)
+            // : (errors[props.mainId] === undefined ? (RequireError + " " + "(+# ### ### #### x####)") : errors[props.mainId].message)
+            : (RequireError + " " + "(+# ### ### #### x####)")
         }
         value={
            phonePattern
         }
         inputRef={register({
           required: {
-            value: reqBits[props.mainId as "phone_number"],
+            value: reqBits[( (props.isPartOfDynamicComponent === undefined) || (props?.isPartOfDynamicComponent === false) ) ? (props.mainId as "phone_number") : (props.childSubId as "phone_number")],
             message: RequireError,
           },
-        //   pattern:{value:/^[+][0-9 ]$|^[+][0-9 ext.]$/ , message:"Invalid Input : +# ### ### #### ext.####"}
+          pattern:{value:/^[+][0-9 ext.]{13,24}$/ , message:"Invalid Input : "}
         })}
         // onChange={(e)=>{setPhonePattern(e.target.value)}}
+        onInput={(val:any)=>{
+            let data = val.nativeEvent.data;
+            console.log("oninput")
+            console.log(val.nativeEvent.data)
+            if((props.isPartOfDynamicComponent === true)
+            ? (errorChecking())
+            : (errors[props.mainId] && (errors[props.mainId] === undefined ? false : true)) && phonePattern === "")
+            {
+              setPhonePattern(data);
+            }
+          }
+        }
         onChange={(e:any) => {
           let val = e.target.value;
+          console.log("valvalvalvalval");
+          console.log(val);
           if (val.length > 11) {
+            console.log("val.charAt(val.length-1)")
+            console.log(val.charAt(val.length-1))
+            console.log(val.charAt(val.length-1) === "x")
+            if(val.charAt(val.length-1) === "x"){
+              setPhonePattern(val);
+              return;
+            }
             const n = formatPhoneNumberIntl(val);
             if (n) {
               setPhonePattern(n);

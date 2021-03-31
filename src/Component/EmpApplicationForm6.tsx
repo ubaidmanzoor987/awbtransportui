@@ -51,6 +51,10 @@ export default function EmpApplicationForm6(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if(props.data.alcoholTestEmployeeSignature !== undefined){
+      sigPad.current.fromDataURL(props.data.alcoholTestEmployeeSignature);
+    }
+
   }, []);
 
   //-------------SNACKBAR-------------

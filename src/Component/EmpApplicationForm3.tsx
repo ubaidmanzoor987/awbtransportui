@@ -35,7 +35,7 @@ import {
   reqBits,
   snackbarDuratuion,
 } from "../Common/CommonVariables";
-import { Addresses, tReferences, getMaxDate } from "../Common/CommonVariables";
+import { Addresses, tReferences, getMaxDate, getMaxAgeLimit } from "../Common/CommonVariables";
 import RadioQuestions from "./SubComponents/RadioQuestions";
 import AddressesComponent from "./SubComponents/AddressesComponent";
 import EmploymentHistory from "./SubComponents/EmploymentHistory";
@@ -155,7 +155,12 @@ function EmpApplicationForm3(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // sigPad.fromDataURL(props.data.signature, null);
+    console.log("sigPadsigPadsigPad");
+    console.log(sigPad);
+    console.log(sigPad.current);
+    if(props.data.signature !== undefined){
+      sigPad.current.fromDataURL(props.data.signature);
+    }
   }, []);
 
   const [phonePattern, setPhonePatten] = useState(
@@ -219,6 +224,17 @@ function EmpApplicationForm3(props: Props) {
     data.signature = base64SignatureImage;
     console.log("datadata");
     console.log(data);
+    
+    
+    if(!(data.applicantAddresses)) data.applicantAddresses = [];
+    if(!(data.employmentHistory)) data.employmentHistory = [];
+    if(!(data.employmentAccidentsHistory)) data.employmentAccidentsHistory = [];
+    if(!(data.employmentExperienceHistory)) data.employmentExperienceHistory = [];
+    if(!(data.violations)) data.violations = [];
+    if(!(data.licences)) data.licences = [];
+    if(!(data.references)) data.references = [];
+
+
     data.user_name = props.data.user_name;
     data.applicantfirstName = props.data.first_name;
     data.applicantLastName = props.data.last_name
@@ -239,6 +255,22 @@ function EmpApplicationForm3(props: Props) {
       //-------------SNACKBAR-------------
     }
   };
+
+  const calculateAge = (val:string)=>{
+    let date = new Date(val);
+    let currYear = new Date(Date.now()).getFullYear();
+    return  currYear - date.getFullYear();
+}
+
+  const [age,setAge] = useState(calculateAge(props.data.applicantdateofbirth));
+
+  const getAge = (e:any) => {
+    let val = e.target.value;
+    setAge(calculateAge(val));
+  }
+
+
+
 
   console.log("props.data.applicantAddresses");
   console.log(props.data.applicantAddresses);
@@ -382,16 +414,15 @@ function EmpApplicationForm3(props: Props) {
                           label="City"
                           className="col-6"
                           error={
-                            errors.companyCity === undefined ? false : true
+                            errors && errors.companyCity === undefined ? false : true
                           }
-                          helperText={
-                            errors.companyCity && errors.companyCity?.message
-                          }
+                          helperText={errors && errors.companyCity ? errors.companyCity.message : RequireError}
                           inputRef={register({
                             required: {
                               value: reqBits.companyCity,
                               message: RequireError,
                             },
+                            pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                           })}
                         ></TextField>
                       </Grid>
@@ -595,12 +626,13 @@ function EmpApplicationForm3(props: Props) {
                                     : true
                                 }
                                 label="First Name"
-                                helperText={RequireError}
+                                helperText={errors && errors.applicantfirstName ? errors.applicantfirstName.message : RequireError}
                                 inputRef={register({
                                   required: {
                                     value: reqBits.applicantfirstName,
                                     message: RequireError,
                                   },
+                                  pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                                 })}
                                 value={props.data.first_name}
                               ></TextField>
@@ -621,8 +653,9 @@ function EmpApplicationForm3(props: Props) {
                                 label="Last Name"
                                 inputRef={register({
                                   required: reqBits.applicantLastName,
+                                  pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                                 })}
-                                helperText={RequireError}
+                                helperText={errors && errors.applicantLastName ? errors.applicantLastName.message : RequireError}
                               ></TextField>
                             </Grid>
                             <Grid item xs={11} style={{ marginBottom: "10px" }}>
@@ -720,9 +753,10 @@ function EmpApplicationForm3(props: Props) {
                                     : true
                                 }
                                 label="Emergency: First Name"
-                                helperText={RequireError}
+                                helperText={errors && errors.emergencyContactfirstName ? errors.emergencyContactfirstName.message : RequireError}
                                 inputRef={register({
                                   required: reqBits.emergencyContactfirstName,
+                                  pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                                 })}
                               ></TextField>
                             </Grid>
@@ -741,8 +775,9 @@ function EmpApplicationForm3(props: Props) {
                                 label="Emergency: Last Name"
                                 inputRef={register({
                                   required: reqBits.emergencyContactlastName,
+                                  pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                                 })}
-                                helperText={RequireError}
+                                helperText={errors && errors.emergencyContactlastName ? errors.emergencyContactlastName.message : RequireError}
                               ></TextField>
                             </Grid>
                             <Grid item xs={11} style={{ marginBottom: "10px" }}>
@@ -787,22 +822,7 @@ function EmpApplicationForm3(props: Props) {
                               ></TextField> */}
                             </Grid>
                             <Grid item xs={5} style={{ marginBottom: "10px" }}>
-                              <TextField
-                                name="age"
-                                variant="outlined"
-                                size="small"
-                                type="number"
-                                className="col-12"
-                                error={errors.age == undefined ? false : true}
-                                label="Age"
-                                helperText={RequireError}
-                                inputRef={register({
-                                  required: reqBits.age,
-                                })}
-                              ></TextField>
-                            </Grid>
-                            <Grid item xs={5} style={{ marginBottom: "10px" }}>
-                              <TextField
+                            <TextField
                                 name="applicantdateofbirth"
                                 variant="outlined"
                                 size="small"
@@ -814,13 +834,32 @@ function EmpApplicationForm3(props: Props) {
                                     : true
                                 }
                                 helperText={"Date of Birth " + RequireError}
+                                onChange={getAge}
                                 inputRef={register({
                                   required: reqBits.applicantdateofbirth,
                                 })}
                                 inputProps={{
                                   max: getMaxDate(),
+                                  min: getMaxAgeLimit(),
                                 }}
                               ></TextField>
+                            </Grid>
+                            <Grid item xs={5} style={{ marginBottom: "10px" }}>
+                            <TextField
+                                name="age"
+                                variant="outlined"
+                                size="small"
+                                type="number"
+                                className="col-12"
+                                error={errors.age == undefined ? false : true}
+                                label="Age"
+                                helperText={RequireError}
+                                value={age}
+                                inputRef={register({
+                                  required: reqBits.age,
+                                })}
+                              ></TextField>
+                            
                             </Grid>
                             <Grid item xs={11} style={{ marginBottom: "10px" }}>
                               <TextField

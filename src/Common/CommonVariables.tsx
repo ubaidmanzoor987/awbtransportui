@@ -850,6 +850,16 @@ export const getMaxDate = () => {
 };
 
 
+export const getMaxAgeLimit = () => {
+  let date = new Date();
+  date.setFullYear(date.getFullYear() - 80);
+  // max: "2020-01-01",
+  // console.log("date.toLocaleDateString()");
+  // console.log(date.toISOString().split("T")[0]);
+
+  return date.toISOString().split("T")[0];
+}
+
 
 export const getMinDateLimit = (fromDate:string) => {
   if(fromDate === "" || fromDate === undefined ) return "";

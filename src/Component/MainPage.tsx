@@ -15,7 +15,7 @@ export default function MainPage() {
       <Navbar />
       <Header />
       <Services />
-      <Portfolio />
+      {/* <Portfolio /> */}
       <About />
       <Team />
       <Clients />

@@ -73,6 +73,10 @@ export default function EmpApplicationForm7(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if(props.data.employeeSignature !== undefined){
+      sigPad.current.fromDataURL(props.data.employeeSignature);
+    }
+
   }, []);
 
   let Link = Scroll.Link;

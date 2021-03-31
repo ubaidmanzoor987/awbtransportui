@@ -13,7 +13,7 @@ import { Link as RouterLink } from "react-router-dom";
 
 const links = [
   { href: "services", text: "Services" },
-  { href: "portfolio", text: "Portfolio" },
+  // { href: "portfolio", text: "Portfolio" },
   { href: "about", text: "About" },
   { href: "team", text: "Team" },
   { href: "contact", text: "Contact" },
