@@ -31,7 +31,8 @@ type NavbarState = {
 };
 
 type NavbarProps = {
-  addLogout: Boolean;
+  addLogout?: Boolean;
+  adminLogout?: Boolean;
 };
 
 export default class NavbarCareer extends Component<NavbarProps, NavbarState> {
@@ -62,6 +63,10 @@ export default class NavbarCareer extends Component<NavbarProps, NavbarState> {
     if (this.props.addLogout) {
       links.pop();
       links.push({ href: "/logout", text: "Sign Out" });
+    }
+    if (this.props.adminLogout) {
+      links.pop();
+      links.push({ href: "/hrportal/logout/", text: "Sign Out" });
     }
     return (
       <div>
