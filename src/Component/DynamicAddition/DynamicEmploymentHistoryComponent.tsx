@@ -46,6 +46,8 @@ import {
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
 import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
+import FromToDateComponent from "../SubComponents/FromToDate";
+import PhoneNumberComponent from "../SubComponents/PhoneNumberComponent";
 
 type Props = {
   idPrefix: string;
@@ -125,7 +127,17 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                 alignItems="baseline"
                 spacing={3}
               >
-                <Grid item xs={6}>
+                <FromToDateComponent
+                       useForm={props.useForm}
+                       mainId={props.idPrefix}
+                       fromId="employmentHistoryfrom"
+                       toId="employmentHistoryTo"
+                       index={index}
+                       item={item}
+                       defaultFromDate={item.employmentHistoryfrom}
+                       defaultToDate={item.employmentHistoryTo}            
+                />
+                {/* <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].employmentHistoryfrom`}
                     variant="outlined"
@@ -167,7 +179,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                     helperText={reqBits.employmentHistoryTo && RequireError}
                     //useForms Handling End
                   ></TextField>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={6}>
                   <TextField
                     name={`${props.idPrefix}[${index}].employmentHistorystatus`}
@@ -217,7 +229,19 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                   ></TextField>
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField
+                  <PhoneNumberComponent
+                        label="Company Phone Number"
+                        mainId={`${props.idPrefix}[${index}].employmentHistorycompanyPhone`}
+                        defaultValue={item.employmentHistorycompanyPhone}
+                        className="col-12"
+                        useForms={props.useForm}
+                        isPartOfDynamicComponent={true}
+                        parentId="employmentHistory"
+                        childSubId="employmentHistorycompanyPhone"
+                        parentIndex={index}
+                  ></PhoneNumberComponent>
+
+                  {/* <TextField
                     name={`${props.idPrefix}[${index}].employmentHistorycompanyPhone`}
                     variant="outlined"
                     size="small"
@@ -240,7 +264,7 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
                       reqBits.employmentHistorycompanyPhone && RequireError
                     }
                     //useForms Handling End
-                  ></TextField>
+                  ></TextField> */}
                 </Grid>
                 <Grid item xs={6}>
                   <TextField

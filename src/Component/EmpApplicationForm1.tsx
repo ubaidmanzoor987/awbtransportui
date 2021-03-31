@@ -37,6 +37,7 @@ import {
   print,
   snackbarDuratuion,
   getMaxDate,
+  getMaxAgeLimit,
 } from "../Common/CommonVariables";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 
@@ -53,6 +54,9 @@ import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
 import { DynamicAddressComponent } from "./DynamicAddition/DynamicAddressComponent";
 import { baseUrl } from "../shared/baseUrl";
 import {deleteFile} from "../services/removeFileApi";
+import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
+
+
 
 type Props = { data?: any; handler?: any; setData: any };
 const startTimeVal = [
@@ -81,6 +85,7 @@ function EmpApplicationForm1(props: Props) {
   );
 
 
+  const [disableAllUploadButton,setDisableAllUploadButton] = useState(false);
 
   useEffect(()=>{   
     console.log("hideAddressesComponent");
@@ -107,8 +112,11 @@ function EmpApplicationForm1(props: Props) {
 
   const handleFileUpload = async (event: any , fileName:string) => {
     if (event.target.files === undefined) return;
+    if(disableAllUploadButton === true) return;
     console.log("fileName");
     console.log(fileName);
+
+    setDisableAllUploadButton(true);
 
     const formData = new FormData();
     // if (manualStates.resume == undefined || manualStates.resume == null) {
@@ -117,6 +125,7 @@ function EmpApplicationForm1(props: Props) {
     formData.append("user_name", manualStates.user_name);
     formData.append(fileName,fileName);
     // formData.append("resume", 'dummy');
+    
     let response = await fileUploadApi(formData);
     console.log("response uploaded");
     res = await response.json();
@@ -157,6 +166,7 @@ function EmpApplicationForm1(props: Props) {
 
   const Forms = useForm({
     defaultValues: data,
+    shouldFocusError: true,
   });
   console.log("data");
   console.log(data);
@@ -199,10 +209,12 @@ function EmpApplicationForm1(props: Props) {
     if (hideAddressesComponent === false) {
       data.addresses = undefined;
     }
+    
+
+
     console.log("data form1 submit");
     console.log(data);
-    // handleFileUpload(document.getElementById("dmvFilesToUpload"));
-    data.phone_number = phonePattern;
+    // data.phone_number = phonePattern;
     data.user_name = manualStates.user_name;
     print("Sending :", data);
     const resdata = await update(data);
@@ -211,7 +223,6 @@ function EmpApplicationForm1(props: Props) {
       props.setData(resdata.data.data);
       setSuccesOrErrorBit("success");
       setSuccessSnackOpen(true);
-      // props.handler();
     } catch (ex) {
       console.log("Error Exaption Seerver Error");
       console.log(ex);
@@ -231,7 +242,7 @@ function EmpApplicationForm1(props: Props) {
   const classes = styleClasses.useStyles();
 
   const RequireError: string = "Required *";
-  const WrongPatternError: string = "Wrong Pattern";
+  const WrongPatternError: string = "Invalid Input";
 
   const download_user_cv = (user_name: string,fileName:string) => {
     console.log("user_name");
@@ -272,6 +283,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
   ] = React.useState(false);
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    setDisableAllUploadButton(false);
     if (reason === "clickaway") {
       return;
     }
@@ -288,6 +300,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
     event?: React.SyntheticEvent,
     reason?: string
   ) => {
+    setDisableAllUploadButton(false);
     if (reason === "clickaway") {
       return;
     }
@@ -344,12 +357,13 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       className={classNames("col-8")}
                       label="First Name"
                       error={errors.first_name === undefined ? false : true}
-                      helperText={RequireError}
+                      helperText={errors && errors["first_name"] && errors["first_name"].message}
                       inputRef={register({
                         required: {
                           value: reqBits.first_name,
                           message: RequireError,
                         },
+                        pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                       })}
                     ></TextField>
                   </Grid>
@@ -359,6 +373,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       variant="outlined"
                       size="small"
                       type="text"
+                      helperText={errors && errors["last_name"] && errors["last_name"].message}
                       className="col-8"
                       label="Last Name"
                       error={errors.last_name === undefined ? false : true}
@@ -367,11 +382,19 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                           value: reqBits.last_name,
                           message: RequireError,
                         },
+                        pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                       })}
                     ></TextField>
                   </Grid>
                   <Grid item xs={6}>
-                    <TextField
+                  <PhoneNumberComponent
+                        mainId="phone_number"
+                        label="Phone Number"
+                        defaultValue={manualStates.phone_number}
+                        className="col-8"
+                        useForms={Forms}
+                  ></PhoneNumberComponent>
+                    {/* <TextField
                       name="phone_number"
                       variant="outlined"
                       size="small"
@@ -379,7 +402,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       className="col-8"
                       error={errors.phone_number == undefined ? false : true}
                       label="Phone Number"
-                      helperText={RequireError}
+                      helperText={errors["phone_number"] === undefined ? (RequireError + " " + "+# ### ### #### ext.####") : errors["phone_number"].message}
                       value={
                         phonePattern ? phonePattern : manualStates.phone_number
                       }
@@ -388,20 +411,23 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                           value: reqBits.phone_number,
                           message: RequireError,
                         },
+                        // pattern:{value:/^[+][0-9]{15,26}$/ , message:"Invalid Input : +# ### ### #### ext.####"}
                       })}
-                      onChange={(e) => {
-                        if (e.target.value.length > 11) {
-                          const n = formatPhoneNumberIntl(e.target.value);
+                      // onChange={(e)=>{setPhonePatten(e.target.value)}}
+                      onChange={(e:any) => {
+                        let val = e.target.value;
+                        if (val.length > 11) {
+                          const n = formatPhoneNumberIntl(val);
                           if (n) {
                             setPhonePatten(n);
                           } else {
-                            setPhonePatten(e.target.value);
+                            setPhonePatten(val);
                           }
                         } else {
-                          setPhonePatten(e.target.value);
+                          setPhonePatten(val);
                         }
                       }}
-                    ></TextField>
+                    ></TextField> */}
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -413,6 +439,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       className={classNames("col-8", { "is-invalid": true })}
                       error={errors.email == undefined ? false : true}
                       helperText={errors.email && errors.email?.message}
+                      value={props.data.email}
                       inputRef={register({
                         required: {
                           value: reqBits.email,
@@ -434,6 +461,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       size="small"
                       inputProps={{
                         max: getMaxDate(),
+                        min: getMaxAgeLimit(),
                       }}
                       className="col-8"
                       error={errors.dateofBirth == undefined ? false : true}
@@ -477,7 +505,13 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       label="Social Security"
                       className="col-8"
                       error={errors.socialSecurity == undefined ? false : true}
-                      helperText={RequireError}
+                      helperText={reqBits.socialSecurity 
+                        ? 
+                        ((errors["socialSecurity"] !== undefined 
+                              ? (errors["socialSecurity"].message) 
+                              : RequireError)) 
+                        : ""   
+                      }
                       inputRef={register({
                         required: {
                           value: reqBits.socialSecurity,
@@ -543,13 +577,14 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                           type="text"
                           label="City"
                           className="col-12"
-                          error={errors.city == undefined ? false : true}
-                          helperText={errors.city && errors.city.message}
+                          error={errors && errors.city == undefined ? false : true}
+                          helperText={errors && errors["city"] && errors["city"].message}
                           inputRef={register({
                             required: {
                               value: reqBits.city,
                               message: RequireError,
                             },
+                            pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                           })}
                         ></TextField>
                       </Grid>
@@ -810,10 +845,11 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   className={classes.input}
                   id="resumeFilesToUpload"
                   type="file"
+                  disabled={disableAllUploadButton}
                   onChange={(e)=>{handleFileUpload(e,"resume")}}
                 />
                 <label htmlFor="resumeFilesToUpload">
-                  <Button variant="contained" color="primary" component="span">
+                  <Button variant="contained" color="primary" component="span" disabled={disableAllUploadButton}>
                     Upload Resume
                   </Button>
                 </label>
@@ -905,10 +941,11 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   className={classes.input}
                   id="dmvFilesToUpload"
                   type="file"
+                  disabled={disableAllUploadButton}
                   onChange={(e)=>{handleFileUpload(e,"dmvFile"); console.log("DVM FIle")}}
                 />
                 <label htmlFor="dmvFilesToUpload">
-                  <Button variant="contained" color="primary" component="span">
+                  <Button variant="contained" color="primary" component="span"  disabled={disableAllUploadButton}>
                     Upload DMV
                   </Button>
                 </label>
@@ -1004,10 +1041,11 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   className={classes.input}
                   id="dodMedicalCardFilesToUpload"
                   type="file"
+                  disabled={disableAllUploadButton}
                   onChange={(e)=>{handleFileUpload(e,"dodMedicalCardFile"); console.log("DVM FIle")}}
                 />
                 <label htmlFor="dodMedicalCardFilesToUpload">
-                  <Button variant="contained" color="primary" component="span">
+                  <Button variant="contained" color="primary" component="span"  disabled={disableAllUploadButton}>
                     Upload DOD Medical Card Files
                   </Button>
                 </label>
@@ -1102,10 +1140,11 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   className={classes.input}
                   id="driverLicenceFilesToUpload"
                   type="file"
+                  disabled={disableAllUploadButton}
                   onChange={(e)=>{handleFileUpload(e,"driverLicenceFile"); console.log("DVM FIle")}}
                 />
                 <label htmlFor="driverLicenceFilesToUpload">
-                  <Button variant="contained" color="primary" component="span">
+                  <Button variant="contained" color="primary" component="span"  disabled={disableAllUploadButton}>
                     Upload Driver License File
                   </Button>
                 </label>

@@ -35,7 +35,7 @@ import {
   reqBits,
   snackbarDuratuion,
 } from "../Common/CommonVariables";
-import { Addresses, tReferences, getMaxDate } from "../Common/CommonVariables";
+import { Addresses, tReferences, getMaxDate, getMaxAgeLimit } from "../Common/CommonVariables";
 import RadioQuestions from "./SubComponents/RadioQuestions";
 import AddressesComponent from "./SubComponents/AddressesComponent";
 import EmploymentHistory from "./SubComponents/EmploymentHistory";
@@ -58,6 +58,8 @@ import { useRef, useState } from "react";
 import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
 import AlertComponent from "./SubComponents/AlertComponent";
+import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
+
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -126,7 +128,7 @@ function EmpApplicationForm3(props: Props) {
   const [signatureHelperTextError, setSignatureHelperTextError] = useState(
     false
   );
-  const Forms = useForm({ defaultValues: props.data });
+  const Forms = useForm({ defaultValues: props.data, shouldFocusError:true, criteriaMode:"all" });
   const { register, handleSubmit, errors, control } = Forms;
 
   const [licenseQuestionBits, setLicenseQuestionBits] = useState({
@@ -153,7 +155,12 @@ function EmpApplicationForm3(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // sigPad.fromDataURL(props.data.signature, null);
+    console.log("sigPadsigPadsigPad");
+    console.log(sigPad);
+    console.log(sigPad.current);
+    if(props.data.signature !== undefined){
+      sigPad.current.fromDataURL(props.data.signature);
+    }
   }, []);
 
   const [phonePattern, setPhonePatten] = useState(
@@ -217,6 +224,17 @@ function EmpApplicationForm3(props: Props) {
     data.signature = base64SignatureImage;
     console.log("datadata");
     console.log(data);
+    
+    
+    if(!(data.applicantAddresses)) data.applicantAddresses = [];
+    if(!(data.employmentHistory)) data.employmentHistory = [];
+    if(!(data.employmentAccidentsHistory)) data.employmentAccidentsHistory = [];
+    if(!(data.employmentExperienceHistory)) data.employmentExperienceHistory = [];
+    if(!(data.violations)) data.violations = [];
+    if(!(data.licences)) data.licences = [];
+    if(!(data.references)) data.references = [];
+
+
     data.user_name = props.data.user_name;
     data.applicantfirstName = props.data.first_name;
     data.applicantLastName = props.data.last_name
@@ -237,6 +255,22 @@ function EmpApplicationForm3(props: Props) {
       //-------------SNACKBAR-------------
     }
   };
+
+  const calculateAge = (val:string)=>{
+    let date = new Date(val);
+    let currYear = new Date(Date.now()).getFullYear();
+    return  currYear - date.getFullYear();
+}
+
+  const [age,setAge] = useState(calculateAge(props.data.applicantdateofbirth));
+
+  const getAge = (e:any) => {
+    let val = e.target.value;
+    setAge(calculateAge(val));
+  }
+
+
+
 
   console.log("props.data.applicantAddresses");
   console.log(props.data.applicantAddresses);
@@ -380,16 +414,15 @@ function EmpApplicationForm3(props: Props) {
                           label="City"
                           className="col-6"
                           error={
-                            errors.companyCity === undefined ? false : true
+                            errors && errors.companyCity === undefined ? false : true
                           }
-                          helperText={
-                            errors.companyCity && errors.companyCity?.message
-                          }
+                          helperText={errors && errors.companyCity ? errors.companyCity.message : RequireError}
                           inputRef={register({
                             required: {
                               value: reqBits.companyCity,
                               message: RequireError,
                             },
+                            pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                           })}
                         ></TextField>
                       </Grid>
@@ -593,12 +626,13 @@ function EmpApplicationForm3(props: Props) {
                                     : true
                                 }
                                 label="First Name"
-                                helperText={RequireError}
+                                helperText={errors && errors.applicantfirstName ? errors.applicantfirstName.message : RequireError}
                                 inputRef={register({
                                   required: {
                                     value: reqBits.applicantfirstName,
                                     message: RequireError,
                                   },
+                                  pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                                 })}
                                 value={props.data.first_name}
                               ></TextField>
@@ -619,12 +653,20 @@ function EmpApplicationForm3(props: Props) {
                                 label="Last Name"
                                 inputRef={register({
                                   required: reqBits.applicantLastName,
+                                  pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                                 })}
-                                helperText={RequireError}
+                                helperText={errors && errors.applicantLastName ? errors.applicantLastName.message : RequireError}
                               ></TextField>
                             </Grid>
                             <Grid item xs={11} style={{ marginBottom: "10px" }}>
-                              <TextField
+                            <PhoneNumberComponent
+                                  className="col-12"
+                                  mainId="applicantPhoneNumber"
+                                  label="Phone Number"
+                                  defaultValue={props.data.applicantPhoneNumber}
+                                  useForms={Forms}
+                            ></PhoneNumberComponent>
+                              {/* <TextField
                                 name="applicantPhoneNumber"
                                 variant="outlined"
                                 size="small"
@@ -635,34 +677,57 @@ function EmpApplicationForm3(props: Props) {
                                     ? false
                                     : true
                                 }
+                                helperText={errors["applicantPhoneNumber"] === undefined ? (RequireError + " " + "+# ### ### #### ext.####") : errors["applicantPhoneNumber"].message}
+                                
                                 inputRef={register({
                                   required: {
                                     value: reqBits.applicantPhoneNumber,
                                     message: RequireError,
                                   },
+                                  // pattern:{value:/^[+][0-9]{15,26}$/ , message:"Invalid Input : +# ### ### #### ext.####"}
                                 })}
+                                // onChange={(e)=>{setPhonePatten(e.target.value)}}
+                                onChange={(e:any) => {
+                                  let val = e.target.value;
+                                  if (val.length > 11) {
+                                    const n = formatPhoneNumberIntl(val);
+                                    if (n) {
+                                      setPhonePatten(n);
+                                    } else {
+                                      setPhonePatten(val);
+                                    }
+                                  } else {
+                                    setPhonePatten(val);
+                                  }
+                                }}
+                                // inputRef={register({
+                                //   required: {
+                                //     value: reqBits.applicantPhoneNumber,
+                                //     message: RequireError,
+                                //   },
+                                // })}
                                 label="Phone Number"
-                                helperText={RequireError}
+                                // helperText={RequireError}
                                 value={
                                   phonePattern
                                     ? phonePattern
                                     : props.data.applicantPhoneNumber
                                 }
-                                onChange={(e) => {
-                                  if (e.target.value.length > 11) {
-                                    const n = formatPhoneNumberIntl(
-                                      e.target.value
-                                    );
-                                    if (n) {
-                                      //console.log(n);
-                                      setPhonePatten(n);
-                                    } else {
-                                      setPhonePatten(e.target.value);
-                                    }
-                                  } else {
-                                    setPhonePatten(e.target.value);
-                                  }
-                                }}
+                                // onChange={(e) => {
+                                //   if (e.target.value.length > 11) {
+                                //     const n = formatPhoneNumberIntl(
+                                //       e.target.value
+                                //     );
+                                //     if (n) {
+                                //       //console.log(n);
+                                //       setPhonePatten(n);
+                                //     } else {
+                                //       setPhonePatten(e.target.value);
+                                //     }
+                                //   } else {
+                                //     setPhonePatten(e.target.value);
+                                //   }
+                                // }}
                                 // inputRef={register({
                                 //   required: {
                                 //     value: reqBits.applicantPhoneNumber,
@@ -673,7 +738,7 @@ function EmpApplicationForm3(props: Props) {
                                 //     message: WrongPatternError + " : ###-###-#### x####",
                                 //   },
                                 // })}
-                              ></TextField>
+                              ></TextField> */}
                             </Grid>
                             <Grid item xs={5} style={{ marginBottom: "10px" }}>
                               <TextField
@@ -688,9 +753,10 @@ function EmpApplicationForm3(props: Props) {
                                     : true
                                 }
                                 label="Emergency: First Name"
-                                helperText={RequireError}
+                                helperText={errors && errors.emergencyContactfirstName ? errors.emergencyContactfirstName.message : RequireError}
                                 inputRef={register({
                                   required: reqBits.emergencyContactfirstName,
+                                  pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                                 })}
                               ></TextField>
                             </Grid>
@@ -709,12 +775,20 @@ function EmpApplicationForm3(props: Props) {
                                 label="Emergency: Last Name"
                                 inputRef={register({
                                   required: reqBits.emergencyContactlastName,
+                                  pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                                 })}
-                                helperText={RequireError}
+                                helperText={errors && errors.emergencyContactlastName ? errors.emergencyContactlastName.message : RequireError}
                               ></TextField>
                             </Grid>
                             <Grid item xs={11} style={{ marginBottom: "10px" }}>
-                              <TextField
+                            <PhoneNumberComponent
+                                  label="Emergency: Mobile Number"
+                                  mainId="emergencyContactNumber"
+                                  defaultValue={props.data.emergencyContactNumber}
+                                  className="col-12"
+                                  useForms={Forms}
+                            ></PhoneNumberComponent>
+                              {/* <TextField
                                 name="emergencyContactNumber"
                                 variant="outlined"
                                 size="small"
@@ -745,25 +819,10 @@ function EmpApplicationForm3(props: Props) {
                                     setEmergencyPhonePatten(e.target.value);
                                   }
                                 }}
-                              ></TextField>
+                              ></TextField> */}
                             </Grid>
                             <Grid item xs={5} style={{ marginBottom: "10px" }}>
-                              <TextField
-                                name="age"
-                                variant="outlined"
-                                size="small"
-                                type="number"
-                                className="col-12"
-                                error={errors.age == undefined ? false : true}
-                                label="Age"
-                                helperText={RequireError}
-                                inputRef={register({
-                                  required: reqBits.age,
-                                })}
-                              ></TextField>
-                            </Grid>
-                            <Grid item xs={5} style={{ marginBottom: "10px" }}>
-                              <TextField
+                            <TextField
                                 name="applicantdateofbirth"
                                 variant="outlined"
                                 size="small"
@@ -775,13 +834,32 @@ function EmpApplicationForm3(props: Props) {
                                     : true
                                 }
                                 helperText={"Date of Birth " + RequireError}
+                                onChange={getAge}
                                 inputRef={register({
                                   required: reqBits.applicantdateofbirth,
                                 })}
                                 inputProps={{
                                   max: getMaxDate(),
+                                  min: getMaxAgeLimit(),
                                 }}
                               ></TextField>
+                            </Grid>
+                            <Grid item xs={5} style={{ marginBottom: "10px" }}>
+                            <TextField
+                                name="age"
+                                variant="outlined"
+                                size="small"
+                                type="number"
+                                className="col-12"
+                                error={errors.age == undefined ? false : true}
+                                label="Age"
+                                helperText={RequireError}
+                                value={age}
+                                inputRef={register({
+                                  required: reqBits.age,
+                                })}
+                              ></TextField>
+                            
                             </Grid>
                             <Grid item xs={11} style={{ marginBottom: "10px" }}>
                               <TextField

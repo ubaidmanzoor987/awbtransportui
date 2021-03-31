@@ -99,7 +99,7 @@ export default function DrivingExperience() {
                             variant="outlined"
                             size="small"
                             type="date"
-                            helperText="From Date"
+                            helperText="From Date "
                             className="col-12"
                             inputRef={register({
                               required: {

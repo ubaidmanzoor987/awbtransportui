@@ -54,9 +54,11 @@ class EmploymentApplication extends Component<
   componentDidMount() {
     // let data = { ...this.context.data, addresses: [addr1] };
     console.log("context", this.context.data);
-
-
-
+    
+    if (!this.context.data.user_name) {
+      return <Redirect to="/login" />;
+    }
+    
     if (this.context.data.user_name) {
       this.setState(this.context.data);
     }
@@ -128,7 +130,11 @@ class EmploymentApplication extends Component<
   }
 
   render() {
+    console.log(this.context.data);
 
+    if (!this.context.data.user_name) {
+      return <Redirect to="/login" />;
+    }
 
     if (this.context.data.applicantAddresses.length == 0) {
       this.context.data.applicantAddresses.push(dummyAddrData);
@@ -180,11 +186,6 @@ class EmploymentApplication extends Component<
     console.log(this.context.data.violations);
     if (this.context.data.violations.length === 0) {
       this.context.data.violations.push(trafficConvictionDummyElement);
-    }
-    console.log(this.context.data);
-
-    if (!this.context.data.user_name) {
-      return <Redirect to="/login" />;
     }
 
     this.context.data.applicantfirstName = this.context.data.first_name;

@@ -50,6 +50,7 @@ import {
 import { update } from "../../services/updateApi";
 import RadioQuestions from "../SubComponents/RadioQuestions";
 import ReactHookFormSelect from "../SubComponents/ReactHookFormSelect";
+import PhoneNumberComponent from "../SubComponents/PhoneNumberComponent";
 
 type Props = {
   idPrefix: string;
@@ -129,8 +130,19 @@ export function DynamicReferences(props: Props) {
                         value: reqBits.referencefirstName,
                         message: RequireError,
                       },
+                      pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                     })}
-                    helperText={reqBits.referencefirstName && RequireError}
+                    helperText={
+                      errors && 
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index]["referencefirstName"] &&
+                      reqBits.referencefirstName  
+                    ? (
+                        (errors[props.idPrefix][index]["referencefirstName"].message)
+                      )
+                      : (reqBits.referencefirstName && RequireError)
+                    }
                     variant="outlined"
                     label="First Name"
                     size="small"
@@ -153,7 +165,19 @@ export function DynamicReferences(props: Props) {
                         value: reqBits.referencelastName,
                         message: RequireError,
                       },
+                      pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                     })}
+                    helperText={
+                      errors && 
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index]["referencelastName"] &&
+                      reqBits.referencelastName  
+                    ? (
+                        (errors[props.idPrefix][index]["referencelastName"].message)
+                      )
+                      : (reqBits.referencelastName && RequireError)
+                    }
                     variant="outlined"
                     label="Last Name"
                     size="small"
@@ -209,6 +233,20 @@ export function DynamicReferences(props: Props) {
                   />
                 </Grid>
                 <Grid item xs={6}>
+
+                <PhoneNumberComponent
+                      label="Phone Number"
+                      mainId={`${props.idPrefix}[${index}].referencePhoneNumber`}
+                      defaultValue={item.referencePhoneNumber}
+                      className="col-12"
+                      useForms={props.useForm}
+                      isPartOfDynamicComponent={true}
+                      parentId={props.idPrefix}
+                      childSubId="referencePhoneNumber"
+                      parentIndex={index}
+                ></PhoneNumberComponent>
+
+{/* 
                   <TextField
                     name={`${props.idPrefix}[${index}].referencePhoneNumber`}
                     defaultValue={item.referencePhoneNumber}
@@ -241,7 +279,7 @@ export function DynamicReferences(props: Props) {
                     //     message: WrongPatternError + " : ###-###-#### x####",
                     //   },
                     // })}
-                  ></TextField>
+                  ></TextField> */}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -298,10 +336,20 @@ export function DynamicReferences(props: Props) {
                         value: reqBits.referenceCity,
                         message: RequireError,
                       },
+                      pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
                     })}
                     label="City"
-                    helperText={reqBits.referenceCity && RequireError}
-
+                    helperText={
+                      errors && 
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index]["referenceCity"] &&
+                      reqBits.referenceCity  
+                    ? (
+                        (errors[props.idPrefix][index]["referenceCity"].message)
+                      )
+                      : (reqBits.referenceCity && RequireError)
+                    }
                     // inputRef={register({
                     //   required: {
                     //     value: reqBits.referenceCity,

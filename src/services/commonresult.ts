@@ -90,6 +90,11 @@ export function processResult(resultData: any) {
         resultData.data.fromDateAddress = new Date((resultData.data.fromDateAddress as any).$date).toISOString().split('T')[0];
     }
 
+    if (resultData.data.dateOfApplication) {
+        resultData.data.dateOfApplication = new Date((resultData.data.dateOfApplication as any).$date).toISOString().split('T')[0];
+    }
+
+    
     
     console.log("proces", resultData.data);
 }
