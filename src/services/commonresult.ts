@@ -94,6 +94,11 @@ export function processResult(resultData: any) {
         resultData.data.dateOfApplication = new Date((resultData.data.dateOfApplication as any).$date).toISOString().split('T')[0];
     }
 
+    if (resultData.data.expiration_date) {
+        resultData.data.expiration_date = new Date((resultData.data.expiration_date as any).$date).toISOString().split('T')[0];
+    }
+
+
     
     
     console.log("proces", resultData.data);

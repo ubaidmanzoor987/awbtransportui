@@ -247,6 +247,15 @@ type Dict = { [index: string]: boolean };
 
 export let reqBits = {
   employmentHistorycompanyName:true,
+  non_united_state_citizen:true,
+  united_state_citizen:true,
+  lawful_permanent_resident:true,
+  alien_authorized:true,
+  alien_registration_number:true,
+  expiration_date:true,
+  formi94_reg_number:true,
+  foreign_passport_number:true,
+  issuance_country:true,
   first_name: true,
   last_name: false,
   phone_number: true,

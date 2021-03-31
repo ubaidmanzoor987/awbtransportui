@@ -134,7 +134,7 @@ function EmpApplicationForm2(props: Props) {
           <Grid
             container
             direction="row"
-            justify="space-between"
+            justify="space-evenly"
             alignItems="baseline"
             spacing={3}
           >
@@ -260,11 +260,10 @@ function EmpApplicationForm2(props: Props) {
             <Grid item xs={1}></Grid>
 
             {/* BUTTON Start */}
-            <Grid item xs={2}></Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 type="button"
-                className="col-12"
+                className="col-10"
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -274,17 +273,16 @@ function EmpApplicationForm2(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 type="submit"
-                className="col-12"
+                className="col-10"
                 variant="contained"
                 color="primary"
               >
                 Save This & Next
               </Button>
             </Grid>
-            <Grid item xs={2}></Grid>
             {/* BUTTON End */}
           </Grid>
         </form>

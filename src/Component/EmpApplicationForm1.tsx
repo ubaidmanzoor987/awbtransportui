@@ -53,10 +53,8 @@ import { formatPhoneNumberIntl } from "react-phone-number-input";
 import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
 import { DynamicAddressComponent } from "./DynamicAddition/DynamicAddressComponent";
 import { baseUrl } from "../shared/baseUrl";
-import {deleteFile} from "../services/removeFileApi";
+import { deleteFile } from "../services/removeFileApi";
 import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
-
-
 
 type Props = { data?: any; handler?: any; setData: any };
 const startTimeVal = [
@@ -84,15 +82,15 @@ function EmpApplicationForm1(props: Props) {
     !(manualStates.lastThreeYearResidenceCheck === "Yes")
   );
 
+  const [disableAllUploadButton, setDisableAllUploadButton] = useState(false);
 
-  const [disableAllUploadButton,setDisableAllUploadButton] = useState(false);
-
-  useEffect(()=>{   
+  useEffect(() => {
     console.log("hideAddressesComponent");
     console.log(hideAddressesComponent);
-    if(hideAddressesComponent === false){
+    if (hideAddressesComponent === false) {
       data.addresses = "";
-    }},[hideAddressesComponent]);
+    }
+  }, [hideAddressesComponent]);
 
   let resumeFile1 = undefined;
 
@@ -104,15 +102,12 @@ function EmpApplicationForm1(props: Props) {
     window.scrollTo(0, 0);
   }, []);
 
+  let res: any;
+  const [response, setResponse] = useState("");
 
-
- 
-  let res:any ;
- const [response , setResponse] = useState("");
-
-  const handleFileUpload = async (event: any , fileName:string) => {
+  const handleFileUpload = async (event: any, fileName: string) => {
     if (event.target.files === undefined) return;
-    if(disableAllUploadButton === true) return;
+    if (disableAllUploadButton === true) return;
     console.log("fileName");
     console.log(fileName);
 
@@ -123,9 +118,9 @@ function EmpApplicationForm1(props: Props) {
 
     formData.append("file", event.target.files[0], event.target.files[0]?.name);
     formData.append("user_name", manualStates.user_name);
-    formData.append(fileName,fileName);
+    formData.append(fileName, fileName);
     // formData.append("resume", 'dummy');
-    
+
     let response = await fileUploadApi(formData);
     console.log("response uploaded");
     res = await response.json();
@@ -133,11 +128,14 @@ function EmpApplicationForm1(props: Props) {
     console.log(res);
     console.log(res.error);
     // if (response.ok === true && response.status === 200) {
-    if (res.status === "true" ) {
+    if (res.status === "true") {
       setFileUploadSuccesOrErrorBit("success");
       setFileUploadSuccessSnackOpen(true);
       setResponse(res.message);
-      setManualStates({...manualStates,[fileName]:event.target.files[0]?.name})
+      setManualStates({
+        ...manualStates,
+        [fileName]: event.target.files[0]?.name,
+      });
 
       // if(fileName === "resume"){
       //   setManualStates({ ...manualStates, resume: event.target.files[0]?.name });
@@ -146,8 +144,8 @@ function EmpApplicationForm1(props: Props) {
       //   setManualStates({ ...manualStates, dmvFile: event.target.files[0]?.name });
       // }
     } else {
-        setFileUploadSuccesOrErrorBit("error");
-        setFileUploadSuccessSnackOpen(true);
+      setFileUploadSuccesOrErrorBit("error");
+      setFileUploadSuccessSnackOpen(true);
       setResponse(res.error);
     }
     // } else {
@@ -162,7 +160,6 @@ function EmpApplicationForm1(props: Props) {
     //   fileUploadApi(formData);
     // }
   };
-
 
   const Forms = useForm({
     defaultValues: data,
@@ -184,33 +181,35 @@ function EmpApplicationForm1(props: Props) {
     "success"
   );
 
-  const eligibletoWorkInUnitedStateErrorMessage = "You must be eligible to work in United States";
-  const willingForDrugTestErrorMessage =  "You must be willing to undertake a drug test as part of this hiring process"
+  const eligibletoWorkInUnitedStateErrorMessage =
+    "You must be eligible to work in United States";
+  const willingForDrugTestErrorMessage =
+    "You must be willing to undertake a drug test as part of this hiring process";
   const onSubmit = async (data: any) => {
-    if(data.eligibletoWorkInUnitedState === "No")
-    {
+    if (data.eligibletoWorkInUnitedState === "No") {
       setError("eligibletoWorkInUnitedState", {
         type: "manual",
-        message: eligibletoWorkInUnitedStateErrorMessage
+        message: eligibletoWorkInUnitedStateErrorMessage,
       });
     }
 
-    if(data.willingForDrugTest === "No")
-    {
+    if (data.willingForDrugTest === "No") {
       setError("willingForDrugTest", {
         type: "manual",
-        message: willingForDrugTestErrorMessage
+        message: willingForDrugTestErrorMessage,
       });
     }
-    
-    if(data.willingForDrugTest === "No" || data.eligibletoWorkInUnitedState === "No")
-    {return;}
+
+    if (
+      data.willingForDrugTest === "No" ||
+      data.eligibletoWorkInUnitedState === "No"
+    ) {
+      return;
+    }
 
     if (hideAddressesComponent === false) {
       data.addresses = undefined;
     }
-    
-
 
     console.log("data form1 submit");
     console.log(data);
@@ -244,36 +243,43 @@ function EmpApplicationForm1(props: Props) {
   const RequireError: string = "Required *";
   const WrongPatternError: string = "Invalid Input";
 
-  const download_user_cv = (user_name: string,fileName:string) => {
+  const download_user_cv = (user_name: string, fileName: string) => {
     console.log("user_name");
-    console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
-    window.open(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`, "_blank");
-};
+    console.log(
+      baseUrl +
+        "/api/get_resume?user_name=" +
+        user_name +
+        "&" +
+        `${fileName}=${fileName}`
+    );
+    window.open(
+      baseUrl +
+        "/api/get_resume?user_name=" +
+        user_name +
+        "&" +
+        `${fileName}=${fileName}`,
+      "_blank"
+    );
+  };
 
-
-
-const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
-  console.log("Remove Resume API");
-  console.log(fileName);
-  let res = await deleteFile(props.data.user_name,fileName)
-  if (res.success != undefined ) 
-  {
-    setManualStates({
-      ...manualStates,
-      [fileName]: null,
-    });
-    setFileUploadSuccesOrErrorBit("success");
-    setFileUploadSuccessSnackOpen(true);
-    setResponse(res.success);
-  } 
-  else if(res.error != undefined ) 
-  {
-    setFileUploadSuccesOrErrorBit("error");
-    setFileUploadSuccessSnackOpen(true);
-    setResponse(res.error);
-  }
-};
-
+  const removeUploadedFileFromServer = async (e: any, fileName: string) => {
+    console.log("Remove Resume API");
+    console.log(fileName);
+    let res = await deleteFile(props.data.user_name, fileName);
+    if (res.success != undefined) {
+      setManualStates({
+        ...manualStates,
+        [fileName]: null,
+      });
+      setFileUploadSuccesOrErrorBit("success");
+      setFileUploadSuccessSnackOpen(true);
+      setResponse(res.success);
+    } else if (res.error != undefined) {
+      setFileUploadSuccesOrErrorBit("error");
+      setFileUploadSuccessSnackOpen(true);
+      setResponse(res.error);
+    }
+  };
 
   //-------------SNACKBAR-------------
   const [successSnackOpen, setSuccessSnackOpen] = React.useState(false);
@@ -295,7 +301,6 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
     }
   };
 
- 
   const handleFileUploadClose = (
     event?: React.SyntheticEvent,
     reason?: string
@@ -357,13 +362,20 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       className={classNames("col-8")}
                       label="First Name"
                       error={errors.first_name === undefined ? false : true}
-                      helperText={errors && errors["first_name"] && errors["first_name"].message}
+                      helperText={
+                        errors &&
+                        errors["first_name"] &&
+                        errors["first_name"].message
+                      }
                       inputRef={register({
                         required: {
                           value: reqBits.first_name,
                           message: RequireError,
                         },
-                        pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
+                        pattern: {
+                          value: /^[a-zA-Z ]{1,30}$/,
+                          message: "Only Chracters Allowed",
+                        },
                       })}
                     ></TextField>
                   </Grid>
@@ -373,7 +385,11 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       variant="outlined"
                       size="small"
                       type="text"
-                      helperText={errors && errors["last_name"] && errors["last_name"].message}
+                      helperText={
+                        errors &&
+                        errors["last_name"] &&
+                        errors["last_name"].message
+                      }
                       className="col-8"
                       label="Last Name"
                       error={errors.last_name === undefined ? false : true}
@@ -382,18 +398,21 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                           value: reqBits.last_name,
                           message: RequireError,
                         },
-                        pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
+                        pattern: {
+                          value: /^[a-zA-Z ]{1,30}$/,
+                          message: "Only Chracters Allowed",
+                        },
                       })}
                     ></TextField>
                   </Grid>
                   <Grid item xs={6}>
-                  <PhoneNumberComponent
-                        mainId="phone_number"
-                        label="Phone Number"
-                        defaultValue={manualStates.phone_number}
-                        className="col-8"
-                        useForms={Forms}
-                  ></PhoneNumberComponent>
+                    <PhoneNumberComponent
+                      mainId="phone_number"
+                      label="Phone Number"
+                      defaultValue={manualStates.phone_number}
+                      className="col-8"
+                      useForms={Forms}
+                    ></PhoneNumberComponent>
                     {/* <TextField
                       name="phone_number"
                       variant="outlined"
@@ -505,12 +524,12 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       label="Social Security"
                       className="col-8"
                       error={errors.socialSecurity == undefined ? false : true}
-                      helperText={reqBits.socialSecurity 
-                        ? 
-                        ((errors["socialSecurity"] !== undefined 
-                              ? (errors["socialSecurity"].message) 
-                              : RequireError)) 
-                        : ""   
+                      helperText={
+                        reqBits.socialSecurity
+                          ? errors["socialSecurity"] !== undefined
+                            ? errors["socialSecurity"].message
+                            : RequireError
+                          : ""
                       }
                       inputRef={register({
                         required: {
@@ -551,15 +570,21 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                       alignItems="baseline"
                       spacing={3}
                     >
-                   <Grid item xs={6}>
+                      <Grid item xs={6}>
                         <TextField
                           name="fromDateAddress"
                           variant="outlined"
                           size="small"
                           type="date"
                           className="col-12"
-                          error={errors.fromDateAddress == undefined ? false : true}
-                          helperText={`From Date ${errors.fromDateAddress !== undefined ? errors.fromDateAddress.message : ""}`}
+                          error={
+                            errors.fromDateAddress == undefined ? false : true
+                          }
+                          helperText={`From Date ${
+                            errors.fromDateAddress !== undefined
+                              ? errors.fromDateAddress.message
+                              : ""
+                          }`}
                           inputRef={register({
                             required: {
                               value: reqBits.fromDateAddress,
@@ -577,14 +602,21 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                           type="text"
                           label="City"
                           className="col-12"
-                          error={errors && errors.city == undefined ? false : true}
-                          helperText={errors && errors["city"] && errors["city"].message}
+                          error={
+                            errors && errors.city == undefined ? false : true
+                          }
+                          helperText={
+                            errors && errors["city"] && errors["city"].message
+                          }
                           inputRef={register({
                             required: {
                               value: reqBits.city,
                               message: RequireError,
                             },
-                            pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
+                            pattern: {
+                              value: /^[a-zA-Z ]{1,30}$/,
+                              message: "Only Chracters Allowed",
+                            },
                           })}
                         ></TextField>
                       </Grid>
@@ -703,7 +735,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                     useForm={Forms}
                     isReq={reqBits.lastThreeYearResidenceCheck}
                     defaultSelected={manualStates.lastThreeYearResidenceCheck}
-                    />
+                  />
 
                   <Grid item xs={1}></Grid>
                   <Grid
@@ -714,7 +746,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   >
                     <b>NOTE 1:</b>
                     <i>
-                      If  no, add any additional addresses you lived at within
+                      If no, add any additional addresses you lived at within
                       the past 3 years below.
                     </i>
                   </Grid>
@@ -757,7 +789,6 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                         forms={Forms}
                       ></DynamicAddressComponent>
                     )}
-                  
                   </Grid>
                   <Grid item xs={1}></Grid>
                   {/* Current Address Ending */}
@@ -767,7 +798,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
             </Grid>
             <Grid item xs={1}></Grid>
             {/* Question End */}
-{/* 
+            {/* 
                         <FileUploadComponent
                              id="resume"
                              buttonText="Upload Resume"
@@ -778,13 +809,11 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                         /> */}
 
             <Grid item xs={1}></Grid>
-            <Grid item xs={10}>
-                        
-            </Grid>
+            <Grid item xs={10}></Grid>
             <Grid item xs={1}></Grid>
 
             {/* Upload Resume Start */}
-            <br/>
+            <br />
             <Grid item xs={1}></Grid>
             <Grid item xs={10}>
               <Paper elevation={3} className={classes.paper}>
@@ -811,13 +840,18 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                               <InsertDriveFileIcon />
                             </Grid>
                             <Grid item xs={6} className="text-left">
-                            {(manualStates.resume.length > 25) ?manualStates.resume.substring(0,25)+"...":manualStates.resume}
+                              {manualStates.resume.length > 25
+                                ? manualStates.resume.substring(0, 25) + "..."
+                                : manualStates.resume}
                             </Grid>
                             <Grid item xs={1}>
                               <Button>
                                 <VisibilityIcon
                                   onClick={(e: any) => {
-                                    download_user_cv(manualStates.user_name,"resume");
+                                    download_user_cv(
+                                      manualStates.user_name,
+                                      "resume"
+                                    );
                                   }}
                                 />
                               </Button>
@@ -826,7 +860,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                               <Button>
                                 <DeleteIcon
                                   onClick={(e: any) => {
-                                    removeUploadedFileFromServer(e,"resume");
+                                    removeUploadedFileFromServer(e, "resume");
                                   }}
                                 />
                               </Button>
@@ -835,7 +869,6 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                         </Paper>
                       </div>
                     )}
-                 
                   </Grid>
                   <Grid item xs={1}></Grid>
                 </Grid>
@@ -846,10 +879,17 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   id="resumeFilesToUpload"
                   type="file"
                   disabled={disableAllUploadButton}
-                  onChange={(e)=>{handleFileUpload(e,"resume")}}
+                  onChange={(e) => {
+                    handleFileUpload(e, "resume");
+                  }}
                 />
                 <label htmlFor="resumeFilesToUpload">
-                  <Button variant="contained" color="primary" component="span" disabled={disableAllUploadButton}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    disabled={disableAllUploadButton}
+                  >
                     Upload Resume
                   </Button>
                 </label>
@@ -867,20 +907,19 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   >
                     <b>NOTE:</b>
                     <i>
-                      Please upload your resume in PDF format, or any valid picture format.
+                      Please upload your resume in PDF format, or any valid
+                      picture format.
                     </i>
                   </Grid>
                 </Grid>
               </Paper>
             </Grid>
             <Grid item xs={1}></Grid>
- {/* Upload Resume End */}
- 
- 
+            {/* Upload Resume End */}
 
-     {/* Upload dmvFile Start */}
-     <br/>
-     <Grid item xs={1}></Grid>
+            {/* Upload dmvFile Start */}
+            <br />
+            <Grid item xs={1}></Grid>
             <Grid item xs={10}>
               <Paper elevation={3} className={classes.paper}>
                 <Grid
@@ -906,13 +945,18 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                               <InsertDriveFileIcon />
                             </Grid>
                             <Grid item xs={6} className="text-left">
-                            {(manualStates.dmvFile.length > 25) ?manualStates.dmvFile.substring(0,25)+"...":manualStates.dmvFile}
+                              {manualStates.dmvFile.length > 25
+                                ? manualStates.dmvFile.substring(0, 25) + "..."
+                                : manualStates.dmvFile}
                             </Grid>
                             <Grid item xs={1}>
                               <Button>
                                 <VisibilityIcon
                                   onClick={(e: any) => {
-                                    download_user_cv(manualStates.user_name,"dmvFile");
+                                    download_user_cv(
+                                      manualStates.user_name,
+                                      "dmvFile"
+                                    );
                                   }}
                                 />
                               </Button>
@@ -921,8 +965,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                               <Button>
                                 <DeleteIcon
                                   onClick={(e: any) => {
-                                    
-                                    removeUploadedFileFromServer(e,"dmvFile");
+                                    removeUploadedFileFromServer(e, "dmvFile");
                                   }}
                                 />
                               </Button>
@@ -931,7 +974,6 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                         </Paper>
                       </div>
                     )}
-                
                   </Grid>
                   <Grid item xs={1}></Grid>
                 </Grid>
@@ -942,10 +984,18 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   id="dmvFilesToUpload"
                   type="file"
                   disabled={disableAllUploadButton}
-                  onChange={(e)=>{handleFileUpload(e,"dmvFile"); console.log("DVM FIle")}}
+                  onChange={(e) => {
+                    handleFileUpload(e, "dmvFile");
+                    console.log("DVM FIle");
+                  }}
                 />
                 <label htmlFor="dmvFilesToUpload">
-                  <Button variant="contained" color="primary" component="span"  disabled={disableAllUploadButton}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    disabled={disableAllUploadButton}
+                  >
                     Upload DMV
                   </Button>
                 </label>
@@ -963,7 +1013,8 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   >
                     <b>NOTE:</b>
                     <i>
-                      Please upload your DMV in PDF format, or any valid picture format.
+                      Please upload your DMV in PDF format, or any valid picture
+                      format.
                     </i>
                   </Grid>
                 </Grid>
@@ -972,15 +1023,9 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
             <Grid item xs={1}></Grid>
             {/* Upload dmvFile End */}
 
-
-
-
-
-
-
-     {/* Upload dodMedicalCardFile Start */}
-     <br/>
-     <Grid item xs={1}></Grid>
+            {/* Upload dodMedicalCardFile Start */}
+            <br />
+            <Grid item xs={1}></Grid>
             <Grid item xs={10}>
               <Paper elevation={3} className={classes.paper}>
                 <Grid
@@ -1006,13 +1051,21 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                               <InsertDriveFileIcon />
                             </Grid>
                             <Grid item xs={6} className="text-left">
-                              {(manualStates.dodMedicalCardFile.length > 25) ?manualStates.dodMedicalCardFile.substring(0,25)+"...":manualStates.dodMedicalCardFile}
+                              {manualStates.dodMedicalCardFile.length > 25
+                                ? manualStates.dodMedicalCardFile.substring(
+                                    0,
+                                    25
+                                  ) + "..."
+                                : manualStates.dodMedicalCardFile}
                             </Grid>
                             <Grid item xs={1}>
                               <Button>
                                 <VisibilityIcon
                                   onClick={(e: any) => {
-                                    download_user_cv(manualStates.user_name,"dodMedicalCardFile");
+                                    download_user_cv(
+                                      manualStates.user_name,
+                                      "dodMedicalCardFile"
+                                    );
                                   }}
                                 />
                               </Button>
@@ -1021,8 +1074,10 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                               <Button>
                                 <DeleteIcon
                                   onClick={(e: any) => {
-                                  
-                                    removeUploadedFileFromServer(e,"dodMedicalCardFile");
+                                    removeUploadedFileFromServer(
+                                      e,
+                                      "dodMedicalCardFile"
+                                    );
                                   }}
                                 />
                               </Button>
@@ -1031,7 +1086,6 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                         </Paper>
                       </div>
                     )}
-                
                   </Grid>
                   <Grid item xs={1}></Grid>
                 </Grid>
@@ -1042,10 +1096,18 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   id="dodMedicalCardFilesToUpload"
                   type="file"
                   disabled={disableAllUploadButton}
-                  onChange={(e)=>{handleFileUpload(e,"dodMedicalCardFile"); console.log("DVM FIle")}}
+                  onChange={(e) => {
+                    handleFileUpload(e, "dodMedicalCardFile");
+                    console.log("DVM FIle");
+                  }}
                 />
                 <label htmlFor="dodMedicalCardFilesToUpload">
-                  <Button variant="contained" color="primary" component="span"  disabled={disableAllUploadButton}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    disabled={disableAllUploadButton}
+                  >
                     Upload DOD Medical Card Files
                   </Button>
                 </label>
@@ -1063,7 +1125,8 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   >
                     <b>NOTE:</b>
                     <i>
-                      Please upload your DOD Medical Card File in PDF format, or any valid picture format.
+                      Please upload your DOD Medical Card File in PDF format, or
+                      any valid picture format.
                     </i>
                   </Grid>
                 </Grid>
@@ -1072,14 +1135,9 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
             <Grid item xs={1}></Grid>
             {/* Upload dodMedicalCardFile End */}
 
-
-
-
-
-
-     {/* Upload driverLicenceFile Start */}
-     <br/>
-     <Grid item xs={1}></Grid>
+            {/* Upload driverLicenceFile Start */}
+            <br />
+            <Grid item xs={1}></Grid>
             <Grid item xs={10}>
               <Paper elevation={3} className={classes.paper}>
                 <Grid
@@ -1105,13 +1163,21 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                               <InsertDriveFileIcon />
                             </Grid>
                             <Grid item xs={6} className="text-left">
-                              {(manualStates.driverLicenceFile.length > 25) ?manualStates.driverLicenceFile.substring(0,25)+"...":manualStates.driverLicenceFile}
+                              {manualStates.driverLicenceFile.length > 25
+                                ? manualStates.driverLicenceFile.substring(
+                                    0,
+                                    25
+                                  ) + "..."
+                                : manualStates.driverLicenceFile}
                             </Grid>
                             <Grid item xs={1}>
                               <Button>
                                 <VisibilityIcon
                                   onClick={(e: any) => {
-                                    download_user_cv(manualStates.user_name,"driverLicenceFile");
+                                    download_user_cv(
+                                      manualStates.user_name,
+                                      "driverLicenceFile"
+                                    );
                                   }}
                                 />
                               </Button>
@@ -1120,8 +1186,10 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                               <Button>
                                 <DeleteIcon
                                   onClick={(e: any) => {
-                                  
-                                    removeUploadedFileFromServer(e,"driverLicenceFile");
+                                    removeUploadedFileFromServer(
+                                      e,
+                                      "driverLicenceFile"
+                                    );
                                   }}
                                 />
                               </Button>
@@ -1130,7 +1198,6 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                         </Paper>
                       </div>
                     )}
-                
                   </Grid>
                   <Grid item xs={1}></Grid>
                 </Grid>
@@ -1141,10 +1208,18 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   id="driverLicenceFilesToUpload"
                   type="file"
                   disabled={disableAllUploadButton}
-                  onChange={(e)=>{handleFileUpload(e,"driverLicenceFile"); console.log("DVM FIle")}}
+                  onChange={(e) => {
+                    handleFileUpload(e, "driverLicenceFile");
+                    console.log("DVM FIle");
+                  }}
                 />
                 <label htmlFor="driverLicenceFilesToUpload">
-                  <Button variant="contained" color="primary" component="span"  disabled={disableAllUploadButton}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    disabled={disableAllUploadButton}
+                  >
                     Upload Driver License File
                   </Button>
                 </label>
@@ -1162,7 +1237,8 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                   >
                     <b>NOTE:</b>
                     <i>
-                      Please upload your DOD Medical Card File in PDF format, or any valid picture format.
+                      Please upload your DOD Medical Card File in PDF format, or
+                      any valid picture format.
                     </i>
                   </Grid>
                 </Grid>
@@ -1170,11 +1246,6 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
             </Grid>
             <Grid item xs={1}></Grid>
             {/* Upload driverLicenceFile End */}
-
-
-
-
-
 
             {/* Questions Start */}
             <Grid item xs={1}></Grid>
@@ -1347,7 +1418,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                         </FormHelperText>
                       </FormControl> */}
                     </Grid>
-                    <br/>
+                    <br />
                     <Grid
                       item
                       xs={8}
@@ -1384,7 +1455,9 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
                         xsSize={12}
                         useForm={Forms}
                         isReq={reqBits.eligibletoWorkInUnitedState}
-                        defaultSelected={manualStates.eligibletoWorkInUnitedState}
+                        defaultSelected={
+                          manualStates.eligibletoWorkInUnitedState
+                        }
                         helperMessage={eligibletoWorkInUnitedStateErrorMessage}
                         showMessageOnValue="No"
                       />
@@ -1418,7 +1491,7 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
             <Grid item xs={4}>
               <Button
                 type="submit"
-                className="col-12"
+                className="col-8"
                 variant="contained"
                 color="primary"
               >
@@ -1448,10 +1521,8 @@ const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
             onClose={handleFileUploadClose}
             severity={fileUploadSuccesOrErrorBit as "success"}
           >
-            {fileUploadSuccesOrErrorBit === "success" &&
-              response}
-            {fileUploadSuccesOrErrorBit === "error" &&
-              response }
+            {fileUploadSuccesOrErrorBit === "success" && response}
+            {fileUploadSuccesOrErrorBit === "error" && response}
           </Alert>
         </Snackbar>
       </Container>

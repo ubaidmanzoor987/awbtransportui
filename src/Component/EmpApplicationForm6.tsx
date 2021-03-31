@@ -51,10 +51,9 @@ export default function EmpApplicationForm6(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(props.data.alcoholTestEmployeeSignature !== undefined){
+    if (props.data.alcoholTestEmployeeSignature !== undefined) {
       sigPad.current.fromDataURL(props.data.alcoholTestEmployeeSignature);
     }
-
   }, []);
 
   //-------------SNACKBAR-------------
@@ -116,10 +115,16 @@ export default function EmpApplicationForm6(props: Props) {
           <Grid
             container
             direction="row"
-            justify="space-around"
+            justify="space-evenly"
             alignItems="center"
             spacing={3}
           >
+            <Grid item xs={10}>
+              <Paper elevation={3} className={classes.paper}>
+                <h4>AWB Transport Inc., Employment Application</h4>
+              </Paper>
+            </Grid>
+
             {/* PAGE 2 */}
             <Grid item xs={10} style={{ marginBottom: "10px" }}>
               <Paper
@@ -1046,8 +1051,9 @@ export default function EmpApplicationForm6(props: Props) {
                         size="small"
                         type="text"
                         label="Employee First Name"
-                        helperText={reqBits.alcoholTestEmployeeFirstName && RequireError}
-
+                        helperText={
+                          reqBits.alcoholTestEmployeeFirstName && RequireError
+                        }
                         className="col-12"
                         error={errors && errors.alcoholTestEmployeeFirstName}
                         inputRef={register({
@@ -1066,7 +1072,9 @@ export default function EmpApplicationForm6(props: Props) {
                         type="text"
                         label="Employee Last Name"
                         className="col-12"
-                        helperText={reqBits.alcoholTestEmployeeLastName && RequireError}
+                        helperText={
+                          reqBits.alcoholTestEmployeeLastName && RequireError
+                        }
                         error={errors && errors.alcoholTestEmployeeLastName}
                         inputRef={register({
                           required: {
@@ -1084,13 +1092,13 @@ export default function EmpApplicationForm6(props: Props) {
                         type="text"
                         label="Social Security Number"
                         className="col-12"
-                        helperText={reqBits.alcoholTestSecurityNumber 
-                                          ? 
-                                          ((errors["alcoholTestSecurityNumber"] !== undefined 
-                                                ? (errors["alcoholTestSecurityNumber"].message) 
-                                                : RequireError)) 
-                                          : ""   
-                                  }
+                        helperText={
+                          reqBits.alcoholTestSecurityNumber
+                            ? errors["alcoholTestSecurityNumber"] !== undefined
+                              ? errors["alcoholTestSecurityNumber"].message
+                              : RequireError
+                            : ""
+                        }
                         error={errors && errors.alcoholTestSecurityNumber}
                         inputRef={register({
                           required: {
@@ -1099,7 +1107,6 @@ export default function EmpApplicationForm6(props: Props) {
                           },
                           minLength: { value: 9, message: "Min 9 Digits" },
                         })}
-                        
                       ></TextField>
                     </Grid>
                     <Grid item xs={5}>
@@ -1108,8 +1115,9 @@ export default function EmpApplicationForm6(props: Props) {
                         variant="outlined"
                         size="small"
                         type="date"
-                        helperText={`Executed on the date ${reqBits.alcoholTestExecutionDate && RequireError}`}
-
+                        helperText={`Executed on the date ${
+                          reqBits.alcoholTestExecutionDate && RequireError
+                        }`}
                         className="col-12"
                         error={errors && errors.alcoholTestExecutionDate}
                         inputRef={register({
@@ -1200,14 +1208,7 @@ export default function EmpApplicationForm6(props: Props) {
               </Paper>
             </Grid>
             {/* BUTTON Start */}
-            <Grid
-              container
-              direction="row"
-              justify="space-between"
-              alignItems="baseline"
-              spacing={3}
-            >
-              <Grid item xs={3}></Grid>
+           
               <Grid item xs={3}>
                 <Button
                   type="button"
@@ -1231,8 +1232,6 @@ export default function EmpApplicationForm6(props: Props) {
                   Save This & Next
                 </Button>
               </Grid>
-              <Grid item xs={3}></Grid>
-            </Grid>
             {/* BUTTON End */}
           </Grid>
         </form>

@@ -11,6 +11,7 @@ import EmpApplicationForm4 from "./EmpApplicationForm4";
 import EmpApplicationForm5 from "./EmpApplicationForm5";
 import EmpApplicationForm6 from "./EmpApplicationForm6";
 import EmpApplicationForm7 from "./EmpApplicationForm7";
+import EmpApplicationForm8 from "./EmpApplicationForm8";
 import EmpApplicationAllDataFilled from "./EmpApplicationAllDataFilled";
 import {
   states,
@@ -266,8 +267,16 @@ class EmploymentApplication extends Component<
               ) : (
                 ""
               )}
-
               {this.state.formCounter == 8 ? (
+                <EmpApplicationForm8
+                  data={this.context.data}
+                  handler={[this.gotoNextForm, this.gotoPreviousForm]}
+                  setData={this.context.setUserData}
+                ></EmpApplicationForm8>
+              ) : (
+                ""
+              )}
+              {this.state.formCounter == 9 ? (
                 <EmpApplicationAllDataFilled
                   data={this.context.data}
                   handler={[this.gotoNextForm, this.gotoPreviousForm]}
