@@ -147,7 +147,7 @@ export default function RadioQuestions(props: Props) {
               }
             />
             <FormLabel component="legend">
-              {props.isReq && RequireError }
+              {props.isReq && RequireError + " " }
               {value === props.showMessageOnValue && props.helperMessage }
             </FormLabel>
 

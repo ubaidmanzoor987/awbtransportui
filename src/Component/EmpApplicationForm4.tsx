@@ -255,8 +255,7 @@ export default function EmpApplicationForm4(props: Props) {
             </Grid>
             <Grid item xs={1}></Grid>
             {/* BUTTON Start */}
-            <Grid item xs={2}></Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 type="button"
                 className="col-12"
@@ -269,12 +268,11 @@ export default function EmpApplicationForm4(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button type="submit" className="col-12" variant="contained" color="primary">
                 Save This & Next
               </Button>
             </Grid>
-            <Grid item xs={2}></Grid>
             {/* BUTTON End */}
           </Grid>
         </form>

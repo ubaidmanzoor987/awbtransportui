@@ -328,7 +328,7 @@ function EmpApplicationForm3(props: Props) {
           <Grid
             container
             direction="row"
-            justify="space-around"
+            justify="space-evenly"
             alignItems="center"
             spacing={3}
           >
@@ -1608,25 +1608,15 @@ function EmpApplicationForm3(props: Props) {
                       Clear
                     </Button>
                   </Grid>
-                  {/* <Grid item xs={2}>
-                    <Button
-                      className="col-12"
-                      variant="contained"
-                      color="primary"
-                      onClick={saveImage}
-                    >
-                      Save
-                    </Button>
-                  </Grid> */}
                   <Grid item xs={5}></Grid>
                 </Grid>
               </Paper>
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 type="button"
-                className="col-12"
+                className="col-10"
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -1636,10 +1626,10 @@ function EmpApplicationForm3(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 type="submit"
-                className="col-12"
+                className="col-10"
                 variant="contained"
                 color="primary"
               >

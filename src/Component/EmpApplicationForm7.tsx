@@ -42,8 +42,6 @@ import AlertComponent from "./SubComponents/AlertComponent";
 import { useEffect } from "react";
 import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
 
-
-
 type Props = { data?: any; handler?: any; setData: any };
 
 export default function EmpApplicationForm7(props: Props) {
@@ -73,10 +71,9 @@ export default function EmpApplicationForm7(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(props.data.employeeSignature !== undefined){
+    if (props.data.employeeSignature !== undefined) {
       sigPad.current.fromDataURL(props.data.employeeSignature);
     }
-
   }, []);
 
   let Link = Scroll.Link;
@@ -183,10 +180,16 @@ export default function EmpApplicationForm7(props: Props) {
           <Grid
             container
             direction="row"
-            justify="center"
+            justify="space-evenly"
             alignItems="baseline"
             spacing={3}
           >
+            <Grid item xs={10}>
+              <Paper elevation={3} className={classes.paper}>
+                <h4>AWB Transport Inc., Employment Application</h4>
+              </Paper>
+            </Grid>
+
             <Grid item xs={10} style={{ marginBottom: "10px" }}>
               <Paper
                 elevation={3}
@@ -471,13 +474,13 @@ export default function EmpApplicationForm7(props: Props) {
                         ></TextField>
                       </Grid>
                       <Grid item xs={6}>
-                      <PhoneNumberComponent
-                            label="Phone Number"
-                            mainId="newEmployeerphone"
-                            defaultValue={props.data.newEmployeerphone}
-                            className="col-12"
-                            useForms={Forms}
-                      ></PhoneNumberComponent>
+                        <PhoneNumberComponent
+                          label="Phone Number"
+                          mainId="newEmployeerphone"
+                          defaultValue={props.data.newEmployeerphone}
+                          className="col-12"
+                          useForms={Forms}
+                        ></PhoneNumberComponent>
                         {/* <TextField
                           name="newEmployeerphone"
                           variant="outlined"
@@ -791,13 +794,13 @@ export default function EmpApplicationForm7(props: Props) {
                         ></TextField>
                       </Grid>
                       <Grid item xs={6}>
-                      <PhoneNumberComponent
-                            label="Prev Employer Phone"
-                            mainId="prevEmployeerphone"
-                            defaultValue={props.data.prevEmployeerphone}
-                            className="col-12"
-                            useForms={Forms}
-                      ></PhoneNumberComponent>
+                        <PhoneNumberComponent
+                          label="Prev Employer Phone"
+                          mainId="prevEmployeerphone"
+                          defaultValue={props.data.prevEmployeerphone}
+                          className="col-12"
+                          useForms={Forms}
+                        ></PhoneNumberComponent>
                         {/* <TextField
                           name="prevEmployeerphone"
                           variant="outlined"
@@ -1188,12 +1191,14 @@ export default function EmpApplicationForm7(props: Props) {
                       ></TextField>
                     </Grid>
                     <Grid item xs={5}>
-                    <PhoneNumberComponent
-                            label="Phone Number"
-                            mainId="nameOfPersonProvidingInformationPhone"
-                            defaultValue={props.data.nameOfPersonProvidingInformationPhone}
-                            className="col-12"
-                            useForms={Forms}
+                      <PhoneNumberComponent
+                        label="Phone Number"
+                        mainId="nameOfPersonProvidingInformationPhone"
+                        defaultValue={
+                          props.data.nameOfPersonProvidingInformationPhone
+                        }
+                        className="col-12"
+                        useForms={Forms}
                       ></PhoneNumberComponent>
 
                       {/* <TextField
@@ -1289,7 +1294,7 @@ export default function EmpApplicationForm7(props: Props) {
             </Grid>
 
             {/* BUTTON Start */}
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 type="button"
                 className="col-12"
@@ -1302,14 +1307,14 @@ export default function EmpApplicationForm7(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 type="submit"
                 className="col-12"
                 variant="contained"
                 color="primary"
               >
-                Save All
+                Save This & Next
               </Button>
             </Grid>
             {/* BUTTON End */}
@@ -1322,7 +1327,7 @@ export default function EmpApplicationForm7(props: Props) {
           severity={succesOrErrorBit}
           message={
             succesOrErrorBit === "success"
-              ? "All Data Saved Successfully"
+              ? "Data Saved Successfully"
               : "Error"
           }
         ></AlertComponent>
