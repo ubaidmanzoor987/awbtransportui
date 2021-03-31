@@ -4,16 +4,36 @@ import Footer from "../Footer";
 import { users_data } from "../User";
 import { new_employee_pdf } from "../../services/new_employee_pdf";
 import { baseUrl } from "../../shared/baseUrl";
+import { Redirect } from "react-router";
+import { remove_user } from "../../services/removeUserApi";
+import { get_all_users } from "../../services/get_all_users_api";
 
 type AdminPanelProps = {
   data?: any;
 };
 
-class Adminpanel extends React.Component<AdminPanelProps, {}> {
+type AdminPanelState = {
+  users?: any;
+};
+
+class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
   constructor(props: any) {
     super(props);
+    this.state = {
+      users: []
+    }
   }
 
+  componentDidMount() {
+    // console.log("this.context", this.context.user_list_data);
+    // if (this.context.user_list_data[0]){
+    //   this.setState({
+    //     ...this.state,
+    //     users: this.context.user_list_data.filter((obj:any) => obj.data.isDeleted != 'True')
+    //   })
+    // }
+    
+  }
   download_user_cv = (user_name: string,fileName:string) => {
     console.log("user_name");
     console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
@@ -29,8 +49,36 @@ class Adminpanel extends React.Component<AdminPanelProps, {}> {
   download_form_i9 = async (user_name: string) => {
     window.open(baseUrl + "/api/pdf/formi9?user_name=" + user_name, "_blank");
   };
+  download_dw4 = async (user_name: string) => {
+    window.open(baseUrl + "/api/pdf/dw4?user_name=" + user_name, "_blank");
+  };
+  download_fw4 = async (user_name: string) => {
+    window.open(baseUrl + "/api/pdf/fw4?user_name=" + user_name, "_blank");
+  };
 
+  // checkDelete(obj:any) {
+  //   return obj.data.isDeleted !== 'True';
+  // }
+
+  // remove_user_data = async (user_name: string) => {
+  //   const res = await remove_user({'user_name': user_name});
+  //   if (res.message){
+  //     const res1 = (await get_all_users()) as any;
+  //     if (res1) {
+  //       this.context.setUserListData(res1);
+  //       console.log("ds", this.context.user_list_data)
+  //       this.setState({
+  //         ...this.state,
+  //         users: this.context.user_list_data.filter(this.checkDelete)
+  //       })
+  //   }
+  //   console.log(res.message);
+  // }
+  // }
   render() {
+    if (!this.context.user_list_data[0]) {
+      return <Redirect to = '/admin/login' />
+    }
     return (
       <>
         <NavbarCareer addLogout={true} />
@@ -149,6 +197,9 @@ class Adminpanel extends React.Component<AdminPanelProps, {}> {
                     fw4
                   </button>
                   <button
+                    onClick={() => {
+                      this.download_dw4(object.data.user_name);
+                    }}
                     style={{
                       backgroundColor: "#1E2D3B",
                       color: "white",
@@ -159,17 +210,7 @@ class Adminpanel extends React.Component<AdminPanelProps, {}> {
                   >
                     Driver Employment
                   </button>
-                  <button
-                    style={{
-                      backgroundColor: "#1E2D3B",
-                      color: "white",
-                      borderRadius: "8px",
-                      marginLeft: "2px",
-                      marginTop: "8px",
-                    }}
-                  >
-                    All
-                  </button>
+                 
                 </div>
               </div>
             );

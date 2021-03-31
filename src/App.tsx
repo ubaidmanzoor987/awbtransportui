@@ -18,6 +18,7 @@ import Logout from "./Component/logout";
 import LayoutWithResposiveNavBar from "./Component/LayoutWithResposiveNavBar";
 import AdminLogin from "./Component/admin_panel/adminLogin";
 import AdminPanel from "./Component/admin_panel/panel";
+import Dashboard from "./Component/admin_panel/dashboard";
 
 function App() {
   const [user_data, setuserData] = useState({});
@@ -34,7 +35,7 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route path="/admin">
+          <Route path="/hrportal">
             <AdminUser.Provider
               value={{
                 user_list_data: user_list,
@@ -42,11 +43,14 @@ function App() {
               }}
             >
               <Switch>
-                <Route exact path="/admin/login">
+                <Route exact path="/hrportal/login">
                   <AdminLogin />
                 </Route>
-                <Route exact path="/admin/login/panel">
+                <Route exact path="/hrportal/login/panel">
                   <AdminPanel />
+                </Route>
+                <Route exact path="/hrportal/login/dashboard">
+                  <Dashboard />
                 </Route>
               </Switch>
             </AdminUser.Provider>
