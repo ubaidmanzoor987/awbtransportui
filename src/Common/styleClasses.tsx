@@ -57,6 +57,9 @@ export class styleClasses extends Component {
         color: "#000000",
         textAlign: "left",
       },
+      button: {
+        margin: theme.spacing(1),
+      },
     })
   );
 }

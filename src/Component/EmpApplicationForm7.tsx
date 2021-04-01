@@ -309,37 +309,37 @@ export default function EmpApplicationForm7(props: Props) {
                     </Typography>
                   </Grid>
 
-                  <Grid item  xs={12} sm={12} md={10}>
-                    <Paper
-                      elevation={3}
-                      style={{ paddingLeft: "40px", paddingRight: "60px" }}
-                      className={(classes.heading, classes.paperProminantStyle)}
-                    >
-                      <Typography
-                        align="left"
-                        variant="h6"
-                        className={signatureError}
+                  <Grid item   xs={12} sm={12} md={10}>
+                      <Paper
+                        elevation={3}
+                        style={{ paddingLeft: "40px", paddingRight: "40px" }}
+                        className={
+                          (classes.heading, classes.paperProminantStyle)
+                        }
                       >
-                        Employee Signature
-                      </Typography>
-                      {signatureHelperTextError === true && (
                         <Typography
+                          className={signatureError}
                           align="left"
-                          variant="subtitle2"
-                          className="text-danger"
+                          variant="h6"
                         >
-                          Please ! Sign here
+                          Employee Signature
                         </Typography>
-                      )}
-                      <Element name="sigPadElement" className="element">
-                        <div></div>
-                      </Element>
+                        {signatureHelperTextError === true && (
+                          <Typography
+                            align="left"
+                            variant="subtitle2"
+                            className="text-danger"
+                          >
+                            Please ! Sign here
+                          </Typography>
+                        )}
                       <div
                         style={{
                           boxShadow:
                             "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
                           display: "inline-block",
-                          margin: "20px",
+                          marginTop: "15px",
+                          marginBottom: "15px",
                         }}
                       >
                         <SignatureCanvas
@@ -352,40 +352,28 @@ export default function EmpApplicationForm7(props: Props) {
                           }}
                         />
                       </div>
-
-                      <Grid
-                        container
-                        direction="row"
-                        justify="space-between"
-                        alignItems="baseline"
-                        spacing={3}
-                      >
-                        <Grid item xs={5}></Grid>
-                        <Grid item xs={2}>
-                          <Button
-                            type="button"
-                            className="col-12"
-                            variant="contained"
-                            color="primary"
-                            onClick={clearSigPad}
-                          >
-                            Clear
-                          </Button>
+                        <Grid
+                          container
+                          direction="row"
+                          justify="space-evenly"
+                          alignItems="baseline"
+                          spacing={3}
+                        >
+                          <Grid item xs={8} sm={8} md={3}>
+                            <Button
+                              type="button"
+                              className="col-12"
+                              variant="contained"
+                              color="primary"
+                              onClick={clearSigPad}
+                            >
+                              Clear
+                            </Button>
+                          </Grid>
+                         
                         </Grid>
-                        {/* <Grid item xs={2}>
-                    <Button
-                      className="col-12"
-                      variant="contained"
-                      color="primary"
-                      onClick={saveImage}
-                    >
-                      Save
-                    </Button>
-                  </Grid> */}
-                        <Grid item xs={5}></Grid>
-                      </Grid>
-                    </Paper>
-                  </Grid>
+                      </Paper>
+                    </Grid>
 
                   <Grid item  xs={12} sm={12} md={10}>
                     <TextField
@@ -1058,6 +1046,7 @@ export default function EmpApplicationForm7(props: Props) {
                       optionList={["Yes", "No"]}
                       optionValue={["Yes", "No"]}
                       useForm={Forms}
+                      xsSize={12}
                       isReq={reqBits.employeeAlcoholTestRateHigher}
                       defaultSelected={props.data.employeeAlcoholTestRateHigher}
                     />
@@ -1068,12 +1057,14 @@ export default function EmpApplicationForm7(props: Props) {
                       optionValue={["Yes", "No"]}
                       useForm={Forms}
                       isReq={reqBits.employeeverifiedDrugTest}
+                      xsSize={12}
                       defaultSelected={props.data.employeeverifiedDrugTest}
                     />
 
                     <RadioQuestions
                       id="employeerefuseTest"
                       question="3. Did the employee refuse to be tested?"
+                      xsSize={12}
                       optionList={["Yes", "No"]}
                       optionValue={["Yes", "No"]}
                       useForm={Forms}
@@ -1084,6 +1075,7 @@ export default function EmpApplicationForm7(props: Props) {
                     <RadioQuestions
                       id="employeeotherViolations"
                       question="4. Did the employee have other violations of DOT agency drug and alcohol testing regulations?"
+                      xsSize={12}
                       optionList={["Yes", "No"]}
                       optionValue={["Yes", "No"]}
                       useForm={Forms}
@@ -1096,6 +1088,7 @@ export default function EmpApplicationForm7(props: Props) {
                       question="5. Did a previous employer report a drug and alcohol rule violation to you?"
                       optionList={["Yes", "No"]}
                       optionValue={["Yes", "No"]}
+                      xsSize={12}
                       useForm={Forms}
                       isReq={reqBits.prevEmployeeReportDrug}
                       defaultSelected={props.data.prevEmployeeReportDrug}
@@ -1106,6 +1099,7 @@ export default function EmpApplicationForm7(props: Props) {
                       question="6. If you answered “yes” to any of the above items, did the employee complete the return-to-duty process?"
                       optionList={["Yes", "No"]}
                       optionValue={["Yes", "No"]}
+                      xsSize={12}
                       useForm={Forms}
                       isReq={reqBits.answeredYes}
                       defaultSelected={props.data.answeredYes}

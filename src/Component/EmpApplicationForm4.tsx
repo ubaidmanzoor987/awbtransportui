@@ -57,14 +57,14 @@ export default function EmpApplicationForm4(props: Props) {
 
             {/* PAGE 1 */}
             <Grid item xs={1}></Grid>
-            <Grid item xs={10} style={{ marginBottom: "10px" }}>
+            <Grid item xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Paper
                 elevation={3}
                 style={{ paddingLeft: "40px", paddingRight: "60px" }}
                 className={(classes.heading, classes.paperProminantStyle)}
               >
                 <Grid container direction="row" justify="space-between" alignItems="baseline" spacing={3}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={12} md={12}>
                     <Typography align="left" variant="subtitle2">
                       AWB Transport Inc
                       <br />
@@ -77,7 +77,7 @@ export default function EmpApplicationForm4(props: Props) {
                       Effective Date: 7/20/2018
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={12} md={12}>
                     <Typography align="right" variant="subtitle2">
                       <br />
                       U.S. Department of Transportation
@@ -85,7 +85,7 @@ export default function EmpApplicationForm4(props: Props) {
                       Federal Motor Carrier Safety Administration
                     </Typography>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={12} md={12}>
                     <Typography align="center" variant="subtitle2">
                       FEDERAL MOTOR CARRIER SAFETY ADMINISTRATION (FMSCA)
                       <br />
@@ -255,7 +255,7 @@ export default function EmpApplicationForm4(props: Props) {
             </Grid>
             <Grid item xs={1}></Grid>
             {/* BUTTON Start */}
-            <Grid item xs={3}>
+            <Grid item xs={12} sm={12} md={3}>
               <Button
                 type="button"
                 className="col-12"
@@ -268,7 +268,7 @@ export default function EmpApplicationForm4(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} sm={12} md={3}>
               <Button type="submit" className="col-12" variant="contained" color="primary">
                 Save This & Next
               </Button>

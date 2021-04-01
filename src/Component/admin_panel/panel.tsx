@@ -16,6 +16,31 @@ type AdminPanelState = {
   users?: any;
 };
 
+export const download_user_cv = (user_name: string,fileName:string) => {
+  console.log("user_name");
+  console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
+  window.open(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`, "_blank");
+};
+
+export const download_new_employee_pdf = async (user_name: string) => {
+  window.open(
+    baseUrl + "/api/pdf/new_employee?user_name=" + user_name,
+    "_blank"
+  );
+};
+
+export const download_form_i9 = async (user_name: string) => {
+  window.open(baseUrl + "/api/pdf/formi9?user_name=" + user_name, "_blank");
+};
+
+export const download_dw4 = async (user_name: string) => {
+  window.open(baseUrl + "/api/pdf/dw4?user_name=" + user_name, "_blank");
+};
+export const download_fw4 = async (user_name: string) => {
+  window.open(baseUrl + "/api/pdf/fw4?user_name=" + user_name, "_blank");
+};
+
+
 class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
   constructor(props: any) {
     super(props);
@@ -34,28 +59,7 @@ class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
     // }
     
   }
-  download_user_cv = (user_name: string,fileName:string) => {
-    console.log("user_name");
-    console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
-    window.open(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`, "_blank");
-  };
-
-  download_new_employee_pdf = async (user_name: string) => {
-    window.open(
-      baseUrl + "/api/pdf/new_employee?user_name=" + user_name,
-      "_blank"
-    );
-  };
-  download_form_i9 = async (user_name: string) => {
-    window.open(baseUrl + "/api/pdf/formi9?user_name=" + user_name, "_blank");
-  };
-  download_dw4 = async (user_name: string) => {
-    window.open(baseUrl + "/api/pdf/dw4?user_name=" + user_name, "_blank");
-  };
-  download_fw4 = async (user_name: string) => {
-    window.open(baseUrl + "/api/pdf/fw4?user_name=" + user_name, "_blank");
-  };
-
+  
   // checkDelete(obj:any) {
   //   return obj.data.isDeleted !== 'True';
   // }
@@ -144,7 +148,7 @@ class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
                 <div className="col-md-1">
                   <button
                     onClick={() => {
-                      this.download_user_cv(object.data.user_name, "resume");
+                      download_user_cv(object.data.user_name, "resume");
                     }}
                     style={{
                       backgroundColor: "#1E2D3B",
@@ -159,7 +163,7 @@ class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
                 <div className="col-md-5">
                   <button
                     onClick={() => {
-                      this.download_new_employee_pdf(object.data.user_name);
+                      download_new_employee_pdf(object.data.user_name);
                     }}
                     style={{
                       backgroundColor: "#1E2D3B",
@@ -173,7 +177,7 @@ class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
                   </button>
                   <button
                     onClick={() => {
-                      this.download_form_i9(object.data.user_name);
+                      download_form_i9(object.data.user_name);
                     }}
                     style={{
                       backgroundColor: "#1E2D3B",
@@ -198,7 +202,7 @@ class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
                   </button>
                   <button
                     onClick={() => {
-                      this.download_dw4(object.data.user_name);
+                      download_dw4(object.data.user_name);
                     }}
                     style={{
                       backgroundColor: "#1E2D3B",
@@ -210,7 +214,17 @@ class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
                   >
                     Driver Employment
                   </button>
-                 
+                  <button
+                    style={{
+                      backgroundColor: "#1E2D3B",
+                      color: "white",
+                      borderRadius: "8px",
+                      marginLeft: "2px",
+                      marginTop: "8px",
+                    }}
+                  >
+                    Delete User
+                  </button>
                 </div>
               </div>
             );

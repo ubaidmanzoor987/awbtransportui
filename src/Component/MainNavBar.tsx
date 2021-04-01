@@ -10,16 +10,19 @@ import {
 } from "reactstrap";
 import { Link } from "react-scroll";
 import { Link as RouterLink } from "react-router-dom";
+import { for_production } from "../shared/baseUrl";
 
-const links = [
-  { href: "services", text: "Services" },
-  // { href: "portfolio", text: "Portfolio" },
-  { href: "about", text: "About" },
-  { href: "team", text: "Team" },
-  { href: "contact", text: "Contact" },
-  { href: "/career", text: "Career Opportunities" },
-  // { href: "/admin/login", text: "Admin Panel" },
-];
+
+  let links = [
+    { href: "services", text: "Services" },
+    // { href: "portfolio", text: "Portfolio" },
+    { href: "about", text: "About" },
+    { href: "team", text: "Team" },
+    { href: "contact", text: "Contact" },
+    { href: "/career", text: "Career Opportunities" },
+    // { href: "/hrportal/login", text: "Admin Panel" },
+  ];
+
 
 type createNavItemProps = {
   href: string;
@@ -68,6 +71,18 @@ export default class Navbar extends Component<{}, NavbarState> {
     };
 
     this.toggle = this.toggle.bind(this);
+    if(for_production === false)
+    {
+      links = [
+        { href: "services", text: "Services" },
+        // { href: "portfolio", text: "Portfolio" },
+        { href: "about", text: "About" },
+        { href: "team", text: "Team" },
+        { href: "contact", text: "Contact" },
+        { href: "/career", text: "Career Opportunities" },
+        { href: "/hrportal/login", text: "Admin Panel" },
+      ];
+    }
   }
 
   toggle() {

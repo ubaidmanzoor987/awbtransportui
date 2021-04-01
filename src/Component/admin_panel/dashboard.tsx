@@ -3,10 +3,22 @@ import { DataGrid, GridSortModel,GridRowId, GridRowsProp } from "@material-ui/da
 import { users_data } from "../User";
 import NavbarCareer from "../NavbarCareer";
 import Footer from "../Footer";
-import { Container, Grid, Paper } from "@material-ui/core";
+import { Button, Container, FormControl, Grid, Paper } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import styleClasses from "../../Common/styleClasses";
 import { Redirect } from "react-router-dom";
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import classNames from "classnames";
+import InputLabel from '@material-ui/core/InputLabel';
+import ListSubheader from '@material-ui/core/ListSubheader';
+
+import {download_user_cv , download_new_employee_pdf ,download_form_i9 ,download_dw4 ,download_fw4} from "./panel";
+
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,61 +50,34 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+
 function Dashboard () {
-    const [selectionModel, setSelectionModel] = useState<GridRowId[]>([]);
-    const [buttonactive, setButtonactive] = useState(false);
+    const [selectedUser,setSelectedUser] = useState("");
+    const [action,setAction] = useState("");
     const [rows, setRows] = useState<GridRowsProp[]>([]);
     const user = useContext(users_data) as any;
+
     const classes = styleClasses.useStyles();
-    function isEmpty(obj:any) {
-        return Object.keys(obj).length === 0;
-    }
-    useEffect(() => {
-        console.log("user",user);
-        if (isEmpty(user.user_list_data)){
-            <Redirect to="/hrportal/login/" />
-        }
-        else {
-            setRows(user.user_list_data);
-        }
-    });
-    function currentlySelected(newSelection:any) {
-        console.log(newSelection);
-        const newSelectionModel = newSelection.selectionModel;
-
-        if (newSelectionModel.length > 1) {
-          const selectionSet = new Set(selectionModel);
-          const result = newSelectionModel.filter(
-            (s:any) => !selectionSet.has(s)
-          );
-
-          setSelectionModel(result);
-        } else {
-          setSelectionModel(newSelectionModel);
-          setButtonactive(true);
-        }
-        // setSelectionModel(newSelection.selectionModel);
-    };
-
-    // const rows = [
-    //     { id: 1, name: "Example 1", price: "$10.99" },
-    //     { id: 2, name: "Example 2", price: "$12.50" }
-    // ]
-
     const columns = [
-        { field: "user_name", headerName: "User Name", width: 200 },
-        { field: "first_name", headerName: "First Name", width: 200 },
-        { field: "last_name", headerName: "Last Name", width: 200 },
-        { field: "email", headerName: "Email", width: 200 },
-        { field: "city", headerName: "City", width: 200 },
-        { field: "dateOfBirth", headerName: "Date of Birth", width: 200 },
-        { field: "gender", headerName: "Gender", width: 200 },
-        { field: "phone_number", headerName: "Phone Number", width: 200 },
-        { field: "veteranStatus", headerName: "Veteran Status", width: 200 },
-        { field: "zipCode", headerName: "ZipCode", width: 200 },
-        { field: "startTime", headerName: "Join From", width: 200 }
+      { field: "user_name", headerName: "User Name", width: 200 },
+      { field: "first_name", headerName: "First Name", width: 200 },
+      { field: "last_name", headerName: "Last Name", width: 200 },
+      { field: "email", headerName: "Email", width: 200 },
+      { field: "city", headerName: "City", width: 200 },
+      { field: "dateOfBirth", headerName: "Date of Birth", width: 200 },
+      { field: "gender", headerName: "Gender", width: 200 },
+      { field: "phone_number", headerName: "Phone Number", width: 200 },
+      { field: "veteranStatus", headerName: "Veteran Status", width: 200 },
+      { field: "zipCode", headerName: "ZipCode", width: 200 },
+      { field: "startTime", headerName: "Join From", width: 200 }
     ]
 
+    const Actions = [
+      {value:"download", displayValue:"Download PDFs"},
+      {value:"edit", displayValue:"Edit PDFs"},
+      {value:"disableEditMode", displayValue:"Disable Edit Mode"},
+      // {value:"deleteUser", displayValue:"Delete User"},
+    ];
     const sortModel = [
         {
         field: "user_name",
@@ -100,6 +85,36 @@ function Dashboard () {
         },
     ] as  GridSortModel;
 
+
+    function isEmpty(obj:any) {
+        return Object.keys(obj).length === 0;
+    }
+    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      console.log("event.target.value");
+      console.log(event.target.value);
+      console.log(selectedUser);
+      if(event.target.value === "download_user_pdf")
+      {
+          download_user_cv(selectedUser,"resume");
+      }
+      setAction("");
+    };
+    useEffect(() => {
+        if (isEmpty(user.user_list_data)){
+            <Redirect to="/hrportal/login/" />
+        }
+        else {
+            setRows(user.user_list_data);
+        }
+    },[]);
+    
+    function currentlySelected(newSelection:any) {
+        console.log("newSelection");
+        setSelectedUser(newSelection.selectionModel[0]);
+        console.log(newSelection.selectionModel[0]);
+    };
+
+ 
     return (
         <React.Fragment>
         <NavbarCareer adminLogout={true} />
@@ -120,22 +135,50 @@ function Dashboard () {
               <Paper
                 elevation={3}
                 className={classes.paper}
-                style={{ padding: "30px 15px" }}
+                style={{ padding: "30px 15px"}}
               >
-                {/* <Grid item xs={12}
-                 direction="row"    
-                >
-                    <Grid item xs={5}
-                    >
-                        <h5 >Users List</h5>
-                    </Grid>
-                    <Grid item xs={5}>
-                        <button disabled={buttonactive}>
-                            Download Data
-                        </button>
-                    </Grid>
-                </Grid> */}
+           
+           {
+                  selectedUser !== "" &&
 
+                  <FormControl className={classNames("col-3",classes.formControl)}>
+                    <InputLabel htmlFor="grouped-select">Actions</InputLabel>
+                    <Select value={action} 
+                        onChange={handleChange}
+                        id="grouped-select">
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <ListSubheader>Download Pdf</ListSubheader>
+                      <MenuItem value="download_user_pdf">User CV</MenuItem>
+                      <MenuItem value={2}>New Employee Pdf</MenuItem>
+                      <MenuItem value={2}>Form I-9</MenuItem>
+                      <MenuItem value={2}>DW4</MenuItem>
+                      <MenuItem value={2}>FW4</MenuItem>
+                      <ListSubheader>Edit Pdf</ListSubheader>
+                      <MenuItem value={1}>User CV</MenuItem>
+                      <MenuItem value={2}>New Employee Pdf</MenuItem>
+                      <MenuItem value={2}>Form I-9</MenuItem>
+                      <MenuItem value={2}>DW4</MenuItem>
+                      <MenuItem value={2}>FW4</MenuItem>
+                      <ListSubheader>Disable User Editing</ListSubheader>
+                      <MenuItem value={3}>Disable {selectedUser}</MenuItem>
+                    </Select>
+                  </FormControl>
+                //     <FormControl variant="outlined" className={classNames("col-3",classes.formControl)}>
+                //       <InputLabel id="demo-simple-select-outlined-label">Actions</InputLabel>
+                //       <Select
+                //         labelId="demo-simple-select-outlined-label"
+                //         id="demo-simple-select-outlined"
+                //         value={}
+                //         label=""
+                //       >
+                //         {Actions.map((item)=>(
+                //           <MenuItem value={item.value}>{item.displayValue}</MenuItem>
+                //         ))}
+                //       </Select>
+                //     </FormControl>
+                } 
                 <Grid item xs={12} style={{ height: '450px', width: '100%' }}>
                     <h5>
                         User's Data
@@ -147,13 +190,14 @@ function Dashboard () {
                         columns={columns}
                         pageSize={100}
                         rowHeight={50}
-                        checkboxSelection
+                        // checkboxSelection
                         hideFooterPagination 
                         onSelectionModelChange={currentlySelected}
-                        selectionModel={selectionModel}
                         disableMultipleSelection={true}
                     />
-                </Grid>   
+                </Grid>  
+
+         
               </Paper> 
             </Grid>  
             </Grid>

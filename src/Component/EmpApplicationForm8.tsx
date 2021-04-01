@@ -173,216 +173,216 @@ export default function EmpApplicationForm8(props: Props) {
             {/* Questions Start */}
             {/* Questions and Awnsers Starting */}
             <Grid item xs={12} sm={12} md={10}>
-              <Accordion elevation={3} defaultExpanded>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className={classes.heading}>
-                    Questions and Anwsers
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="space-around"
-                    alignItems="center"
-                    spacing={3}
-                  >
-                   
-                    <Grid item xs={11}>
-                        <div style={{ paddingLeft: "13px" }}>
-                            <RadioQuestions
-                            id="united_state_citizen"
-                            question="Do you have Citizenship of United States?"
-                            optionList={["Yes", "No"]}
-                            optionValue={["Yes", "No"]}
-                            xsSize={12}
-                            useForm={Forms}
-                            isReq={reqBits.united_state_citizen}
-                            defaultSelected={
-                                manualStates.united_state_citizen
-                            }
-                            />
-                        </div>
-                    </Grid>
+              <Grid container alignItems="center" justify="space-evenly">
+                  <Accordion elevation={3} defaultExpanded>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                          <Grid item xs={1}></Grid>
+                          <Grid item xs={10}>
+                            <Typography className={classes.heading}>
+                              Questions and Anwsers
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={1}></Grid>
+                    </AccordionSummary>
+                        <AccordionDetails>
+                          <Grid item xs={1}></Grid>
+                          <Grid item xs={10}>
+                                <Grid
+                                  container
+                                  direction="row"
+                                  justify="space-around"
+                                  alignItems="center"
+                                  spacing={3}
+                                >
+                                
+                                  <Grid item xs={12} sm={12} md={5}>
+                                      <div style={{ paddingLeft: "13px" }}>
+                                          <RadioQuestions
+                                          id="united_state_citizen"
+                                          question="Do you have Citizenship of United States?"
+                                          optionList={["Yes", "No"]}
+                                          optionValue={["Yes", "No"]}
+                                          xsSize={12}
+                                          useForm={Forms}
+                                          isReq={reqBits.united_state_citizen}
+                                          defaultSelected={
+                                              manualStates.united_state_citizen
+                                          }
+                                          />
+                                      </div>
+                                  </Grid>
 
 
-                    <Grid item xs={11}>
-                        <div style={{ paddingLeft: "13px" }}>
-                        <RadioQuestions
-                            id="non_united_state_citizen"
-                            question="Are you non unitied state citizen?"
-                            xsSize={12}
-                            optionList={["Yes", "No"]}
-                            optionValue={["Yes", "No"]}
-                            useForm={Forms}
-                            isReq={reqBits.non_united_state_citizen}
-                            defaultSelected={manualStates.non_united_state_citizen}
-                            
-                        />
-                        </div>
-                    </Grid>
+                                  <Grid item xs={12} sm={12} md={5}>
+                                      <div style={{ paddingLeft: "13px" }}>
+                                      <RadioQuestions
+                                          id="non_united_state_citizen"
+                                          question="Are you non unitied state citizen?"
+                                          xsSize={12}
+                                          optionList={["Yes", "No"]}
+                                          optionValue={["Yes", "No"]}
+                                          useForm={Forms}
+                                          isReq={reqBits.non_united_state_citizen}
+                                          defaultSelected={manualStates.non_united_state_citizen}
+                                          
+                                      />
+                                      </div>
+                                  </Grid>
 
 
-                    <Grid item xs={11}>
-                        <div style={{ paddingLeft: "13px" }}>
-                        <RadioQuestions
-                            id="lawful_permanent_resident"
-                            question="Are you Lawfull Permanent Resident?"
-                            xsSize={12}
-                            optionList={["Yes", "No"]}
-                            optionValue={["Yes", "No"]}
-                            useForm={Forms}
-                            isReq={reqBits.lawful_permanent_resident}
-                            defaultSelected={manualStates.lawful_permanent_resident}
-                        />
-                        </div>
-                    </Grid>
+                                  <Grid item xs={12} sm={12} md={5}>
+                                      <div style={{ paddingLeft: "13px" }}>
+                                      <RadioQuestions
+                                          id="lawful_permanent_resident"
+                                          question="Are you Lawfull Permanent Resident?"
+                                          xsSize={12}
+                                          optionList={["Yes", "No"]}
+                                          optionValue={["Yes", "No"]}
+                                          useForm={Forms}
+                                          isReq={reqBits.lawful_permanent_resident}
+                                          defaultSelected={manualStates.lawful_permanent_resident}
+                                      />
+                                      </div>
+                                  </Grid>
 
 
-                    <Grid item xs={11}>
-                        <div style={{ paddingLeft: "13px" }}>
-                        <RadioQuestions
-                            id="alien_authorized"
-                            question="Are you Alien Authorized?"
-                            xsSize={12}
-                            optionList={["Yes", "No"]}
-                            optionValue={["Yes", "No"]}
-                            useForm={Forms}
-                            isReq={reqBits.alien_authorized}
-                            defaultSelected={manualStates.alien_authorized}
-                        />
-                        </div>
-                    </Grid>
+                                  <Grid item xs={12} sm={12} md={5}>
+                                      <div style={{ paddingLeft: "13px" }}>
+                                      <RadioQuestions
+                                          id="alien_authorized"
+                                          question="Are you Alien Authorized?"
+                                          xsSize={12}
+                                          optionList={["Yes", "No"]}
+                                          optionValue={["Yes", "No"]}
+                                          useForm={Forms}
+                                          isReq={reqBits.alien_authorized}
+                                          defaultSelected={manualStates.alien_authorized}
+                                      />
+                                      </div>
+                                  </Grid>
 
 
-                    <Grid item xs={11}  sm={11} md={5}>
-                        <TextField
-                          name="alien_registration_number"
-                          variant="outlined"
-                          size="small"
-                          type="text"
-                          label="Alien Registration Number"
-                          className="col-12"
-                          error={
-                            errors && errors.alien_registration_number === undefined ? false : true
-                          }
-                          helperText={errors && errors.alien_registration_number ? errors.alien_registration_number.message : RequireError}
-                          inputRef={register({
-                            required: {
-                              value: reqBits.alien_registration_number,
-                              message: RequireError,
-                            },
-                            pattern:{value:/^[0-9-]*$/, message:"Only Chracters Allowed"},
-                            minLength :{value:7,message:"Min 8 Digits"}
-                          })}
-                        ></TextField>
-                    </Grid>
+                                  <Grid item xs={12}  sm={12} md={5}>
+                                      <TextField
+                                        name="alien_registration_number"
+                                        variant="outlined"
+                                        size="small"
+                                        type="text"
+                                        label="Alien Registration Number"
+                                        className="col-12"
+                                        error={
+                                          errors && errors.alien_registration_number === undefined ? false : true
+                                        }
+                                        helperText={errors && errors.alien_registration_number ? errors.alien_registration_number.message : RequireError}
+                                        inputRef={register({
+                                          required: {
+                                            value: reqBits.alien_registration_number,
+                                            message: RequireError,
+                                          },
+                                          pattern:{value:/^[0-9-]*$/, message:"Only Chracters Allowed"},
+                                          minLength :{value:7,message:"Min 8 Digits"}
+                                        })}
+                                      ></TextField>
+                                  </Grid>
 
 
-                    <Grid item xs={11} sm={11} md={5}>
-                            <TextField
-                                name="expiration_date"
-                                variant="outlined"
-                                size="small"
-                                type="date"
-                                className="col-12"
-                                error={
-                                  errors.expiration_date == undefined
-                                    ? false
-                                    : true
-                                }
-                                helperText={"Expiration Date " + RequireError}
-                                inputRef={register({
-                                  required: reqBits.expiration_date,
-                                })}
-                               
-                              ></TextField>
-                        </Grid>
+                                  <Grid item xs={12} sm={12} md={5}>
+                                          <TextField
+                                              name="expiration_date"
+                                              variant="outlined"
+                                              size="small"
+                                              type="date"
+                                              className="col-12"
+                                              error={
+                                                errors.expiration_date == undefined
+                                                  ? false
+                                                  : true
+                                              }
+                                              helperText={"Expiration Date " + RequireError}
+                                              inputRef={register({
+                                                required: reqBits.expiration_date,
+                                              })}
+                                            
+                                            ></TextField>
+                                      </Grid>
 
-                        
-                    <Grid item xs={11}  sm={11} md={5}>
-                        <TextField
-                          name="formi94_reg_number"
-                          variant="outlined"
-                          size="small"
-                          type="text"
-                          label="Form I-9 Registration Number"
-                          className="col-12"
-                          error={
-                            errors && errors.formi94_reg_number === undefined ? false : true
-                          }
-                          helperText={errors && errors.formi94_reg_number ? errors.formi94_reg_number.message : RequireError}
-                          inputRef={register({
-                            required: {
-                              value: reqBits.formi94_reg_number,
-                              message: RequireError,
-                            },
-                            // pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
-                          })}
-                        ></TextField>
-                    </Grid>
-
-
-
-                        
-                    <Grid item xs={11}  sm={11} md={5}>
-                        <TextField
-                          name="foreign_passport_number"
-                          variant="outlined"
-                          size="small"
-                          type="text"
-                          label="Foreign Passport Number"
-                          className="col-12"
-                          error={
-                            errors && errors.foreign_passport_number === undefined ? false : true
-                          }
-                          helperText={errors && errors.foreign_passport_number ? errors.foreign_passport_number.message : RequireError}
-                          inputRef={register({
-                            required: {
-                              value: reqBits.foreign_passport_number,
-                              message: RequireError,
-                            },
-                            // pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
-                          })}
-                        ></TextField>
-                    </Grid>
+                                      
+                                  <Grid item xs={12}  sm={12} md={5}>
+                                      <TextField
+                                        name="formi94_reg_number"
+                                        variant="outlined"
+                                        size="small"
+                                        type="text"
+                                        label="Form I-9 Registration Number"
+                                        className="col-12"
+                                        error={
+                                          errors && errors.formi94_reg_number === undefined ? false : true
+                                        }
+                                        helperText={errors && errors.formi94_reg_number ? errors.formi94_reg_number.message : RequireError}
+                                        inputRef={register({
+                                          required: {
+                                            value: reqBits.formi94_reg_number,
+                                            message: RequireError,
+                                          },
+                                          // pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
+                                        })}
+                                      ></TextField>
+                                  </Grid>
 
 
-                    <Grid item xs={12}  sm={12} md={12}>
-                        <TextField
-                          name="issuance_country"
-                          variant="outlined"
-                          size="small"
-                          type="text"
-                          label="Issuance Country"
-                          className="col-11"
-                          error={
-                            errors && errors.issuance_country === undefined ? false : true
-                          }
-                          helperText={errors && errors.issuance_country ? errors.issuance_country.message : RequireError}
-                          inputRef={register({
-                            required: {
-                              value: reqBits.issuance_country,
-                              message: RequireError,
-                            },
-                            // pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
-                          })}
-                        ></TextField>
-                    </Grid>
+                                  <Grid item xs={12}  sm={12} md={5}>
+                                      <TextField
+                                        name="foreign_passport_number"
+                                        variant="outlined"
+                                        size="small"
+                                        type="text"
+                                        label="Foreign Passport Number"
+                                        className="col-12"
+                                        error={
+                                          errors && errors.foreign_passport_number === undefined ? false : true
+                                        }
+                                        helperText={errors && errors.foreign_passport_number ? errors.foreign_passport_number.message : RequireError}
+                                        inputRef={register({
+                                          required: {
+                                            value: reqBits.foreign_passport_number,
+                                            message: RequireError,
+                                          },
+                                          // pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
+                                        })}
+                                      ></TextField>
+                                  </Grid>
+
+                                  <Grid item xs={12}  sm={12} md={11}>
+                                      <TextField
+                                        name="issuance_country"
+                                        variant="outlined"
+                                        size="small"
+                                        type="text"
+                                        label="Issuance Country"
+                                        className="col-12"
+                                        error={
+                                          errors && errors.issuance_country === undefined ? false : true
+                                        }
+                                        helperText={errors && errors.issuance_country ? errors.issuance_country.message : RequireError}
+                                        inputRef={register({
+                                          required: {
+                                            value: reqBits.issuance_country,
+                                            message: RequireError,
+                                          },
+                                          // pattern:{value:/^[a-zA-Z ]{1,30}$/, message:"Only Chracters Allowed"}
+                                        })}
+                                      ></TextField>
+                                  </Grid>
 
 
-{/* // united_state_citizen = db.StringField() # chkbox = OK
-// non_united_state_citizen = db.StringField() # chkbox = DONE
-// lawful_permanent_resident = db.StringField() # chkbox = DONE
-// alien_registration_number = db.StringField()
-// alien_authorized = db.StringField() # chkbox
-// expiration_date = db.DateField()
-// formi94_reg_number = db.StringField()
-// foreign_passport_number = db.StringField()
-// issuance_country = db.StringField() */}
-                  </Grid>
-                </AccordionDetails>
-              </Accordion>
+
+
+                                </Grid>
+                          </Grid>
+                          <Grid item xs={1}></Grid>
+                       </AccordionDetails>
+                  </Accordion>
+              </Grid>
             </Grid>
             {/* Questions and Awnsers Ending */}
             {/* Questions End */}

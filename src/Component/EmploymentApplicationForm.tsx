@@ -46,7 +46,7 @@ class EmploymentApplication extends Component<
   constructor(props: any) {
     super(props);
     this.state = {
-      formCounter: 8,
+      formCounter: 3,
     };
 
     this.gotoNextForm = this.gotoNextForm.bind(this);

@@ -62,7 +62,7 @@ export default function EmpApplicationForm5(props: Props) {
           >
             {/* PAGE 2 */}
             <Grid item xs={1}></Grid>
-            <Grid item xs={10} style={{ marginBottom: "10px" }}>
+            <Grid item  xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Paper
                 elevation={3}
                 style={{ paddingLeft: "40px", paddingRight: "60px" }}
@@ -75,10 +75,10 @@ export default function EmpApplicationForm5(props: Props) {
                   alignItems="baseline"
                   spacing={3}
                 >
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={12} md={12}>
                     <input type="hidden" value="true" id="form5" name="form5" />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={12} md={12}>
                     <Typography align="justify" variant="subtitle2">
                       <b>DRUG PROHIBITIONS</b>
                       <br />
@@ -497,7 +497,7 @@ export default function EmpApplicationForm5(props: Props) {
             </Grid>
             <Grid item xs={1}></Grid>
             {/* BUTTON Start */}
-            <Grid item xs={3}>
+            <Grid item xs={12} sm={12} md={3}>
               <Button
                 type="button"
                 className="col-12"
@@ -510,7 +510,7 @@ export default function EmpApplicationForm5(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} sm={12} md={3}>
               <Button
                 type="submit"
                 className="col-12"

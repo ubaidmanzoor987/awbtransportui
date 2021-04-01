@@ -111,7 +111,7 @@ export default function EmpApplicationForm6(props: Props) {
   return (
     <div>
       <Container style={{ backgroundColor: "#fafafa" }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form  onSubmit={handleSubmit(onSubmit)}>
           <Grid
             container
             direction="row"
@@ -119,14 +119,14 @@ export default function EmpApplicationForm6(props: Props) {
             alignItems="center"
             spacing={3}
           >
-            <Grid item xs={10}>
+            <Grid item   xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
               </Paper>
             </Grid>
 
             {/* PAGE 2 */}
-            <Grid item xs={10} style={{ marginBottom: "10px" }}>
+            <Grid item   xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Paper
                 elevation={3}
                 style={{ paddingLeft: "40px", paddingRight: "60px" }}
@@ -139,7 +139,7 @@ export default function EmpApplicationForm6(props: Props) {
                   alignItems="baseline"
                   spacing={3}
                 >
-                  <Grid item xs={12}>
+                  <Grid item   xs={12} sm={12} md={12}>
                     <Typography align="justify" variant="subtitle2">
                       <b>E. Alcohol Testing.</b>
                       <br />
@@ -290,7 +290,9 @@ export default function EmpApplicationForm6(props: Props) {
                           </ul>
                           <img
                             src={drug_and_alcohol_policy_snapshot_1}
-                            style={{ paddingRight: "100px" }}
+                            style={{     
+                                      width: "100%",
+                                      height: "auto" }}
                           />
                           <ul style={{ listStyleType: "none" }}>
                             <li>
@@ -600,7 +602,9 @@ export default function EmpApplicationForm6(props: Props) {
                             </li>
                             <img
                               src={drug_and_alcohol_policy_snapshot_1}
-                              style={{ paddingRight: "100px" }}
+                              style={{     
+                                width: "100%",
+                                height: "auto" }}
                             />
                           </ol>
                         </li>
@@ -1044,7 +1048,7 @@ export default function EmpApplicationForm6(props: Props) {
                     alignItems="baseline"
                     spacing={3}
                   >
-                    <Grid item xs={5}>
+                    <Grid item   xs={12} sm={12} md={5}>
                       <TextField
                         name="alcoholTestEmployeeFirstName"
                         variant="outlined"
@@ -1064,7 +1068,7 @@ export default function EmpApplicationForm6(props: Props) {
                         })}
                       ></TextField>
                     </Grid>
-                    <Grid item xs={5}>
+                    <Grid item   xs={12} sm={12} md={5}>
                       <TextField
                         name="alcoholTestEmployeeLastName"
                         variant="outlined"
@@ -1084,7 +1088,7 @@ export default function EmpApplicationForm6(props: Props) {
                         })}
                       ></TextField>
                     </Grid>
-                    <Grid item xs={5}>
+                    <Grid item   xs={12} sm={12} md={5}>
                       <TextField
                         name="alcoholTestSecurityNumber"
                         variant="outlined"
@@ -1109,7 +1113,7 @@ export default function EmpApplicationForm6(props: Props) {
                         })}
                       ></TextField>
                     </Grid>
-                    <Grid item xs={5}>
+                    <Grid item   xs={12} sm={12} md={5}>
                       <TextField
                         name="alcoholTestExecutionDate"
                         variant="outlined"
@@ -1128,10 +1132,10 @@ export default function EmpApplicationForm6(props: Props) {
                         })}
                       ></TextField>
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item   xs={12} sm={12} md={10}>
                       <Paper
                         elevation={3}
-                        style={{ paddingLeft: "40px", paddingRight: "60px" }}
+                        style={{ paddingLeft: "40px", paddingRight: "40px" }}
                         className={
                           (classes.heading, classes.paperProminantStyle)
                         }
@@ -1152,33 +1156,34 @@ export default function EmpApplicationForm6(props: Props) {
                             Please ! Sign here
                           </Typography>
                         )}
-                        <div
-                          style={{
-                            boxShadow:
-                              "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                            display: "inline-block",
-                            margin: "20px",
+                      <div
+                        style={{
+                          boxShadow:
+                            "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                          display: "inline-block",
+                          marginTop: "15px",
+                          marginBottom: "15px",
+                        }}
+                      >
+                        <SignatureCanvas
+                          penColor="black"
+                          ref={sigPad}
+                          canvasProps={{
+                            width: 500,
+                            // width: "auto",
+                            height: 150,
+                            className: "sigCanvas",
                           }}
-                        >
-                          <SignatureCanvas
-                            penColor="black"
-                            ref={sigPad}
-                            canvasProps={{
-                              width: 500,
-                              height: 150,
-                              className: "sigCanvas",
-                            }}
-                          />
-                        </div>
+                        />
+                      </div>
                         <Grid
                           container
                           direction="row"
-                          justify="space-between"
+                          justify="space-evenly"
                           alignItems="baseline"
                           spacing={3}
                         >
-                          <Grid item xs={5}></Grid>
-                          <Grid item xs={2}>
+                          <Grid item xs={8} sm={8} md={3}>
                             <Button
                               type="button"
                               className="col-12"
@@ -1189,17 +1194,7 @@ export default function EmpApplicationForm6(props: Props) {
                               Clear
                             </Button>
                           </Grid>
-                          {/* <Grid item xs={2}>
-                    <Button
-                      className="col-12"
-                      variant="contained"
-                      color="primary"
-                      onClick={saveImage}
-                    >
-                      Save
-                    </Button>
-                  </Grid> */}
-                          <Grid item xs={5}></Grid>
+                         
                         </Grid>
                       </Paper>
                     </Grid>
@@ -1209,7 +1204,7 @@ export default function EmpApplicationForm6(props: Props) {
             </Grid>
             {/* BUTTON Start */}
            
-              <Grid item xs={3}>
+              <Grid item   xs={12} sm={12} md={3}>
                 <Button
                   type="button"
                   className="col-12"
@@ -1222,7 +1217,7 @@ export default function EmpApplicationForm6(props: Props) {
                   Back
                 </Button>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item   xs={12} sm={12} md={3}>
                 <Button
                   type="submit"
                   className="col-12"
