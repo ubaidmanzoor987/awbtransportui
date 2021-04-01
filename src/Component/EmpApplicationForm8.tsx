@@ -166,7 +166,7 @@ export default function EmpApplicationForm8(props: Props) {
             alignItems="baseline"
             spacing={3}
           >
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
               </Paper>
@@ -174,7 +174,7 @@ export default function EmpApplicationForm8(props: Props) {
 
             {/* Questions Start */}
             {/* Questions and Awnsers Starting */}
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Accordion elevation={3} defaultExpanded>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography className={classes.heading}>
@@ -257,7 +257,7 @@ export default function EmpApplicationForm8(props: Props) {
                     </Grid>
 
 
-                    <Grid item xs={5}>
+                    <Grid item xs={11}  sm={11} md={5}>
                         <TextField
                           name="alien_registration_number"
                           variant="outlined"
@@ -281,7 +281,7 @@ export default function EmpApplicationForm8(props: Props) {
                     </Grid>
 
 
-                    <Grid item xs={5}>
+                    <Grid item xs={11} sm={11} md={5}>
                             <TextField
                                 name="expiration_date"
                                 variant="outlined"
@@ -302,7 +302,7 @@ export default function EmpApplicationForm8(props: Props) {
                         </Grid>
 
                         
-                    <Grid item xs={5}>
+                    <Grid item xs={11}  sm={11} md={5}>
                         <TextField
                           name="formi94_reg_number"
                           variant="outlined"
@@ -327,7 +327,7 @@ export default function EmpApplicationForm8(props: Props) {
 
 
                         
-                    <Grid item xs={5}>
+                    <Grid item xs={11}  sm={11} md={5}>
                         <TextField
                           name="foreign_passport_number"
                           variant="outlined"
@@ -350,7 +350,7 @@ export default function EmpApplicationForm8(props: Props) {
                     </Grid>
 
 
-                    <Grid item xs={12}>
+                    <Grid item xs={12}  sm={12} md={12}>
                         <TextField
                           name="issuance_country"
                           variant="outlined"
@@ -390,7 +390,7 @@ export default function EmpApplicationForm8(props: Props) {
             {/* Questions End */}
 
             {/* BUTTON Start */}
-            <Grid item xs={3}>
+            <Grid item xs={10} sm={10} md={3} >
               <Button
                 type="button"
                 className="col-12"
@@ -403,7 +403,7 @@ export default function EmpApplicationForm8(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={10} sm={10} md={3} >
               <Button
                 type="submit"
                 className="col-12"
