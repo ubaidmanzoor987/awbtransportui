@@ -4,6 +4,7 @@ import { get_all_users } from "../../services/get_all_users_api";
 import NavbarCareer from "../NavbarCareer";
 import Footer from "../Footer";
 import { users_data } from "../User";
+import CircularIndeterminate from "../Loader";
 
 export interface LoginPanelState {
   user_name: string;
@@ -13,6 +14,8 @@ export interface LoginPanelState {
     user_name: string;
     password: string;
   };
+  active_spinner: boolean,
+  disablebutton: boolean,
 }
 
 class AdminLogin extends React.Component<{}, LoginPanelState> {
@@ -26,6 +29,8 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
         password: "",
       },
       chk_login: false,
+      active_spinner: false,
+      disablebutton: false
     };
     this.state = initialState;
     this.handleChange = this.handleChange.bind(this);
@@ -56,7 +61,8 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
     event.preventDefault();
     let validity = true;
     let errors = this.state.errors;
-
+    
+    console.log("this.state", this.state);
     Object.values(this.state.errors).forEach(
       (val) => val.length > 0 && (validity = false)
     );
@@ -67,29 +73,48 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
       this.state.user_name == "admin" &&
       this.state.password == "admin@admin.com"
     ) {
+      this.setState({
+        ...this.state,
+        active_spinner: true
+      });
       const res = (await get_all_users()) as any;
       //console.log("res = ", res);
       if (res) {
-        //console.log("res1 = ", this.context);
         this.context.setUserListData(res);
         this.setState({
           ...this.state,
           chk_login: true,
+          active_spinner: false,
+          disablebutton: true
         });
+      }
+      else {
+        this.setState({
+          ...this.state,
+          errors: { ...errors, user_name: "Server Error" },
+          disablebutton: false
+        })
       }
     } else if (this.state.user_name != 'admin'){
       this.setState({
         ...this.state,
-        errors: { ...errors, user_name: "Invalid User Name and Password" },
+        errors: { ...errors, user_name: "Invalid User Name" },
+        disablebutton: false
       })
-      
+    }
+    else if (this.state.password != 'admin@admin.com'){
+      this.setState({
+        ...this.state,
+        errors: { ...errors, password: "Invalid Password" },
+        disablebutton: false
+      })
     }
   };
 
   render() {
     const { errors } = this.state;
     if (this.state.chk_login) {
-      return <Redirect to="/admin/login/panel" />;
+      return <Redirect to="/hrportal/login/dashboard" />;
     }
     return (
       <>
@@ -107,7 +132,7 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
                       name="user_name"
                       onChange={this.handleChange}
                     />
-                    {errors.user_name == "" && (
+                    {errors.user_name && errors.user_name.length > 0 && (
                       <span style={{ color: "red" }}>{errors.user_name}</span>
                     )}
                   </div>
@@ -118,12 +143,13 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
                       name="password"
                       onChange={this.handleChange}
                     />
-                    {errors.password.length > 0 && (
+                    {errors.password && errors.password.length > 0 && (
                       <span style={{ color: "red" }}>{errors.password}</span>
                     )}
                   </div>
+                  <CircularIndeterminate active={this.state.active_spinner} />
                   <div className="submit">
-                    <button className="mybtn">Sign In</button>
+                    <button className="mybtn" disabled={this.state.disablebutton}>Sign In</button>
                   </div>
                 </form>
               </div>

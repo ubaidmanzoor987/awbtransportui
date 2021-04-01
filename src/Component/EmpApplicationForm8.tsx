@@ -132,8 +132,6 @@ export default function EmpApplicationForm8(props: Props) {
 
   const onSubmit = async (data: any) => {
   
-  
-
     console.log("data form8 submit");
     console.log(data);
     data.user_name = manualStates.user_name;
