@@ -26,6 +26,7 @@ import {
   ReferenceDummyElement,
   trafficConvictionDummyElement
 } from "../Common/CommonVariables";
+import { for_production } from "../shared/baseUrl";
 
 type EmploymentApplicationStates = {
   formCounter: number;
@@ -46,7 +47,7 @@ class EmploymentApplication extends Component<
   constructor(props: any) {
     super(props);
     this.state = {
-      formCounter: 3,
+      formCounter: (for_production===true)?(1):(7),
     };
 
     this.gotoNextForm = this.gotoNextForm.bind(this);

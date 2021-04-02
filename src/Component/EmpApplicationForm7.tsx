@@ -41,6 +41,7 @@ import { snackbarDuratuion } from "../Common/CommonVariables";
 import AlertComponent from "./SubComponents/AlertComponent";
 import { useEffect } from "react";
 import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
+import useWindowDimensionHook from "./MyHook/WindowDimension";
 
 type Props = { data?: any; handler?: any; setData: any };
 
@@ -54,6 +55,15 @@ export default function EmpApplicationForm7(props: Props) {
   const [prevEmplpoyerPhonePattern, setprevEmplpoyerPhonePattern] = useState(
     ""
   );
+
+  const callbackOnWindowResize = () => {
+    console.log(width);   
+    setSigWidth(width);   
+  }
+
+  const {width} = useWindowDimensionHook(callbackOnWindowResize);
+  
+  const [sigWidth,setSigWidth] = useState(width);
   const [
     nameOfPersonProvidingInformationPhonePattern,
     setNameOfPersonProvidingInformationPhonePattern,
@@ -338,6 +348,7 @@ export default function EmpApplicationForm7(props: Props) {
                           boxShadow:
                             "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
                           display: "inline-block",
+                          width:"auto",
                           marginTop: "15px",
                           marginBottom: "15px",
                         }}
@@ -346,7 +357,7 @@ export default function EmpApplicationForm7(props: Props) {
                           penColor="black"
                           ref={sigPad}
                           canvasProps={{
-                            width: 500,
+                            width:(sigWidth/100)*20,
                             height: 150,
                             className: "sigCanvas",
                           }}
@@ -360,6 +371,7 @@ export default function EmpApplicationForm7(props: Props) {
                           spacing={3}
                         >
                           <Grid item xs={8} sm={8} md={3}>
+                            <span>Width: {sigWidth}px  <br/>20% Width: {(sigWidth/100)*20}px</span>
                             <Button
                               type="button"
                               className="col-12"
