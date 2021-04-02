@@ -13,8 +13,11 @@ import Box from "@material-ui/core/Box";
 import { useEffect } from "react";
 
 import AlertComponent from "./SubComponents/AlertComponent";
+import useWindowDimensionHook from "./MyHook/WindowDimension";
 
 type Props = { data?: any; handler?: any; setData: any };
+
+let base64SignatureImage:string;
 
 export default function EmpApplicationForm6(props: Props) {
   const classes = styleClasses.useStyles();
@@ -22,39 +25,40 @@ export default function EmpApplicationForm6(props: Props) {
     defaultValues: props.data,
   });
 
-  const sigPad = useRef<any>();
-  let base64SignatureImage = "";
+  const callbackOnWindowResize = () => {
+    console.log(width);   
+    setSigWidth(width);   
+  }
 
+  const {width} = useWindowDimensionHook(callbackOnWindowResize);
+  
+  const [sigWidth,setSigWidth] = useState(width);
+  
+  const sigPad = useRef<any>();
+
+ 
   const clearSigPad = () => {
     if (sigPad && sigPad.current) {
       sigPad.current?.clear();
       base64SignatureImage = "";
     }
   };
-  const [signatureHelperTextError, setSignatureHelperTextError] = useState(
-    false
-  );
-
-  const saveImage = () => {
-    if (sigPad.current && !sigPad.current.isEmpty()) {
-      setSignatureError("");
-      setSignatureHelperTextError(false);
-
-      base64SignatureImage = sigPad.current
-        ?.getTrimmedCanvas()
-        .toDataURL("image/png");
-    } else {
-      setSignatureError("text-danger");
-      setSignatureHelperTextError(true);
-    }
-  };
 
   useEffect(() => {
+    base64SignatureImage = props.data.employeeSignature;
     window.scrollTo(0, 0);
-    if (props.data.alcoholTestEmployeeSignature !== undefined) {
-      sigPad.current.fromDataURL(props.data.alcoholTestEmployeeSignature);
+    if (base64SignatureImage !== undefined) {
+      sigPad.current?.clear();
+      sigPad.current.fromDataURL(base64SignatureImage);
     }
   }, []);
+
+  useEffect(() => {
+    if (base64SignatureImage !== undefined) {
+      sigPad.current?.clear();
+      sigPad.current.fromDataURL(base64SignatureImage);
+    }
+  }, [sigWidth]);
 
   //-------------SNACKBAR-------------
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
@@ -74,6 +78,25 @@ export default function EmpApplicationForm6(props: Props) {
   //-------------SNACKBAR-------------
 
   const [signatureError, setSignatureError] = useState("");
+  const [signatureHelperTextError, setSignatureHelperTextError] = useState(
+    false
+  );
+
+  const saveImage = () => {
+    console.log("base64SignatureImage onEnd");
+    if (sigPad.current && !sigPad.current.isEmpty()) {
+      setSignatureError("");
+      setSignatureHelperTextError(false);
+
+      base64SignatureImage = sigPad.current
+        ?.getTrimmedCanvas()
+        .toDataURL("image/png");
+    } else {
+      setSignatureError("text-danger");
+      setSignatureHelperTextError(true);
+    }
+  };
+
 
   const onSubmit = async (data: any) => {
     if (sigPad.current && sigPad.current.isEmpty()) {
@@ -1161,6 +1184,7 @@ export default function EmpApplicationForm6(props: Props) {
                           boxShadow:
                             "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
                           display: "inline-block",
+                          width:"auto",
                           marginTop: "15px",
                           marginBottom: "15px",
                         }}
@@ -1169,12 +1193,12 @@ export default function EmpApplicationForm6(props: Props) {
                           penColor="black"
                           ref={sigPad}
                           canvasProps={{
-                            width: 500,
-                            // width: "auto",
+                            width:(sigWidth/100)*45,
                             height: 150,
                             className: "sigCanvas",
                           }}
-                        />
+                          onEnd={(e:any)=>{saveImage();}}
+                          />
                       </div>
                         <Grid
                           container
@@ -1184,6 +1208,7 @@ export default function EmpApplicationForm6(props: Props) {
                           spacing={3}
                         >
                           <Grid item xs={8} sm={8} md={3}>
+                            {/* <span>Width: {sigWidth}px  <br/>20% Width: {(sigWidth/100)*20}px</span> */}
                             <Button
                               type="button"
                               className="col-12"

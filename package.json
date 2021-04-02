@@ -11,6 +11,7 @@
     "@material-ui/pickers": "^3.2.10",
     "@material-ui/x-grid-data-generator": "^4.0.0-alpha.23",
     "@material/typography": "^10.0.0",
+    "@pdftron/webviewer": "^7.3.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.0",

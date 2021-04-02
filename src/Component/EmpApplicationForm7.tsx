@@ -44,6 +44,7 @@ import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
 import useWindowDimensionHook from "./MyHook/WindowDimension";
 
 type Props = { data?: any; handler?: any; setData: any };
+let base64SignatureImage:string;
 
 export default function EmpApplicationForm7(props: Props) {
   const classes = styleClasses.useStyles();
@@ -70,7 +71,6 @@ export default function EmpApplicationForm7(props: Props) {
   ] = useState("");
 
   const sigPad = useRef<any>();
-  let base64SignatureImage = "";
 
   const clearSigPad = () => {
     if (sigPad && sigPad.current) {
@@ -80,11 +80,21 @@ export default function EmpApplicationForm7(props: Props) {
   };
 
   useEffect(() => {
+    base64SignatureImage = props.data.employeeSignature;
     window.scrollTo(0, 0);
-    if (props.data.employeeSignature !== undefined) {
-      sigPad.current.fromDataURL(props.data.employeeSignature);
+    if (base64SignatureImage !== undefined) {
+      sigPad.current?.clear();
+      sigPad.current.fromDataURL(base64SignatureImage);
     }
   }, []);
+
+  useEffect(() => {
+    if (base64SignatureImage !== undefined) {
+      sigPad.current?.clear();
+      sigPad.current.fromDataURL(base64SignatureImage);
+    }
+  }, [sigWidth]);
+
 
   let Link = Scroll.Link;
   let Element = Scroll.Element;
@@ -93,6 +103,7 @@ export default function EmpApplicationForm7(props: Props) {
   let scrollSpy = Scroll.scrollSpy;
 
   const saveImage = () => {
+    console.log("base64SignatureImage onEnd");
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setSignatureError("");
       setSignatureHelperTextError(false);
@@ -357,11 +368,12 @@ export default function EmpApplicationForm7(props: Props) {
                           penColor="black"
                           ref={sigPad}
                           canvasProps={{
-                            width:(sigWidth/100)*20,
+                            width:(sigWidth/100)*45,
                             height: 150,
                             className: "sigCanvas",
                           }}
-                        />
+                          onEnd={(e:any)=>{saveImage();}}
+                          />
                       </div>
                         <Grid
                           container
@@ -371,7 +383,7 @@ export default function EmpApplicationForm7(props: Props) {
                           spacing={3}
                         >
                           <Grid item xs={8} sm={8} md={3}>
-                            <span>Width: {sigWidth}px  <br/>20% Width: {(sigWidth/100)*20}px</span>
+                            {/* <span>Width: {sigWidth}px  <br/>20% Width: {(sigWidth/100)*20}px</span> */}
                             <Button
                               type="button"
                               className="col-12"

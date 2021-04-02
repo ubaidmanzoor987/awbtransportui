@@ -59,6 +59,7 @@ import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
 import AlertComponent from "./SubComponents/AlertComponent";
 import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
+import useWindowDimensionHook from "./MyHook/WindowDimension";
 
 
 export const useStyles = makeStyles((theme: Theme) =>
@@ -121,6 +122,7 @@ let DriverLicenseList: tDriverLicenses;
 let ReferencesList: tReferences;
 
 type Props = { data?: any; handler?: any; setData: any };
+let base64SignatureImage = "";
 
 function EmpApplicationForm3(props: Props) {
   // //console.log("props.data ", props.data);
@@ -140,8 +142,32 @@ function EmpApplicationForm3(props: Props) {
   });
 
   let sigPad = useRef<any>();
-  //let sigPad:any ;
-  let base64SignatureImage = "";
+
+  const callbackOnWindowResize = () => {
+    console.log(width);   
+    setSigWidth(width);   
+  }
+
+  const {width} = useWindowDimensionHook(callbackOnWindowResize);
+  
+  const [sigWidth,setSigWidth] = useState(width);
+  
+  useEffect(() => {
+    base64SignatureImage = props.data.employeeSignature;
+    window.scrollTo(0, 0);
+    if (base64SignatureImage !== undefined) {
+      sigPad.current?.clear();
+      sigPad.current.fromDataURL(base64SignatureImage);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (base64SignatureImage !== undefined) {
+      sigPad.current?.clear();
+      sigPad.current.fromDataURL(base64SignatureImage);
+    }
+  }, [sigWidth]);
+  
 
   const clearSigPad = () => {
     console.log("ref");
@@ -163,15 +189,10 @@ function EmpApplicationForm3(props: Props) {
     }
   }, []);
 
-  const [phonePattern, setPhonePatten] = useState(
-    props.data.applicantPhoneNumber ? props.data.applicantPhoneNumber : ""
-  );
-
-  const [emergencyPhonePattern, setEmergencyPhonePatten] = useState(
-    props.data.applicantPhoneNumber ? props.data.applicantPhoneNumber : ""
-  );
+  
 
   const saveImage = () => {
+    console.log("base64SignatureImage onEnd");
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setSignatureError("");
       setSignatureHelperTextError(false);
@@ -184,6 +205,15 @@ function EmpApplicationForm3(props: Props) {
       setSignatureHelperTextError(true);
     }
   };
+
+
+  const [phonePattern, setPhonePatten] = useState(
+    props.data.applicantPhoneNumber ? props.data.applicantPhoneNumber : ""
+  );
+
+  const [emergencyPhonePattern, setEmergencyPhonePatten] = useState(
+    props.data.applicantPhoneNumber ? props.data.applicantPhoneNumber : ""
+  );
 
   if (debug === true) {
     // props.data = props.data;
@@ -1453,26 +1483,27 @@ function EmpApplicationForm3(props: Props) {
                     Please ! Sign here
                   </Typography>
                 )}
-              <div
-                style={{
-                  boxShadow:
-                    "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                  display: "inline-block",
-                  width:"auto",
-                  marginTop: "15px",
-                  marginBottom: "15px",
-                }}
-              >
-                <SignatureCanvas
-                  penColor="black"
-                  ref={sigPad}
-                  canvasProps={{
-                    width: "500%",
-                    height: 150,
-                    className: "sigCanvas",
+               <div
+                  style={{
+                    boxShadow:
+                      "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                    display: "inline-block",
+                    width:"auto",
+                    marginTop: "15px",
+                    marginBottom: "15px",
                   }}
-                />
-              </div>
+                >
+                  <SignatureCanvas
+                    penColor="black"
+                    ref={sigPad}
+                    canvasProps={{
+                      width:(sigWidth/100)*45,
+                      height: 150,
+                      className: "sigCanvas",
+                    }}
+                    onEnd={(e:any)=>{saveImage();}}
+                    />
+                </div>
                 <Grid
                   container
                   direction="row"
