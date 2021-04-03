@@ -37,7 +37,7 @@ import {
   download_dw4,
   download_fw4,
 } from "./panel";
-import { baseUrl } from "../../shared/baseUrl";
+import { baseUrl, for_production } from "../../shared/baseUrl";
 import { get_all_users } from "../../services/get_all_users_api";
 import { update } from "../../services/updateApi";
 
@@ -223,13 +223,24 @@ function Dashboard() {
   };
 
   function edit_pdf(user_name: string, fileNameWantToEdit: string) {
-    window.open(
-      "http://localhost:3000/hrportal/edit/pdf?user_name=" +
-        user_name +
-        "&" +
-        `fileName=${fileNameWantToEdit}`,
-      "_blank"
-    );
+    if (for_production) {
+      window.open(
+        "http://localhost:3000/hrportal/edit/pdf?user_name=" +
+          user_name +
+          "&" +
+          `fileName=${fileNameWantToEdit}`,
+        "_blank"
+      );
+    } else {
+      window.open(
+        baseUrl +
+          "/hrportal/edit/pdf?user_name=" +
+          user_name +
+          "&" +
+          `fileName=${fileNameWantToEdit}`,
+        "_blank"
+      );
+    }
   }
 
   const handleUserAction = async (event: any) => {

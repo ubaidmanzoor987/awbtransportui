@@ -44,7 +44,7 @@ import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
 import useWindowDimensionHook from "./MyHook/WindowDimension";
 
 type Props = { data?: any; handler?: any; setData: any };
-let base64SignatureImage:string;
+let base64SignatureImage: string;
 
 export default function EmpApplicationForm7(props: Props) {
   const classes = styleClasses.useStyles();
@@ -58,13 +58,13 @@ export default function EmpApplicationForm7(props: Props) {
   );
 
   const callbackOnWindowResize = () => {
-    console.log(width);   
-    setSigWidth(width);   
-  }
+    console.log(width);
+    setSigWidth(width);
+  };
 
-  const {width} = useWindowDimensionHook(callbackOnWindowResize);
-  
-  const [sigWidth,setSigWidth] = useState(width);
+  const { width } = useWindowDimensionHook(callbackOnWindowResize);
+
+  const [sigWidth, setSigWidth] = useState(width);
   const [
     nameOfPersonProvidingInformationPhonePattern,
     setNameOfPersonProvidingInformationPhonePattern,
@@ -94,7 +94,6 @@ export default function EmpApplicationForm7(props: Props) {
       sigPad.current.fromDataURL(base64SignatureImage);
     }
   }, [sigWidth]);
-
 
   let Link = Scroll.Link;
   let Element = Scroll.Element;
@@ -205,13 +204,13 @@ export default function EmpApplicationForm7(props: Props) {
             alignItems="baseline"
             spacing={3}
           >
-            <Grid item  xs={12} sm={12} md={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
               </Paper>
             </Grid>
 
-            <Grid item  xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
+            <Grid item xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Paper
                 elevation={3}
                 style={{ paddingLeft: "40px", paddingRight: "60px" }}
@@ -237,7 +236,7 @@ export default function EmpApplicationForm7(props: Props) {
                     </Typography>
                   </Grid>
 
-                  <Grid item  xs={12} sm={12} md={10}>
+                  <Grid item xs={12} sm={12} md={10}>
                     <Grid
                       container
                       direction="row"
@@ -245,7 +244,7 @@ export default function EmpApplicationForm7(props: Props) {
                       alignItems="baseline"
                       spacing={3}
                     >
-                      <Grid item  xs={12} sm={12} md={6}>
+                      <Grid item xs={12} sm={12} md={6}>
                         <TextField
                           name="employeePrintedName"
                           variant="outlined"
@@ -271,7 +270,7 @@ export default function EmpApplicationForm7(props: Props) {
                           }
                         ></TextField>
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={6}>
+                      <Grid item xs={12} sm={12} md={6}>
                         <TextField
                           name="employeeSSNNumber"
                           variant="outlined"
@@ -300,7 +299,7 @@ export default function EmpApplicationForm7(props: Props) {
                     </Grid>
                   </Grid>
 
-                  <Grid item  xs={12} sm={12} md={10}>
+                  <Grid item xs={12} sm={12} md={10}>
                     <Typography align="justify" variant="subtitle2">
                       I hereby authorize release of information from my
                       Department of Transportation regulated drug and alcohol
@@ -330,36 +329,34 @@ export default function EmpApplicationForm7(props: Props) {
                     </Typography>
                   </Grid>
 
-                  <Grid item   xs={12} sm={12} md={10}>
-                      <Paper
-                        elevation={3}
-                        style={{ paddingLeft: "40px", paddingRight: "40px" }}
-                        className={
-                          (classes.heading, classes.paperProminantStyle)
-                        }
+                  <Grid item xs={12} sm={12} md={12}>
+                    <Paper
+                      elevation={3}
+                      style={{ paddingLeft: "40px", paddingRight: "40px" }}
+                      className={(classes.heading, classes.paperProminantStyle)}
+                    >
+                      <Typography
+                        className={signatureError}
+                        align="left"
+                        variant="h6"
                       >
+                        Employee Signature
+                      </Typography>
+                      {signatureHelperTextError === true && (
                         <Typography
-                          className={signatureError}
                           align="left"
-                          variant="h6"
+                          variant="subtitle2"
+                          className="text-danger"
                         >
-                          Employee Signature
+                          Please ! Sign here
                         </Typography>
-                        {signatureHelperTextError === true && (
-                          <Typography
-                            align="left"
-                            variant="subtitle2"
-                            className="text-danger"
-                          >
-                            Please ! Sign here
-                          </Typography>
-                        )}
+                      )}
                       <div
                         style={{
                           boxShadow:
                             "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
                           display: "inline-block",
-                          width:"auto",
+                          width: "auto",
                           marginTop: "15px",
                           marginBottom: "15px",
                         }}
@@ -368,38 +365,39 @@ export default function EmpApplicationForm7(props: Props) {
                           penColor="black"
                           ref={sigPad}
                           canvasProps={{
-                            width:(sigWidth/100)*45,
+                            width: (sigWidth / 100) * 45,
                             height: 150,
                             className: "sigCanvas",
                           }}
-                          onEnd={(e:any)=>{saveImage();}}
-                          />
+                          onEnd={(e: any) => {
+                            saveImage();
+                          }}
+                        />
                       </div>
-                        <Grid
-                          container
-                          direction="row"
-                          justify="space-evenly"
-                          alignItems="baseline"
-                          spacing={3}
-                        >
-                          <Grid item xs={8} sm={8} md={3}>
-                            {/* <span>Width: {sigWidth}px  <br/>20% Width: {(sigWidth/100)*20}px</span> */}
-                            <Button
-                              type="button"
-                              className="col-12"
-                              variant="contained"
-                              color="primary"
-                              onClick={clearSigPad}
-                            >
-                              Clear
-                            </Button>
-                          </Grid>
-                         
+                      <Grid
+                        container
+                        direction="row"
+                        justify="space-evenly"
+                        alignItems="baseline"
+                        spacing={3}
+                      >
+                        <Grid item xs={8} sm={8} md={3}>
+                          {/* <span>Width: {sigWidth}px  <br/>20% Width: {(sigWidth/100)*20}px</span> */}
+                          <Button
+                            type="button"
+                            className="col-12"
+                            variant="contained"
+                            color="primary"
+                            onClick={clearSigPad}
+                          >
+                            Clear
+                          </Button>
                         </Grid>
-                      </Paper>
-                    </Grid>
+                      </Grid>
+                    </Paper>
+                  </Grid>
 
-                  <Grid item  xs={12} sm={12} md={10}>
+                  <Grid item xs={12} sm={12} md={10}>
                     <TextField
                       name="employeeDate"
                       variant="outlined"
@@ -428,7 +426,7 @@ export default function EmpApplicationForm7(props: Props) {
             </Grid>
 
             {/* I-A */}
-            <Grid item  xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
+            <Grid item xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Paper
                 elevation={3}
                 style={{
@@ -445,13 +443,13 @@ export default function EmpApplicationForm7(props: Props) {
                   alignItems="baseline"
                   spacing={3}
                 >
-                  <Grid item  xs={12} sm={12} md={10}>
+                  <Grid item xs={12} sm={12} md={10}>
                     <Typography align="justify" variant="body2">
                       <b>I-A.</b>
                     </Typography>
                   </Grid>
 
-                  <Grid item  xs={12} sm={12} md={10}>
+                  <Grid item xs={12} sm={12} md={10}>
                     <Grid
                       container
                       direction="row"
@@ -459,7 +457,7 @@ export default function EmpApplicationForm7(props: Props) {
                       alignItems="baseline"
                       spacing={3}
                     >
-                      <Grid item  xs={12} sm={12} md={6}>
+                      <Grid item xs={12} sm={12} md={6}>
                         <TextField
                           name="newEmployeerName"
                           variant="outlined"
@@ -485,7 +483,7 @@ export default function EmpApplicationForm7(props: Props) {
                           }
                         ></TextField>
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={6}>
+                      <Grid item xs={12} sm={12} md={6}>
                         <PhoneNumberComponent
                           label="Phone Number"
                           mainId="newEmployeerphone"
@@ -563,7 +561,7 @@ export default function EmpApplicationForm7(props: Props) {
                           // })}
                         ></TextField> */}
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={6}>
+                      <Grid item xs={12} sm={12} md={6}>
                         <TextField
                           name="newEmployeerFax"
                           variant="outlined"
@@ -589,7 +587,7 @@ export default function EmpApplicationForm7(props: Props) {
                           }
                         ></TextField>
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={6}>
+                      <Grid item xs={12} sm={12} md={6}>
                         <TextField
                           name="newEmployeedesignatedEmployeeReprsentative"
                           variant="outlined"
@@ -646,7 +644,7 @@ export default function EmpApplicationForm7(props: Props) {
                           }
                         ></TextField>
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={4}>
+                      <Grid item xs={12} sm={12} md={4}>
                         <TextField
                           name="newEmployeerCity"
                           variant="outlined"
@@ -672,7 +670,7 @@ export default function EmpApplicationForm7(props: Props) {
                           }
                         ></TextField>
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={4}>
+                      <Grid item xs={12} sm={12} md={4}>
                         {/* <ReactAutoComplete
                           id="newEmployeerState"
                           className="col-12"
@@ -748,7 +746,7 @@ export default function EmpApplicationForm7(props: Props) {
             </Grid>
 
             {/* I-B */}
-            <Grid item  xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
+            <Grid item xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Paper
                 elevation={3}
                 style={{
@@ -771,7 +769,7 @@ export default function EmpApplicationForm7(props: Props) {
                     </Typography>
                   </Grid>
 
-                  <Grid item  xs={12} sm={12} md={10}>
+                  <Grid item xs={12} sm={12} md={10}>
                     <Grid
                       container
                       direction="row"
@@ -779,7 +777,7 @@ export default function EmpApplicationForm7(props: Props) {
                       alignItems="baseline"
                       spacing={3}
                     >
-                      <Grid item  xs={12} sm={12} md={6}>
+                      <Grid item xs={12} sm={12} md={6}>
                         <TextField
                           name="prevEmployeerName"
                           variant="outlined"
@@ -805,7 +803,7 @@ export default function EmpApplicationForm7(props: Props) {
                           }
                         ></TextField>
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={6}>
+                      <Grid item xs={12} sm={12} md={6}>
                         <PhoneNumberComponent
                           label="Prev Employer Phone"
                           mainId="prevEmployeerphone"
@@ -852,7 +850,7 @@ export default function EmpApplicationForm7(props: Props) {
                           }}
                         ></TextField> */}
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={6}>
+                      <Grid item xs={12} sm={12} md={6}>
                         <TextField
                           name="prevEmployeerFax"
                           variant="outlined"
@@ -878,7 +876,7 @@ export default function EmpApplicationForm7(props: Props) {
                           }
                         ></TextField>
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={6}>
+                      <Grid item xs={12} sm={12} md={6}>
                         <TextField
                           name="prevEmployeedesignatedEmployeeReprsentative"
                           variant="outlined"
@@ -935,7 +933,7 @@ export default function EmpApplicationForm7(props: Props) {
                           }
                         ></TextField>
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={4}>
+                      <Grid item xs={12} sm={12} md={4}>
                         <TextField
                           name="prevEmployeerCity"
                           variant="outlined"
@@ -961,7 +959,7 @@ export default function EmpApplicationForm7(props: Props) {
                           }
                         ></TextField>
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={4}>
+                      <Grid item xs={12} sm={12} md={4}>
                         {/* <ReactAutoComplete
                           id="prevEmployeerState"
                           className="col-12"
@@ -993,7 +991,7 @@ export default function EmpApplicationForm7(props: Props) {
                           })}
                         </ReactHookFormSelect>
                       </Grid>
-                      <Grid item  xs={12} sm={12} md={4}>
+                      <Grid item xs={12} sm={12} md={4}>
                         <TextField
                           name="prevEmployeerpostalCode"
                           variant="outlined"
@@ -1034,7 +1032,7 @@ export default function EmpApplicationForm7(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item  xs={12} sm={12} md={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper
                 elevation={3}
                 style={{
@@ -1051,7 +1049,7 @@ export default function EmpApplicationForm7(props: Props) {
                   alignItems="baseline"
                   spacing={3}
                 >
-                  <Grid item  xs={12} sm={12} md={10}>
+                  <Grid item xs={12} sm={12} md={10}>
                     <Typography align="justify" variant="body2">
                       <b>
                         Section II. To be completed by the previous employer and
@@ -1063,7 +1061,7 @@ export default function EmpApplicationForm7(props: Props) {
                       signature (in Section I), for DOT-regulated testing ~
                     </Typography>
                   </Grid>
-                  <Grid item  xs={12} sm={12} md={10}>
+                  <Grid item xs={12} sm={12} md={10}>
                     <RadioQuestions
                       id="employeeAlcoholTestRateHigher"
                       question="1. Did the employee have alcohol tests with a result of 0.04 or higher?"
@@ -1129,7 +1127,7 @@ export default function EmpApplicationForm7(props: Props) {
                       defaultSelected={props.data.answeredYes}
                     />
                   </Grid>
-                  <Grid item  xs={12} sm={12} md={10}>
+                  <Grid item xs={12} sm={12} md={10}>
                     <Typography align="justify" variant="subtitle2">
                       NOTE: If you answered “yes” to item 5, you must provide
                       the previous employer’s report. If you answered “yes” to
@@ -1138,7 +1136,7 @@ export default function EmpApplicationForm7(props: Props) {
                       follow-up testing record).
                     </Typography>
                   </Grid>
-                  <Grid item  xs={12} sm={12} md={10}>
+                  <Grid item xs={12} sm={12} md={10}>
                     <Typography align="justify" variant="body2">
                       <b>
                         II-B. Name of person providing information in Section II
@@ -1152,7 +1150,7 @@ export default function EmpApplicationForm7(props: Props) {
                     alignItems="baseline"
                     spacing={3}
                   >
-                    <Grid item  xs={12} sm={12} md={5}>
+                    <Grid item xs={12} sm={12} md={5}>
                       <TextField
                         name="nameOfPersonProvidingInformation"
                         variant="outlined"
@@ -1179,7 +1177,7 @@ export default function EmpApplicationForm7(props: Props) {
                         }
                       ></TextField>
                     </Grid>
-                    <Grid item  xs={12} sm={12} md={5}>
+                    <Grid item xs={12} sm={12} md={5}>
                       <TextField
                         name="nameOfPersonProvidingInformationTitle"
                         variant="outlined"
@@ -1208,7 +1206,7 @@ export default function EmpApplicationForm7(props: Props) {
                         }
                       ></TextField>
                     </Grid>
-                    <Grid item  xs={12} sm={12} md={5}>
+                    <Grid item xs={12} sm={12} md={5}>
                       <PhoneNumberComponent
                         label="Phone Number"
                         mainId="nameOfPersonProvidingInformationPhone"
@@ -1271,7 +1269,7 @@ export default function EmpApplicationForm7(props: Props) {
                         }}
                       ></TextField> */}
                     </Grid>
-                    <Grid item  xs={12} sm={12} md={5}>
+                    <Grid item xs={12} sm={12} md={5}>
                       <TextField
                         name="nameOfPersonProvidingInformationDate"
                         variant="outlined"
@@ -1344,9 +1342,7 @@ export default function EmpApplicationForm7(props: Props) {
           onClose={handleClose}
           severity={succesOrErrorBit}
           message={
-            succesOrErrorBit === "success"
-              ? "Data Saved Successfully"
-              : "Error"
+            succesOrErrorBit === "success" ? "Data Saved Successfully" : "Error"
           }
         ></AlertComponent>
       </Container>

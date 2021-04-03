@@ -101,5 +101,5 @@ export function processResult(resultData: any) {
 
     
     
-    console.log("proces", resultData.data);
+    // console.log("proces", resultData.data);
 }

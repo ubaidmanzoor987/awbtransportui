@@ -14,8 +14,8 @@ export interface LoginPanelState {
     user_name: string;
     password: string;
   };
-  active_spinner: boolean,
-  disablebutton: boolean,
+  active_spinner: boolean;
+  disablebutton: boolean;
 }
 
 class AdminLogin extends React.Component<{}, LoginPanelState> {
@@ -30,7 +30,7 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
       },
       chk_login: false,
       active_spinner: false,
-      disablebutton: false
+      disablebutton: false,
     };
     this.state = initialState;
     this.handleChange = this.handleChange.bind(this);
@@ -61,8 +61,8 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
     event.preventDefault();
     let validity = true;
     let errors = this.state.errors;
-    
-    console.log("this.state", this.state);
+
+    // console.log("this.state", this.state);
     Object.values(this.state.errors).forEach(
       (val) => val.length > 0 && (validity = false)
     );
@@ -75,7 +75,7 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
     ) {
       this.setState({
         ...this.state,
-        active_spinner: true
+        active_spinner: true,
       });
       const res = (await get_all_users()) as any;
       //console.log("res = ", res);
@@ -85,29 +85,27 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
           ...this.state,
           chk_login: true,
           active_spinner: false,
-          disablebutton: true
+          disablebutton: true,
         });
-      }
-      else {
+      } else {
         this.setState({
           ...this.state,
           errors: { ...errors, user_name: "Server Error" },
-          disablebutton: false
-        })
+          disablebutton: false,
+        });
       }
-    } else if (this.state.user_name != 'admin'){
+    } else if (this.state.user_name != "admin") {
       this.setState({
         ...this.state,
         errors: { ...errors, user_name: "Invalid User Name" },
-        disablebutton: false
-      })
-    }
-    else if (this.state.password != 'admin@admin.com'){
+        disablebutton: false,
+      });
+    } else if (this.state.password != "admin@admin.com") {
       this.setState({
         ...this.state,
         errors: { ...errors, password: "Invalid Password" },
-        disablebutton: false
-      })
+        disablebutton: false,
+      });
     }
   };
 
@@ -149,7 +147,12 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
                   </div>
                   <CircularIndeterminate active={this.state.active_spinner} />
                   <div className="submit">
-                    <button className="mybtn" disabled={this.state.disablebutton}>Sign In</button>
+                    <button
+                      className="mybtn"
+                      disabled={this.state.disablebutton}
+                    >
+                      Sign In
+                    </button>
                   </div>
                 </form>
               </div>
