@@ -90,7 +90,6 @@ function Dashboard() {
     { field: "last_name", headerName: "Last Name", width: 200 },
     { field: "email", headerName: "Email", width: 200 },
     { field: "isEditable", headerName: "Editable", width: 100 },
-    { field: "isDeleted", headerName: "Deleted", width: 100 },
     { field: "city", headerName: "City", width: 200 },
     { field: "dateOfBirth", headerName: "Date of Birth", width: 200 },
     { field: "gender", headerName: "Gender", width: 200 },
@@ -101,7 +100,14 @@ function Dashboard() {
   ];
 
   const downloadActions = [
-    { value: "download_user_cv", displayText: "User CV", shortCut: "C" },
+    { value: "download_user_cv", displayText: "Resume", shortCut: "R" },
+    {
+      value: "dodMedicalCardFile",
+      displayText: "Medical Card File",
+      shortCut: "M",
+    },
+    { value: "driverLicenceFile", displayText: "Licence File", shortCut: "L" },
+    { value: "dmvFile", displayText: "Dmv File", shortCut: "D" },
     {
       value: "download_new_employee_pdf",
       displayText: "Employee Pdf",
@@ -113,7 +119,6 @@ function Dashboard() {
   ];
 
   const editPdfActions = [
-    { value: "edit_user_cv", displayText: "User CV", shortCut: "C" },
     {
       value: "edit_new_employee_pdf",
       displayText: "Employee Pdf",
@@ -135,11 +140,11 @@ function Dashboard() {
       displayText: "Enable User Edit Mode",
       shortCut: "E",
     },
-    {
-      value: "user_delete",
-      displayText: "Delete User",
-      shortCut: "D",
-    },
+    // {
+    //   value: "user_delete",
+    //   displayText: "Delete User",
+    //   shortCut: "D",
+    // },
   ];
 
   const sortModel = [
@@ -154,10 +159,7 @@ function Dashboard() {
   }
   const handleDownloadMenuChange = (event: any) => {
     setPdfUrl("");
-    console.log("event.target.value");
-    console.log(event.target.value);
     let selectedOption = event.target.value;
-    console.log(selectedUser);
 
     switch (selectedOption) {
       case downloadActions[0].value:
@@ -165,18 +167,30 @@ function Dashboard() {
         break;
 
       case downloadActions[1].value:
-        download_new_employee_pdf(selectedUser);
+        download_user_cv(selectedUser, "dodMedicalCardFile");
         break;
 
       case downloadActions[2].value:
-        download_form_i9(selectedUser);
+        download_user_cv(selectedUser, "driverLicenceFile");
         break;
 
       case downloadActions[3].value:
-        download_dw4(selectedUser);
+        download_user_cv(selectedUser, "dmvFile");
         break;
 
       case downloadActions[4].value:
+        download_new_employee_pdf(selectedUser);
+        break;
+
+      case downloadActions[5].value:
+        download_form_i9(selectedUser);
+        break;
+
+      case downloadActions[6].value:
+        download_dw4(selectedUser);
+        break;
+
+      case downloadActions[7].value:
         download_fw4(selectedUser);
         break;
     }
@@ -184,142 +198,95 @@ function Dashboard() {
   };
 
   const handleEditPdfMenuChange = (event: any) => {
-    console.log("event.target.value");
-    console.log(event.target.value);
     let selectedOption = event.target.value;
-    console.log(selectedUser);
+    user.selectedUser = selectedUser;
     let editUrl = "";
     switch (selectedOption) {
       case editPdfActions[0].value:
-        editUrl = edit_resume(selectedUser);
+        edit_pdf(selectedUser, "new_employee");
         break;
 
       case editPdfActions[1].value:
-        editUrl = edit_pdf(selectedUser, "new_employee");
+        edit_pdf(selectedUser, "formi9");
         break;
 
       case editPdfActions[2].value:
-        editUrl = edit_pdf(selectedUser, "formi9");
+        edit_pdf(selectedUser, "dw4");
         break;
 
       case editPdfActions[3].value:
-        editUrl = edit_pdf(selectedUser, "dw4");
-        break;
-
-      case editPdfActions[4].value:
-        editUrl = edit_pdf(selectedUser, "fw4");
+        edit_pdf(selectedUser, "fw4");
         break;
     }
     setAction("");
     setPdfUrl(editUrl);
-    console.log(editUrl);
   };
 
-  function edit_resume(user_name: string) {
-    return (
-      baseUrl + "/api/get_resume?user_name=" + user_name + "&" + `resume=resume`
+  function edit_pdf(user_name: string, fileNameWantToEdit: string) {
+    window.open(
+      "http://localhost:3000/hrportal/edit/pdf?user_name=" +
+        user_name +
+        "&" +
+        `fileName=${fileNameWantToEdit}`,
+      "_blank"
     );
   }
 
-  function edit_pdf(user_name: string, fileNameWantToEdit: string) {
-    return baseUrl + `/api/pdf/${fileNameWantToEdit}?user_name=` + user_name;
-  }
-
-  const handleUserAction = (event: any) => {
+  const handleUserAction = async (event: any) => {
     setPdfUrl("");
-    console.log("event.target.value");
-    console.log(event.target.value);
     let selectedOption = event.target.value;
-    console.log(selectedUser);
 
     switch (selectedOption) {
       case userActions[0].value:
-        user_disable_edit_mode(selectedUser);
+        await user_disable_edit_mode(selectedUser);
+        const c_rows1 = JSON.parse(JSON.stringify(rows)) as any[];
+        const row_f1 = c_rows1.find(
+          (row1: any) => row1.user_name === selectedUser
+        );
+        row_f1.isEditable = false;
+        setRows(c_rows1);
         break;
 
       case userActions[1].value:
-        user_enable_edit_mode(selectedUser);
-        break;
-
-      case userActions[2].value:
-        user_delete(selectedUser);
+        await user_enable_edit_mode(selectedUser);
+        const c_rows = JSON.parse(JSON.stringify(rows)) as any[];
+        const row_f = c_rows.find(
+          (row1: any) => row1.user_name === selectedUser
+        );
+        row_f.isEditable = true;
+        setRows(c_rows);
         break;
     }
     setAction("");
   };
 
   async function user_enable_edit_mode(user_name: string) {
-    console.log("user_enable_edit_mode");
-    console.log(selectedUser);
     let userEditMode = { user_name: selectedUser, isEditable: "true" };
-    console.log("user_enable_edit_mode");
-    console.log(user);
-    console.log(userEditMode);
     await update(userEditMode);
-    const res = (await get_all_users()) as any;
-    if (res) {
-      user.setUserListData(res);
-      setRows(user.user_list_data);
-    }
   }
 
   async function user_disable_edit_mode(user_name: string) {
-    console.log("user_disable_edit_mode");
-    console.log(selectedUser);
     let userEditMode = { user_name: selectedUser, isEditable: "false" };
-    console.log("userEditMode");
-    console.log(user);
-    console.log(userEditMode);
     await update(userEditMode);
-    const res = (await get_all_users()) as any;
-    if (res) {
-      user.setUserListData(res);
-      setRows(user.user_list_data);
-    }
   }
 
-  async function user_delete(user_name: string) {
-    console.log("user_delete");
-    console.log(selectedUser);
-    console.log(user);
-    let userDelete = { user_name: selectedUser, isDeleted: "true" };
-    console.log("userDelete");
-    console.log(userDelete);
-    await update(userDelete);
-    const res = (await get_all_users()) as any;
-    if (res) {
-      user.setUserListData(res);
-      setRows(user.user_list_data);
-    }
-  }
+  // async function user_delete(user_name: string) {
+  //   let userDelete = { user_name: selectedUser, isDeleted: "true" };
+  //   await update(userDelete);
+  //   const res = (await get_all_users()) as any;
+  //   if (res) {
+  //     user.setUserListData(res);
+  //     setRows(user.user_list_data);
+  //   }
+  // }
 
   useEffect(() => {
     if (isEmpty(user.user_list_data)) {
       setLoggedIn(false);
     } else {
       setRows(user.user_list_data);
-      try {
-        console.log(pdfTronViewer.current);
-        if (pdfTronViewer.current) {
-          WebViewer(
-            {
-              path: "lib",
-              initialDoc: "",
-            },
-            pdfTronViewer.current
-          ).then((instance) => {
-            if (instance) {
-              console.log("instance");
-              console.log(instance);
-              setWebViewInstance(instance);
-            }
-          });
-        }
-      } catch (e) {
-        console.log(e);
-      }
     }
-  }, [pdfTronViewer]);
+  }, []);
 
   useEffect(() => {
     if (selectedUser !== "") {
@@ -337,9 +304,7 @@ function Dashboard() {
   }, [pdfUrl]);
 
   function currentlySelected(newSelection: any) {
-    console.log("newSelection");
     setSelectedUser(newSelection.selectionModel[0]);
-    console.log(newSelection.selectionModel[0]);
   }
 
   if (!loggedIn) {
@@ -408,8 +373,6 @@ function Dashboard() {
                           value={action}
                           accessKey="d"
                           onChange={(e: any) => {
-                            console.log("e");
-                            console.log(e);
                             handleDownloadMenuChange(e);
                           }}
                           label="Download PDFs"
@@ -443,8 +406,6 @@ function Dashboard() {
                           value={action}
                           accessKey="d"
                           onChange={(e: any) => {
-                            console.log("e");
-                            console.log(e);
                             handleEditPdfMenuChange(e);
                           }}
                           label="Edit PDFs"
@@ -478,8 +439,6 @@ function Dashboard() {
                           value={action}
                           accessKey="d"
                           onChange={(e: any) => {
-                            console.log("e");
-                            console.log(e);
                             handleUserAction(e);
                           }}
                           label="User Actions"
@@ -513,10 +472,10 @@ function Dashboard() {
                     disableMultipleSelection={true}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <hr />
                   <div className="webviewer" ref={pdfTronViewer}></div>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Paper>
           </Grid>

@@ -20,6 +20,7 @@ import AdminLogin from "./Component/admin_panel/adminLogin";
 import AdminPanel from "./Component/admin_panel/panel";
 import Dashboard from "./Component/admin_panel/dashboard";
 import LogoutAdmin from "./Component/logoutAdmin";
+import EditPdfViwer from "./Component/admin_panel/EditPdf";
 
 function App() {
   const [user_data, setuserData] = useState({});
@@ -56,6 +57,9 @@ function App() {
                 <Route exact path="/hrportal/logout/">
                   <LogoutAdmin />
                 </Route>
+                <Route path="/hrportal/edit/pdf">
+                  <EditPdfViwer />
+                </Route>
               </Switch>
             </AdminUser.Provider>
           </Route>
@@ -89,11 +93,10 @@ function App() {
                   <EmploymentApplication />
                 </Route>
                 <Route path="*">
-                    <div>
-                      <p>Error Not Found</p>
-                    </div>
+                  <div>
+                    <p>Error Not Found</p>
+                  </div>
                 </Route>
-
               </Switch>
             </User.Provider>
           </Route>

@@ -16,10 +16,15 @@ type AdminPanelState = {
   users?: any;
 };
 
-export const download_user_cv = (user_name: string,fileName:string) => {
-  console.log("user_name");
-  console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
-  window.open(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`, "_blank");
+export const download_user_cv = (user_name: string, fileName: string) => {
+  window.open(
+    baseUrl +
+      "/api/get_resume?user_name=" +
+      user_name +
+      "&" +
+      `${fileName}=${fileName}`,
+    "_blank"
+  );
 };
 
 export const download_new_employee_pdf = async (user_name: string) => {
@@ -40,13 +45,12 @@ export const download_fw4 = async (user_name: string) => {
   window.open(baseUrl + "/api/pdf/fw4?user_name=" + user_name, "_blank");
 };
 
-
 class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      users: []
-    }
+      users: [],
+    };
   }
 
   componentDidMount() {
@@ -57,9 +61,8 @@ class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
     //     users: this.context.user_list_data.filter((obj:any) => obj.data.isDeleted != 'True')
     //   })
     // }
-    
   }
-  
+
   // checkDelete(obj:any) {
   //   return obj.data.isDeleted !== 'True';
   // }
@@ -81,7 +84,7 @@ class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
   // }
   render() {
     if (!this.context.user_list_data[0]) {
-      return <Redirect to = '/admin/login' />
+      return <Redirect to="/admin/login" />;
     }
     return (
       <>

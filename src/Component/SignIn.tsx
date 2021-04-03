@@ -73,7 +73,17 @@ class Login extends React.Component<LoginProps, LoginState> {
         password: this.state.password,
       } as LoginState)) as Result;
       if (res.data) {
-        this.context.setUserData(res.data);
+        if (res.data.isEditable === "false") {
+          this.setState({
+            ...this.state,
+            errors: {
+              ...errors,
+              user_name: "Unable To Login Please Contact Your Administrator",
+            },
+          });
+        } else {
+          this.context.setUserData(res.data);
+        }
       } else {
         this.setState({
           ...this.state,
@@ -106,7 +116,10 @@ class Login extends React.Component<LoginProps, LoginState> {
         <NavbarCareer addLogout={false} />
         <div id="signup">
           <div className="wrapper">
-            <div style={{ margin: "20px" }} className="col-lg-4 col-md-6 col-sm-6">
+            <div
+              style={{ margin: "20px" }}
+              className="col-lg-4 col-md-6 col-sm-6"
+            >
               <div className="form-wrapper">
                 <h2>Sign In</h2>
                 <form onSubmit={this.handleSubmit} noValidate>

@@ -17,7 +17,7 @@ import useWindowDimensionHook from "./MyHook/WindowDimension";
 
 type Props = { data?: any; handler?: any; setData: any };
 
-let base64SignatureImage:string;
+let base64SignatureImage: string;
 
 export default function EmpApplicationForm6(props: Props) {
   const classes = styleClasses.useStyles();
@@ -26,17 +26,16 @@ export default function EmpApplicationForm6(props: Props) {
   });
 
   const callbackOnWindowResize = () => {
-    console.log(width);   
-    setSigWidth(width);   
-  }
+    console.log(width);
+    setSigWidth(width);
+  };
 
-  const {width} = useWindowDimensionHook(callbackOnWindowResize);
-  
-  const [sigWidth,setSigWidth] = useState(width);
-  
+  const { width } = useWindowDimensionHook(callbackOnWindowResize);
+
+  const [sigWidth, setSigWidth] = useState(width);
+
   const sigPad = useRef<any>();
 
- 
   const clearSigPad = () => {
     if (sigPad && sigPad.current) {
       sigPad.current?.clear();
@@ -97,7 +96,6 @@ export default function EmpApplicationForm6(props: Props) {
     }
   };
 
-
   const onSubmit = async (data: any) => {
     if (sigPad.current && sigPad.current.isEmpty()) {
       setSignatureError("text-danger");
@@ -134,7 +132,7 @@ export default function EmpApplicationForm6(props: Props) {
   return (
     <div>
       <Container style={{ backgroundColor: "#fafafa" }}>
-        <form  onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid
             container
             direction="row"
@@ -142,14 +140,14 @@ export default function EmpApplicationForm6(props: Props) {
             alignItems="center"
             spacing={3}
           >
-            <Grid item   xs={12} sm={12} md={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
               </Paper>
             </Grid>
 
             {/* PAGE 2 */}
-            <Grid item   xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
+            <Grid item xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Paper
                 elevation={3}
                 style={{ paddingLeft: "40px", paddingRight: "60px" }}
@@ -162,7 +160,7 @@ export default function EmpApplicationForm6(props: Props) {
                   alignItems="baseline"
                   spacing={3}
                 >
-                  <Grid item   xs={12} sm={12} md={12}>
+                  <Grid item xs={12} sm={12} md={12}>
                     <Typography align="justify" variant="subtitle2">
                       <b>E. Alcohol Testing.</b>
                       <br />
@@ -313,9 +311,10 @@ export default function EmpApplicationForm6(props: Props) {
                           </ul>
                           <img
                             src={drug_and_alcohol_policy_snapshot_1}
-                            style={{     
-                                      width: "100%",
-                                      height: "auto" }}
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                            }}
                           />
                           <ul style={{ listStyleType: "none" }}>
                             <li>
@@ -625,9 +624,10 @@ export default function EmpApplicationForm6(props: Props) {
                             </li>
                             <img
                               src={drug_and_alcohol_policy_snapshot_1}
-                              style={{     
+                              style={{
                                 width: "100%",
-                                height: "auto" }}
+                                height: "auto",
+                              }}
                             />
                           </ol>
                         </li>
@@ -1071,7 +1071,7 @@ export default function EmpApplicationForm6(props: Props) {
                     alignItems="baseline"
                     spacing={3}
                   >
-                    <Grid item   xs={12} sm={12} md={5}>
+                    <Grid item xs={12} sm={12} md={5}>
                       <TextField
                         name="alcoholTestEmployeeFirstName"
                         variant="outlined"
@@ -1091,7 +1091,7 @@ export default function EmpApplicationForm6(props: Props) {
                         })}
                       ></TextField>
                     </Grid>
-                    <Grid item   xs={12} sm={12} md={5}>
+                    <Grid item xs={12} sm={12} md={5}>
                       <TextField
                         name="alcoholTestEmployeeLastName"
                         variant="outlined"
@@ -1111,7 +1111,7 @@ export default function EmpApplicationForm6(props: Props) {
                         })}
                       ></TextField>
                     </Grid>
-                    <Grid item   xs={12} sm={12} md={5}>
+                    <Grid item xs={12} sm={12} md={5}>
                       <TextField
                         name="alcoholTestSecurityNumber"
                         variant="outlined"
@@ -1136,7 +1136,7 @@ export default function EmpApplicationForm6(props: Props) {
                         })}
                       ></TextField>
                     </Grid>
-                    <Grid item   xs={12} sm={12} md={5}>
+                    <Grid item xs={12} sm={12} md={5}>
                       <TextField
                         name="alcoholTestExecutionDate"
                         variant="outlined"
@@ -1155,7 +1155,7 @@ export default function EmpApplicationForm6(props: Props) {
                         })}
                       ></TextField>
                     </Grid>
-                    <Grid item   xs={12} sm={12} md={10}>
+                    <Grid item xs={12} sm={12} md={12}>
                       <Paper
                         elevation={3}
                         style={{ paddingLeft: "40px", paddingRight: "40px" }}
@@ -1179,27 +1179,29 @@ export default function EmpApplicationForm6(props: Props) {
                             Please ! Sign here
                           </Typography>
                         )}
-                      <div
-                        style={{
-                          boxShadow:
-                            "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                          display: "inline-block",
-                          width:"auto",
-                          marginTop: "15px",
-                          marginBottom: "15px",
-                        }}
-                      >
-                        <SignatureCanvas
-                          penColor="black"
-                          ref={sigPad}
-                          canvasProps={{
-                            width:(sigWidth/100)*45,
-                            height: 150,
-                            className: "sigCanvas",
+                        <div
+                          style={{
+                            boxShadow:
+                              "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                            display: "inline-block",
+                            width: "auto",
+                            marginTop: "15px",
+                            marginBottom: "15px",
                           }}
-                          onEnd={(e:any)=>{saveImage();}}
+                        >
+                          <SignatureCanvas
+                            penColor="black"
+                            ref={sigPad}
+                            canvasProps={{
+                              width: (sigWidth / 100) * 45,
+                              height: 150,
+                              className: "sigCanvas",
+                            }}
+                            onEnd={(e: any) => {
+                              saveImage();
+                            }}
                           />
-                      </div>
+                        </div>
                         <Grid
                           container
                           direction="row"
@@ -1219,7 +1221,6 @@ export default function EmpApplicationForm6(props: Props) {
                               Clear
                             </Button>
                           </Grid>
-                         
                         </Grid>
                       </Paper>
                     </Grid>
@@ -1228,30 +1229,30 @@ export default function EmpApplicationForm6(props: Props) {
               </Paper>
             </Grid>
             {/* BUTTON Start */}
-           
-              <Grid item   xs={12} sm={12} md={3}>
-                <Button
-                  type="button"
-                  className="col-12"
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    props.handler[1]();
-                  }}
-                >
-                  Back
-                </Button>
-              </Grid>
-              <Grid item   xs={12} sm={12} md={3}>
-                <Button
-                  type="submit"
-                  className="col-12"
-                  variant="contained"
-                  color="primary"
-                >
-                  Save This & Next
-                </Button>
-              </Grid>
+
+            <Grid item xs={12} sm={12} md={3}>
+              <Button
+                type="button"
+                className="col-12"
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  props.handler[1]();
+                }}
+              >
+                Back
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={12} md={3}>
+              <Button
+                type="submit"
+                className="col-12"
+                variant="contained"
+                color="primary"
+              >
+                Save This & Next
+              </Button>
+            </Grid>
             {/* BUTTON End */}
           </Grid>
         </form>
