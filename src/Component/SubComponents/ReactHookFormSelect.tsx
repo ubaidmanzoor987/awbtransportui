@@ -36,14 +36,14 @@ function ReactHookFormSelect(props: Props) {
     try
     {
       if(props.isPartOfDynamicComponent === true){
-        console.log("React Hook Select Error 1:");
-        console.log("props.parentId && props.parentIndex && props.childSubId");
-        console.log(props.parentId);
-        console.log(props.parentIndex );
-        console.log(props.childSubId)
+      //console.log("React Hook Select Error 1:");
+      //console.log("props.parentId && props.parentIndex && props.childSubId");
+      //console.log(props.parentId);
+      //console.log(props.parentIndex );
+      //console.log(props.childSubId)
         if(errors && props.parentId && props.parentIndex !== undefined && props.childSubId) {
-          console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
-          console.log(errors[props.parentId][props.parentIndex][props.childSubId]);
+        //console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
+        //console.log(errors[props.parentId][props.parentIndex][props.childSubId]);
           return errors[props.parentId][props.parentIndex][props.childSubId];
         }
         return false;
@@ -84,8 +84,8 @@ function ReactHookFormSelect(props: Props) {
               },
             })}
             onChange={(e:any) => {
-              console.log("On Select CHange");
-              console.log(e.target.value);
+            //console.log("On Select CHange");
+            //console.log(e.target.value);
               if (e.target.value === "") {
               setError("Required", {
                 type: "manual",
@@ -94,8 +94,8 @@ function ReactHookFormSelect(props: Props) {
               }
             }}
             onSubmit={(e:any) => {
-              console.log("On Select CHange");
-              console.log(e.target.value);
+            //console.log("On Select CHange");
+            //console.log(e.target.value);
               if (e.target.value === "") {
               setError("Required", {
                 type: "manual",

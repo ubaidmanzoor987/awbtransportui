@@ -399,7 +399,6 @@ export function DynamicReferences(props: Props) {
                     size="small"
                     type="text"
                     className="col-12"
-                    error={errors.referenceZipCode == undefined ? false : true}
                     inputRef={register({
                       required: {
                         value: reqBits.referenceZipCode,
@@ -407,7 +406,19 @@ export function DynamicReferences(props: Props) {
                       },
                     })}
                     label="Zip Code"
-                    helperText={reqBits.referenceZipCode && RequireError}
+                    error={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].referenceZipCode
+                    }
+                    helperText={
+                      errors &&
+                      errors[props.idPrefix] &&
+                      errors[props.idPrefix][index] &&
+                      errors[props.idPrefix][index].referenceZipCode &&
+                      errors[props.idPrefix][index].referenceZipCode.message
+                    }
 
                     // inputRef={register({
                     //   required: {

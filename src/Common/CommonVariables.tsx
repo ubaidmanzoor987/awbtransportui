@@ -842,8 +842,8 @@ export const form3DefaultValue = {
 
 export const print = (msg: string, obj: any) => {
   if (printDebug == false) return;
-  console.log("PRINT : " + msg + " ");
-  console.log(obj);
+  // console.log("PRINT : " + msg + " ");
+  // console.log(obj);
 };
 
 export const snackbarDuratuion: number = 2000;

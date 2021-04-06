@@ -73,13 +73,13 @@ class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
   //     const res1 = (await get_all_users()) as any;
   //     if (res1) {
   //       this.context.setUserListData(res1);
-  //       console.log("ds", this.context.user_list_data)
+  //     //console.log("ds", this.context.user_list_data)
   //       this.setState({
   //         ...this.state,
   //         users: this.context.user_list_data.filter(this.checkDelete)
   //       })
   //   }
-  //   console.log(res.message);
+  // //console.log(res.message);
   // }
   // }
   render() {

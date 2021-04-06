@@ -69,17 +69,15 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
     if (
       validity == true &&
       this.state.user_name != "" &&
-      this.state.password != "" &&
-      this.state.user_name == "admin" &&
-      this.state.password == "admin@admin.com"
+      this.state.password != "" 
     ) {
       this.setState({
         ...this.state,
         active_spinner: true,
       });
-      const res = (await get_all_users()) as any;
-      //console.log("res = ", res);
-      if (res) {
+      const res = (await get_all_users({"user_name":this.state.user_name,"password":this.state.password})) as any;
+    //console.log("res = ", res);
+      if (!res.error) {
         this.context.setUserListData(res);
         this.setState({
           ...this.state,
@@ -90,22 +88,12 @@ class AdminLogin extends React.Component<{}, LoginPanelState> {
       } else {
         this.setState({
           ...this.state,
-          errors: { ...errors, user_name: "Server Error" },
+          errors: { ...errors, user_name:res.error },
+          active_spinner: false,
           disablebutton: false,
         });
       }
-    } else if (this.state.user_name != "admin") {
-      this.setState({
-        ...this.state,
-        errors: { ...errors, user_name: "Invalid User Name" },
-        disablebutton: false,
-      });
-    } else if (this.state.password != "admin@admin.com") {
-      this.setState({
-        ...this.state,
-        errors: { ...errors, password: "Invalid Password" },
-        disablebutton: false,
-      });
+ 
     }
   };
 

@@ -51,24 +51,24 @@ export default function FileUploadComponent(props:Props){
     );
     const [response , setResponse] = useState("");
 
-        console.log("props.fileName");
-        console.log(props.fileName);
+      //console.log("props.fileName");
+      //console.log(props.fileName);
     
     const [hideFileComponent, setHideFileComponent] = useState(props.fileName);
     const classes = styleClasses.useStyles();
 
     const download_user_cv = (user_name: string,fileName:string) => {
-        console.log("user_name");
-        console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
+      //console.log("user_name");
+      //console.log(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`);
         window.open(baseUrl + "/api/get_resume?user_name="+user_name+'&'+`${fileName}=${fileName}`, "_blank");
     };
 
     const  removeUploadedFileFromServer = async (e: any, fileName:string) => {
-        console.log("Remove Resume API");
-        console.log(fileName);
+      //console.log("Remove Resume API");
+      //console.log(fileName);
         let res = await deleteFile(props.user_name,fileName)
-    console.log("res");
-    console.log(res);
+  //console.log("res");
+  //console.log(res);
         if (res.status === "true" ) {
             setFileUploadSuccesOrErrorBit("success");
             setFileUploadSuccessSnackOpen(true);
@@ -95,7 +95,7 @@ export default function FileUploadComponent(props:Props){
         }
 
         setSuccessSnackOpen(false);
-        console.log("CLOSE AUTO");
+      //console.log("CLOSE AUTO");
       
     };
 
@@ -109,7 +109,7 @@ export default function FileUploadComponent(props:Props){
         }
 
         setFileUploadSuccessSnackOpen(false);
-        console.log("CLOSE AUTO");
+      //console.log("CLOSE AUTO");
     };
     //-------------SNACKBAR-------------
     return (

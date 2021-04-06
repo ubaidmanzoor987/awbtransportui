@@ -95,8 +95,8 @@ export function DynamicEmploymentHistoryComponent(props: Props) {
     if(fields.length === 0){
       append(props.employmentHistoryList);
     }
-    console.log("props.employmentHistoryList");
-    console.log(props.employmentHistoryList);
+  //console.log("props.employmentHistoryList");
+  //console.log(props.employmentHistoryList);
   },[]);
 
   const submit = (e: any) => {

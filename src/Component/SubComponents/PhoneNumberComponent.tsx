@@ -59,20 +59,20 @@ export default function PhoneNumberComponent(props:Props){
       try
       {
         if(props.isPartOfDynamicComponent === true){
-          console.log("Phohne Number Error");
-          console.log("props.parentId && props.parentIndex && props.childSubId");
-          console.log(props.parentId);
-          console.log(props.parentIndex );
-          console.log(props.childSubId)
-            console.log(errors);
-            console.log(reqBits[props.childSubId as "phone_number"]);
+        //console.log("Phohne Number Error");
+        //console.log("props.parentId && props.parentIndex && props.childSubId");
+        //console.log(props.parentId);
+        //console.log(props.parentIndex );
+        //console.log(props.childSubId)
+          //console.log(errors);
+          //console.log(reqBits[props.childSubId as "phone_number"]);
             if(errors && props.parentId && props.parentIndex !== undefined && props.childSubId) {
-            console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
-            console.log(errors[props.parentId][props.parentIndex][props.childSubId]);
+          //console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
+          //console.log(errors[props.parentId][props.parentIndex][props.childSubId]);
             return errors[props.parentId][props.parentIndex][props.childSubId];
           }
-          return false;
         }
+        return false;
       } 
       catch(ex) 
       {
@@ -87,14 +87,14 @@ export default function PhoneNumberComponent(props:Props){
         try
         {
           if(props.isPartOfDynamicComponent === true){
-            console.log("Helper function phone error");
-            console.log("props.parentId && props.parentIndex && props.childSubId");
-            console.log(props.parentId);
-            console.log(props.parentIndex );
-            console.log(props.childSubId);
+          //console.log("Helper function phone error");
+          //console.log("props.parentId && props.parentIndex && props.childSubId");
+          //console.log(props.parentId);
+          //console.log(props.parentIndex );
+          //console.log(props.childSubId);
             if(errors && props.parentId && props.parentIndex !== undefined && props.childSubId) {
-              console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
-              console.log(errors[props.parentId][props.parentIndex][props.childSubId].message);
+            //console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
+            //console.log(errors[props.parentId][props.parentIndex][props.childSubId].message);
               return errors[props.parentId][props.parentIndex][props.childSubId].message + " " + "(+# ### ### #### x####)";
             }
             return (RequireError + " " + "(+# ### ### #### x####)");
@@ -141,8 +141,8 @@ export default function PhoneNumberComponent(props:Props){
         // onChange={(e)=>{setPhonePattern(e.target.value)}}
         onInput={(val:any)=>{
             let data = val.nativeEvent.data;
-            console.log("oninput")
-            console.log(val.nativeEvent.data)
+            // console.log("oninput")
+            // console.log(val.nativeEvent.data)
             if((props.isPartOfDynamicComponent === true)
             ? (errorChecking())
             : (errors[props.mainId] && (errors[props.mainId] === undefined ? false : true)) && phonePattern === "")
@@ -153,12 +153,12 @@ export default function PhoneNumberComponent(props:Props){
         }
         onChange={(e:any) => {
           let val = e.target.value;
-          console.log("valvalvalvalval");
-          console.log(val);
+        //console.log("valvalvalvalval");
+        //console.log(val);
           if (val.length > 11) {
-            console.log("val.charAt(val.length-1)")
-            console.log(val.charAt(val.length-1))
-            console.log(val.charAt(val.length-1) === "x")
+          //console.log("val.charAt(val.length-1)")
+          //console.log(val.charAt(val.length-1))
+          //console.log(val.charAt(val.length-1) === "x")
             if(val.charAt(val.length-1) === "x"){
               setPhonePattern(val);
               return;

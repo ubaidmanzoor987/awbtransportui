@@ -1,4 +1,3 @@
-import WebViewer from "@pdftron/webviewer";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { baseUrl } from "../../shared/baseUrl";
@@ -11,6 +10,7 @@ import {
   Paper,
   Tooltip,
 } from "@material-ui/core";
+import WebViewer from "@pdftron/webviewer";
 
 type PropsEditPdf = {
   location?: any;
@@ -43,7 +43,7 @@ function EditPdfViwer(props: PropsEditPdf) {
           pdfTronViewer.current
         ).then((instance) => {
           if (instance) {
-            console.log("instance");
+          //console.log("instance");
             instance.loadDocument(
               baseUrl + `/api/pdf/${fileName}?user_name=` + user_name
             );
@@ -51,7 +51,7 @@ function EditPdfViwer(props: PropsEditPdf) {
         });
       }
     } catch (e) {
-      console.log(e);
+    //console.log(e);
     }
   }, [pdfTronViewer]);
   return (

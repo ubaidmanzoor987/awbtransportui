@@ -58,7 +58,7 @@ export default function EmpApplicationForm7(props: Props) {
   );
 
   const callbackOnWindowResize = () => {
-    console.log(width);
+  //console.log(width);
     setSigWidth(width);
   };
 
@@ -102,13 +102,13 @@ export default function EmpApplicationForm7(props: Props) {
   let scrollSpy = Scroll.scrollSpy;
 
   const saveImage = () => {
-    console.log("base64SignatureImage onEnd");
+  //console.log("base64SignatureImage onEnd");
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setSignatureError("");
       setSignatureHelperTextError(false);
 
       base64SignatureImage = sigPad.current
-        ?.getTrimmedCanvas()
+        ?.getCanvas()
         .toDataURL("image/png");
     } else {
       setSignatureError("text-danger");
@@ -123,8 +123,8 @@ export default function EmpApplicationForm7(props: Props) {
     return "Date";
   }
 
-  console.log("errorChecking()");
-  console.log(errorChecking());
+//console.log("errorChecking()");
+//console.log(errorChecking());
 
   //-------------SNACKBAR-------------
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
@@ -139,7 +139,7 @@ export default function EmpApplicationForm7(props: Props) {
     }
 
     setSnackOpen(false);
-    console.log("CLOSE AUTO");
+  //console.log("CLOSE AUTO");
     if (succesOrErrorBit === "success") {
       props.handler[0]();
     }
@@ -152,8 +152,8 @@ export default function EmpApplicationForm7(props: Props) {
     if (sigPad.current && sigPad.current.isEmpty()) {
       setSignatureError("text-danger");
       setSignatureHelperTextError(true);
-      console.log("scroller");
-      console.log(scroller);
+    //console.log("scroller");
+    //console.log(scroller);
       scroller.scrollTo("sigPadElement", {
         duration: 100,
         delay: 100,
@@ -163,14 +163,14 @@ export default function EmpApplicationForm7(props: Props) {
       });
       return;
     }
-    console.log("Data");
-    console.log(data);
+  //console.log("Data");
+  //console.log(data);
     {
       setSignatureError("");
       setSignatureHelperTextError(false);
 
       base64SignatureImage = sigPad.current
-        .getTrimmedCanvas()
+        .getCanvas()
         .toDataURL("image/png");
     }
     data.employeeSignature = base64SignatureImage;
@@ -184,8 +184,8 @@ export default function EmpApplicationForm7(props: Props) {
       //-------------SNACKBAR-------------
       // props.handler[0]();
     } catch (ex) {
-      console.log("Error Exaption Seerver Error");
-      console.log(ex);
+    //console.log("Error Exaption Seerver Error");
+    //console.log(ex);
       //-------------SNACKBAR-------------
       setSuccesOrErrorBit("error");
       setSnackOpen(true);
@@ -365,7 +365,7 @@ export default function EmpApplicationForm7(props: Props) {
                           penColor="black"
                           ref={sigPad}
                           canvasProps={{
-                            width: (sigWidth / 100) * 45,
+                            width: (sigWidth / 100) * 35,
                             height: 150,
                             className: "sigCanvas",
                           }}

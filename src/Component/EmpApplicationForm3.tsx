@@ -144,7 +144,7 @@ function EmpApplicationForm3(props: Props) {
   let sigPad = useRef<any>();
 
   const callbackOnWindowResize = () => {
-    console.log(width);   
+  //console.log(width);   
     setSigWidth(width);   
   }
 
@@ -153,7 +153,7 @@ function EmpApplicationForm3(props: Props) {
   const [sigWidth,setSigWidth] = useState(width);
   
   useEffect(() => {
-    base64SignatureImage = props.data.employeeSignature;
+    base64SignatureImage = props.data.signature;
     window.scrollTo(0, 0);
     if (base64SignatureImage !== undefined) {
       sigPad.current?.clear();
@@ -170,9 +170,9 @@ function EmpApplicationForm3(props: Props) {
   
 
   const clearSigPad = () => {
-    console.log("ref");
-    console.log(sigPad);
-    console.log(typeof sigPad);
+  //console.log("ref");
+  //console.log(sigPad);
+  //console.log(typeof sigPad);
     if (sigPad && sigPad.current) {
       sigPad.current?.clear();
       base64SignatureImage = "";
@@ -181,9 +181,9 @@ function EmpApplicationForm3(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log("sigPadsigPadsigPad");
-    console.log(sigPad);
-    console.log(sigPad.current);
+  //console.log("sigPadsigPadsigPad");
+  //console.log(sigPad);
+  //console.log(sigPad.current);
     if(props.data.signature !== undefined){
       sigPad.current.fromDataURL(props.data.signature);
     }
@@ -192,13 +192,13 @@ function EmpApplicationForm3(props: Props) {
   
 
   const saveImage = () => {
-    console.log("base64SignatureImage onEnd");
+  //console.log("base64SignatureImage onEnd");
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setSignatureError("");
       setSignatureHelperTextError(false);
 
       base64SignatureImage = sigPad.current
-        ?.getTrimmedCanvas()
+        ?.getCanvas()
         .toDataURL("image/png");
     } else {
       setSignatureError("text-danger");
@@ -207,13 +207,7 @@ function EmpApplicationForm3(props: Props) {
   };
 
 
-  const [phonePattern, setPhonePatten] = useState(
-    props.data.applicantPhoneNumber ? props.data.applicantPhoneNumber : ""
-  );
 
-  const [emergencyPhonePattern, setEmergencyPhonePatten] = useState(
-    props.data.applicantPhoneNumber ? props.data.applicantPhoneNumber : ""
-  );
 
   if (debug === true) {
     // props.data = props.data;
@@ -231,7 +225,7 @@ function EmpApplicationForm3(props: Props) {
     }
 
     setSnackOpen(false);
-    console.log("CLOSE AUTO");
+  //console.log("CLOSE AUTO");
     if (succesOrErrorBit === "success") {
       props.handler[0]();
     }
@@ -248,12 +242,12 @@ function EmpApplicationForm3(props: Props) {
       setSignatureError("");
       setSignatureHelperTextError(false);
       base64SignatureImage = sigPad.current
-        .getTrimmedCanvas()
+        .getCanvas()
         .toDataURL("image/png");
     }
     data.signature = base64SignatureImage;
-    console.log("datadata");
-    console.log(data);
+  //console.log("datadata");
+  //console.log(data);
     
     
     if(!(data.applicantAddresses)) data.applicantAddresses = [];
@@ -277,8 +271,8 @@ function EmpApplicationForm3(props: Props) {
       //-------------SNACKBAR-------------
       // props.handler[0]();
     } catch (ex) {
-      console.log("Error Exaption Seerver Error");
-      console.log(ex);
+    //console.log("Error Exaption Seerver Error");
+    //console.log(ex);
       //-------------SNACKBAR-------------
       setSuccesOrErrorBit("error");
       setSnackOpen(true);
@@ -302,8 +296,8 @@ function EmpApplicationForm3(props: Props) {
 
 
 
-  console.log("props.data.applicantAddresses");
-  console.log(props.data.applicantAddresses);
+//console.log("props.data.applicantAddresses");
+//console.log(props.data.applicantAddresses);
 
   const updateReferencesList = (updateReferences: any) => {
     //console.log("------------Update Driver License List------------");
@@ -518,14 +512,15 @@ function EmpApplicationForm3(props: Props) {
                                       value: reqBits.companyPostCode,
                                       message: RequireError,
                                     },
+                                    minLength: {
+                                      value: 5,
+                                      message: "Min 5 Digits",
+                                    },
                                     maxLength: {
                                       value: 5,
-                                      message: "Please Input 5 Digits only",
+                                      message: "Max 5 Digits",
                                     },
-                                    pattern: {
-                                      value: /[0-9]{5}/,
-                                      message: "Please Input 5 Digits only",
-                                    },
+                                    pattern: /[0-9]{5}/,
                                   })}
                                 ></TextField>
                               </Grid>
@@ -613,8 +608,8 @@ function EmpApplicationForm3(props: Props) {
                                 isReq={reqBits.applicationApplyAsPosition}
                                 xsSize={12}
                                 actionOnSelection={(e: any) => {
-                                  console.log("Radio Radios");
-                                  console.log(e);
+                                //console.log("Radio Radios");
+                                //console.log(e);
                                 }}
                               ></RadioQuestions>
                             </Grid>
@@ -909,8 +904,8 @@ function EmpApplicationForm3(props: Props) {
                         useForm={Forms}
                         isReq={reqBits.everWorkedForCompany}
                         actionOnSelection={(e: any) => {
-                          console.log("Radio Radios");
-                          console.log(e);
+                        //console.log("Radio Radios");
+                        //console.log(e);
                         }}
                       ></RadioQuestions>
                     </Paper>
@@ -961,8 +956,8 @@ function EmpApplicationForm3(props: Props) {
                         isReq={reqBits.applicantSchoolGrade}
                         useForm={Forms}
                         actionOnSelection={(e: any) => {
-                          console.log("Radio Radios");
-                          console.log(e);
+                        //console.log("Radio Radios");
+                        //console.log(e);
                         }}
                       ></RadioQuestions>
 
@@ -975,8 +970,8 @@ function EmpApplicationForm3(props: Props) {
                         isReq={reqBits.applicantCollegeGrade}
                         useForm={Forms}
                         actionOnSelection={(e: any) => {
-                          console.log("Radio Radios");
-                          console.log(e);
+                        //console.log("Radio Radios");
+                        //console.log(e);
                         }}
                       ></RadioQuestions>
 
@@ -989,8 +984,8 @@ function EmpApplicationForm3(props: Props) {
                         isReq={reqBits.applicantPostGraduateGrade}
                         useForm={Forms}
                         actionOnSelection={(e: any) => {
-                          console.log("Radio Radios");
-                          console.log(e);
+                        //console.log("Radio Radios");
+                        //console.log(e);
                         }}
                       ></RadioQuestions>
                     </Paper>
@@ -1077,7 +1072,7 @@ function EmpApplicationForm3(props: Props) {
                   inputRef={register({
                     required: reqBits.lastFiveYearStatesOperate,
                   })}
-                  helperText={reqBits.lastFiveYearStatesOperate && RequireError}
+                  helperText={reqBits.lastFiveYearStatesOperate && RequireError + " NA if Not Available"}
                   multiline
                   rows={4}
                   defaultValue={props.data.lastFiveYearStatesOperate}
@@ -1099,7 +1094,7 @@ function EmpApplicationForm3(props: Props) {
                   defaultValue={props.data.Listspecialcourses}
                   variant="outlined"
                   className="col-10"
-                  helperText={reqBits.Listspecialcourses && "Required *"}
+                  helperText={reqBits.Listspecialcourses && "Required *" + " NA if Not Available"}
                 />
                 <br />
                 <br />
@@ -1119,7 +1114,7 @@ function EmpApplicationForm3(props: Props) {
                   defaultValue={props.data.ListanySafeDrivingAwards}
                   variant="outlined"
                   className="col-10"
-                  helperText={reqBits.ListanySafeDrivingAwards && RequireError}
+                  helperText={reqBits.ListanySafeDrivingAwards && RequireError + " NA if Not Available"}
                 ></TextField>
               </Paper>
             </Grid>
@@ -1251,8 +1246,8 @@ function EmpApplicationForm3(props: Props) {
                       defaultSelected={props.data.permitLicences}
                       isReq={reqBits.permitLicences}
                       actionOnSelection={(e: any) => {
-                        console.log("Radio Radios");
-                        console.log(e);
+                      //console.log("Radio Radios");
+                      //console.log(e);
                         if (e.target.value === "Yes") {
                           setLicenseQuestionBits({
                             ...licenseQuestionBits,
@@ -1285,8 +1280,8 @@ function EmpApplicationForm3(props: Props) {
                       }
                       isReq={reqBits.reasonforUnableToPerformActions}
                       actionOnSelection={(e: any) => {
-                        console.log("Radio Radios");
-                        console.log(e);
+                      //console.log("Radio Radios");
+                      //console.log(e);
                         if (e.target.value === "Yes") {
                           setLicenseQuestionBits({
                             ...licenseQuestionBits,
@@ -1316,8 +1311,8 @@ function EmpApplicationForm3(props: Props) {
                       defaultSelected={props.data.convictedofafelony}
                       isReq={reqBits.convictedofafelony}
                       actionOnSelection={(e: any) => {
-                        console.log("Radio Radios");
-                        console.log(e);
+                      //console.log("Radio Radios");
+                      //console.log(e);
                         if (e.target.value === "Yes") {
                           setLicenseQuestionBits({
                             ...licenseQuestionBits,
@@ -1497,7 +1492,7 @@ function EmpApplicationForm3(props: Props) {
                     penColor="black"
                     ref={sigPad}
                     canvasProps={{
-                      width:(sigWidth/100)*45,
+                      width:(sigWidth/100)*35,
                       height: 150,
                       className: "sigCanvas",
                     }}
@@ -1512,6 +1507,7 @@ function EmpApplicationForm3(props: Props) {
                   spacing={3}
                 >
                   <Grid item xs={8} sm={8} md={3}>
+                    {/* <span>Width: {sigWidth}px  <br/>35% Width: {(sigWidth/100)*35}px</span> */}
                     <Button
                       type="button"
                       className="col-12"

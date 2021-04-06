@@ -106,9 +106,9 @@ function SigComponent(props:Props) {
   
     const classes = useStyles();
     const clearSigPad = () => {
-        console.log("ref");
-        console.log(sigPad);
-        console.log(typeof sigPad);
+      //console.log("ref");
+      //console.log(sigPad);
+      //console.log(typeof sigPad);
         if (sigPad && sigPad.current) {
           sigPad.current?.clear();
           base64SignatureImage = "";
@@ -116,9 +116,9 @@ function SigComponent(props:Props) {
       };
 
       useEffect(() => {
-        console.log("sigPadsigPadsigPad");
-        console.log(sigPad);
-        console.log(sigPad.current);
+      //console.log("sigPadsigPadsigPad");
+      //console.log(sigPad);
+      //console.log(sigPad.current);
         if(props.defaultValue !== undefined){
           sigPad.current.fromDataURL(props.defaultValue);
         }

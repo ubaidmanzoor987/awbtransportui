@@ -75,8 +75,8 @@ export default function EmpApplicationForm8(props: Props) {
     defaultValues: data,
     shouldFocusError: true,
   });
-  console.log("data");
-  console.log(data);
+//console.log("data");
+//console.log(data);
   const {
     register,
     handleSubmit,
@@ -108,7 +108,7 @@ export default function EmpApplicationForm8(props: Props) {
     }
 
     setSuccessSnackOpen(false);
-    console.log("CLOSE AUTO");
+  //console.log("CLOSE AUTO");
     if (succesOrErrorBit === "success") {
       props.handler[0]();
     //   props.handler();
@@ -123,7 +123,7 @@ export default function EmpApplicationForm8(props: Props) {
       return;
     }
 
-    console.log("CLOSE AUTO");
+  //console.log("CLOSE AUTO");
   };
 
   useEffect(() => {
@@ -132,8 +132,8 @@ export default function EmpApplicationForm8(props: Props) {
 
   const onSubmit = async (data: any) => {
   
-    console.log("data form8 submit");
-    console.log(data);
+  //console.log("data form8 submit");
+  //console.log(data);
     data.user_name = manualStates.user_name;
     print("Sending :", data);
     const resdata = await update(data);
@@ -143,8 +143,8 @@ export default function EmpApplicationForm8(props: Props) {
       setSuccesOrErrorBit("success");
       setSuccessSnackOpen(true);
     } catch (ex) {
-      console.log("Error Exaption Seerver Error");
-      console.log(ex);
+    //console.log("Error Exaption Seerver Error");
+    //console.log(ex);
       setSuccesOrErrorBit("error");
       setSuccessSnackOpen(true);
     }

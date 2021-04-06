@@ -91,7 +91,7 @@ function EmpApplicationForm2(props: Props) {
     }
 
     setSnackOpen(false);
-    console.log("CLOSE AUTO");
+  //console.log("CLOSE AUTO");
     if (succesOrErrorBit === "success") {
       props.handler[0]();
     }
@@ -116,8 +116,8 @@ function EmpApplicationForm2(props: Props) {
       //-------------SNACKBAR-------------
       // props.handler[0]();
     } catch (ex) {
-      console.log("Error Exaption Seerver Error");
-      console.log(ex);
+    //console.log("Error Exaption Seerver Error");
+    //console.log(ex);
       //-------------SNACKBAR-------------
       setSuccesOrErrorBit("error");
       setSnackOpen(true);

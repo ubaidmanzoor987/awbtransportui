@@ -8,7 +8,7 @@ export async function new_employee_pdf(user_name: string ) {
             });
             return res;
     } catch (ex) {
-        console.log("exception", ex);
+      //console.log("exception", ex);
         return ex;
     }
 }

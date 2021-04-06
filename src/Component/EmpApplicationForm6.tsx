@@ -12,6 +12,7 @@ import { snackbarDuratuion } from "../Common/CommonVariables";
 import Box from "@material-ui/core/Box";
 import { useEffect } from "react";
 
+
 import AlertComponent from "./SubComponents/AlertComponent";
 import useWindowDimensionHook from "./MyHook/WindowDimension";
 
@@ -26,7 +27,7 @@ export default function EmpApplicationForm6(props: Props) {
   });
 
   const callbackOnWindowResize = () => {
-    console.log(width);
+  //console.log(width);
     setSigWidth(width);
   };
 
@@ -44,7 +45,7 @@ export default function EmpApplicationForm6(props: Props) {
   };
 
   useEffect(() => {
-    base64SignatureImage = props.data.employeeSignature;
+    base64SignatureImage = props.data.alcoholTestEmployeeSignature;
     window.scrollTo(0, 0);
     if (base64SignatureImage !== undefined) {
       sigPad.current?.clear();
@@ -69,7 +70,7 @@ export default function EmpApplicationForm6(props: Props) {
     }
 
     setSnackOpen(false);
-    console.log("CLOSE AUTO");
+  //console.log("CLOSE AUTO");
     if (succesOrErrorBit === "success") {
       props.handler[0]();
     }
@@ -82,13 +83,13 @@ export default function EmpApplicationForm6(props: Props) {
   );
 
   const saveImage = () => {
-    console.log("base64SignatureImage onEnd");
+  //console.log("base64SignatureImage onEnd");
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setSignatureError("");
       setSignatureHelperTextError(false);
 
       base64SignatureImage = sigPad.current
-        ?.getTrimmedCanvas()
+        ?.getCanvas()
         .toDataURL("image/png");
     } else {
       setSignatureError("text-danger");
@@ -106,7 +107,7 @@ export default function EmpApplicationForm6(props: Props) {
       setSignatureError("");
       setSignatureHelperTextError(false);
       base64SignatureImage = sigPad.current
-        .getTrimmedCanvas()
+        .getCanvas()
         .toDataURL("image/png");
     }
     data.alcoholTestEmployeeSignature = base64SignatureImage;
@@ -120,8 +121,8 @@ export default function EmpApplicationForm6(props: Props) {
       //-------------SNACKBAR-------------
       // props.handler[0]();
     } catch (ex) {
-      console.log("Error Exaption Seerver Error");
-      console.log(ex);
+    //console.log("Error Exaption Seerver Error");
+    //console.log(ex);
       //-------------SNACKBAR-------------
       setSuccesOrErrorBit("error");
       setSnackOpen(true);
@@ -1193,7 +1194,7 @@ export default function EmpApplicationForm6(props: Props) {
                             penColor="black"
                             ref={sigPad}
                             canvasProps={{
-                              width: (sigWidth / 100) * 45,
+                              width: (sigWidth / 100) * 35,
                               height: 150,
                               className: "sigCanvas",
                             }}
@@ -1210,7 +1211,7 @@ export default function EmpApplicationForm6(props: Props) {
                           spacing={3}
                         >
                           <Grid item xs={8} sm={8} md={3}>
-                            {/* <span>Width: {sigWidth}px  <br/>20% Width: {(sigWidth/100)*20}px</span> */}
+                            {/* <span>Width: {sigWidth}px  <br/>35% Width: {(sigWidth/100)*35}px</span> */}
                             <Button
                               type="button"
                               className="col-12"

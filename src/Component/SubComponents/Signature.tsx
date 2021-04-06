@@ -23,7 +23,7 @@ export function Signature(props: Props) {
   const saveImage = () => {
     if (sigPad.current && !sigPad.current.isEmpty()) {
       base64SignatureImage = sigPad.current
-        ?.getTrimmedCanvas()
+        ?.getCanvas()
         .toDataURL("image/png");
     }
   };

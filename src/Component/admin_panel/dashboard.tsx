@@ -37,7 +37,7 @@ import {
   download_dw4,
   download_fw4,
 } from "./panel";
-import { baseUrl, for_production } from "../../shared/baseUrl";
+import { baseUrl, for_production1 } from "../../shared/baseUrl";
 import { get_all_users } from "../../services/get_all_users_api";
 import { update } from "../../services/updateApi";
 
@@ -223,7 +223,7 @@ function Dashboard() {
   };
 
   function edit_pdf(user_name: string, fileNameWantToEdit: string) {
-    if (for_production) {
+    if (for_production1) {
       window.open(
         "http://localhost:3000/hrportal/edit/pdf?user_name=" +
           user_name +

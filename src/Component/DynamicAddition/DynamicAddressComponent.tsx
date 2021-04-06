@@ -80,8 +80,8 @@ export function DynamicAddressComponent(props: Props) {
     setError,
     errors,
   } = props.forms;
-  console.log("props.forms");  
-  console.log(props.forms);  
+//console.log("props.forms");  
+//console.log(props.forms);  
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
       control,
@@ -101,6 +101,7 @@ export function DynamicAddressComponent(props: Props) {
   },[]);
 
    
+
 
   return (
     <React.Fragment>
@@ -222,7 +223,11 @@ export function DynamicAddressComponent(props: Props) {
                       },
                       maxLength: {
                         value: 5,
-                        message: "Please Input 5 Digits only",
+                        message: "Max 5 Digits",
+                      },
+                      minLength: {
+                        value: 5,
+                        message: "Min 5 Digits",
                       },
                     })}
                     error={
@@ -230,6 +235,13 @@ export function DynamicAddressComponent(props: Props) {
                       errors[props.addressId] &&
                       errors[props.addressId][index] &&
                       errors[props.addressId][index].lastYearAddressZipCode
+                    }
+                    helperText={
+                      errors &&
+                      errors[props.addressId] &&
+                      errors[props.addressId][index] &&
+                      errors[props.addressId][index].lastYearAddressZipCode &&
+                      errors[props.addressId][index].lastYearAddressZipCode.message
                     }
                     variant="outlined"
                     size="small"
@@ -271,8 +283,8 @@ export function DynamicAddressComponent(props: Props) {
                     }
                     onChange={(e:any)=>{
                         setFromDate(getMinDateLimit(e.target.value))
-                        console.log("e.target.value from date");
-                        console.log(e.target.value);
+                      //console.log("e.target.value from date");
+                      //console.log(e.target.value);
                       }
                     }
                     variant="outlined"
@@ -334,8 +346,8 @@ export function DynamicAddressComponent(props: Props) {
 
                     if(fields.length > props.minElementLimit) 
                     {
-                      console.log("index");  
-                      console.log(index);  
+                    //console.log("index");  
+                    //console.log(index);  
                       remove(index);
                     }
                   }}

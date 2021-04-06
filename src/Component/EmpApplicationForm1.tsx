@@ -11,7 +11,7 @@ import {
   TextField,
   Snackbar,
 } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Container, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import Accordion from "@material-ui/core/Accordion";
@@ -56,6 +56,8 @@ import { baseUrl } from "../shared/baseUrl";
 import { deleteFile } from "../services/removeFileApi";
 import PhoneNumberComponent from "./SubComponents/PhoneNumberComponent";
 
+
+
 type Props = { data?: any; handler?: any; setData: any };
 const startTimeVal = [
   { value: "Immediately" },
@@ -77,6 +79,7 @@ function Alert(props: AlertProps) {
 function EmpApplicationForm1(props: Props) {
   let data = props.data;
   const [manualStates, setManualStates] = useState(data);
+  const formEl = useRef(null);
 
   const [hideAddressesComponent, setHideAddressesComponent] = useState(
     !(manualStates.lastThreeYearResidenceCheck === "Yes")
@@ -85,8 +88,8 @@ function EmpApplicationForm1(props: Props) {
   const [disableAllUploadButton, setDisableAllUploadButton] = useState(false);
 
   useEffect(() => {
-    console.log("hideAddressesComponent");
-    console.log(hideAddressesComponent);
+    // console.log("hideAddressesComponent");
+    // console.log(hideAddressesComponent);
     if (hideAddressesComponent === false) {
       data.addresses = "";
     }
@@ -108,8 +111,8 @@ function EmpApplicationForm1(props: Props) {
   const handleFileUpload = async (event: any, fileName: string) => {
     if (event.target.files === undefined) return;
     if (disableAllUploadButton === true) return;
-    console.log("fileName");
-    console.log(fileName);
+    // console.log("fileName");
+    // console.log(fileName);
 
     setDisableAllUploadButton(true);
 
@@ -122,11 +125,11 @@ function EmpApplicationForm1(props: Props) {
     // formData.append("resume", 'dummy');
 
     let response = await fileUploadApi(formData);
-    console.log("response uploaded");
+    // console.log("response uploaded");
     res = await response.json();
-    console.log("res");
-    console.log(res);
-    console.log(res.error);
+    // console.log("res");
+    // console.log(res);
+    // console.log(res.error);
     // if (response.ok === true && response.status === 200) {
     if (res.status === "true") {
       setFileUploadSuccesOrErrorBit("success");
@@ -165,8 +168,8 @@ function EmpApplicationForm1(props: Props) {
     defaultValues: data,
     shouldFocusError: true,
   });
-  console.log("data");
-  console.log(data);
+  // console.log("data");
+  // console.log(data);
   const {
     register,
     handleSubmit,
@@ -211,8 +214,8 @@ function EmpApplicationForm1(props: Props) {
       data.addresses = undefined;
     }
 
-    console.log("data form1 submit");
-    console.log(data);
+    // console.log("data form1 submit");
+    // console.log(data);
     // data.phone_number = phonePattern;
     data.user_name = manualStates.user_name;
     print("Sending :", data);
@@ -223,8 +226,8 @@ function EmpApplicationForm1(props: Props) {
       setSuccesOrErrorBit("success");
       setSuccessSnackOpen(true);
     } catch (ex) {
-      console.log("Error Exaption Seerver Error");
-      console.log(ex);
+      // console.log("Error Exaption Seerver Error");
+      // console.log(ex);
       setSuccesOrErrorBit("error");
       setSuccessSnackOpen(true);
     }
@@ -244,14 +247,14 @@ function EmpApplicationForm1(props: Props) {
   const WrongPatternError: string = "Invalid Input";
 
   const download_user_cv = (user_name: string, fileName: string) => {
-    console.log("user_name");
-    console.log(
-      baseUrl +
-        "/api/get_resume?user_name=" +
-        user_name +
-        "&" +
-        `${fileName}=${fileName}`
-    );
+  //console.log("user_name");
+    // console.log(
+    //   baseUrl +
+    //     "/api/get_resume?user_name=" +
+    //     user_name +
+    //     "&" +
+    //     `${fileName}=${fileName}`
+    // );
     window.open(
       baseUrl +
         "/api/get_resume?user_name=" +
@@ -263,8 +266,8 @@ function EmpApplicationForm1(props: Props) {
   };
 
   const removeUploadedFileFromServer = async (e: any, fileName: string) => {
-    console.log("Remove Resume API");
-    console.log(fileName);
+  //console.log("Remove Resume API");
+  //console.log(fileName);
     let res = await deleteFile(props.data.user_name, fileName);
     if (res.success != undefined) {
       setManualStates({
@@ -295,7 +298,7 @@ function EmpApplicationForm1(props: Props) {
     }
 
     setSuccessSnackOpen(false);
-    console.log("CLOSE AUTO");
+  //console.log("CLOSE AUTO");
     if (succesOrErrorBit === "success") {
       props.handler();
     }
@@ -311,18 +314,17 @@ function EmpApplicationForm1(props: Props) {
     }
 
     setFileUploadSuccessSnackOpen(false);
-    console.log("CLOSE AUTO");
+  //console.log("CLOSE AUTO");
   };
   //-------------SNACKBAR-------------
 
   // console.log("new Date()");
 
-  // getMaxDate();
 
   return (
     <React.Fragment>
       <Container style={{ backgroundColor: "#fafafa" }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} >
           <Grid
             container
             direction="row"
@@ -668,8 +670,8 @@ function EmpApplicationForm1(props: Props) {
                           //   if (value == "") return;
                           //   if (!/^[0-9]+$/i.test(value)) {
                           //     // console.log(value);
-                          //     console.log("value");
-                          //     console.log(value);
+                          //   //console.log("value");
+                          //   //console.log(value);
                           //     setError("zipCode", {
                           //       type: "manual",
                           //       message: "Only Digits Please",
@@ -726,9 +728,9 @@ function EmpApplicationForm1(props: Props) {
                     optionList={["Yes", "No"]}
                     optionValue={["Yes", "No"]}
                     actionOnSelection={(e: any) => {
-                      console.log("actionOnSelection");
-                      console.log(e);
-                      console.log(e.target.value);
+                    //console.log("actionOnSelection");
+                    //console.log(e);
+                    //console.log(e.target.value);
                       let hideOnNO: boolean = e.target.value === "No";
                       setHideAddressesComponent(hideOnNO);
                     }}
@@ -986,7 +988,7 @@ function EmpApplicationForm1(props: Props) {
                   disabled={disableAllUploadButton}
                   onChange={(e) => {
                     handleFileUpload(e, "dmvFile");
-                    console.log("DVM FIle");
+                  //console.log("DVM FIle");
                   }}
                 />
                 <label htmlFor="dmvFilesToUpload">
@@ -1098,7 +1100,7 @@ function EmpApplicationForm1(props: Props) {
                   disabled={disableAllUploadButton}
                   onChange={(e) => {
                     handleFileUpload(e, "dodMedicalCardFile");
-                    console.log("DVM FIle");
+                  //console.log("DVM FIle");
                   }}
                 />
                 <label htmlFor="dodMedicalCardFilesToUpload">
@@ -1210,7 +1212,7 @@ function EmpApplicationForm1(props: Props) {
                   disabled={disableAllUploadButton}
                   onChange={(e) => {
                     handleFileUpload(e, "driverLicenceFile");
-                    console.log("DVM FIle");
+                  //console.log("DVM FIle");
                   }}
                 />
                 <label htmlFor="driverLicenceFilesToUpload">

@@ -32,8 +32,8 @@ export default function EmpApplicationForm5(props: Props) {
     }
 
     setSnackOpen(false);
-    console.log("CLOSE AUTO");
-    console.log(succesOrErrorBit);
+  //console.log("CLOSE AUTO");
+  //console.log(succesOrErrorBit);
 
     if (succesOrErrorBit === "success") {
       props.handler[0]();

@@ -12,8 +12,8 @@ export default function useWindowDimensionHook(callbackWhenResize:any)
 
     useEffect(()=>{
         function handleResize(){
-            console.log("getWindowDimension()");
-            console.log(getWindowDimension());
+          //console.log("getWindowDimension()");
+          //console.log(getWindowDimension());
             setWindowDimension(getWindowDimension());
             
         }

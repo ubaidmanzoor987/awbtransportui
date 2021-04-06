@@ -55,7 +55,7 @@ class EmploymentApplication extends Component<
   }
   componentDidMount() {
     // let data = { ...this.context.data, addresses: [addr1] };
-    console.log("context", this.context.data);
+  //console.log("context", this.context.data);
     
     if (!this.context.data.user_name) {
       return <Redirect to="/login" />;
@@ -69,54 +69,54 @@ class EmploymentApplication extends Component<
       this.context.data.applicantAddresses.push(dummyAddrData);
     }
     
-    console.log("this.context.data.addresses.length === 0");
-    console.log(this.context.data.addresses.length === 0);
-    console.log(this.context.data.addresses);
+  //console.log("this.context.data.addresses.length === 0");
+  //console.log(this.context.data.addresses.length === 0);
+  //console.log(this.context.data.addresses);
     if (this.context.data.addresses.length === 0) {
       this.context.data.addresses.push(dummyAddrData);
     }
 
-    console.log("this.context.data.employmentHistory.length === 0");
-    console.log(this.context.data.employmentHistory.length === 0);
-    console.log(this.context.data.employmentHistory);
+  //console.log("this.context.data.employmentHistory.length === 0");
+  //console.log(this.context.data.employmentHistory.length === 0);
+  //console.log(this.context.data.employmentHistory);
     if (this.context.data.employmentHistory.length === 0) {
       this.context.data.employmentHistory.push(employmentHistoryDummyElement);
     }
 
-    console.log("this.context.data.employmentAccidentsHistory.length === 0");
-    console.log(this.context.data.employmentAccidentsHistory.length === 0);
-    console.log(this.context.data.employmentAccidentsHistory);
+  //console.log("this.context.data.employmentAccidentsHistory.length === 0");
+  //console.log(this.context.data.employmentAccidentsHistory.length === 0);
+  //console.log(this.context.data.employmentAccidentsHistory);
     if (this.context.data.employmentAccidentsHistory.length === 0) {
       this.context.data.employmentAccidentsHistory.push(employmentAccidentHistoryDummyElement);
     }
 
-    console.log("this.context.data.employmentExperienceHistory.length === 0");
-    console.log(this.context.data.employmentExperienceHistory.length === 0);
-    console.log(this.context.data.employmentExperienceHistory);
+  //console.log("this.context.data.employmentExperienceHistory.length === 0");
+  //console.log(this.context.data.employmentExperienceHistory.length === 0);
+  //console.log(this.context.data.employmentExperienceHistory);
     if (this.context.data.employmentExperienceHistory.length === 0) {
       this.context.data.employmentExperienceHistory.push(drivingExperienceDummyElement);
     }
-    console.log("this.context.data.licences.length === 0");
-    console.log(this.context.data.licences.length === 0);
-    console.log(this.context.data.licences);
+  //console.log("this.context.data.licences.length === 0");
+  //console.log(this.context.data.licences.length === 0);
+  //console.log(this.context.data.licences);
     if (this.context.data.licences.length === 0) {
       this.context.data.licences.push(driverLicenseDummyElement);
     }
 
-    console.log("this.context.data.references.length === 0");
-    console.log(this.context.data.references.length === 0);
-    console.log(this.context.data.references);
+  //console.log("this.context.data.references.length === 0");
+  //console.log(this.context.data.references.length === 0);
+  //console.log(this.context.data.references);
     if (this.context.data.references.length === 0) {
       this.context.data.references.push(ReferenceDummyElement);
     }
 
-    console.log("this.context.data.violations.length === 0");
-    console.log(this.context.data.violations.length === 0);
-    console.log(this.context.data.violations);
+  //console.log("this.context.data.violations.length === 0");
+  //console.log(this.context.data.violations.length === 0);
+  //console.log(this.context.data.violations);
     if (this.context.data.violations.length === 0) {
       this.context.data.violations.push(trafficConvictionDummyElement);
     }
-    console.log(this.context.data);
+  //console.log(this.context.data);
   }
 
   gotoNextForm() {
@@ -132,7 +132,7 @@ class EmploymentApplication extends Component<
   }
 
   render() {
-    console.log(this.context.data);
+  //console.log(this.context.data);
 
     if (!this.context.data.user_name) {
       return <Redirect to="/login" />;
@@ -142,50 +142,50 @@ class EmploymentApplication extends Component<
       this.context.data.applicantAddresses.push(dummyAddrData);
     }
     
-    console.log("this.context.data.addresses.length === 0");
-    console.log(this.context.data.addresses.length === 0);
-    console.log(this.context.data.addresses);
+  //console.log("this.context.data.addresses.length === 0");
+  //console.log(this.context.data.addresses.length === 0);
+  //console.log(this.context.data.addresses);
     if (this.context.data.addresses.length === 0) {
       this.context.data.addresses.push(dummyAddrData);
     }
 
-    console.log("this.context.data.employmentHistory.length === 0");
-    console.log(this.context.data.employmentHistory.length === 0);
-    console.log(this.context.data.employmentHistory);
+  //console.log("this.context.data.employmentHistory.length === 0");
+  //console.log(this.context.data.employmentHistory.length === 0);
+  //console.log(this.context.data.employmentHistory);
     if (this.context.data.employmentHistory.length === 0) {
       this.context.data.employmentHistory.push(employmentHistoryDummyElement);
     }
 
-    console.log("this.context.data.employmentAccidentsHistory.length === 0");
-    console.log(this.context.data.employmentAccidentsHistory.length === 0);
-    console.log(this.context.data.employmentAccidentsHistory);
+  //console.log("this.context.data.employmentAccidentsHistory.length === 0");
+  //console.log(this.context.data.employmentAccidentsHistory.length === 0);
+  //console.log(this.context.data.employmentAccidentsHistory);
     if (this.context.data.employmentAccidentsHistory.length === 0) {
       this.context.data.employmentAccidentsHistory.push(employmentAccidentHistoryDummyElement);
     }
 
-    console.log("this.context.data.employmentExperienceHistory.length === 0");
-    console.log(this.context.data.employmentExperienceHistory.length === 0);
-    console.log(this.context.data.employmentExperienceHistory);
+  //console.log("this.context.data.employmentExperienceHistory.length === 0");
+  //console.log(this.context.data.employmentExperienceHistory.length === 0);
+  //console.log(this.context.data.employmentExperienceHistory);
     if (this.context.data.employmentExperienceHistory.length === 0) {
       this.context.data.employmentExperienceHistory.push(drivingExperienceDummyElement);
     }
-    console.log("this.context.data.licences.length === 0");
-    console.log(this.context.data.licences.length === 0);
-    console.log(this.context.data.licences);
+  //console.log("this.context.data.licences.length === 0");
+  //console.log(this.context.data.licences.length === 0);
+  //console.log(this.context.data.licences);
     if (this.context.data.licences.length === 0) {
       this.context.data.licences.push(driverLicenseDummyElement);
     }
 
-    console.log("this.context.data.references.length === 0");
-    console.log(this.context.data.references.length === 0);
-    console.log(this.context.data.references);
+  //console.log("this.context.data.references.length === 0");
+  //console.log(this.context.data.references.length === 0);
+  //console.log(this.context.data.references);
     if (this.context.data.references.length === 0) {
       this.context.data.references.push(ReferenceDummyElement);
     }
 
-    console.log("this.context.data.violations.length === 0");
-    console.log(this.context.data.violations.length === 0);
-    console.log(this.context.data.violations);
+  //console.log("this.context.data.violations.length === 0");
+  //console.log(this.context.data.violations.length === 0);
+  //console.log(this.context.data.violations);
     if (this.context.data.violations.length === 0) {
       this.context.data.violations.push(trafficConvictionDummyElement);
     }

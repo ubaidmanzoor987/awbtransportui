@@ -93,8 +93,8 @@ export default function FromToDateComponent(props:Props){
                     }
                     onChange={(e:any)=>{
                         setFromDate(getMinDateLimit(e.target.value))
-                        console.log("e.target.value from date");
-                        console.log(e.target.value);
+                      //console.log("e.target.value from date");
+                      //console.log(e.target.value);
                       }
                     }
                     variant="outlined"
