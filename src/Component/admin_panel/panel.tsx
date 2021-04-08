@@ -28,7 +28,7 @@ export const download_user_cv = (user_name: string, fileName: string) => {
 };
 
 
-export const download_blank_pdf = async (blank_pdf: string) => {
+export const print_blank_pdf = async (blank_pdf: string) => {
   console.log(baseUrl + "/api/empty_pdfs?pdf=" + blank_pdf);
   window.open(
     baseUrl + "/api/empty_pdfs?pdf=" + blank_pdf,

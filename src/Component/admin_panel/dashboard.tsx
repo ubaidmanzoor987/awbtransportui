@@ -36,7 +36,7 @@ import {
   download_form_i9,
   download_dw4,
   download_fw4,
-  download_blank_pdf,
+  print_blank_pdf,
 } from "./panel";
 import { baseUrl, for_production1 } from "../../shared/baseUrl";
 import { get_all_users } from "../../services/get_all_users_api";
@@ -100,15 +100,15 @@ function Dashboard() {
     { field: "startTime", headerName: "Join From", width: 200 },
   ];
 
-  const downloadBlankPdfs = [
+  const printBlankPdfs = [
     {
-      value: "download_blank_new_employee_pdf",
+      value: "print_blank_new_employee_pdf",
       displayText: "Employee Pdf",
       shortCut: "E",
     },
-    { value: "download_blank_form_i9", displayText: "Form I-9", shortCut: "I" },
-    { value: "download_blank_dw4", displayText: "DW4", shortCut: "D" },
-    { value: "download_blank_fw4", displayText: "FW4", shortCut: "F" },
+    { value: "print_blank_form_i9", displayText: "Form I-9", shortCut: "I" },
+    { value: "print_blank_dw4", displayText: "DW4", shortCut: "D" },
+    { value: "print_blank_fw4", displayText: "FW4", shortCut: "F" },
   ];
 
   const downloadActions = [
@@ -170,26 +170,26 @@ function Dashboard() {
     return Object.keys(obj).length === 0;
   }
 
-  const handleBlankDownload = (event: any) => {
+  const handleBlankPrint = (event: any) => {
     setPdfUrl("");
     let selectedOption = event.target.value;
 
       console.log(selectedUser);
       switch (selectedOption) {
-      case downloadBlankPdfs[0].value:
-        download_blank_pdf("employee_info");
+      case printBlankPdfs[0].value:
+        print_blank_pdf("employee_info");
         break;
 
-      case downloadBlankPdfs[1].value:
-        download_blank_pdf("formi9");
+      case printBlankPdfs[1].value:
+        print_blank_pdf("formi9");
         break;
 
-      case downloadBlankPdfs[2].value:
-        download_blank_pdf("dw4");
+      case printBlankPdfs[2].value:
+        print_blank_pdf("dw4");
         break;
 
-      case downloadBlankPdfs[3].value:
-        download_blank_pdf("fw4");
+      case printBlankPdfs[3].value:
+        print_blank_pdf("fw4");
         break;
     }
     setAction("");
@@ -512,23 +512,23 @@ function Dashboard() {
                         variant="outlined"
                         className={classNames(classes.formControl, "col-2")}
                       >
-                        <InputLabel htmlFor="download-blank-simple-select-outlined-label">
-                          Download New Form
+                        <InputLabel htmlFor="print-blank-simple-select-outlined-label">
+                          Print New Form
                         </InputLabel>
                         <Select
-                          labelId="download-blank-simple-select-outlined-label"
-                          id="download-blank-simple-select-outlined"
+                          labelId="print-blank-simple-select-outlined-label"
+                          id="print-blank-simple-select-outlined"
                           value={action}
                           accessKey="d"
                           onChange={(e: any) => {
-                            handleBlankDownload(e);
+                            handleBlankPrint(e);
                           }}
-                          label="Download New Form"
+                          label="Print New Form"
                         >
                           <MenuItem value="">
-                            <b>Download New Form</b>
+                            <b>Print New Form</b>
                           </MenuItem>
-                          {downloadBlankPdfs.map((item, index) => {
+                          {printBlankPdfs.map((item, index) => {
                             return (
                               <MenuItem key={index} value={item.value}>
                                 {item.displayText}
