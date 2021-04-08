@@ -26,6 +26,7 @@
     "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
     "dayjs": "^1.10.4",
+    "format-string-by-pattern": "^1.2.2",
     "libphonenumber-js": "^1.9.14",
     "localize-react": "^1.2.0",
     "material-ui": "^0.20.2",

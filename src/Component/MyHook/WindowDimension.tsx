@@ -1,7 +1,14 @@
 import {useState, useEffect} from "react";
+import { canvasMinWidth } from "../../Common/CommonVariables";
 
 function getWindowDimension(){
-    const {innerWidth:width, innerHeight:height} = window;
+
+
+    let {innerWidth:width, innerHeight:height} = window;
+    width = (width/100)*35;
+    if(width < canvasMinWidth){
+        width = canvasMinWidth;
+    }
     return ({width, height});
 }
 

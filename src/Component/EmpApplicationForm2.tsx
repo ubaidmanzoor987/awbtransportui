@@ -138,13 +138,13 @@ function EmpApplicationForm2(props: Props) {
             alignItems="baseline"
             spacing={3}
           >
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
-            <Grid item xs={10}>
+
+            <Grid item xs={12} sm={12} md={10}>
               <Paper
                 elevation={3}
                 className={classes.paper}
@@ -257,13 +257,12 @@ function EmpApplicationForm2(props: Props) {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
 
             {/* BUTTON Start */}
-            <Grid item xs={3}>
+            <Grid item xs={8} sm={7} md={4}>
               <Button
                 type="button"
-                className="col-10"
+                className="col-8"
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -273,10 +272,10 @@ function EmpApplicationForm2(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={8} sm={7} md={4}>
               <Button
                 type="submit"
-                className="col-10"
+                className="col-8"
                 variant="contained"
                 color="primary"
               >

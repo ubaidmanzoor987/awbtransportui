@@ -296,7 +296,7 @@ export default function AddressesComponent(props: Props) {
                   padding: "20px 20px",
                 }}
               >
-                <Grid item xs={6} style={{ padding: "20px 10px" }}>
+                <Grid item xs={10} md={6} style={{ padding: "20px 10px" }}>
                   <Button
                     size="small"
                     className="col-6"

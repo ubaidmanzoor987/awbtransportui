@@ -20,12 +20,14 @@ import {
     print,
     snackbarDuratuion,
     getMaxDate,
+    formatOnlyNumbers,
   } from "../../Common/CommonVariables";
   
-  import { fileUploadApi } from "../../services/fileUploadApi";
-  
-  import { formatPhoneNumberIntl } from "react-phone-number-input";
+import { fileUploadApi } from "../../services/fileUploadApi";
 
+import { formatPhoneNumberIntl } from "react-phone-number-input";
+import { AsYouType } from "libphonenumber-js";
+import formatStringByPattern from "format-string-by-pattern";
 
 type Props = {
     mainId :string;
@@ -51,7 +53,9 @@ export default function PhoneNumberComponent(props:Props){
         setError,
         clearErrors,
     } = props.useForms;
-    
+    // const formatStringByPattern = require('format-string-by-pattern');
+
+
 
     function errorChecking()
     {
@@ -95,14 +99,14 @@ export default function PhoneNumberComponent(props:Props){
             if(errors && props.parentId && props.parentIndex !== undefined && props.childSubId) {
             //console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
             //console.log(errors[props.parentId][props.parentIndex][props.childSubId].message);
-              return errors[props.parentId][props.parentIndex][props.childSubId].message + " " + "(+# ### ### #### x####)";
+              return errors[props.parentId][props.parentIndex][props.childSubId].message + " " + "(xxx) xxx-xxxx × xxxx";
             }
-            return (RequireError + " " + "(+# ### ### #### x####)");
+            return (RequireError + " " + "(xxx) xxx-xxxx × xxxx");
           }
         } 
         catch(ex) 
         {
-          return (RequireError + " " + "(+# ### ### #### x####)");  
+          return (RequireError + " " + "(xxx) xxx-xxxx × xxxx");  
         }
       }
 
@@ -125,8 +129,8 @@ export default function PhoneNumberComponent(props:Props){
         helperText={
             props.isPartOfDynamicComponent !== undefined && props.isPartOfDynamicComponent === true
             ? (helperText())
-            // : (errors[props.mainId] === undefined ? (RequireError + " " + "(+# ### ### #### x####)") : errors[props.mainId].message)
-            : (RequireError + " " + "(+# ### ### #### x####)")
+            // : (errors[props.mainId] === undefined ? (RequireError + " " + "(xxx) xxx-xxxx × xxxx") : errors[props.mainId].message)
+            : (RequireError + " " + "(xxx) xxx-xxxx × xxxx")
         }
         value={
            phonePattern
@@ -136,43 +140,13 @@ export default function PhoneNumberComponent(props:Props){
             value: reqBits[( (props.isPartOfDynamicComponent === undefined) || (props?.isPartOfDynamicComponent === false) ) ? (props.mainId as "phone_number") : (props.childSubId as "phone_number")],
             message: RequireError,
           },
-          pattern:{value:/^[+][0-9 ext.]{13,24}$/ , message:"Invalid Input : "}
+          pattern:{value:/^[0-9 ()-×]{14,21}$/ , message:"Invalid Input : "}
         })}
-        // onChange={(e)=>{setPhonePattern(e.target.value)}}
-        onInput={(val:any)=>{
-            let data = val.nativeEvent.data;
-            // console.log("oninput")
-            // console.log(val.nativeEvent.data)
-            if((props.isPartOfDynamicComponent === true)
-            ? (errorChecking())
-            : (errors[props.mainId] && (errors[props.mainId] === undefined ? false : true)) && phonePattern === "")
-            {
-              setPhonePattern(data);
-            }
+        onChange={
+          (e:any)=>{
+            setPhonePattern(formatOnlyNumbers(e.target.value));
           }
         }
-        onChange={(e:any) => {
-          let val = e.target.value;
-        //console.log("valvalvalvalval");
-        //console.log(val);
-          if (val.length > 11) {
-          //console.log("val.charAt(val.length-1)")
-          //console.log(val.charAt(val.length-1))
-          //console.log(val.charAt(val.length-1) === "x")
-            if(val.charAt(val.length-1) === "x"){
-              setPhonePattern(val);
-              return;
-            }
-            const n = formatPhoneNumberIntl(val);
-            if (n) {
-              setPhonePattern(n);
-            } else {
-              setPhonePattern(val);
-            }
-          } else {
-            setPhonePattern(val);
-          }
-        }}
       ></TextField>
     </>
     );

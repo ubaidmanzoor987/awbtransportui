@@ -171,23 +171,6 @@ export function DynamicAddressComponent(props: Props) {
                   ></TextField>
                 </Grid>
                 <Grid item xs={4}>
-                  {/* <ReactAutoComplete
-                    id={`${props.addressId}[${index}].lastYearAddressState`}
-                    label="States"
-                    defaultValue={
-                      props.addressesList && props.addressesList[index] && props.addressesList[index].lastYearAddressState
-                    }
-                    error={
-                      errors &&
-                      errors[props.addressId] &&
-                      errors[props.addressId][index] &&
-                      errors[props.addressId][index].lastYearAddressState
-                    }
-                    isReq={reqBits["lastYearAddressState"]}
-                    className="col-12"
-                    useForm={props.forms}
-                    optionList={states}
-                  ></ReactAutoComplete> */}
                   <ReactHookFormSelect
                     nameVal={`${props.addressId}[${index}].lastYearAddressState`}
                     label="State"
@@ -266,67 +249,6 @@ export function DynamicAddressComponent(props: Props) {
                   defaultFromDate={item.lastYearAddressfrom}
                   defaultToDate={item.lastYearAddressTo}
                   ></FromToDateComponent>
-                {/* <Grid item xs={6}>
-                  <TextField
-                    name={`${props.addressId}[${index}].lastYearAddressfrom`}
-                    inputRef={register({
-                      required: {
-                        value: reqBits.lastYearAddressfrom,
-                        message: RequireError,
-                      },
-                    })}
-                    error={
-                      errors &&
-                      errors[props.addressId] &&
-                      errors[props.addressId][index] &&
-                      errors[props.addressId][index].lastYearAddressfrom
-                    }
-                    onChange={(e:any)=>{
-                        setFromDate(getMinDateLimit(e.target.value))
-                      //console.log("e.target.value from date");
-                      //console.log(e.target.value);
-                      }
-                    }
-                    variant="outlined"
-                    type="date"
-                    defaultValue={item.lastYearAddressfrom}
-                    size="small"
-                    className="col-12"
-                    helperText={"From Date Require *"}
-                  ></TextField>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    // name={
-                    //   props.idPrefix + "." + "toDateId" + "[" + index + "]"
-                    // }
-                    name={`${props.addressId}[${index}].lastYearAddressTo`}
-                    inputRef={register({
-                      required: {
-                        value: reqBits.lastYearAddressTo,
-                        message: RequireError,
-                      },
-                    })}
-                    onChange={(e:any)=>{
-
-                    }}
-                    inputProps={{
-                      min: fromDate,
-                    }}
-                    error={
-                      errors &&
-                      errors[props.addressId] &&
-                      errors[props.addressId][index] &&
-                      errors[props.addressId][index].lastYearAddressTo
-                    }
-                    variant="outlined"
-                    type="date"
-                    defaultValue={item.lastYearAddressTo}
-                    size="small"
-                    className="col-12"
-                    helperText={"To Date Require *"}
-                  ></TextField>
-                </Grid> */}
               </Grid>
             </AccordionDetails>
             <Divider />
@@ -336,7 +258,7 @@ export function DynamicAddressComponent(props: Props) {
                 padding: "20px 20px",
               }}
             >
-              <Grid item xs={6} style={{ padding: "20px 10px" }}>
+              <Grid item  xs={8} md={6} style={{ padding: "20px 10px" }}>
                 <Button
                   size="small"
                   className="col-6"

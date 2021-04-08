@@ -388,10 +388,10 @@ export default function EmpApplicationForm8(props: Props) {
             {/* Questions End */}
 
             {/* BUTTON Start */}
-            <Grid item xs={10} sm={10} md={3} >
+            <Grid item  xs={8} sm={7} md={4}>
               <Button
                 type="button"
-                className="col-12"
+                className="col-8"
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -401,10 +401,10 @@ export default function EmpApplicationForm8(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={10} sm={10} md={3} >
+            <Grid item  xs={8} sm={7} md={4}>
               <Button
                 type="submit"
-                className="col-12"
+                className="col-8"
                 variant="contained"
                 color="primary"
               >

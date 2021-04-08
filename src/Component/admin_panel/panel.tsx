@@ -27,6 +27,15 @@ export const download_user_cv = (user_name: string, fileName: string) => {
   );
 };
 
+
+export const download_blank_pdf = async (blank_pdf: string) => {
+  console.log(baseUrl + "/api/empty_pdfs?pdf=" + blank_pdf);
+  window.open(
+    baseUrl + "/api/empty_pdfs?pdf=" + blank_pdf,
+    "_blank"
+  );
+};
+
 export const download_new_employee_pdf = async (user_name: string) => {
   window.open(
     baseUrl + "/api/pdf/new_employee?user_name=" + user_name,
@@ -54,34 +63,9 @@ class Adminpanel extends React.Component<AdminPanelProps, AdminPanelState> {
   }
 
   componentDidMount() {
-    // console.log("this.context", this.context.user_list_data);
-    // if (this.context.user_list_data[0]){
-    //   this.setState({
-    //     ...this.state,
-    //     users: this.context.user_list_data.filter((obj:any) => obj.data.isDeleted != 'True')
-    //   })
-    // }
+ 
   }
 
-  // checkDelete(obj:any) {
-  //   return obj.data.isDeleted !== 'True';
-  // }
-
-  // remove_user_data = async (user_name: string) => {
-  //   const res = await remove_user({'user_name': user_name});
-  //   if (res.message){
-  //     const res1 = (await get_all_users()) as any;
-  //     if (res1) {
-  //       this.context.setUserListData(res1);
-  //     //console.log("ds", this.context.user_list_data)
-  //       this.setState({
-  //         ...this.state,
-  //         users: this.context.user_list_data.filter(this.checkDelete)
-  //       })
-  //   }
-  // //console.log(res.message);
-  // }
-  // }
   render() {
     if (!this.context.user_list_data[0]) {
       return <Redirect to="/admin/login" />;

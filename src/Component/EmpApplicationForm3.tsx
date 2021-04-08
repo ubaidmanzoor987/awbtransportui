@@ -34,6 +34,7 @@ import {
   tDriverLicenseInfo,
   reqBits,
   snackbarDuratuion,
+  canvasMinWidth,
 } from "../Common/CommonVariables";
 import { Addresses, tReferences, getMaxDate, getMaxAgeLimit } from "../Common/CommonVariables";
 import RadioQuestions from "./SubComponents/RadioQuestions";
@@ -198,7 +199,7 @@ function EmpApplicationForm3(props: Props) {
       setSignatureHelperTextError(false);
 
       base64SignatureImage = sigPad.current
-        ?.getCanvas()
+        ?.getTrimmedCanvas()
         .toDataURL("image/png");
     } else {
       setSignatureError("text-danger");
@@ -242,7 +243,7 @@ function EmpApplicationForm3(props: Props) {
       setSignatureError("");
       setSignatureHelperTextError(false);
       base64SignatureImage = sigPad.current
-        .getCanvas()
+        .getTrimmedCanvas()
         .toDataURL("image/png");
     }
     data.signature = base64SignatureImage;
@@ -356,15 +357,12 @@ function EmpApplicationForm3(props: Props) {
             alignItems="center"
             spacing={3}
           >
-            <Grid item xs={12}>
-              <Paper
-                style={{ margin: "10px 0px" }}
-                elevation={3}
-                className={(classes.paper, classes.paperProminantStyle)}
-              >
+            <Grid item xs={12} sm={12} md={10}>
+              <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
               </Paper>
             </Grid>
+
             <Grid item xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Grid
                 container
@@ -429,14 +427,14 @@ function EmpApplicationForm3(props: Props) {
                           })}
                         ></TextField>
                       </Grid>
-                      <Grid item xs={12} sm={12} md={10}>
+                      <Grid item xs={10}>
                         <Grid 
                           container
                           direction="row"
                           justify="space-evenly"
                           alignItems="baseline"
                           spacing={3}>
-                              <Grid item xs={10} sm={10} md={4}>
+                              <Grid item xs={4}>
                                 <TextField
                                   name="companyCity"
                                   variant="outlined"
@@ -457,7 +455,7 @@ function EmpApplicationForm3(props: Props) {
                                   })}
                                 ></TextField>
                               </Grid>
-                              <Grid item xs={10} sm={10} md={4}>
+                              <Grid item xs={4}>
                                 {/* <ReactAutoComplete
                                   id="companyState"
                                   className="col-10"
@@ -492,7 +490,7 @@ function EmpApplicationForm3(props: Props) {
                                   })}
                                 </ReactHookFormSelect>
                               </Grid>
-                              <Grid item xs={10} sm={10} md={4}>
+                              <Grid item xs={4}>
                                 <TextField
                                   name="companyPostCode"
                                   variant="outlined"
@@ -531,7 +529,7 @@ function EmpApplicationForm3(props: Props) {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item  xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
+            <Grid item xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Grid
                 container
                 direction="row"
@@ -552,11 +550,11 @@ function EmpApplicationForm3(props: Props) {
                       alignItems="center"
                       spacing={3}
                     >
-                      <Grid item  xs={12} sm={12} md={12} className={classes.heading}>
+                      <Grid item  xs={12} className={classes.heading}>
                         APPLICANT INFORMATION
                       </Grid>
 
-                      <Grid item  xs={12} sm={12} md={10}>
+                      <Grid item  xs={10}>
                         <Grid
                             container
                             direction="row"
@@ -565,7 +563,7 @@ function EmpApplicationForm3(props: Props) {
                             spacing={2}
                           >
                            
-                            <Grid item  xs={12} sm={12} md={12}>
+                            <Grid item  xs={12}>
                               <TextField
                                 name="applicationApplyDate"
                                 variant="outlined"
@@ -616,7 +614,7 @@ function EmpApplicationForm3(props: Props) {
                           </Grid>
                       </Grid>
 
-                      <Grid item  xs={12} sm={12} md={10}>
+                      <Grid item  xs={10}>
                         <Grid
                             container
                             direction="row"
@@ -872,7 +870,7 @@ function EmpApplicationForm3(props: Props) {
               </Grid>
             </Grid>
 
-            <Grid item xs={10} style={{ marginBottom: "10px" }}>
+            <Grid item xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Paper
                 style={{ margin: "10px 0px" }}
                 elevation={3}
@@ -1027,7 +1025,7 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper
                 style={{ margin: "5px 0px" }}
                 elevation={3}
@@ -1058,7 +1056,7 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item xs={10}>
+            <Grid item  xs={12} sm={12} md={10}>
               <Paper
                 style={{ margin: "10px 0px" }}
                 elevation={3}
@@ -1119,7 +1117,7 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item xs={10}>
+            <Grid item  xs={12} sm={12} md={10}>
               <Paper
                 style={{ margin: "10px 0px" }}
                 elevation={3}
@@ -1147,7 +1145,7 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper
                 style={{ margin: "10px 0px" }}
                 elevation={3}
@@ -1171,15 +1169,15 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item xs={10}>
+            <Grid item  xs={12} sm={12} md={10}>
               <Paper
                 style={{ margin: "10px 0px" }}
                 elevation={3}
                 className={(classes.heading, classes.paperProminantStyle)}
               >
                 <Typography className={classes.heading}>
-                  Driver’s License (list each driver’s license held in the past
-                  three(3) years):
+                  Driver’s License <br/><sub>(list each driver’s license held in the past
+                  three(3) years):</sub>
                 </Typography>
                 <div className="row">
                   <div className="col-1"></div>
@@ -1196,7 +1194,7 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper
                 style={{ margin: "10px 0px" }}
                 elevation={3}
@@ -1364,7 +1362,7 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper
                 style={{ margin: "10px 0px" }}
                 elevation={3}
@@ -1390,7 +1388,7 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper
                 style={{ margin: "10px 0px" }}
                 elevation={3}
@@ -1454,24 +1452,23 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item   xs={12} sm={12} md={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper
                 elevation={3}
-                style={{ paddingLeft: "40px", paddingRight: "40px" }}
                 className={
                   (classes.heading, classes.paperProminantStyle)
                 }
               >
                 <Typography
                   className={signatureError}
-                  align="left"
+                  align="center"
                   variant="h6"
                 >
                   Employee Signature
                 </Typography>
                 {signatureHelperTextError === true && (
                   <Typography
-                    align="left"
+                    align="center"
                     variant="subtitle2"
                     className="text-danger"
                   >
@@ -1492,7 +1489,8 @@ function EmpApplicationForm3(props: Props) {
                     penColor="black"
                     ref={sigPad}
                     canvasProps={{
-                      width:(sigWidth/100)*35,
+                      width:sigWidth,
+                      // style:{minWidth:canvasMinWidth},
                       height: 150,
                       className: "sigCanvas",
                     }}
@@ -1506,7 +1504,7 @@ function EmpApplicationForm3(props: Props) {
                   alignItems="baseline"
                   spacing={3}
                 >
-                  <Grid item xs={8} sm={8} md={3}>
+                  <Grid item xs={4} sm={4} md={3}>
                     {/* <span>Width: {sigWidth}px  <br/>35% Width: {(sigWidth/100)*35}px</span> */}
                     <Button
                       type="button"
@@ -1523,10 +1521,10 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={8} sm={7} md={4}>
               <Button
                 type="button"
-                className="col-10"
+                className="col-8"
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -1536,10 +1534,10 @@ function EmpApplicationForm3(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={8} sm={7} md={4}>
               <Button
                 type="submit"
-                className="col-10"
+                className="col-8"
                 variant="contained"
                 color="primary"
               >

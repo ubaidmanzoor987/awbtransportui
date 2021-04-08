@@ -49,14 +49,13 @@ export default function EmpApplicationForm4(props: Props) {
       <Container style={{ backgroundColor: "#fafafa" }}>
         <form onSubmit={onSubmit}>
           <Grid container direction="row" justify="space-evenly" alignItems="center" spacing={3}>
-            <Grid item xs={12}>
-              <Paper style={{ margin: "10px 0px" }} elevation={3} className={(classes.paper, classes.paperProminantStyle)}>
+            <Grid item xs={12} sm={12} md={10}>
+              <Paper elevation={3} className={classes.paper}>
                 <h4>Drug and Alcohol Misuse Policy</h4>
               </Paper>
             </Grid>
 
             {/* PAGE 1 */}
-            <Grid item xs={1}></Grid>
             <Grid item xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Paper
                 elevation={3}
@@ -253,12 +252,11 @@ export default function EmpApplicationForm4(props: Props) {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
             {/* BUTTON Start */}
-            <Grid item xs={12} sm={12} md={3}>
+            <Grid item  xs={8} sm={7} md={4}>
               <Button
                 type="button"
-                className="col-12"
+                className="col-8"
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -268,8 +266,8 @@ export default function EmpApplicationForm4(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={12} sm={12} md={3}>
-              <Button type="submit" className="col-12" variant="contained" color="primary">
+            <Grid item  xs={8} sm={7} md={4}>
+              <Button type="submit" className="col-8" variant="contained" color="primary">
                 Save This & Next
               </Button>
             </Grid>

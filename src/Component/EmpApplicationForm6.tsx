@@ -89,7 +89,7 @@ export default function EmpApplicationForm6(props: Props) {
       setSignatureHelperTextError(false);
 
       base64SignatureImage = sigPad.current
-        ?.getCanvas()
+        ?.getTrimmedCanvas()
         .toDataURL("image/png");
     } else {
       setSignatureError("text-danger");
@@ -107,7 +107,7 @@ export default function EmpApplicationForm6(props: Props) {
       setSignatureError("");
       setSignatureHelperTextError(false);
       base64SignatureImage = sigPad.current
-        .getCanvas()
+        .getTrimmedCanvas()
         .toDataURL("image/png");
     }
     data.alcoholTestEmployeeSignature = base64SignatureImage;
@@ -1159,21 +1159,20 @@ export default function EmpApplicationForm6(props: Props) {
                     <Grid item xs={12} sm={12} md={12}>
                       <Paper
                         elevation={3}
-                        style={{ paddingLeft: "40px", paddingRight: "40px" }}
                         className={
                           (classes.heading, classes.paperProminantStyle)
                         }
                       >
                         <Typography
                           className={signatureError}
-                          align="left"
+                          align="center"
                           variant="h6"
                         >
                           Employee Signature
                         </Typography>
                         {signatureHelperTextError === true && (
                           <Typography
-                            align="left"
+                            align="center"
                             variant="subtitle2"
                             className="text-danger"
                           >
@@ -1194,7 +1193,7 @@ export default function EmpApplicationForm6(props: Props) {
                             penColor="black"
                             ref={sigPad}
                             canvasProps={{
-                              width: (sigWidth / 100) * 35,
+                              width:sigWidth,
                               height: 150,
                               className: "sigCanvas",
                             }}
@@ -1210,7 +1209,7 @@ export default function EmpApplicationForm6(props: Props) {
                           alignItems="baseline"
                           spacing={3}
                         >
-                          <Grid item xs={8} sm={8} md={3}>
+                          <Grid item xs={4} sm={4} md={3}>
                             {/* <span>Width: {sigWidth}px  <br/>35% Width: {(sigWidth/100)*35}px</span> */}
                             <Button
                               type="button"
@@ -1231,10 +1230,10 @@ export default function EmpApplicationForm6(props: Props) {
             </Grid>
             {/* BUTTON Start */}
 
-            <Grid item xs={12} sm={12} md={3}>
+            <Grid item  xs={8} sm={7} md={4}>
               <Button
                 type="button"
-                className="col-12"
+                className="col-8"
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -1244,10 +1243,10 @@ export default function EmpApplicationForm6(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={12} sm={12} md={3}>
+            <Grid item  xs={8} sm={7} md={4}>
               <Button
                 type="submit"
-                className="col-12"
+                className="col-8"
                 variant="contained"
                 color="primary"
               >

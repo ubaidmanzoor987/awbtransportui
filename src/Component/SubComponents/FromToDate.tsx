@@ -1,5 +1,5 @@
 import React , {useEffect , useState} from "react";
-import { Address, RequireError } from "../../Common/CommonVariables";
+import { Address, getTodayDate, RequireError } from "../../Common/CommonVariables";
 import {
   Button,
   Divider,
@@ -131,7 +131,8 @@ export default function FromToDateComponent(props:Props){
                     }
                     variant="outlined"
                     type="date"
-                    defaultValue={props.item[props.toId]}
+                    defaultValue={(props.item[props.toId] === undefined || props.item[props.toId] === null || props.item[props.toId] === "") ?  (props.index === 0?(getTodayDate()):"") : (props.item[props.toId]) }
+                    // defaultValue={(props.item[props.toId]) }
                     size="small"
                     className="col-12"
                     helperText={"To Date Require *"}

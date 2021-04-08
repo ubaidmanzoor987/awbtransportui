@@ -1,3 +1,5 @@
+import formatStringByPattern from "format-string-by-pattern";
+
 export const RequireError: string = "Required *";
 export const states = [
   { value: "AA - Armed Forces America" },
@@ -876,4 +878,16 @@ export const getMinDateLimit = (fromDate:string) => {
   date.setDate(date.getDate()+1);
   return date.toISOString().split("T")[0];
 }
+
+export const getTodayDate = () => {
+  let date = new Date(Date.now());
+  let strDate = date.toISOString().split("T")[0];
+  return strDate; 
+}
+export const canvasMinWidth = 500;
+
+export const formatOnlyNumbers = (anyString:string) => {
+  const onlyNumbers = anyString.replace(/[^\d]/g, '');
+  return formatStringByPattern('(999) 999-9999 ×9999', onlyNumbers);
+};
 

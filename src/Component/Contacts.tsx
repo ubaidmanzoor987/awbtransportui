@@ -5,7 +5,7 @@ import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import {
     Snackbar,
   } from "@material-ui/core";
-import { snackbarDuratuion } from '../Common/CommonVariables';
+import { formatOnlyNumbers, snackbarDuratuion } from '../Common/CommonVariables';
 
 function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -26,6 +26,7 @@ export default function Contacts() {
       } = Forms;
   
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
+  const [phoneNum,setPhoneNum] = useState("");
   const [successSnackOpen, setSuccessSnackOpen] = React.useState(false);
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -80,7 +81,7 @@ export default function Contacts() {
                                 <p className="help-block text-danger"></p>
                             </div>
                             <div className="form-group">
-                                <input className="form-control"  ref={register} name="phone" id="phone" type="tel" placeholder="Your Phone *" required data-validation-required-message="Please enter your phone number." />
+                                <input className="form-control"  ref={register} name="phone" id="phone" type="tel" placeholder="Your Phone *" value={phoneNum} onChange={(e:any)=>{setPhoneNum(formatOnlyNumbers(e.target.value))}} required data-validation-required-message="Please enter your phone number." />
                                 <p className="help-block text-danger"></p>
                             </div>
                             <div className="form-group mb-md-0">

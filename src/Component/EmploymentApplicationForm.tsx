@@ -196,7 +196,7 @@ class EmploymentApplication extends Component<
     return (
       <>
         <NavbarCareer addLogout={true} />
-        <div className="container-fluid">
+        <div className="container-fluid" style={{minWidth:"700px"}}>
           <div className="row">
             {/* <div
               className="col mySideBar"

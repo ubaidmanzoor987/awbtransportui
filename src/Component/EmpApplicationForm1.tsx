@@ -328,17 +328,17 @@ function EmpApplicationForm1(props: Props) {
           <Grid
             container
             direction="row"
-            justify="space-around"
+            justify="space-evenly"
             alignItems="baseline"
             spacing={3}
           >
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <h4>AWB Transport Inc., Employment Application</h4>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
-            <Grid item xs={10}>
+
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <Grid
                   container
@@ -460,7 +460,7 @@ function EmpApplicationForm1(props: Props) {
                       className={classNames("col-8", { "is-invalid": true })}
                       error={errors.email == undefined ? false : true}
                       helperText={errors.email && errors.email?.message}
-                      value={props.data.email}
+                      // value={props.data.email}
                       inputRef={register({
                         required: {
                           value: reqBits.email,
@@ -702,16 +702,14 @@ function EmpApplicationForm1(props: Props) {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
 
             {/* Question Start */}
-            <Grid item xs={1}></Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <Grid
                   container
                   direction="row"
-                  justify="space-between"
+                  justify="space-evenly"
                   alignItems="center"
                 >
                   <Grid
@@ -798,26 +796,9 @@ function EmpApplicationForm1(props: Props) {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
-            {/* Question End */}
-            {/* 
-                        <FileUploadComponent
-                             id="resume"
-                             buttonText="Upload Resume"
-                             fileName={manualStates.resume}
-                             user_name={manualStates.user_name}
-                             handleFileUpload={handleFileUpload}
-                             message="Please upload your resume in PDF format, or any valid picture format."
-                        /> */}
-
-            <Grid item xs={1}></Grid>
-            <Grid item xs={10}></Grid>
-            <Grid item xs={1}></Grid>
 
             {/* Upload Resume Start */}
-            <br />
-            <Grid item xs={1}></Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <Grid
                   container
@@ -916,13 +897,10 @@ function EmpApplicationForm1(props: Props) {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
             {/* Upload Resume End */}
 
             {/* Upload dmvFile Start */}
-            <br />
-            <Grid item xs={1}></Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <Grid
                   container
@@ -1022,13 +1000,10 @@ function EmpApplicationForm1(props: Props) {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
             {/* Upload dmvFile End */}
 
             {/* Upload dodMedicalCardFile Start */}
-            <br />
-            <Grid item xs={1}></Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <Grid
                   container
@@ -1134,13 +1109,10 @@ function EmpApplicationForm1(props: Props) {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
             {/* Upload dodMedicalCardFile End */}
 
             {/* Upload driverLicenceFile Start */}
-            <br />
-            <Grid item xs={1}></Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <Paper elevation={3} className={classes.paper}>
                 <Grid
                   container
@@ -1246,14 +1218,12 @@ function EmpApplicationForm1(props: Props) {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
             {/* Upload driverLicenceFile End */}
 
             {/* Questions Start */}
-            <Grid item xs={1}></Grid>
             {/* Questions and Awnsers Starting */}
-            <Grid item xs={10}>
-              <Accordion defaultExpanded>
+            <Grid item xs={12} sm={12} md={10}>
+              <Accordion elevation={3} defaultExpanded>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography className={classes.heading}>
                     Questions and Anwsers
@@ -1263,234 +1233,166 @@ function EmpApplicationForm1(props: Props) {
                   <Grid
                     container
                     direction="row"
-                    justify="space-between"
+                    justify="space-evenly"
                     alignItems="center"
                     spacing={3}
                   >
-                    <Grid
-                      item
-                      xs={8}
-                      className={(classes.paper, classes.addressPaper)}
-                    >
-                      <Typography className={classes.text}>
-                        How Soon Are You Available To Start?
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      {/* <ReactAutoComplete
-                        id="startTime"
-                        label="Join with in"
-                        isReq={reqBits["startTime"]}
-                        className="col-12 text-left"
-                        useForm={Forms}
-                        optionList={startTimeVal}
-                        defaultValue={manualStates.startTime}
-                        error={errors && errors["startTime"]}
-                      ></ReactAutoComplete> */}
-                      <ReactHookFormSelect
-                        nameVal="startTime"
-                        label="Choose"
-                        control={control}
-                        forms={Forms}
-                        defaultValue={manualStates.startTime}
-                        variant="outlined"
-                        size="small"
-                        isReq={reqBits.startTime}
-                        className="col-12 text-left"
+                    <Grid item xs={11}>
+
+                      <Grid
+                        container
+                        direction="row"
+                        justify="space-between"
+                        alignItems="center"
+                        spacing={3}
                       >
-                        <option aria-label="None" value="" />
+                          <Grid
+                            item
+                            xs={8}
+                            className={(classes.paper, classes.addressPaper)}
+                          >
+                            <Typography className={classes.text}>
+                              How Soon Are You Available To Start?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={4}>
+                          
+                            <ReactHookFormSelect
+                              nameVal="startTime"
+                              label="Choose"
+                              control={control}
+                              forms={Forms}
+                              defaultValue={manualStates.startTime}
+                              variant="outlined"
+                              size="small"
+                              isReq={reqBits.startTime}
+                              className="col-12 text-left"
+                            >
+                              <option aria-label="None" value="" />
 
-                        {startTimeVal.map(function (object: any, i: number) {
-                          return (
-                            <option value={object.value} key={i}>
-                              {object.value}
-                            </option>
-                          );
-                        })}
-                      </ReactHookFormSelect>
+                              {startTimeVal.map(function (object: any, i: number) {
+                                return (
+                                  <option value={object.value} key={i}>
+                                    {object.value}
+                                  </option>
+                                );
+                              })}
+                            </ReactHookFormSelect>
 
-                      {/* <FormControl
-                        variant="outlined"
-                        size="small"
-                        className="col-12"
-                      >
-                        <InputLabel id="demo-simple-select-outlined-label">
-                          Join with in
-                        </InputLabel>
-                        <Select
-                          name="startTime"
-                          labelId="demo-simple-select-outlined-label"
-                          id="demo-simple-select-outlined"
-                          defaultValue={preLoadedValues.startTime}
-                          label="Join with in"
-                          onChange={(e) => {
-                            setManualStates({
-                              ...manualStates,
-                              startTime: e.target.value,
-                            });
-                          }}
+                      
+                          </Grid>
+                          <Grid
+                            item
+                            xs={8}
+                            className={(classes.paper, classes.addressPaper)}
+                          >
+                            <Typography className={classes.text}>
+                              What is your Class A Driving Experience Level?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={4}>
+                            <ReactHookFormSelect
+                              nameVal="classAExperienceLevel"
+                              label="Experience Level"
+                              control={control}
+                              defaultValue={manualStates.classAExperienceLevel}
+                              variant="outlined"
+                              size="small"
+                              forms={Forms}
+                              isReq={reqBits.classAExperienceLevel}
+                              error={
+                                errors.classAExperienceLevel === undefined
+                                  ? false
+                                  : true
+                              }
+                              className="col-12 text-left"
+                            >
+                              <option aria-label="None" value="" />
 
-                
-                        >
-                        </Select>
-                        <FormHelperText>
-                          {errors.startTime && errors.startTime?.message}
-                        </FormHelperText>
-                      </FormControl> */}
+                              {classAExperienceLevelVal.map(function (
+                                object: any,
+                                i: number
+                              ) {
+                                return (
+                                  <option value={object.value} key={i}>
+                                    {object.value}
+                                  </option>
+                                );
+                              })}
+                            </ReactHookFormSelect>
+
+                          </Grid>
+                          <Grid
+                            item
+                            xs={8}
+                            className={(classes.paper, classes.addressPaper)}
+                          >
+                            <Typography className={classes.text}>
+                              How Did You Hear About Us?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={4}>
+                            <TextField
+                              name="hearAbout"
+                              variant="outlined"
+                              size="small"
+                              type="text"
+                              label="Heard From ..."
+                              className="col-12"
+                              error={errors.hearAbout === undefined ? false : true}
+                              inputRef={register({
+                                required: {
+                                  value: reqBits.hearAbout,
+                                  message: RequireError,
+                                },
+                              })}
+                            ></TextField>
+                          </Grid>
+
+                          <div style={{ paddingLeft: "13px" }}>
+                            <RadioQuestions
+                              id="eligibletoWorkInUnitedState"
+                              question="Are You Eligible To Work In The United States?"
+                              optionList={["Yes", "No"]}
+                              optionValue={["Yes", "No"]}
+                              xsSize={12}
+                              useForm={Forms}
+                              isReq={reqBits.eligibletoWorkInUnitedState}
+                              defaultSelected={
+                                manualStates.eligibletoWorkInUnitedState
+                              }
+                              helperMessage={eligibletoWorkInUnitedStateErrorMessage}
+                              showMessageOnValue="No"
+                            />
+                          </div>
+                          <div style={{ paddingLeft: "13px" }}>
+                            <RadioQuestions
+                              id="willingForDrugTest"
+                              question="Are you willing to undertake a drug test as part of this
+                              hiring process?"
+                              xsSize={12}
+                              optionList={["Yes", "No"]}
+                              optionValue={["Yes", "No"]}
+                              useForm={Forms}
+                              isReq={reqBits.willingForDrugTest}
+                              defaultSelected={manualStates.willingForDrugTest}
+                              helperMessage={willingForDrugTestErrorMessage}
+                              showMessageOnValue="No"
+                            />
+                          </div>
+                      </Grid>
+
                     </Grid>
-                    <Grid
-                      item
-                      xs={8}
-                      className={(classes.paper, classes.addressPaper)}
-                    >
-                      <Typography className={classes.text}>
-                        What is your Class A Driving Experience Level?
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      {/* <ReactAutoComplete
-                        id="classAExperienceLevel"
-                        isReq={reqBits["classAExperienceLevel"]}
-                        label="Experience Level"
-                        className="col-12 text-left"
-                        useForm={Forms}
-                        optionList={classAExperienceLevelVal}
-                        defaultValue={manualStates.classAExperienceLevel}
-                        error={errors && errors["classAExperienceLevel"]}
-                      ></ReactAutoComplete> */}
-                      <ReactHookFormSelect
-                        nameVal="classAExperienceLevel"
-                        label="Experience Level"
-                        control={control}
-                        defaultValue={manualStates.classAExperienceLevel}
-                        variant="outlined"
-                        size="small"
-                        forms={Forms}
-                        isReq={reqBits.classAExperienceLevel}
-                        error={
-                          errors.classAExperienceLevel === undefined
-                            ? false
-                            : true
-                        }
-                        className="col-12 text-left"
-                      >
-                        <option aria-label="None" value="" />
-
-                        {classAExperienceLevelVal.map(function (
-                          object: any,
-                          i: number
-                        ) {
-                          return (
-                            <option value={object.value} key={i}>
-                              {object.value}
-                            </option>
-                          );
-                        })}
-                      </ReactHookFormSelect>
-
-                      {/* <FormControl
-                        variant="outlined"
-                        size="small"
-                        className="col-12"
-                      >
-                        <InputLabel id="classExperienceLbl"></InputLabel>
-                        <Select
-                          name="classAExperienceLevel"
-                          labelId="classExperienceLbl"
-                          id="classExp"
-                          label="Experience Level"
-                          defaultValue={preLoadedValues.classAExperienceLevel}
-                          onChange={(e) => {
-                            setManualStates({
-                              ...manualStates,
-                              classAExperienceLevel: e.target.value,
-                            });
-                          }}
-                          // error={errors.classAExperienceLevel == undefined ? false : true}
-                          // inputRef={register({
-                          //   required: {
-                          //     value: true,
-                          //     message: RequireError,
-                          //   },
-                          // })}
-                        ></Select>
-                        <FormHelperText>
-                          {errors.classAExperienceLevel &&
-                            errors.classAExperienceLevel?.message}
-                        </FormHelperText>
-                      </FormControl> */}
-                    </Grid>
-                    <br />
-                    <Grid
-                      item
-                      xs={8}
-                      className={(classes.paper, classes.addressPaper)}
-                    >
-                      <Typography className={classes.text}>
-                        How Did You Hear About Us?
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <TextField
-                        name="hearAbout"
-                        variant="outlined"
-                        size="small"
-                        type="text"
-                        label="Heard From ..."
-                        className="col-12"
-                        error={errors.hearAbout === undefined ? false : true}
-                        inputRef={register({
-                          required: {
-                            value: reqBits.hearAbout,
-                            message: RequireError,
-                          },
-                        })}
-                      ></TextField>
-                    </Grid>
-
-                    <div style={{ paddingLeft: "13px" }}>
-                      <RadioQuestions
-                        id="eligibletoWorkInUnitedState"
-                        question="Are You Eligible To Work In The United States?"
-                        optionList={["Yes", "No"]}
-                        optionValue={["Yes", "No"]}
-                        xsSize={12}
-                        useForm={Forms}
-                        isReq={reqBits.eligibletoWorkInUnitedState}
-                        defaultSelected={
-                          manualStates.eligibletoWorkInUnitedState
-                        }
-                        helperMessage={eligibletoWorkInUnitedStateErrorMessage}
-                        showMessageOnValue="No"
-                      />
-                    </div>
-                    <br />
-                    <div style={{ paddingLeft: "13px" }}>
-                      <RadioQuestions
-                        id="willingForDrugTest"
-                        question="Are you willing to undertake a drug test as part of this
-                      hiring process?"
-                        xsSize={12}
-                        optionList={["Yes", "No"]}
-                        optionValue={["Yes", "No"]}
-                        useForm={Forms}
-                        isReq={reqBits.willingForDrugTest}
-                        defaultSelected={manualStates.willingForDrugTest}
-                        helperMessage={willingForDrugTestErrorMessage}
-                        showMessageOnValue="No"
-                      />
-                    </div>
                   </Grid>
                 </AccordionDetails>
               </Accordion>
             </Grid>
             {/* Questions and Awnsers Ending */}
-            <Grid item xs={1}></Grid>
             {/* Questions End */}
 
             {/* BUTTON Start */}
-            <Grid item xs={4}></Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={12} md={4}></Grid>
+            <Grid item xs={8} sm={7} md={4}>
               <Button
                 type="submit"
                 className="col-8"
@@ -1500,7 +1402,7 @@ function EmpApplicationForm1(props: Props) {
                 Save This & Next
               </Button>
             </Grid>
-            <Grid item xs={4}></Grid>
+            <Grid item xs={12} sm={12} md={4}></Grid>
             {/* BUTTON End */}
           </Grid>
         </form>

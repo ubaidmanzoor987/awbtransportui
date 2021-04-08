@@ -61,7 +61,6 @@ export default function EmpApplicationForm5(props: Props) {
             spacing={3}
           >
             {/* PAGE 2 */}
-            <Grid item xs={1}></Grid>
             <Grid item  xs={12} sm={12} md={10} style={{ marginBottom: "10px" }}>
               <Paper
                 elevation={3}
@@ -71,7 +70,7 @@ export default function EmpApplicationForm5(props: Props) {
                 <Grid
                   container
                   direction="row"
-                  justify="space-between"
+                  justify="space-evenly"
                   alignItems="baseline"
                   spacing={3}
                 >
@@ -495,12 +494,11 @@ export default function EmpApplicationForm5(props: Props) {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={1}></Grid>
             {/* BUTTON Start */}
-            <Grid item xs={12} sm={12} md={3}>
+            <Grid item   xs={8} sm={7} md={4}>
               <Button
                 type="button"
-                className="col-12"
+                className="col-8"
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -510,10 +508,10 @@ export default function EmpApplicationForm5(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={12} sm={12} md={3}>
+            <Grid item   xs={8} sm={7} md={4}>
               <Button
                 type="submit"
-                className="col-12"
+                className="col-8"
                 variant="contained"
                 color="primary"
               >
