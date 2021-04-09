@@ -8,7 +8,7 @@ import drug_and_alcohol_policy_snapshot_1 from "../assets/images/drug and alcoho
 import SignatureCanvas from "react-signature-canvas";
 import { update } from "../services/updateApi";
 import { useRef, useState } from "react";
-import { snackbarDuratuion } from "../Common/CommonVariables";
+import { snackbarDuratuion ,autoSubmit} from "../Common/CommonVariables";
 import Box from "@material-ui/core/Box";
 import { useEffect } from "react";
 
@@ -22,9 +22,11 @@ let base64SignatureImage: string;
 
 export default function EmpApplicationForm6(props: Props) {
   const classes = styleClasses.useStyles();
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors,getValues } = useForm({
     defaultValues: props.data,
   });
+  const watchAll = getValues();
+
 
   const callbackOnWindowResize = () => {
   //console.log(width);
@@ -51,6 +53,7 @@ export default function EmpApplicationForm6(props: Props) {
       sigPad.current?.clear();
       sigPad.current.fromDataURL(base64SignatureImage);
     }
+    if(autoSubmit){onSubmit(props.data);}
   }, []);
 
   useEffect(() => {
@@ -75,6 +78,20 @@ export default function EmpApplicationForm6(props: Props) {
       props.handler[0]();
     }
   };
+
+    
+  const [saveOnlySuccessSnackOpen, setSaveOnlySuccessSnackOpen] = React.useState(false);
+  const saveOnlyHandleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSaveOnlySuccessSnackOpen(false);
+    if (succesOrErrorBit === "success") {
+      // props.handler();
+    }
+  };
+
   //-------------SNACKBAR-------------
 
   const [signatureError, setSignatureError] = useState("");
@@ -89,13 +106,51 @@ export default function EmpApplicationForm6(props: Props) {
       setSignatureHelperTextError(false);
 
       base64SignatureImage = sigPad.current
-        ?.getTrimmedCanvas()
+        ?.getCanvas()
         .toDataURL("image/png");
     } else {
       setSignatureError("text-danger");
       setSignatureHelperTextError(true);
     }
   };
+
+
+  
+  const saveData = async (data:any,saveOnly:boolean) => {
+    data.user_name = props.data.user_name;
+    console.log(data);
+    let resdata;
+    resdata = await update(data);
+    if (resdata.data){
+      try {
+        console.log(resdata);
+        props.setData(resdata.data.data);
+        setSuccesOrErrorBit("success");
+        if(saveOnly){
+          setSaveOnlySuccessSnackOpen(true);
+        }else{
+          setSnackOpen(true);
+        }
+
+      } catch (ex) {
+        console.log("Error Exaption Seerver Error");
+        console.log(resdata);
+        console.log(ex);
+        setSuccesOrErrorBit("error");
+        if(saveOnly){
+          setSaveOnlySuccessSnackOpen(true);
+        }else{
+          setSnackOpen(true);
+        }
+      }
+    }
+  }
+
+  const saveUnFilledData = () => {
+    const watchAll = getValues();
+    saveData(watchAll,true);
+  }
+
 
   const onSubmit = async (data: any) => {
     if (sigPad.current && sigPad.current.isEmpty()) {
@@ -107,27 +162,32 @@ export default function EmpApplicationForm6(props: Props) {
       setSignatureError("");
       setSignatureHelperTextError(false);
       base64SignatureImage = sigPad.current
-        .getTrimmedCanvas()
+        .getCanvas()
         .toDataURL("image/png");
     }
     data.alcoholTestEmployeeSignature = base64SignatureImage;
-    data.user_name = props.data.user_name;
-    const resdata = await update(data);
-    try {
-      props.setData(resdata.data.data);
-      //-------------SNACKBAR-------------
-      setSuccesOrErrorBit("success");
-      setSnackOpen(true);
-      //-------------SNACKBAR-------------
-      // props.handler[0]();
-    } catch (ex) {
-    //console.log("Error Exaption Seerver Error");
-    //console.log(ex);
-      //-------------SNACKBAR-------------
-      setSuccesOrErrorBit("error");
-      setSnackOpen(true);
-      //-------------SNACKBAR-------------
-    }
+    saveData(data,false);
+    
+    // data.user_name = props.data.user_name;
+    // const resdata = await update(data);
+    // if (resdata.data){
+    //     try {
+    //     props.setData(resdata.data.data);
+    //     //-------------SNACKBAR-------------
+    //     setSuccesOrErrorBit("success");
+    //     setSnackOpen(true);
+    //     //-------------SNACKBAR-------------
+    //     // props.handler[0]();
+    //   } catch (ex) {
+    //     console.log("Error Exaption Seerver Error");
+    //     console.log(resdata);
+    //     console.log(ex);
+    //   //-------------SNACKBAR-------------
+    //     setSuccesOrErrorBit("error");
+    //     setSnackOpen(true);
+    //     //-------------SNACKBAR-------------
+    //   }
+    // }
   };
 
   return (
@@ -1230,32 +1290,59 @@ export default function EmpApplicationForm6(props: Props) {
             </Grid>
             {/* BUTTON Start */}
 
-            <Grid item  xs={8} sm={7} md={4}>
-              <Button
-                type="button"
-                className="col-8"
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  props.handler[1]();
-                }}
-              >
-                Back
-              </Button>
-            </Grid>
-            <Grid item  xs={8} sm={7} md={4}>
-              <Button
-                type="submit"
-                className="col-8"
-                variant="contained"
-                color="primary"
-              >
-                Save This & Next
-              </Button>
+            <Grid item xs={12} sm={12} md={11}>
+              <Grid container justify="space-evenly" alignContent="center">
+                  {/* BUTTON Start */}
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      type="button"
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        props.handler[1]();
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </Grid>
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      onClick={()=>{saveUnFilledData();}}
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save
+                    </Button>
+                  </Grid>
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      type="submit"
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save This & Next
+                    </Button>
+                  </Grid>
+                  {/* BUTTON End */}
+              </Grid>
             </Grid>
             {/* BUTTON End */}
           </Grid>
         </form>
+        <AlertComponent
+          duration={snackbarDuratuion}
+          open={saveOnlySuccessSnackOpen}
+          message={
+            succesOrErrorBit === "success"
+            ? "Data Saved Successfully"
+            : "Server Error"
+          }
+          onClose={saveOnlyHandleClose}
+          severity={succesOrErrorBit}
+          ></AlertComponent>
         <AlertComponent
           duration={snackbarDuratuion}
           open={snackOpen}

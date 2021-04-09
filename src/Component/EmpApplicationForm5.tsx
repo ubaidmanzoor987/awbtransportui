@@ -5,7 +5,7 @@ import { Accordion, Col, Container, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import styleClasses from "../Common/styleClasses";
 import { update } from "../services/updateApi";
-import { snackbarDuratuion } from "../Common/CommonVariables";
+import { snackbarDuratuion , autoSubmit} from "../Common/CommonVariables";
 import AlertComponent from "./SubComponents/AlertComponent";
 import { useEffect } from "react";
 
@@ -16,10 +16,12 @@ export default function EmpApplicationForm5(props: Props) {
   const Forms = useForm({
     defaultValues: props.data,
   });
-  const { register, handleSubmit, errors, control } = Forms;
+  const { register, handleSubmit, errors, control,getValues } = Forms;
+  const watchAll = getValues();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if(autoSubmit){onSubmit(props.data);}
   }, []);
 
   //-------------SNACKBAR-------------
@@ -36,7 +38,7 @@ export default function EmpApplicationForm5(props: Props) {
   //console.log(succesOrErrorBit);
 
     if (succesOrErrorBit === "success") {
-      props.handler[0]();
+      // props.handler[0]();
     }
   };
   //-------------SNACKBAR-------------
@@ -508,17 +510,18 @@ export default function EmpApplicationForm5(props: Props) {
                 Back
               </Button>
             </Grid>
-            <Grid item   xs={8} sm={7} md={4}>
+            <Grid item xs={8} sm={7} md={4}>
               <Button
-                type="submit"
+                onClick={()=>{props.handler[0]();}}
                 className="col-8"
                 variant="contained"
                 color="primary"
               >
-                Save This & Next
+                Next
               </Button>
             </Grid>
-            {/* BUTTON End */}
+     
+           {/* BUTTON End */}
           </Grid>
         </form>
         <AlertComponent

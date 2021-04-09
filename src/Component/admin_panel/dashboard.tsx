@@ -41,6 +41,7 @@ import {
 import { baseUrl, for_production1 } from "../../shared/baseUrl";
 import { get_all_users } from "../../services/get_all_users_api";
 import { update } from "../../services/updateApi";
+import { deleteUser } from "../../services/deleteApi";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -90,6 +91,7 @@ function Dashboard() {
     { field: "first_name", headerName: "First Name", width: 200 },
     { field: "last_name", headerName: "Last Name", width: 200 },
     { field: "email", headerName: "Email", width: 200 },
+    { field: "isDeleted", headerName: "Deleted", width: 100 },
     { field: "isEditable", headerName: "Editable", width: 100 },
     { field: "city", headerName: "City", width: 200 },
     { field: "dateOfBirth", headerName: "Date of Birth", width: 200 },
@@ -152,11 +154,11 @@ function Dashboard() {
       displayText: "Enable User Edit Mode",
       shortCut: "E",
     },
-    // {
-    //   value: "user_delete",
-    //   displayText: "Delete User",
-    //   shortCut: "D",
-    // },
+    {
+      value: "user_delete",
+      displayText: "Delete User",
+      shortCut: "D",
+    },
   ];
 
   const sortModel = [
@@ -292,47 +294,60 @@ function Dashboard() {
         const row_f1 = c_rows1.find(
           (row1: any) => row1.user_name === selectedUser
         );
-        row_f1.isEditable = false;
+        row_f1.isEditable = "False";
         setRows(c_rows1);
         break;
 
       case userActions[1].value:
         await user_enable_edit_mode(selectedUser);
-        const c_rows = JSON.parse(JSON.stringify(rows)) as any[];
-        const row_f = c_rows.find(
+        const c_rows2 = JSON.parse(JSON.stringify(rows)) as any[];
+        const row_f2 = c_rows2.find(
           (row1: any) => row1.user_name === selectedUser
         );
-        row_f.isEditable = true;
-        setRows(c_rows);
+        row_f2.isEditable = "True";
+        setRows(c_rows2);
         break;
-    }
+
+      case userActions[2].value:
+        await user_delete(selectedUser);
+        const c_rows3 = JSON.parse(JSON.stringify(rows)) as any[];
+        const row_f3 = c_rows3.find(
+          (row1: any) => row1.user_name === selectedUser
+        );
+        row_f3.isDeleted = "True";
+        setRows(c_rows3);
+        break;
+  
+      }
     setAction("");
   };
 
   async function user_enable_edit_mode(user_name: string) {
-    let userEditMode = { user_name: selectedUser, isEditable: "true" };
+    let userEditMode = { user_name: selectedUser, isEditable: "True" };
     await update(userEditMode);
   }
 
   async function user_disable_edit_mode(user_name: string) {
-    let userEditMode = { user_name: selectedUser, isEditable: "false" };
+    let userEditMode = { user_name: selectedUser, isEditable: "False" };
     await update(userEditMode);
   }
 
-  // async function user_delete(user_name: string) {
-  //   let userDelete = { user_name: selectedUser, isDeleted: "true" };
-  //   await update(userDelete);
-  //   const res = (await get_all_users()) as any;
-  //   if (res) {
-  //     user.setUserListData(res);
-  //     setRows(user.user_list_data);
-  //   }
-  // }
+  async function user_delete(user_name: string) {
+    let userDelete = { user_name: selectedUser, isDeleted: "True" };
+    await deleteUser(userDelete);
+    // const res = (await get_all_users()) as any;
+    // if (res) {
+    //   user.setUserListData(res);
+    //   setRows(user.user_list_data);
+    // }
+  }
 
   useEffect(() => {
     if (isEmpty(user.user_list_data)) {
       setLoggedIn(false);
     } else {
+      console.log("user.user_list_data");
+      console.log(user.user_list_data);
       setRows(user.user_list_data);
     }
   }, []);

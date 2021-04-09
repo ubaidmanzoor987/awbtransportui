@@ -35,6 +35,7 @@ import {
   reqBits,
   snackbarDuratuion,
   canvasMinWidth,
+  autoSubmit,
 } from "../Common/CommonVariables";
 import { Addresses, tReferences, getMaxDate, getMaxAgeLimit } from "../Common/CommonVariables";
 import RadioQuestions from "./SubComponents/RadioQuestions";
@@ -130,17 +131,30 @@ function EmpApplicationForm3(props: Props) {
   const [signatureError, setSignatureError] = useState("");
   const [signatureHelperTextError, setSignatureHelperTextError] = useState(
     false
-  );
-  const Forms = useForm({ defaultValues: props.data, shouldFocusError:true, criteriaMode:"all" });
-  const { register, handleSubmit, errors, control } = Forms;
-
+    );
+    const Forms = useForm({ defaultValues: props.data, shouldFocusError:true, criteriaMode:"all" });
+    const { register, handleSubmit, errors, control,
+      getValues } = Forms;
+      
   const [licenseQuestionBits, setLicenseQuestionBits] = useState({
     deniedLicences: props.data.deniedLicences === "Yes",
     permitLicences: props.data.permitLicences === "Yes",
     reasonforUnableToPerformActions:
-      props.data.reasonforUnableToPerformActions === "Yes",
+    props.data.reasonforUnableToPerformActions === "Yes",
     convictedofafelony: props.data.convictedofafelony === "Yes",
   });
+  
+  const [saveOnlySuccessSnackOpen, setSaveOnlySuccessSnackOpen] = React.useState(false);
+  const saveOnlyHandleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSaveOnlySuccessSnackOpen(false);
+    if (succesOrErrorBit === "success") {
+      // props.handler();
+    }
+  };
 
   let sigPad = useRef<any>();
 
@@ -182,12 +196,10 @@ function EmpApplicationForm3(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  //console.log("sigPadsigPadsigPad");
-  //console.log(sigPad);
-  //console.log(sigPad.current);
     if(props.data.signature !== undefined){
       sigPad.current.fromDataURL(props.data.signature);
     }
+    if(autoSubmit){onSubmit(props.data);}
   }, []);
 
   
@@ -199,7 +211,7 @@ function EmpApplicationForm3(props: Props) {
       setSignatureHelperTextError(false);
 
       base64SignatureImage = sigPad.current
-        ?.getTrimmedCanvas()
+        ?.getCanvas()
         .toDataURL("image/png");
     } else {
       setSignatureError("text-danger");
@@ -233,6 +245,43 @@ function EmpApplicationForm3(props: Props) {
   };
   //-------------SNACKBAR-------------
 
+
+  const saveData = async (data:any,saveOnly:boolean) => {
+    data.user_name = props.data.user_name;
+    console.log(data);
+    let resdata;
+    resdata = await update(data);
+    if (resdata.data){
+      try {
+        console.log(resdata);
+        props.setData(resdata.data.data);
+        setSuccesOrErrorBit("success");
+        if(saveOnly){
+          setSaveOnlySuccessSnackOpen(true);
+        }else{
+          setSnackOpen(true);
+        }
+
+      } catch (ex) {
+        console.log("Error Exaption Seerver Error");
+        console.log(resdata);
+        console.log(ex);
+        setSuccesOrErrorBit("error");
+        if(saveOnly){
+          setSaveOnlySuccessSnackOpen(true);
+        }else{
+          setSnackOpen(true);
+        }
+      }
+    }
+  }
+
+  const saveUnFilledData = () => {
+      const watchAll = getValues();
+      saveData(watchAll,true);
+  }
+
+
   const onSubmit = async (data: any) => {
     if (sigPad.current && sigPad.current.isEmpty()) {
       setSignatureError("text-danger");
@@ -243,7 +292,7 @@ function EmpApplicationForm3(props: Props) {
       setSignatureError("");
       setSignatureHelperTextError(false);
       base64SignatureImage = sigPad.current
-        .getTrimmedCanvas()
+        .getCanvas()
         .toDataURL("image/png");
     }
     data.signature = base64SignatureImage;
@@ -260,25 +309,31 @@ function EmpApplicationForm3(props: Props) {
     if(!(data.references)) data.references = [];
 
 
-    data.user_name = props.data.user_name;
     data.applicantfirstName = props.data.first_name;
     data.applicantLastName = props.data.last_name
-    const resdata = await update(data);
-    try {
-      props.setData(resdata.data.data);
-      //-------------SNACKBAR-------------
-      setSuccesOrErrorBit("success");
-      setSnackOpen(true);
-      //-------------SNACKBAR-------------
-      // props.handler[0]();
-    } catch (ex) {
-    //console.log("Error Exaption Seerver Error");
-    //console.log(ex);
-      //-------------SNACKBAR-------------
-      setSuccesOrErrorBit("error");
-      setSnackOpen(true);
-      //-------------SNACKBAR-------------
-    }
+
+    saveData(data,false);
+
+    // data.user_name = props.data.user_name;
+    // const resdata = await update(data);
+    // if (resdata.data){
+    //     try {
+    //     props.setData(resdata.data.data);
+    //     //-------------SNACKBAR-------------
+    //     setSuccesOrErrorBit("success");
+    //     setSnackOpen(true);
+    //     //-------------SNACKBAR-------------
+    //     // props.handler[0]();
+    //   } catch (ex) {
+    //     console.log("Error Exaption Seerver Error");
+    //     console.log(resdata);
+    //     console.log(ex);
+    //   //-------------SNACKBAR-------------
+    //     setSuccesOrErrorBit("error");
+    //     setSnackOpen(true);
+    //     //-------------SNACKBAR-------------
+    //   }
+    // }
   };
 
   const calculateAge = (val:string)=>{
@@ -456,21 +511,13 @@ function EmpApplicationForm3(props: Props) {
                                 ></TextField>
                               </Grid>
                               <Grid item xs={4}>
-                                {/* <ReactAutoComplete
-                                  id="companyState"
-                                  className="col-10"
-                                  label="Company State"
-                                  useForm={Forms}
-                                  optionList={states}
-                                  isReq={reqBits["companyState"]}
-                                  error={errors && errors["companyState"]}
-                                  defaultValue={props.data.companyState}
-                                ></ReactAutoComplete> */}
+                         
 
                                 <ReactHookFormSelect
                                   nameVal="companyState"
                                   label="State"
                                   variant="outlined"
+                                  
                                   size="small"
                                   forms={Forms}
                                   control={control}
@@ -1153,6 +1200,8 @@ function EmpApplicationForm3(props: Props) {
               >
                 <Typography className={classes.heading}>
                   List of traffic conviction
+                  <br/>
+                  <sub>List most recent first</sub>
                 </Typography>
                 <div className="row">
                   <div className="col-1"></div>
@@ -1521,39 +1570,66 @@ function EmpApplicationForm3(props: Props) {
               </Paper>
             </Grid>
 
-            <Grid item xs={8} sm={7} md={4}>
-              <Button
-                type="button"
-                className="col-8"
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  props.handler[1]();
-                }}
-              >
-                Back
-              </Button>
-            </Grid>
-            <Grid item xs={8} sm={7} md={4}>
-              <Button
-                type="submit"
-                className="col-8"
-                variant="contained"
-                color="primary"
-              >
-                Save This & Next
-              </Button>
+            <Grid item xs={12} sm={12} md={11}>
+              <Grid container justify="space-evenly" alignContent="center">
+                  {/* BUTTON Start */}
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      type="button"
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        props.handler[1]();
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </Grid>
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      onClick={()=>{saveUnFilledData();}}
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save
+                    </Button>
+                  </Grid>
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      type="submit"
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save This & Next
+                    </Button>
+                  </Grid>
+                  {/* BUTTON End */}
+              </Grid>
             </Grid>
           </Grid>
         </form>
         <AlertComponent
           duration={snackbarDuratuion}
+          open={saveOnlySuccessSnackOpen}
+          message={
+            succesOrErrorBit === "success"
+            ? "Data Saved Successfully"
+            : "Server Error"
+          }
+          onClose={saveOnlyHandleClose}
+          severity={succesOrErrorBit}
+          ></AlertComponent>
+        <AlertComponent
+          duration={snackbarDuratuion}
           open={snackOpen}
           message={
             succesOrErrorBit === "success"
-              ? "Data Saved Successfully"
+            ? "Data Saved Successfully"
               : "Server Error"
-          }
+            }
           onClose={handleClose}
           severity={succesOrErrorBit}
         ></AlertComponent>

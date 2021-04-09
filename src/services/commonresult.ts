@@ -1,4 +1,8 @@
 export function processResult(resultData: any) {
+
+    console.log("resultData");
+    console.log(resultData);
+
     if (resultData.data.applicantdateofbirth) {
         resultData.data.applicantdateofbirth = new Date((resultData.data.applicantdateofbirth as any).$date).toISOString().split('T')[0];
     }
@@ -29,45 +33,45 @@ export function processResult(resultData: any) {
 
     if (resultData.data.addresses) {
         resultData.data.addresses.forEach(function (el:any) {
-            el.lastYearAddressfrom = new Date((el.lastYearAddressfrom as any).$date).toISOString().split('T')[0];
-            el.lastYearAddressTo = new Date((el.lastYearAddressTo as any).$date).toISOString().split('T')[0];
+            if(el.lastYearAddressfrom) {el.lastYearAddressfrom = new Date((el.lastYearAddressfrom as any).$date).toISOString().split('T')[0];}
+            if(el.lastYearAddressTo) {el.lastYearAddressTo = new Date((el.lastYearAddressTo as any).$date).toISOString().split('T')[0];}
         });
     }
 
     if (resultData.data.applicantAddresses) {
         resultData.data.applicantAddresses.forEach(function (el:any) {
-            el.lastYearAddressfrom = new Date((el.lastYearAddressfrom as any).$date).toISOString().split('T')[0];
-            el.lastYearAddressTo = new Date((el.lastYearAddressTo as any).$date).toISOString().split('T')[0];
+            if(el.lastYearAddressfrom) {el.lastYearAddressfrom = new Date((el.lastYearAddressfrom as any).$date).toISOString().split('T')[0];}
+            if(el.lastYearAddressTo) {el.lastYearAddressTo = new Date((el.lastYearAddressTo as any).$date).toISOString().split('T')[0];}
         });
     }
     if (resultData.data.employmentHistory) {
         resultData.data.employmentHistory.forEach(function (el:any) {
-            el.employmentHistoryfrom = new Date((el.employmentHistoryfrom as any).$date).toISOString().split('T')[0];
-            el.employmentHistoryTo = new Date((el.employmentHistoryTo as any).$date).toISOString().split('T')[0];
+            if(el.employmentHistoryfrom) {el.employmentHistoryfrom = new Date((el.employmentHistoryfrom as any).$date).toISOString().split('T')[0];}
+            if(el.employmentHistoryTo) {el.employmentHistoryTo = new Date((el.employmentHistoryTo as any).$date).toISOString().split('T')[0];}
         });
     }
     if (resultData.data.employmentExperienceHistory) {
         resultData.data.employmentExperienceHistory.forEach(function (el:any) {
-            el.experienceFromDate = new Date((el.experienceFromDate as any).$date).toISOString().split('T')[0];
-            el.experienceToDate = new Date((el.experienceToDate as any).$date).toISOString().split('T')[0];
+            if(el.experienceFromDate) {el.experienceFromDate = new Date((el.experienceFromDate as any).$date).toISOString().split('T')[0];}
+            if(el.experienceToDate) {el.experienceToDate = new Date((el.experienceToDate as any).$date).toISOString().split('T')[0];}
         });
     }
 
     if (resultData.data.employmentAccidentsHistory) {
         resultData.data.employmentAccidentsHistory.forEach(function (el:any) {
-            el.dateOfAccident= new Date((el.dateOfAccident as any).$date).toISOString().split('T')[0];
+            if(el.dateOfAccident) {el.dateOfAccident= new Date((el.dateOfAccident as any).$date).toISOString().split('T')[0];}
         });
     }
     
     if (resultData.data.violations) {
         resultData.data.violations.forEach(function (el:any) {
-            el.dateOfViolation= new Date((el.dateOfViolation as any).$date).toISOString().split('T')[0];
+            if(el.dateOfViolation) {el.dateOfViolation= new Date((el.dateOfViolation as any).$date).toISOString().split('T')[0];}
         });
     }
 
     if (resultData.data.licences) {
         resultData.data.licences.forEach(function (el:any) {
-            el.licenceExpirationDate= new Date((el.licenceExpirationDate as any).$date).toISOString().split('T')[0];
+            if(el.licenceExpirationDate) {el.licenceExpirationDate= new Date((el.licenceExpirationDate as any).$date).toISOString().split('T')[0];}
         });
     }
     

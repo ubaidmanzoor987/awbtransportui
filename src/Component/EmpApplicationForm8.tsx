@@ -22,6 +22,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { styleClasses } from "../Common/styleClasses";
+import AlertComponent from "./SubComponents/AlertComponent";
+
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DateFnsUtils from "@date-io/date-fns";
@@ -38,6 +40,7 @@ import {
   snackbarDuratuion,
   getMaxDate,
   getMaxAgeLimit,
+  autoSubmit,
 } from "../Common/CommonVariables";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 
@@ -84,7 +87,9 @@ export default function EmpApplicationForm8(props: Props) {
     control,
     setError,
     clearErrors,
+    getValues
   } = Forms;
+
 
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
   const [fileUploadSuccesOrErrorBit, setFileUploadSuccesOrErrorBit] = useState(
@@ -101,6 +106,18 @@ export default function EmpApplicationForm8(props: Props) {
     "You must be eligible to work in United States";
   const willingForDrugTestErrorMessage =
     "You must be willing to undertake a drug test as part of this hiring process";
+
+    const [saveOnlySuccessSnackOpen, setSaveOnlySuccessSnackOpen] = React.useState(false);
+    const saveOnlyHandleClose = (event?: React.SyntheticEvent, reason?: string) => {
+      if (reason === "clickaway") {
+        return;
+      }
+  
+      setSaveOnlySuccessSnackOpen(false);
+      if (succesOrErrorBit === "success") {
+        // props.handler();
+      }
+    };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -130,24 +147,65 @@ export default function EmpApplicationForm8(props: Props) {
     window.scrollTo(0, 0);
   }, []);
 
+
+  const saveData = async (data:any,saveOnly:boolean) => {
+    data.user_name = manualStates.user_name;
+    console.log(data);
+    let resdata;
+    resdata = await update(data);
+    if (resdata.data){
+      try {
+        console.log(resdata);
+        props.setData(resdata.data.data);
+        setSuccesOrErrorBit("success");
+        if(saveOnly){
+          setSaveOnlySuccessSnackOpen(true);
+        }else{
+          setSuccessSnackOpen(true);
+        }
+
+      } catch (ex) {
+        console.log("Error Exaption Seerver Error");
+        console.log(resdata);
+        console.log(ex);
+        setSuccesOrErrorBit("error");
+        if(saveOnly){
+          setSaveOnlySuccessSnackOpen(true);
+        }else{
+          setSuccessSnackOpen(true);
+        }
+      }
+    }
+  }
+
+  const saveUnFilledData = () => {
+    const watchAll = getValues();
+    saveData(watchAll,true);
+  }
+
   const onSubmit = async (data: any) => {
   
   //console.log("data form8 submit");
   //console.log(data);
-    data.user_name = manualStates.user_name;
-    print("Sending :", data);
-    const resdata = await update(data);
-    try {
-      print("Receiving :", data);
-      props.setData(resdata.data.data);
-      setSuccesOrErrorBit("success");
-      setSuccessSnackOpen(true);
-    } catch (ex) {
-    //console.log("Error Exaption Seerver Error");
-    //console.log(ex);
-      setSuccesOrErrorBit("error");
-      setSuccessSnackOpen(true);
-    }
+  saveData(data,false);
+
+    // data.user_name = manualStates.user_name;
+    // print("Sending :", data);
+    // const resdata = await update(data);
+    // if (resdata.data){
+    //     try {
+    //     print("Receiving :", data);
+    //     props.setData(resdata.data.data);
+    //     setSuccesOrErrorBit("success");
+    //     setSuccessSnackOpen(true);
+    //   } catch (ex) {
+    //     console.log("Error Exaption Seerver Error");
+    //     console.log(resdata);
+    //     console.log(ex);
+    //   setSuccesOrErrorBit("error");
+    //     setSuccessSnackOpen(true);
+    //   }
+    // }
   };
 
 
@@ -414,6 +472,17 @@ export default function EmpApplicationForm8(props: Props) {
             {/* BUTTON End */}
           </Grid>
         </form>
+        <AlertComponent
+          duration={snackbarDuratuion}
+          open={saveOnlySuccessSnackOpen}
+          message={
+            succesOrErrorBit === "success"
+            ? "Data Saved Successfully"
+            : "Server Error"
+          }
+          onClose={saveOnlyHandleClose}
+          severity={succesOrErrorBit}
+          ></AlertComponent>
         <Snackbar
           open={successSnackOpen}
           autoHideDuration={snackbarDuratuion}

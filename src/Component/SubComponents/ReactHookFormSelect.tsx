@@ -5,6 +5,7 @@ import Select from "@material-ui/core/Select";
 import { Controller } from "react-hook-form";
 import { RequireError } from "../../Common/CommonVariables";
 import { AnyRecordWithTtl } from "node:dns";
+import {useState} from "react";
 
 type Props = {
   nameVal: string;
@@ -28,22 +29,14 @@ function ReactHookFormSelect(props: Props) {
   const { register, handleSubmit, errors, control, setError } = props.forms;
   let lable = props.label + props.isReq ? ("Required *"):"";
   const labelId = `${props.nameVal}-label`;
-
-
+  console.log(props);
   function errorChecking()
   {
-
     try
     {
       if(props.isPartOfDynamicComponent === true){
-      //console.log("React Hook Select Error 1:");
-      //console.log("props.parentId && props.parentIndex && props.childSubId");
-      //console.log(props.parentId);
-      //console.log(props.parentIndex );
-      //console.log(props.childSubId)
+ 
         if(errors && props.parentId && props.parentIndex !== undefined && props.childSubId) {
-        //console.log("errors[props.parentId][props.parentIndex][props.childSubId]");
-        //console.log(errors[props.parentId][props.parentIndex][props.childSubId]);
           return errors[props.parentId][props.parentIndex][props.childSubId];
         }
         return false;
@@ -92,7 +85,9 @@ function ReactHookFormSelect(props: Props) {
                 message: "Required *",
               });
               }
+              // setSelectedValue(v);
             }}
+            // value={selectedValue}
             onSubmit={(e:any) => {
             //console.log("On Select CHange");
             //console.log(e.target.value);

@@ -22,7 +22,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { ControlCameraOutlined } from "@material-ui/icons";
 import ReactHookFormSelect from "./SubComponents/ReactHookFormSelect";
 import ReactAutoComplete from "./SubComponents/ReactAutoComplete";
-import { debug, reqBits, snackbarDuratuion } from "../Common/CommonVariables";
+import { debug, reqBits, snackbarDuratuion, autoSubmit} from "../Common/CommonVariables";
 import { update } from "../services/updateApi";
 import AlertComponent from "./SubComponents/AlertComponent";
 
@@ -74,7 +74,8 @@ function EmpApplicationForm2(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    if(autoSubmit){onSubmit(props.data);}
+}, []);
 
   if (debug === true) {
     props.data.gender = gender[1].value;
@@ -84,6 +85,18 @@ function EmpApplicationForm2(props: Props) {
   //-------------SNACKBAR-------------
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
   const [snackOpen, setSnackOpen] = React.useState(false);
+  const [saveOnlySuccessSnackOpen, setSaveOnlySuccessSnackOpen] = React.useState(false);
+
+  const saveOnlyHandleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSaveOnlySuccessSnackOpen(false);
+    if (succesOrErrorBit === "success") {
+      // props.handler();
+    }
+  };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -100,30 +113,73 @@ function EmpApplicationForm2(props: Props) {
 
   const Forms = useForm();
 
-  const { register, handleSubmit, errors, control } = Forms;
+  const { register, handleSubmit, errors, control,getValues } = Forms;
 
   const classes = useStyles();
 
+  const saveData = async (data:any,saveOnly:boolean) => {
+    data.user_name = props.data.user_name;
+    console.log(data);
+    let resdata;
+    resdata = await update(data);
+    if (resdata.data){
+      try {
+        console.log(resdata);
+        props.setData(resdata.data.data);
+        setSuccesOrErrorBit("success");
+        if(saveOnly){
+          setSaveOnlySuccessSnackOpen(true);
+        }else{
+          setSnackOpen(true);
+        }
+
+      } catch (ex) {
+        console.log("Error Exaption Seerver Error");
+        console.log(resdata);
+        console.log(ex);
+        setSuccesOrErrorBit("error");
+        if(saveOnly){
+          setSaveOnlySuccessSnackOpen(true);
+        }else{
+          setSnackOpen(true);
+        }
+      }
+    }
+  }
+
+  const saveUnFilledData = () => {
+    const watchAll = getValues();
+    saveData(watchAll,true);
+  }
+
+
   const onSubmit = async (data: any) => {
     // //console.log(data);
-    data.user_name = props.data.user_name;
-    const resdata = await update(data);
-    try {
-      props.setData(resdata.data.data);
-      //-------------SNACKBAR-------------
-      setSuccesOrErrorBit("success");
-      setSnackOpen(true);
-      //-------------SNACKBAR-------------
-      // props.handler[0]();
-    } catch (ex) {
-    //console.log("Error Exaption Seerver Error");
-    //console.log(ex);
-      //-------------SNACKBAR-------------
-      setSuccesOrErrorBit("error");
-      setSnackOpen(true);
-      //-------------SNACKBAR-------------
-    }
+    saveData(data,false);
+    // data.user_name = props.data.user_name;
+    // const resdata = await update(data);
+    // if(resdata.data){
+    //   try {
+    //     console.log(resdata);
+    //     props.setData(resdata.data.data);
+    //     //-------------SNACKBAR-------------
+    //     setSuccesOrErrorBit("success");
+    //     setSnackOpen(true);
+    //     //-------------SNACKBAR-------------
+    //     // props.handler[0]();
+    //   } catch (ex) {
+    //     console.log("Error Exaption Seerver Error");
+    //     console.log(resdata);
+    //     console.log(ex);
+    //    //-------------SNACKBAR-------------
+    //     setSuccesOrErrorBit("error");
+    //     setSnackOpen(true);
+    //     //-------------SNACKBAR-------------
+    //   }
+    // }
   };
+
+
 
   const RequireError: string = "Required *";
 
@@ -153,19 +209,19 @@ function EmpApplicationForm2(props: Props) {
                 <Grid
                   container
                   direction="row"
-                  justify="space-between"
+                  justify="space-evenly"
                   alignItems="baseline"
                   spacing={3}
                 >
                   <Grid
                     item
-                    xs={12}
+                    xs={11}
                     className={classes.heading}
                     style={{ textAlign: "center", marginTop: "10px" }}
                   >
                     <b>EEO Information</b>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={11}>
                     <Paper elevation={3} className={classes.paper}>
                       <Typography align="justify">
                         We provide equal opportunity to all qualified
@@ -183,7 +239,7 @@ function EmpApplicationForm2(props: Props) {
                       </Typography>
                     </Paper>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={5}>
                     {/* <ReactAutoComplete
                       id="gender"
                       label="Gender"
@@ -217,7 +273,7 @@ function EmpApplicationForm2(props: Props) {
                       })}
                     </ReactHookFormSelect>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={5}>
                     {/* <ReactAutoComplete
                       id="veteranStatus"
                       label="Veteran Status"
@@ -257,34 +313,60 @@ function EmpApplicationForm2(props: Props) {
                 </Grid>
               </Paper>
             </Grid>
+            <Grid item xs={12} sm={12} md={11}>
+              <Grid container justify="space-evenly" alignContent="center">
+                  {/* BUTTON Start */}
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      type="button"
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        props.handler[1]();
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </Grid>
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      onClick={()=>{saveUnFilledData();}}
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save
+                    </Button>
+                  </Grid>
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      type="submit"
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save This & Next
+                    </Button>
+                  </Grid>
+                  {/* BUTTON End */}
+              </Grid>
+            </Grid>
 
-            {/* BUTTON Start */}
-            <Grid item xs={8} sm={7} md={4}>
-              <Button
-                type="button"
-                className="col-8"
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  props.handler[1]();
-                }}
-              >
-                Back
-              </Button>
-            </Grid>
-            <Grid item xs={8} sm={7} md={4}>
-              <Button
-                type="submit"
-                className="col-8"
-                variant="contained"
-                color="primary"
-              >
-                Save This & Next
-              </Button>
-            </Grid>
-            {/* BUTTON End */}
           </Grid>
         </form>
+    
+        <AlertComponent
+          duration={snackbarDuratuion}
+          open={saveOnlySuccessSnackOpen}
+          message={
+            succesOrErrorBit === "success"
+              ? "Data Saved Successfully"
+              : "Server Error"
+          }
+          onClose={saveOnlyHandleClose}
+          severity={succesOrErrorBit}
+        ></AlertComponent>
         <AlertComponent
           duration={snackbarDuratuion}
           open={snackOpen}

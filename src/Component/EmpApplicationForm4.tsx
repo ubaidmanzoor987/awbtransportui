@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Accordion, Col, Container, Row } from "react-bootstrap";
 import styleClasses from "../Common/styleClasses";
 import { update } from "../services/updateApi";
-import { snackbarDuratuion } from "../Common/CommonVariables";
+import { snackbarDuratuion,autoSubmit } from "../Common/CommonVariables";
 import AlertComponent from "./SubComponents/AlertComponent";
 import { useEffect } from "react";
 
@@ -16,8 +16,10 @@ export default function EmpApplicationForm4(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if(autoSubmit){onSubmit(props.data);}
   }, []);
 
+  
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
       return;
@@ -268,7 +270,7 @@ export default function EmpApplicationForm4(props: Props) {
             </Grid>
             <Grid item  xs={8} sm={7} md={4}>
               <Button type="submit" className="col-8" variant="contained" color="primary">
-                Save This & Next
+                Next
               </Button>
             </Grid>
             {/* BUTTON End */}

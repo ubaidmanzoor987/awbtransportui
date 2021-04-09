@@ -40,10 +40,13 @@ const styles = (theme: Theme) => ({
   root: {},
 });
 
+
+
 class EmploymentApplication extends Component<
   EmploymentApplicationProps,
   EmploymentApplicationStates
 > {
+
   constructor(props: any) {
     super(props);
     this.state = {
@@ -53,9 +56,73 @@ class EmploymentApplication extends Component<
     this.gotoNextForm = this.gotoNextForm.bind(this);
     this.gotoPreviousForm = this.gotoPreviousForm.bind(this);
   }
+
+  insertDummyData() {
+
+    if(!this.context.data.companyName || this.context.data.companyName === "") {
+      this.context.data.companyName = "AWB Transport Inc";
+    }
+
+    if(!this.context.data.companyAddress || this.context.data.companyAddress === "") {
+      this.context.data.companyAddress = "5751 La Venta Way";  
+    }
+
+    if(!this.context.data.companyCity || this.context.data.companyCity === "") {
+      this.context.data.companyCity = "Sacramento";
+    }
+
+    if(!this.context.data.companyState || this.context.data.companyState === "") {
+      this.context.data.companyState = states[8].value;
+    }
+
+    if(!this.context.data.companyPostCode || this.context.data.companyPostCode === "") {
+      this.context.data.companyPostCode = "95835";
+    }
+
+
+    if (!this.context.data.applicantAddresses || this.context.data.applicantAddresses.length == 0) {
+      this.context.data.applicantAddresses = [dummyAddrData];
+    }
+    
+    if (!this.context.data.addresses || this.context.data.addresses.length === 0) {
+      this.context.data.addresses = [dummyAddrData];
+    }
+
+ 
+    if (!this.context.data.employmentHistory || this.context.data.employmentHistory.length === 0) {
+      this.context.data.employmentHistory = [employmentHistoryDummyElement];
+    }
+
+ 
+    if (!this.context.data.employmentAccidentsHistory || this.context.data.employmentAccidentsHistory.length === 0) {
+      this.context.data.employmentAccidentsHistory = [employmentAccidentHistoryDummyElement];
+    }
+
+ 
+    if (!this.context.data.employmentExperienceHistory || this.context.data.employmentExperienceHistory.length === 0) {
+      this.context.data.employmentExperienceHistory = [drivingExperienceDummyElement];
+    }
+ 
+    if (!this.context.data.licences || this.context.data.licences.length === 0) {
+      this.context.data.licences = [driverLicenseDummyElement];
+    }
+
+  
+    if (!this.context.data.references || this.context.data.references.length === 0) {
+      this.context.data.references = [ReferenceDummyElement];
+    }
+
+  
+    if (!this.context.data.violations || this.context.data.violations.length === 0) {
+      this.context.data.violations = [trafficConvictionDummyElement];
+    }
+
+    this.context.data.applicantfirstName = this.context.data.first_name;
+    this.context.data.applicantLastName = this.context.data.last_name;
+
+  }
+
   componentDidMount() {
-    // let data = { ...this.context.data, addresses: [addr1] };
-  //console.log("context", this.context.data);
     
     if (!this.context.data.user_name) {
       return <Redirect to="/login" />;
@@ -65,58 +132,8 @@ class EmploymentApplication extends Component<
       this.setState(this.context.data);
     }
 
-    if (this.context.data.applicantAddresses.length == 0) {
-      this.context.data.applicantAddresses.push(dummyAddrData);
-    }
-    
-  //console.log("this.context.data.addresses.length === 0");
-  //console.log(this.context.data.addresses.length === 0);
-  //console.log(this.context.data.addresses);
-    if (this.context.data.addresses.length === 0) {
-      this.context.data.addresses.push(dummyAddrData);
-    }
+    this.insertDummyData();
 
-  //console.log("this.context.data.employmentHistory.length === 0");
-  //console.log(this.context.data.employmentHistory.length === 0);
-  //console.log(this.context.data.employmentHistory);
-    if (this.context.data.employmentHistory.length === 0) {
-      this.context.data.employmentHistory.push(employmentHistoryDummyElement);
-    }
-
-  //console.log("this.context.data.employmentAccidentsHistory.length === 0");
-  //console.log(this.context.data.employmentAccidentsHistory.length === 0);
-  //console.log(this.context.data.employmentAccidentsHistory);
-    if (this.context.data.employmentAccidentsHistory.length === 0) {
-      this.context.data.employmentAccidentsHistory.push(employmentAccidentHistoryDummyElement);
-    }
-
-  //console.log("this.context.data.employmentExperienceHistory.length === 0");
-  //console.log(this.context.data.employmentExperienceHistory.length === 0);
-  //console.log(this.context.data.employmentExperienceHistory);
-    if (this.context.data.employmentExperienceHistory.length === 0) {
-      this.context.data.employmentExperienceHistory.push(drivingExperienceDummyElement);
-    }
-  //console.log("this.context.data.licences.length === 0");
-  //console.log(this.context.data.licences.length === 0);
-  //console.log(this.context.data.licences);
-    if (this.context.data.licences.length === 0) {
-      this.context.data.licences.push(driverLicenseDummyElement);
-    }
-
-  //console.log("this.context.data.references.length === 0");
-  //console.log(this.context.data.references.length === 0);
-  //console.log(this.context.data.references);
-    if (this.context.data.references.length === 0) {
-      this.context.data.references.push(ReferenceDummyElement);
-    }
-
-  //console.log("this.context.data.violations.length === 0");
-  //console.log(this.context.data.violations.length === 0);
-  //console.log(this.context.data.violations);
-    if (this.context.data.violations.length === 0) {
-      this.context.data.violations.push(trafficConvictionDummyElement);
-    }
-  //console.log(this.context.data);
   }
 
   gotoNextForm() {
@@ -137,61 +154,8 @@ class EmploymentApplication extends Component<
     if (!this.context.data.user_name) {
       return <Redirect to="/login" />;
     }
-
-    if (this.context.data.applicantAddresses.length == 0) {
-      this.context.data.applicantAddresses.push(dummyAddrData);
-    }
-    
-  //console.log("this.context.data.addresses.length === 0");
-  //console.log(this.context.data.addresses.length === 0);
-  //console.log(this.context.data.addresses);
-    if (this.context.data.addresses.length === 0) {
-      this.context.data.addresses.push(dummyAddrData);
-    }
-
-  //console.log("this.context.data.employmentHistory.length === 0");
-  //console.log(this.context.data.employmentHistory.length === 0);
-  //console.log(this.context.data.employmentHistory);
-    if (this.context.data.employmentHistory.length === 0) {
-      this.context.data.employmentHistory.push(employmentHistoryDummyElement);
-    }
-
-  //console.log("this.context.data.employmentAccidentsHistory.length === 0");
-  //console.log(this.context.data.employmentAccidentsHistory.length === 0);
-  //console.log(this.context.data.employmentAccidentsHistory);
-    if (this.context.data.employmentAccidentsHistory.length === 0) {
-      this.context.data.employmentAccidentsHistory.push(employmentAccidentHistoryDummyElement);
-    }
-
-  //console.log("this.context.data.employmentExperienceHistory.length === 0");
-  //console.log(this.context.data.employmentExperienceHistory.length === 0);
-  //console.log(this.context.data.employmentExperienceHistory);
-    if (this.context.data.employmentExperienceHistory.length === 0) {
-      this.context.data.employmentExperienceHistory.push(drivingExperienceDummyElement);
-    }
-  //console.log("this.context.data.licences.length === 0");
-  //console.log(this.context.data.licences.length === 0);
-  //console.log(this.context.data.licences);
-    if (this.context.data.licences.length === 0) {
-      this.context.data.licences.push(driverLicenseDummyElement);
-    }
-
-  //console.log("this.context.data.references.length === 0");
-  //console.log(this.context.data.references.length === 0);
-  //console.log(this.context.data.references);
-    if (this.context.data.references.length === 0) {
-      this.context.data.references.push(ReferenceDummyElement);
-    }
-
-  //console.log("this.context.data.violations.length === 0");
-  //console.log(this.context.data.violations.length === 0);
-  //console.log(this.context.data.violations);
-    if (this.context.data.violations.length === 0) {
-      this.context.data.violations.push(trafficConvictionDummyElement);
-    }
-
-    this.context.data.applicantfirstName = this.context.data.first_name;
-    this.context.data.applicantLastName = this.context.data.last_name;
+ 
+    this.insertDummyData();
 
     return (
       <>

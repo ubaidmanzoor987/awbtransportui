@@ -189,6 +189,7 @@ export function DynamicTrafficConvictions(props: Props) {
                     })}
                     size="small"
                     defaultValue={item.LocationOfViolation}
+                    helperText="NA if Not Available"
                     rows={4}
                     variant="outlined"
                     className="col-12"
@@ -212,7 +213,7 @@ export function DynamicTrafficConvictions(props: Props) {
                         message: RequireError,
                       },
                     })}
-                    helperText={reqBits.ViolationCharge && RequireError}
+                    helperText={reqBits.ViolationCharge && (RequireError + " NA if Not Available")}
                     size="small"
                     defaultValue={item.ViolationCharge}
                     rows={4}

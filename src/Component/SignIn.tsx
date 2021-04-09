@@ -73,7 +73,7 @@ class Login extends React.Component<LoginProps, LoginState> {
         password: this.state.password,
       } as LoginState)) as Result;
       if (res.data) {
-        if (res.data.isEditable === "false") {
+        if (res.data.isEditable === "false" || res.data.isDeleted === "True"  || res.data.isDeleted === "true" ) {
           this.setState({
             ...this.state,
             errors: {

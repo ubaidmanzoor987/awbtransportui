@@ -259,7 +259,7 @@ export let reqBits = {
   foreign_passport_number:true,
   issuance_country:true,
   first_name: true,
-  last_name: false,
+  last_name: true,
   phone_number: true,
   fromDateAddress:true,
   email: false,
@@ -848,7 +848,7 @@ export const print = (msg: string, obj: any) => {
   // console.log(obj);
 };
 
-export const snackbarDuratuion: number = 2000;
+export const snackbarDuratuion: number = 1000;
 
 export const getMaxDate = () => {
   let date = new Date();
@@ -891,3 +891,5 @@ export const formatOnlyNumbers = (anyString:string) => {
   return formatStringByPattern('(999) 999-9999 ×9999', onlyNumbers);
 };
 
+
+export const autoSubmit = false;

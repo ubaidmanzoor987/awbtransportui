@@ -38,6 +38,7 @@ import {
   snackbarDuratuion,
   getMaxDate,
   getMaxAgeLimit,
+  autoSubmit,
 } from "../Common/CommonVariables";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 
@@ -103,7 +104,10 @@ function EmpApplicationForm1(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    if(autoSubmit){onSubmit(props.data);}
+    // if(true){for(let i = 0; i < 100; i++){saveUnFilledData();}}
+
+}, []);
 
   let res: any;
   const [response, setResponse] = useState("");
@@ -140,28 +144,13 @@ function EmpApplicationForm1(props: Props) {
         [fileName]: event.target.files[0]?.name,
       });
 
-      // if(fileName === "resume"){
-      //   setManualStates({ ...manualStates, resume: event.target.files[0]?.name });
-      // }
-      // else if(fileName === "dmvFile"){
-      //   setManualStates({ ...manualStates, dmvFile: event.target.files[0]?.name });
-      // }
+
     } else {
       setFileUploadSuccesOrErrorBit("error");
       setFileUploadSuccessSnackOpen(true);
       setResponse(res.error);
     }
-    // } else {
-    //   setManualStates({ ...manualStates, resume2: event.target.files[0] });
-    //   formData.append(
-    //     "file",
-    //     event.target.files[0],
-    //     event.target.files[0].name
-    //   );
-    //   formData.append("user_name", manualStates.user_name);
-
-    //   fileUploadApi(formData);
-    // }
+  
   };
 
   const Forms = useForm({
@@ -177,7 +166,11 @@ function EmpApplicationForm1(props: Props) {
     control,
     setError,
     clearErrors,
+    formState,
+    getValues,
   } = Forms;
+
+
 
   const [succesOrErrorBit, setSuccesOrErrorBit] = useState("success");
   const [fileUploadSuccesOrErrorBit, setFileUploadSuccesOrErrorBit] = useState(
@@ -188,7 +181,48 @@ function EmpApplicationForm1(props: Props) {
     "You must be eligible to work in United States";
   const willingForDrugTestErrorMessage =
     "You must be willing to undertake a drug test as part of this hiring process";
-  const onSubmit = async (data: any) => {
+
+
+    const saveData = async (data:any,saveOnly:boolean) => {
+      data.user_name = manualStates.user_name;
+      console.log("arg data");
+      console.log(data);
+      let resdata;
+      resdata = await update(data);
+      console.log("response resdata");
+      console.log(resdata);
+      if (resdata.data){
+        try {
+          console.log(resdata);
+          setSuccesOrErrorBit("success");
+          if(saveOnly){
+            setSaveOnlySuccessSnackOpen(true);
+          }else{
+            props.setData(resdata.data.data);
+            setSuccessSnackOpen(true);
+          }
+
+        } catch (ex) {
+          console.log("Error Exaption Seerver Error");
+          console.log(resdata);
+          console.log(ex);
+          setSuccesOrErrorBit("error");
+          if(saveOnly){
+            setSaveOnlySuccessSnackOpen(true);
+          }else{
+            setSuccessSnackOpen(true);
+          }
+        }
+      }
+    }
+
+  const saveUnFilledData = async () => {
+    let watchAll = getValues();
+    console.log(watchAll);
+    await saveData(watchAll,true);
+  }
+
+  const onSubmit = (data: any) => {
     if (data.eligibletoWorkInUnitedState === "No") {
       setError("eligibletoWorkInUnitedState", {
         type: "manual",
@@ -214,24 +248,9 @@ function EmpApplicationForm1(props: Props) {
       data.addresses = undefined;
     }
 
-    // console.log("data form1 submit");
-    // console.log(data);
-    // data.phone_number = phonePattern;
-    data.user_name = manualStates.user_name;
-    print("Sending :", data);
-    const resdata = await update(data);
-    try {
-      print("Receiving :", data);
-      props.setData(resdata.data.data);
-      setSuccesOrErrorBit("success");
-      setSuccessSnackOpen(true);
-    } catch (ex) {
-      // console.log("Error Exaption Seerver Error");
-      // console.log(ex);
-      setSuccesOrErrorBit("error");
-      setSuccessSnackOpen(true);
-    }
+    saveData(data,false);
   };
+
 
   const [phonePattern, setPhonePatten] = useState(
     manualStates.phone_number ? manualStates.phone_number : ""
@@ -247,14 +266,7 @@ function EmpApplicationForm1(props: Props) {
   const WrongPatternError: string = "Invalid Input";
 
   const download_user_cv = (user_name: string, fileName: string) => {
-  //console.log("user_name");
-    // console.log(
-    //   baseUrl +
-    //     "/api/get_resume?user_name=" +
-    //     user_name +
-    //     "&" +
-    //     `${fileName}=${fileName}`
-    // );
+
     window.open(
       baseUrl +
         "/api/get_resume?user_name=" +
@@ -266,8 +278,7 @@ function EmpApplicationForm1(props: Props) {
   };
 
   const removeUploadedFileFromServer = async (e: any, fileName: string) => {
-  //console.log("Remove Resume API");
-  //console.log(fileName);
+
     let res = await deleteFile(props.data.user_name, fileName);
     if (res.success != undefined) {
       setManualStates({
@@ -286,10 +297,22 @@ function EmpApplicationForm1(props: Props) {
 
   //-------------SNACKBAR-------------
   const [successSnackOpen, setSuccessSnackOpen] = React.useState(false);
+  const [saveOnlySuccessSnackOpen, setSaveOnlySuccessSnackOpen] = React.useState(false);
   const [
     fileUploadSuccessSnackOpen,
     setFileUploadSuccessSnackOpen,
   ] = React.useState(false);
+
+  const saveOnlyHandleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSaveOnlySuccessSnackOpen(false);
+    if (succesOrErrorBit === "success") {
+      // props.handler();
+    }
+  };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     setDisableAllUploadButton(false);
@@ -298,7 +321,6 @@ function EmpApplicationForm1(props: Props) {
     }
 
     setSuccessSnackOpen(false);
-  //console.log("CLOSE AUTO");
     if (succesOrErrorBit === "success") {
       props.handler();
     }
@@ -314,11 +336,9 @@ function EmpApplicationForm1(props: Props) {
     }
 
     setFileUploadSuccessSnackOpen(false);
-  //console.log("CLOSE AUTO");
   };
   //-------------SNACKBAR-------------
 
-  // console.log("new Date()");
 
 
   return (
@@ -623,16 +643,7 @@ function EmpApplicationForm1(props: Props) {
                         ></TextField>
                       </Grid>
                       <Grid item xs={6}>
-                        {/* <ReactAutoComplete
-                          id="state"
-                          label={"States"}
-                          className="col-12"
-                          useForm={Forms}
-                          isReq={reqBits["state"]}
-                          optionList={states}
-                          defaultValue={manualStates.state}
-                          error={errors && errors["state"]}
-                        ></ReactAutoComplete> */}
+                      
                         <ReactHookFormSelect
                           nameVal="state"
                           label="States"
@@ -1391,7 +1402,16 @@ function EmpApplicationForm1(props: Props) {
             {/* Questions End */}
 
             {/* BUTTON Start */}
-            <Grid item xs={12} sm={12} md={4}></Grid>
+            <Grid item xs={8} sm={7} md={4}>
+              <Button
+                className="col-8"
+                onClick={(e:any)=>{saveUnFilledData();}}
+                variant="contained"
+                color="primary"
+              >
+                Save
+              </Button>
+            </Grid>
             <Grid item xs={8} sm={7} md={4}>
               <Button
                 type="submit"
@@ -1402,10 +1422,21 @@ function EmpApplicationForm1(props: Props) {
                 Save This & Next
               </Button>
             </Grid>
-            <Grid item xs={12} sm={12} md={4}></Grid>
+         
             {/* BUTTON End */}
+
           </Grid>
         </form>
+        <Snackbar
+          open={saveOnlySuccessSnackOpen}
+          autoHideDuration={snackbarDuratuion}
+          onClose={saveOnlyHandleClose}
+        >
+          <Alert onClose={saveOnlyHandleClose} severity={succesOrErrorBit as "success"}>
+            {succesOrErrorBit === "success" && "Data Saved Successfully"}
+            {succesOrErrorBit === "error" && "Server Error"}
+          </Alert>
+        </Snackbar>
         <Snackbar
           open={successSnackOpen}
           autoHideDuration={snackbarDuratuion}

@@ -15,7 +15,8 @@ export interface Result {
         dateOfViolation: string,
         lastYearAddressfrom: string,
         lastYearAddressTo: string,
-        isEditable: string
+        isEditable: string,
+        isDeleted: string
     }, 
     error: string,
     
