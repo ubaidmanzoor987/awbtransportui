@@ -150,12 +150,12 @@ export default function EmpApplicationForm8(props: Props) {
 
   const saveData = async (data:any,saveOnly:boolean) => {
     data.user_name = manualStates.user_name;
-    console.log(data);
+    // console.log(data);
     let resdata;
     resdata = await update(data);
     if (resdata.data){
       try {
-        console.log(resdata);
+        // console.log(resdata);
         props.setData(resdata.data.data);
         setSuccesOrErrorBit("success");
         if(saveOnly){
@@ -165,9 +165,9 @@ export default function EmpApplicationForm8(props: Props) {
         }
 
       } catch (ex) {
-        console.log("Error Exaption Seerver Error");
-        console.log(resdata);
-        console.log(ex);
+        // console.log("Error Exaption Seerver Error");
+        // console.log(resdata);
+        // console.log(ex);
         setSuccesOrErrorBit("error");
         if(saveOnly){
           setSaveOnlySuccessSnackOpen(true);
@@ -446,30 +446,47 @@ export default function EmpApplicationForm8(props: Props) {
             {/* Questions End */}
 
             {/* BUTTON Start */}
-            <Grid item  xs={8} sm={7} md={4}>
-              <Button
-                type="button"
-                className="col-8"
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  props.handler[1]();
-                }}
-              >
-                Back
-              </Button>
-            </Grid>
-            <Grid item  xs={8} sm={7} md={4}>
-              <Button
-                type="submit"
-                className="col-8"
-                variant="contained"
-                color="primary"
-              >
-                Submit All
-              </Button>
+            <Grid item xs={12} sm={12} md={11}>
+              <Grid container justify="space-evenly" alignContent="center">
+                  {/* BUTTON Start */}
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      type="button"
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        props.handler[1]();
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </Grid>
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      onClick={()=>{saveUnFilledData();}}
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save
+                    </Button>
+                  </Grid>
+                  <Grid item xs={8} sm={7} md={4}>
+                    <Button
+                      type="submit"
+                      className="col-8 mt-3"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Submit All
+                    </Button>
+                  </Grid>
+                  {/* BUTTON End */}
+              </Grid>
             </Grid>
             {/* BUTTON End */}
+
           </Grid>
         </form>
         <AlertComponent

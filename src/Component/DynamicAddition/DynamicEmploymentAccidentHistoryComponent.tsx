@@ -138,7 +138,7 @@ export function DynamicEmploymentAccidentHistoryComponent(props: Props) {
                     })}
                     name={`${props.idPrefix}[${index}].dateOfAccident`}
                     defaultValue={item.dateOfAccident}
-                    helperText="Date of Accident"
+                    helperText={reqBits.dateOfAccident && RequireError + " Date of Accident"}
                     type="date"
                     size="small"
                     className="col-12"

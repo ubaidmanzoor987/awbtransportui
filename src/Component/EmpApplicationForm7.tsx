@@ -84,15 +84,18 @@ export default function EmpApplicationForm7(props: Props) {
   useEffect(() => {
     base64SignatureImage = props.data.employeeSignature;
     window.scrollTo(0, 0);
-    if (base64SignatureImage !== undefined) {
+    if (base64SignatureImage !== undefined && base64SignatureImage !== "") {
       sigPad.current?.clear();
       sigPad.current.fromDataURL(base64SignatureImage);
     }
-    if(autoSubmit){onSubmit(props.data);}
+            if(autoSubmit){
+    let watchAll = getValues();
+      onSubmit(watchAll );
+    }
   }, []);
 
   useEffect(() => {
-    if (base64SignatureImage !== undefined) {
+    if (base64SignatureImage !== undefined && base64SignatureImage !== "") {
       sigPad.current?.clear();
       sigPad.current.fromDataURL(base64SignatureImage);
     }
@@ -166,13 +169,25 @@ export default function EmpApplicationForm7(props: Props) {
 
   const saveData = async (data:any,saveOnly:boolean) => {
     data.user_name = props.data.user_name;
-    console.log(data);
+    {
+      setSignatureError("");
+      setSignatureHelperTextError(false);
+
+      base64SignatureImage = sigPad.current
+        .getCanvas()
+        .toDataURL("image/png");
+    }
+    if (sigPad.current && sigPad.current.isEmpty()) {
+      data.employeeSignature = "";
+    }
+    else data.employeeSignature = base64SignatureImage;
+    // console.log(data.employeeSignature);
     let resdata;
     resdata = await update(data);
     if (resdata.data){
       try 
       {
-        console.log(resdata);
+        // console.log(resdata);
         props.setData(resdata.data.data);
         setSuccesOrErrorBit("success");
         if(saveOnly){
@@ -183,9 +198,9 @@ export default function EmpApplicationForm7(props: Props) {
 
       } 
       catch (ex) {
-        console.log("Error Exaption Seerver Error");
-        console.log(resdata);
-        console.log(ex);
+        // console.log("Error Exaption Seerver Error");
+        // console.log(resdata);
+        // console.log(ex);
         setSuccesOrErrorBit("error");
         if(saveOnly){
           setSaveOnlySuccessSnackOpen(true);
@@ -218,15 +233,7 @@ export default function EmpApplicationForm7(props: Props) {
     }
   //console.log("Data");
   //console.log(data);
-    {
-      setSignatureError("");
-      setSignatureHelperTextError(false);
 
-      base64SignatureImage = sigPad.current
-        .getCanvas()
-        .toDataURL("image/png");
-    }
-    data.employeeSignature = base64SignatureImage;
     data.user_name = props.data.user_name;
     saveData(data,false);
 

@@ -324,7 +324,7 @@ export let reqBits = {
   lastFiveYearStatesOperate: true,
   Listspecialcourses: true,
   ListanySafeDrivingAwards: true,
-  dateOfAccident: false,
+  dateOfAccident: true,
   NumberOfAccidents: false,
   LocationOfAccidents: true,
   numberofFatalities: true,
@@ -712,7 +712,7 @@ export let reqBitsViaStr: Dict = {
   lastFiveYearStatesOperate: true,
   Listspecialcourses: true,
   ListanySafeDrivingAwards: false,
-  dateOfAccident: false,
+  dateOfAccident: true,
   NumberOfAccidents: false,
   LocationOfAccidents: true,
   numberofFatalities: true,
@@ -842,10 +842,9 @@ export const form3DefaultValue = {
   remarks: "",
 };
 
-export const print = (msg: string, obj: any) => {
+export const print = (obj: any) => {
   if (printDebug == false) return;
-  // console.log("PRINT : " + msg + " ");
-  // console.log(obj);
+  console.log(obj);
 };
 
 export const snackbarDuratuion: number = 1000;

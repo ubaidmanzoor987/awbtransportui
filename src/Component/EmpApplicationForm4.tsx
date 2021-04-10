@@ -16,7 +16,6 @@ export default function EmpApplicationForm4(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(autoSubmit){onSubmit(props.data);}
   }, []);
 
   
@@ -287,3 +286,5 @@ export default function EmpApplicationForm4(props: Props) {
     </div>
   );
 }
+
+

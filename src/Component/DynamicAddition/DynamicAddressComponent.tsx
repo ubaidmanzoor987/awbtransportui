@@ -69,7 +69,7 @@ const WrongPatternError: string = "Wrong Pattern";
 
 export function DynamicAddressComponent(props: Props) {
   const classes = styleClasses.useStyles();
-  print("Address List : ", props.addressesList);
+  // print("Address List : ", props.addressesList);
   const [fromDate,setFromDate] = useState("");
   const {
     register,
