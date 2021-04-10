@@ -170,14 +170,14 @@ function EmpApplicationForm3(props: Props) {
   useEffect(() => {
     base64SignatureImage = props.data.signature;
     window.scrollTo(0, 0);
-    if (base64SignatureImage !== undefined) {
+    if (base64SignatureImage !== undefined && base64SignatureImage !== "") {
       sigPad.current?.clear();
       sigPad.current.fromDataURL(base64SignatureImage);
     }
   }, []);
 
   useEffect(() => {
-    if (base64SignatureImage !== undefined) {
+    if (base64SignatureImage !== undefined && base64SignatureImage !== "") {
       sigPad.current?.clear();
       sigPad.current.fromDataURL(base64SignatureImage);
     }
@@ -199,7 +199,10 @@ function EmpApplicationForm3(props: Props) {
     if(props.data.signature !== undefined){
       sigPad.current.fromDataURL(props.data.signature);
     }
-    if(autoSubmit){onSubmit(props.data);}
+            if(autoSubmit){
+    let watchAll = getValues();
+      onSubmit(watchAll );
+    }
   }, []);
 
   
@@ -247,13 +250,26 @@ function EmpApplicationForm3(props: Props) {
 
 
   const saveData = async (data:any,saveOnly:boolean) => {
+
+    {
+      setSignatureError("");
+      setSignatureHelperTextError(false);
+      base64SignatureImage = sigPad.current
+        .getCanvas()
+        .toDataURL("image/png");
+    }
+    if (sigPad.current && sigPad.current.isEmpty()) {
+      data.signature = "";
+    }
+    else data.signature = base64SignatureImage;
     data.user_name = props.data.user_name;
-    console.log(data);
+    // console.log("FOrm3");
+    // console.log(data);
     let resdata;
     resdata = await update(data);
     if (resdata.data){
       try {
-        console.log(resdata);
+        // console.log(resdata);
         props.setData(resdata.data.data);
         setSuccesOrErrorBit("success");
         if(saveOnly){
@@ -263,9 +279,9 @@ function EmpApplicationForm3(props: Props) {
         }
 
       } catch (ex) {
-        console.log("Error Exaption Seerver Error");
-        console.log(resdata);
-        console.log(ex);
+        // console.log("Error Exaption Seerver Error");
+        // console.log(resdata);
+        // console.log(ex);
         setSuccesOrErrorBit("error");
         if(saveOnly){
           setSaveOnlySuccessSnackOpen(true);
@@ -288,14 +304,7 @@ function EmpApplicationForm3(props: Props) {
       setSignatureHelperTextError(true);
       return;
     }
-    {
-      setSignatureError("");
-      setSignatureHelperTextError(false);
-      base64SignatureImage = sigPad.current
-        .getCanvas()
-        .toDataURL("image/png");
-    }
-    data.signature = base64SignatureImage;
+   
   //console.log("datadata");
   //console.log(data);
     

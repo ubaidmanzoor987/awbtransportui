@@ -74,7 +74,10 @@ function EmpApplicationForm2(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(autoSubmit){onSubmit(props.data);}
+            if(autoSubmit){
+    let watchAll = getValues();
+      onSubmit(watchAll );
+    }
 }, []);
 
   if (debug === true) {
@@ -119,12 +122,12 @@ function EmpApplicationForm2(props: Props) {
 
   const saveData = async (data:any,saveOnly:boolean) => {
     data.user_name = props.data.user_name;
-    console.log(data);
+    // console.log(data);
     let resdata;
     resdata = await update(data);
     if (resdata.data){
       try {
-        console.log(resdata);
+        // console.log(resdata);
         props.setData(resdata.data.data);
         setSuccesOrErrorBit("success");
         if(saveOnly){
@@ -134,9 +137,9 @@ function EmpApplicationForm2(props: Props) {
         }
 
       } catch (ex) {
-        console.log("Error Exaption Seerver Error");
-        console.log(resdata);
-        console.log(ex);
+        // console.log("Error Exaption Seerver Error");
+        // console.log(resdata);
+        // console.log(ex);
         setSuccesOrErrorBit("error");
         if(saveOnly){
           setSaveOnlySuccessSnackOpen(true);

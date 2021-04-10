@@ -104,7 +104,10 @@ function EmpApplicationForm1(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(autoSubmit){onSubmit(props.data);}
+        if(autoSubmit){
+    let watchAll = getValues();
+      onSubmit(watchAll );
+    }
     // if(true){for(let i = 0; i < 100; i++){saveUnFilledData();}}
 
 }, []);
@@ -185,15 +188,15 @@ function EmpApplicationForm1(props: Props) {
 
     const saveData = async (data:any,saveOnly:boolean) => {
       data.user_name = manualStates.user_name;
-      console.log("arg data");
-      console.log(data);
+      // console.log("arg data");
+      // console.log(data);
       let resdata;
       resdata = await update(data);
-      console.log("response resdata");
-      console.log(resdata);
+      // console.log("response resdata");
+      // console.log(resdata);
       if (resdata.data){
         try {
-          console.log(resdata);
+          // console.log(resdata);
           setSuccesOrErrorBit("success");
           if(saveOnly){
             setSaveOnlySuccessSnackOpen(true);
@@ -203,9 +206,9 @@ function EmpApplicationForm1(props: Props) {
           }
 
         } catch (ex) {
-          console.log("Error Exaption Seerver Error");
-          console.log(resdata);
-          console.log(ex);
+          // console.log("Error Exaption Seerver Error");
+          // console.log(resdata);
+          // console.log(ex);
           setSuccesOrErrorBit("error");
           if(saveOnly){
             setSaveOnlySuccessSnackOpen(true);
@@ -218,7 +221,7 @@ function EmpApplicationForm1(props: Props) {
 
   const saveUnFilledData = async () => {
     let watchAll = getValues();
-    console.log(watchAll);
+    // console.log(watchAll);
     await saveData(watchAll,true);
   }
 

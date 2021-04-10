@@ -58,6 +58,8 @@ class EmploymentApplication extends Component<
   }
 
   insertDummyData() {
+    // console.log("this.context.data");
+    // console.log(this.context.data);
 
     if(!this.context.data.companyName || this.context.data.companyName === "") {
       this.context.data.companyName = "AWB Transport Inc";

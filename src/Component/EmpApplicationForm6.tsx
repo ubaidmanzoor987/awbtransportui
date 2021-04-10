@@ -48,16 +48,21 @@ export default function EmpApplicationForm6(props: Props) {
 
   useEffect(() => {
     base64SignatureImage = props.data.alcoholTestEmployeeSignature;
+    // console.log(props.data.alcoholTestEmployeeSignature);
     window.scrollTo(0, 0);
-    if (base64SignatureImage !== undefined) {
+    if (base64SignatureImage !== undefined && base64SignatureImage !== "") {
       sigPad.current?.clear();
       sigPad.current.fromDataURL(base64SignatureImage);
     }
-    if(autoSubmit){onSubmit(props.data);}
+    // console.log(props.data.alcoholTestEmployeeSignature);
+            if(autoSubmit){
+    let watchAll = getValues();
+      onSubmit(watchAll );
+    }
   }, []);
 
   useEffect(() => {
-    if (base64SignatureImage !== undefined) {
+    if (base64SignatureImage !== undefined && base64SignatureImage !== "") {
       sigPad.current?.clear();
       sigPad.current.fromDataURL(base64SignatureImage);
     }
@@ -117,13 +122,24 @@ export default function EmpApplicationForm6(props: Props) {
 
   
   const saveData = async (data:any,saveOnly:boolean) => {
+    {
+      setSignatureError("");
+      setSignatureHelperTextError(false);
+      base64SignatureImage = sigPad.current
+        .getCanvas()
+        .toDataURL("image/png");
+    }
+    if (sigPad.current && sigPad.current.isEmpty()) {
+      data.alcoholTestEmployeeSignature = "";
+    }
+    else data.alcoholTestEmployeeSignature = base64SignatureImage;
     data.user_name = props.data.user_name;
-    console.log(data);
+    // console.log(data.alcoholTestEmployeeSignature);
     let resdata;
     resdata = await update(data);
     if (resdata.data){
       try {
-        console.log(resdata);
+        // console.log(resdata);
         props.setData(resdata.data.data);
         setSuccesOrErrorBit("success");
         if(saveOnly){
@@ -133,9 +149,9 @@ export default function EmpApplicationForm6(props: Props) {
         }
 
       } catch (ex) {
-        console.log("Error Exaption Seerver Error");
-        console.log(resdata);
-        console.log(ex);
+        // console.log("Error Exaption Seerver Error");
+        // console.log(resdata);
+        // console.log(ex);
         setSuccesOrErrorBit("error");
         if(saveOnly){
           setSaveOnlySuccessSnackOpen(true);
@@ -158,14 +174,6 @@ export default function EmpApplicationForm6(props: Props) {
       setSignatureHelperTextError(true);
       return;
     }
-    {
-      setSignatureError("");
-      setSignatureHelperTextError(false);
-      base64SignatureImage = sigPad.current
-        .getCanvas()
-        .toDataURL("image/png");
-    }
-    data.alcoholTestEmployeeSignature = base64SignatureImage;
     saveData(data,false);
     
     // data.user_name = props.data.user_name;

@@ -11,7 +11,7 @@ export interface Result {
         employmentHistoryTo: string,
         experienceFromDate: string,
         experienceToDate: string,
-        dateOfAccident: string,
+        //dateOfAccident: string,
         dateOfViolation: string,
         lastYearAddressfrom: string,
         lastYearAddressTo: string,

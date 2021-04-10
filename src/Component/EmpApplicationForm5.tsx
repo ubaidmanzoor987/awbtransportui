@@ -21,7 +21,10 @@ export default function EmpApplicationForm5(props: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(autoSubmit){onSubmit(props.data);}
+            if(autoSubmit){
+    let watchAll = getValues();
+      onSubmit(watchAll );
+    }
   }, []);
 
   //-------------SNACKBAR-------------

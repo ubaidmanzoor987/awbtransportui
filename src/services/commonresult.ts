@@ -1,7 +1,7 @@
 export function processResult(resultData: any) {
 
-    console.log("resultData");
-    console.log(resultData);
+    // console.log("resultData");
+    // console.log(resultData);
 
     if (resultData.data.applicantdateofbirth) {
         resultData.data.applicantdateofbirth = new Date((resultData.data.applicantdateofbirth as any).$date).toISOString().split('T')[0];

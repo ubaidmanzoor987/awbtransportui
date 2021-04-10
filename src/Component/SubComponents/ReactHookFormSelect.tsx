@@ -29,7 +29,7 @@ function ReactHookFormSelect(props: Props) {
   const { register, handleSubmit, errors, control, setError } = props.forms;
   let lable = props.label + props.isReq ? ("Required *"):"";
   const labelId = `${props.nameVal}-label`;
-  console.log(props);
+  // console.log(props);
   function errorChecking()
   {
     try
